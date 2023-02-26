@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_home"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_add_item"
+            android:icon="@drawable/ic_menu_add_item"
+            android:title="@string/menu_add_item" />
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_menu_map"
+            android:title="@string/menu_map" />
+        <item
+            android:id="@+id/nav_recommendations"
+            android:icon="@drawable/ic_menu_recommendations"
+            android:title="@string/menu_recommendations" />
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/ic_menu_favorites"
+            android:title="@string/menu_favorites" />
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/ic_menu_chat"
+            android:title="@string/menu_chat" />
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_menu_history"
+            android:title="@string/menu_history" />
+        <item
+            android:id="@+id/nav_language"
+            android:title="@string/menu_language" />
+        <item
+            android:id="@+id/nav_report_problem"
+            android:icon="@drawable/ic_menu_report_problem"
+            android:title="@string/menu_report_problem" />
+    </group>
+</menu>

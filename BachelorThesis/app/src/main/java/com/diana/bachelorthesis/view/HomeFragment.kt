@@ -1,4 +1,4 @@
-package com.diana.bachelorthesis.ui.home
+package com.diana.bachelorthesis.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.diana.bachelorthesis.databinding.FragmentHomeBinding
+import com.diana.bachelorthesis.viewmodel.HomeViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
 
@@ -32,6 +34,12 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+        binding.fab.setOnClickListener { view ->
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
+
         return root
     }
 

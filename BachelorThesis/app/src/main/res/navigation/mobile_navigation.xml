@@ -7,19 +7,15 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.diana.bachelorthesis.ui.home.HomeFragment"
+        android:name="com.diana.bachelorthesis.view.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.diana.bachelorthesis.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_add_item"
+        android:name="com.diana.bachelorthesis.view.AddItemFragment"
+        android:label="@string/menu_add_item"
+        tools:layout= "@layout/fragment_add_item" />
 
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.diana.bachelorthesis.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+
 </navigation>

@@ -1,0 +1,30 @@
+package com.diana.bachelorthesis.model
+
+enum class ItemCategory(
+    val displayName: String,
+    private var availableItems: ArrayList<Item> = ArrayList(),
+    private var totalItems: Int = 0
+) {
+    APPLIANCE("Appliance"),
+    CLOTHESSHOES("Clothes & Shoes"),
+    DEVICE("Device"),
+    EDUCATION("Education"),
+    FOODDRINK("Food & Drink"),
+    FURNITURE("Furniture"),
+    GARDEN("Garden"),
+    HOUSE("House"),
+    MEDICAL("Medical");
+
+    fun addItemToCategory(item: Item) {
+        availableItems.add(item)
+        totalItems++
+    }
+
+    fun removeItemFromCategory(item:Item) {
+        val index = availableItems.indexOfFirst {
+            it.userEmail == item.userEmail
+        }
+        availableItems.removeAt(index)
+        totalItems--
+    }
+}

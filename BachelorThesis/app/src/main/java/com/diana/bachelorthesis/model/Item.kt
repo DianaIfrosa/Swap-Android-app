@@ -8,8 +8,7 @@ import java.time.Year
 open class Item(
     @DocumentId
     val userEmail: String,
-    var available: Boolean,
-    var categories: ArrayList<ItemCategory>,
+    var category: ItemCategory,
     var description: String,
     var location: GeoPoint,
     var name: String,

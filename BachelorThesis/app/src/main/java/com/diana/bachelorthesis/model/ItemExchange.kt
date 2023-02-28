@@ -7,15 +7,14 @@ import java.time.Year
 
 class ItemExchange(
     userEmail: String,
-    available: Boolean,
-    categories: ArrayList<ItemCategory>,
+    category: ItemCategory,
     description: String,
     var exchangePreferences: ArrayList<ItemCategory>,
-    var exchangeInfo: History?,
+    var exchangeInfo: History?, // null => is available
     location: GeoPoint,
     name: String,
     photos: ArrayList<String>,
     postDate: Timestamp,
     year: Year?
-): Item (userEmail, available, categories, description, location, name, photos, postDate, year) {
+): Item (userEmail, category, description, location, name, photos, postDate, year) {
 }

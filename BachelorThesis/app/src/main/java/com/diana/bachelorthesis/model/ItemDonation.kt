@@ -8,14 +8,13 @@ import java.time.Year
 
 class ItemDonation(
     userEmail: String,
-    available: Boolean,
-    categories: ArrayList<ItemCategory>,
+    category: ItemCategory,
     description: String,
-    var donationInfo: History?,
+    var donationInfo: History?, // null => is available
     location: GeoPoint,
     name: String,
     photos: ArrayList<String>,
     postDate: Timestamp,
     year: Year?
-) : Item(userEmail, available, categories, description, location, name, photos, postDate, year) {
+) : Item(userEmail, category, description, location, name, photos, postDate, year) {
 }

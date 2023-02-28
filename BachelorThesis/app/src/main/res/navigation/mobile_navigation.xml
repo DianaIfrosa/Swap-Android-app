@@ -16,6 +16,31 @@
         android:name="com.diana.bachelorthesis.view.AddItemFragment"
         android:label="@string/menu_add_item"
         tools:layout= "@layout/fragment_add_item" />
+    <fragment
+        android:id="@+id/nav_map"
+        android:name="com.diana.bachelorthesis.view.MapFragment"
+        android:label="@string/menu_map"
+        tools:layout= "@layout/fragment_add_item" />
+    <fragment
+        android:id="@+id/nav_recommendations"
+        android:name="com.diana.bachelorthesis.view.RecommendationsFragment"
+        android:label="@string/menu_recommendations"
+        tools:layout= "@layout/fragment_add_item" />
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.diana.bachelorthesis.view.HistoryFragment"
+        android:label="@string/menu_history"
+        tools:layout= "@layout/fragment_add_item" />
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.diana.bachelorthesis.view.ChatFragment"
+        android:label="@string/menu_chat"
+        tools:layout= "@layout/fragment_add_item" />
+    <fragment
+        android:id="@+id/nav_favorites"
+        android:name="com.diana.bachelorthesis.view.FavoritesFragment"
+        android:label="@string/menu_favorites"
+        tools:layout= "@layout/fragment_add_item" />
 
 
 </navigation>

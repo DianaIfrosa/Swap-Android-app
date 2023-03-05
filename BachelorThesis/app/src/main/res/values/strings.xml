@@ -17,4 +17,10 @@
     <string name="menu_language">Change language</string>
     <string name="menu_report_problem">I have a problem</string>
 
+    <string name="make_exchange">Exchange</string>
+    <string name="make_donation">Donate</string>
+    <string name="add_item_button_home">Add item button home</string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
+
 </resources>

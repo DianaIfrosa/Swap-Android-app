@@ -12,8 +12,8 @@ enum class ItemCategory(
     FOODDRINK("Food & Drink"),
     FURNITURE("Furniture"),
     GARDEN("Garden"),
-    HOUSE("House"),
-    MEDICAL("Medical");
+    MEDICAL("Medical"),
+    UNKNOWN("Unknown");
 
     fun addItemToCategory(item: Item) {
         availableItems.add(item)

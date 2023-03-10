@@ -10,8 +10,9 @@ import com.diana.bachelorthesis.CustomClickListener
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.CardItemBinding
 import com.diana.bachelorthesis.model.Item
+import com.diana.bachelorthesis.model.ItemDonation
 
-class ItemsRecyclerViewAdapter(var itemsList: ArrayList<Item>, var context: Context) :
+class ItemsRecyclerViewAdapter(var itemsList: List<Item>, var context: Context) :
     RecyclerView.Adapter<ItemsRecyclerViewAdapter.ItemViewHolder>(),
     CustomClickListener {
     inner class ItemViewHolder(val cardItemBinding: CardItemBinding) :
@@ -39,6 +40,7 @@ class ItemsRecyclerViewAdapter(var itemsList: ArrayList<Item>, var context: Cont
     }
 
     override fun cardClicked(item: Item?) {
+        // TODO open item page -> another activity
         Toast.makeText(
             context, "You clicked " + item!!.name,
             Toast.LENGTH_LONG

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
@@ -23,6 +24,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private var screenWidth: Int = 0
     private var screenHeight: Int = 0
+    lateinit var homeViewModel: HomeViewModel
 
     // TODO class adapter to acces recycler view component to manipulate the photo carousel
     // This property is only valid between onCreateView and
@@ -34,18 +36,47 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
+
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
+            // TODO: aici fac apelul catre repo ca sa preiau datele modificate si sa le pun in UI
         }
 
-        populateData()
+        homeViewModel.exchangeItems.observe(viewLifecycleOwner) {
+                exchangeItems -> binding.itemsAdapter = ItemsRecyclerViewAdapter(exchangeItems, requireContext())
+        }
+        val switchMainCategories = binding.searchSwitchLayout.switchDonationExchange
+        val switchDonation = binding.searchSwitchLayout.homeDonationSwitch
+        val switchExchange = binding.searchSwitchLayout.homeExchangeSwitch
+
+        switchMainCategories.setOnCheckedChangeListener { _, checked ->
+
+            if (checked) {
+                switchExchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
+                switchDonation.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                homeViewModel.donationItems.observe(viewLifecycleOwner, Observer {
+                        donationItems -> binding.itemsAdapter = ItemsRecyclerViewAdapter(donationItems, requireContext())
+                })
+
+            } else {
+                switchExchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                switchDonation.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
+                homeViewModel.exchangeItems.observe(viewLifecycleOwner, Observer {
+                        exchangeItems -> binding.itemsAdapter = ItemsRecyclerViewAdapter(exchangeItems, requireContext())
+                })
+            }
+        }
+
+        binding.fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
 
 //        if (screenWidth == 0 || screenHeight == 0) {
 //            root.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
@@ -58,95 +89,12 @@ class HomeFragment : Fragment() {
 //            })
 //        }
 
-        val switchMainCategories = binding.searchSwitchLayout.switchDonationExchange
-        val switchDonation = binding.searchSwitchLayout.homeDonationSwitch
-        val switchExchange = binding.searchSwitchLayout.homeExchangeSwitch
 
-        switchMainCategories.setOnCheckedChangeListener { _, checked ->
-
-            if (checked) {
-                switchExchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
-                switchDonation.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            } else {
-                switchExchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-                switchDonation.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
-            }
-        }
 
         // TODO, set custom layout based on the height width to the ui items
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
 
         return root
-    }
-
-    fun populateData() {
-        val itemsList: ArrayList<Item> = arrayListOf()
-        itemsList.add(
-            Item(
-                "email@gmail.com",
-                ItemCategory.DEVICE,
-                "description",
-                GeoPoint(80.0, 80.0),
-                "name",
-                arrayListOf(),
-                Timestamp(85939530, 848),
-                null
-            )
-        )
-        itemsList.add(
-            Item(
-                "email2@gmail.com",
-                ItemCategory.DEVICE,
-                "description2",
-                GeoPoint(80.0, 80.0),
-                "name2",
-                arrayListOf(),
-                Timestamp(85939530, 848),
-                null
-            )
-        )
-        itemsList.add(
-            Item(
-                "email3@gmail.com",
-                ItemCategory.DEVICE,
-                "description3",
-                GeoPoint(80.0, 80.0),
-                "name3",
-                arrayListOf(),
-                Timestamp(85939530, 848),
-                null
-            )
-        )
-        itemsList.add(
-            Item(
-                "email3@gmail.com",
-                ItemCategory.DEVICE,
-                "description4",
-                GeoPoint(80.0, 80.0),
-                "name4",
-                arrayListOf(),
-                Timestamp(85939530, 848),
-                null
-            )
-        )
-        itemsList.add(
-            Item(
-                "email3@gmail.com",
-                ItemCategory.DEVICE,
-                "description5",
-                GeoPoint(80.0, 80.0),
-                "name5",
-                arrayListOf(),
-                Timestamp(85939530, 848),
-                null
-            )
-        )
-
-        binding.itemsAdapter = ItemsRecyclerViewAdapter(itemsList, requireContext())
     }
 
 //    fun setChipsDimensions() {
@@ -169,6 +117,11 @@ class HomeFragment : Fragment() {
         val screenPixelDensity = requireContext().resources.displayMetrics.density
         val dpValue = pixels / screenPixelDensity
         return dpValue
+    }
+
+    override fun onResume() {
+        super.onResume()
+
     }
 
     override fun onDestroyView() {

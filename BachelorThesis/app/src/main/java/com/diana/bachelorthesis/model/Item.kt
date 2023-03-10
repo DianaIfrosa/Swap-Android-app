@@ -14,6 +14,6 @@ open class Item(
     var name: String,
     var photos: ArrayList<String>,
     val postDate: Timestamp,
-    var year: Year?
+    var year: Int?
 ) {
 }

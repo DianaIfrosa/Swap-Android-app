@@ -31,9 +31,8 @@ class ItemRepository {
     val firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
     val storageReference: StorageReference = firebaseStorage.reference
 
-    val COLLECTION_NAME = "Objects"
-    val EXCHANGE_DOCUMENT = "Exchange"
-    val DONATION_DOCUMENT = "Donation"
+    val EXCHANGE_COLLECTION = "ExchangeItems"
+    val DONATION_COLLECTION = "DonationItems"
 
     companion object {
         @Volatile
@@ -43,62 +42,35 @@ class ItemRepository {
 
     // TODO  de analizat folosirea cache-lui : https://firebase.google.com/docs/firestore/query-data/get-data
 
-
-
-    fun getItem(id: String, owner: String, isExchange: Boolean): Item? {
-        val docRef: DocumentReference
-        var item: Item? = null
-        if (isExchange) {
-            docRef = db.collection(COLLECTION_NAME).document(EXCHANGE_DOCUMENT)
+    fun getItems(forExchange: Boolean, callback: OnCompleteCallback) {
+        val collRef: CollectionReference = if (forExchange) {
+            db.collection(EXCHANGE_COLLECTION)
         } else {
-            docRef = db.collection(COLLECTION_NAME).document(DONATION_DOCUMENT)
+            db.collection(DONATION_COLLECTION)
         }
 
-        docRef.collection(owner).document(id).get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val document = task.result
-                if (document != null) {
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                    item = if (isExchange) document.toObject<ItemExchange>()
-                    else document.toObject<ItemDonation>()
-                } else {
-                    Log.d(TAG, "No such item with id $id, owner $owner and isExchange $isExchange")
-                }
-            } else {
-                Log.w(
-                    TAG,
-                    "Error getting item with id $id, owner $owner and isExchange $isExchange",
-                    task.exception
-                )
+        collRef.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                Log.w(TAG, "Listen failed", error)
+                return@addSnapshotListener
             }
-        }
-        return item
-    }
-
-    fun getOwners(forExchange: Boolean, callback: OnCompleteCallback){
-        var owners: ArrayList<String>
-        val docRef = if (forExchange) db.collection(COLLECTION_NAME).document(EXCHANGE_DOCUMENT)
-        else db.collection(COLLECTION_NAME).document(DONATION_DOCUMENT)
-
-        docRef.get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val document = task.result
-                    if (document != null) {
-                        Log.d(TAG, "Owners retrieved for exchange $forExchange")
-                        owners = document.get("owners") as ArrayList<String>
-                        callback.onCompleteGetOwners(owners)
-                    } else {
-                        Log.d(TAG, "No owners field found")
+            if (snapshot != null) {
+                val allItems = ArrayList<Item>()
+                val documents = snapshot.documents
+                documents.forEach {
+                    val item =  if (forExchange) it.toObject(ItemExchange::class.java) else it.toObject(ItemDonation::class.java)
+                    if (item != null) {
+                        Log.d(TAG, "Retrieved item ${it.data}")
+                        allItems.add(item)
                     }
-
-                } else {
-                    Log.w(TAG, "Error getting owners ", task.exception)
-
                 }
+                callback.onCompleteGetItems(allItems)
+            } else {
+                Log.w(TAG, "No such snapshot $snapshot")
             }
+        }
+        // TODO sort by post date
     }
-
 
 // TODO write the rest of the CRUD operations and use picasso for images;
 // also store images in cloud firebase

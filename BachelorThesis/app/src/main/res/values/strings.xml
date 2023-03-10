@@ -22,5 +22,6 @@
     <string name="add_item_button_home">Add item button home</string>
     <string name="filter">Filter</string>
     <string name="sort">Sort</string>
+    <string name="items">items</string>
 
 </resources>

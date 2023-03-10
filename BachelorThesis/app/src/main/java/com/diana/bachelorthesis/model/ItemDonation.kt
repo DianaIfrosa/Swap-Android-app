@@ -7,7 +7,8 @@ import com.google.firebase.firestore.GeoPoint
 import java.time.Year
 
 class ItemDonation(
-    userEmail: String = "",
+    itemId: String = "",
+    owner: String = "",
     category: ItemCategory = ItemCategory.UNKNOWN,
     description: String = "",
     var donationInfo: History? = null, // null => is available
@@ -16,5 +17,5 @@ class ItemDonation(
     photos: ArrayList<String> = arrayListOf(),
     postDate: Timestamp = Timestamp(0,0),
     year: Int? = null
-) : Item(userEmail, category, description, location, name, photos, postDate, year) {
+) : Item(itemId, category, description, location, name, photos, owner, postDate, year) {
 }

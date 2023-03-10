@@ -1,5 +1,7 @@
 package com.diana.bachelorthesis
 
+import com.diana.bachelorthesis.model.Item
+
 interface OnCompleteCallback {
-    fun onCompleteGetOwners(owners: ArrayList<String>)
+    fun onCompleteGetItems(items: ArrayList<Item>)
 }

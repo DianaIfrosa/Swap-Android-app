@@ -22,7 +22,7 @@ enum class ItemCategory(
 
     fun removeItemFromCategory(item:Item) {
         val index = availableItems.indexOfFirst {
-            it.userEmail == item.userEmail
+            it.owner == item.owner
         }
         availableItems.removeAt(index)
         totalItems--

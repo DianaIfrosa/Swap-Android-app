@@ -25,6 +25,7 @@ class HomeFragment : Fragment() {
     private var screenWidth: Int = 0
     private var screenHeight: Int = 0
     lateinit var homeViewModel: HomeViewModel
+    private var displayExchangeItems: Boolean = true
 
     // TODO class adapter to acces recycler view component to manipulate the photo carousel
     // This property is only valid between onCreateView and
@@ -41,35 +42,31 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
+        val textNumbeItems: TextView = binding.textNumberItems
 
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-            // TODO: aici fac apelul catre repo ca sa preiau datele modificate si sa le pun in UI
+        homeViewModel.donationItems.observe(viewLifecycleOwner) {
+            updateRecyclerView()
         }
 
         homeViewModel.exchangeItems.observe(viewLifecycleOwner) {
-                exchangeItems -> binding.itemsAdapter = ItemsRecyclerViewAdapter(exchangeItems, requireContext())
+            updateRecyclerView()
         }
+
         val switchMainCategories = binding.searchSwitchLayout.switchDonationExchange
         val switchDonation = binding.searchSwitchLayout.homeDonationSwitch
         val switchExchange = binding.searchSwitchLayout.homeExchangeSwitch
 
         switchMainCategories.setOnCheckedChangeListener { _, checked ->
-
             if (checked) {
+                displayExchangeItems = false
+                updateRecyclerView()
                 switchExchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
                 switchDonation.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-                homeViewModel.donationItems.observe(viewLifecycleOwner, Observer {
-                        donationItems -> binding.itemsAdapter = ItemsRecyclerViewAdapter(donationItems, requireContext())
-                })
-
             } else {
+                displayExchangeItems = true
+                updateRecyclerView()
                 switchExchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
                 switchDonation.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
-                homeViewModel.exchangeItems.observe(viewLifecycleOwner, Observer {
-                        exchangeItems -> binding.itemsAdapter = ItemsRecyclerViewAdapter(exchangeItems, requireContext())
-                })
             }
         }
 
@@ -89,12 +86,21 @@ class HomeFragment : Fragment() {
 //            })
 //        }
 
-
-
         // TODO, set custom layout based on the height width to the ui items
 
-
         return root
+    }
+
+    private fun updateRecyclerView() {
+        if (displayExchangeItems) {
+            binding.itemsAdapter =
+                ItemsRecyclerViewAdapter(homeViewModel.exchangeItems.value!!, requireContext())
+            binding.textNumberItems.text = homeViewModel.exchangeItems.value!!.size.toString()
+        } else {
+            binding.itemsAdapter =
+                ItemsRecyclerViewAdapter(homeViewModel.donationItems.value!!, requireContext())
+            binding.textNumberItems.text = homeViewModel.donationItems.value!!.size.toString()
+        }
     }
 
 //    fun setChipsDimensions() {
@@ -117,11 +123,6 @@ class HomeFragment : Fragment() {
         val screenPixelDensity = requireContext().resources.displayMetrics.density
         val dpValue = pixels / screenPixelDensity
         return dpValue
-    }
-
-    override fun onResume() {
-        super.onResume()
-
     }
 
     override fun onDestroyView() {

@@ -10,7 +10,6 @@ import com.diana.bachelorthesis.CustomClickListener
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.CardItemBinding
 import com.diana.bachelorthesis.model.Item
-import com.diana.bachelorthesis.model.ItemDonation
 
 class ItemsRecyclerViewAdapter(var itemsList: List<Item>, var context: Context) :
     RecyclerView.Adapter<ItemsRecyclerViewAdapter.ItemViewHolder>(),

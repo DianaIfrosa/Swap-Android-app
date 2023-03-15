@@ -6,31 +6,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.OnCompleteCallback
 import com.diana.bachelorthesis.model.Item
-import com.diana.bachelorthesis.model.ItemDonation
-import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.repository.ItemRepository
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
-
 
 class HomeViewModel : ViewModel() {
-    private val TAG: String = HomeViewModel::class.java.getName()
-    private val _text = MutableLiveData<String>().apply {
-        value = "15 produse"
-    }
-
-    val text: LiveData<String> = _text
+    private val TAG: String = HomeViewModel::class.java.name
+    val repository = ItemRepository.getInstance()
 
     private val _exchangeItems = MutableLiveData<List<Item>>()
     private val _donationItems = MutableLiveData<List<Item>>()
 
     var exchangeItems: LiveData<List<Item>> = _exchangeItems
     val donationItems: LiveData<List<Item>> = _donationItems
+    // TODO take into consideration to have current items as live data and only observe in fragment
 
-    val repository = ItemRepository.getInstance()
+    var currentItems: List<Item> = arrayListOf()
+    var displayExchangeItems: Boolean = true
+
+    var searchText: String = ""
+    var sortOption: Int = 0
 
     init {
         populateLiveData()
@@ -40,17 +33,92 @@ class HomeViewModel : ViewModel() {
         //_exchangeItems.value = repository.getItems(true)
         //_donationItems.value = repository.getItems(false)
 
-        repository.getItems(true, object: OnCompleteCallback {
+        repository.getItems(true, object : OnCompleteCallback {
             override fun onCompleteGetItems(items: ArrayList<Item>) {
                 _exchangeItems.value = items
+                if (displayExchangeItems) updateCurrentItems(items)
             }
         })
 
-        repository.getItems(false, object: OnCompleteCallback {
+        repository.getItems(false, object : OnCompleteCallback {
             override fun onCompleteGetItems(items: ArrayList<Item>) {
                 _donationItems.value = items
+                if (!displayExchangeItems) updateCurrentItems(items)
             }
         })
+    }
+
+    fun updateCurrentItems(items: ArrayList<Item>) {
+        // called when there is a change in DB and the data must be updated
+        // and the user's search, sort, filter preferences should be restored
+//
+//        var itemsTemp: List<Item> = items
+        currentItems = items
+        if (searchText.isNotEmpty()) {
+            searchItem(searchText)
+        }
+
+        sort(sortOption)
+
+        // trece le prin search, sort, filter care erau deja
+
+    }
+
+    fun restoreDefaultOptions() {
+        sortOption = 0
+        searchText = ""
+        // todo add for filter
+    }
+
+    fun searchItem(inputText: String) {
+        // modifies the currentItems value accordingly
+
+        val result: MutableList<Item> = arrayListOf()
+
+        searchText = inputText
+        val inputWords = inputText.split(" ")
+        for (item in currentItems) {
+            if (inputWords.any {
+                    item.name.lowercase().contains(it.lowercase())
+                } || inputWords.any {
+                    item.description.lowercase().contains(it.lowercase())
+                }) {
+                result.add(item)
+            }
+        }
+
+        currentItems = result
+    }
+
+    fun restoreDefaultCurrentItems() {
+        // restore default sort option and remove filter options selected
+        restoreDefaultOptions()
+
+        // TODO pune pe default eventualele variabile salvate pt sort si filter
+        currentItems = if (displayExchangeItems) _exchangeItems.value as ArrayList
+        else _donationItems.value as ArrayList
+
+        //  sort(sortOption)
+    }
+
+    fun sort(option: Int) {
+        Log.d(TAG, "Sorted by option $option")
+        // TODO toate metodele se aplica pe currentItems
+        sortOption = option
+
+        currentItems = when (option) {
+            0 -> currentItems.sortedByDescending { item -> item.postDate } // new to old
+            1 -> currentItems.sortedBy { item -> item.postDate } // old to new
+            2 -> currentItems.sortedBy { item -> item.name.lowercase() } // alphabetical A-Z
+            3 -> currentItems.sortedByDescending { item -> item.name.lowercase() } // alphabetical Z-A
+            else -> {
+                Log.w(TAG, "Invalid sorting option $option!")
+                currentItems
+            }
+        }
+        currentItems.forEach {
+            Log.d(TAG, it.name)
+        }
     }
 
 }

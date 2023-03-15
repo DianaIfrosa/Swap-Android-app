@@ -9,7 +9,7 @@ import com.google.firebase.storage.StorageReference
 
 class UserRepository {
 
-    private val TAG: String = UserRepository::class.java.getName()
+    private val TAG: String = UserRepository::class.java.name
     val db = Firebase.firestore
 
     // for cloud

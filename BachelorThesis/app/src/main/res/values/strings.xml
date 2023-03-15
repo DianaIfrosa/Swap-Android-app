@@ -17,11 +17,28 @@
     <string name="menu_language">Change language</string>
     <string name="menu_report_problem">I have a problem</string>
 
-    <string name="make_exchange">Exchange</string>
-    <string name="make_donation">Donate</string>
+    <string name="make_exchange">Exchanges</string>
+    <string name="make_donation">Donations</string>
     <string name="add_item_button_home">Add item button home</string>
     <string name="filter">Filter</string>
     <string name="sort">Sort</string>
-    <string name="items">items</string>
+    <string name="items">item(s)</string>
+
+    <string name="sort_new"> New to old </string>
+    <string name="sort_old"> Old to new </string>
+    <string name="sort_alphabetical"> Alphabetical order: A-Z </string>
+    <string name="sort_alphabetical_reversed"> Alphabetical order: Z-A  </string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="categories"><u>Categories</u></string>
+    <string name="categ_appliances">Appliances</string>
+    <string name="categ_clothesshoes">Clothes &amp; Shoes</string>
+    <string name="categ_devices">Devices</string>
+    <string name="categ_education">Education</string>
+    <string name="categ_fooddrink">Food &amp; Drink</string>
+    <string name="categ_furniture">Furniture</string>
+    <string name="categ_garden">Garden</string>
+    <string name="categ_medical">Medical</string>
 
 </resources>

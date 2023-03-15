@@ -9,7 +9,7 @@
     <color name="yellow_medium">#ECEA7B</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="grey_light_transparent">#CCEDEDED </color>
+    <color name="grey_light_transparent">#E6EDEDED </color>
     <color name="grey_light">#EDEDED </color>
     <color name="grey">#ADADAD </color>
 </resources>

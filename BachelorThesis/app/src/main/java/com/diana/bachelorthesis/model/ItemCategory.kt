@@ -5,9 +5,9 @@ enum class ItemCategory(
     private var availableItems: ArrayList<Item> = ArrayList(),
     private var totalItems: Int = 0
 ) {
-    APPLIANCE("Appliance"),
+    APPLIANCE("Appliances"),
     CLOTHESSHOES("Clothes & Shoes"),
-    DEVICE("Device"),
+    DEVICE("Devices"),
     EDUCATION("Education"),
     FOODDRINK("Food & Drink"),
     FURNITURE("Furniture"),

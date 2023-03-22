@@ -4,45 +4,139 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioGroup
+import android.widget.ArrayAdapter
+import android.widget.CheckBox
+import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
-import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentFilterDialogBinding
-import com.diana.bachelorthesis.databinding.FragmentSortDialogBinding
+import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.view.HomeFragment
+import java.util.ArrayList
 
 class FilterDialogFragment : DialogFragment() {
     private val TAG: String = FilterDialogFragment::class.java.name
 
     private var _binding: FragmentFilterDialogBinding? = null
     private val binding get() = _binding!!
-    lateinit var fragmentParent: HomeFragment
+    private lateinit var fragmentParent: HomeFragment
+    private var cities: ArrayList<String> = arrayListOf()
+    private var chosenCity = ""
+    private var chosenCategories: MutableList<ItemCategory> = arrayListOf()
+    private lateinit var checkboxes: Map<ItemCategory, CheckBox>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentFilterDialogBinding.inflate(inflater, container, false)
         val root: View = binding.root
         fragmentParent = parentFragment as HomeFragment
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         return root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        restoreValues()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, cities)
+        binding.filterCityAutoComplete.setAdapter(adapter)
+
+        checkboxes = mapOf(
+            ItemCategory.APPLIANCES to binding.filterAppliances,
+            ItemCategory.CLOTHESSHOES to binding.filterClothesshoes,
+            ItemCategory.DEVICES to binding.filterDevices,
+            ItemCategory.EDUCATION to binding.filterEducation,
+            ItemCategory.FOODDRINK to  binding.filterFooddrink ,
+            ItemCategory.FURNITURE to  binding.filterFurniture,
+            ItemCategory.GARDEN to binding.filterGarden,
+            ItemCategory.MEDICAL to binding.filterMedical
+        )
+        applySelections()
+
+        binding.filterCityAutoComplete.setOnItemClickListener { _, _, position, _ ->
+            binding.filterCityStatus.text = "OK"
+            binding.filterCityStatus.isVisible = true
+            binding.filterCityStatus.setTextColor(Color.GREEN)
+            chosenCity = adapter.getItem(position) ?: ""
+        }
+
+        binding.filterCityAutoComplete.doOnTextChanged { text, _, _, _ ->
+            // TODO handle special characters (diacritics)
+            binding.filterCityStatus.text = "Not found"
+
+            binding.filterCityStatus.setTextColor(Color.RED)
+
+            if (text != null) {
+                binding.filterCityStatus.isVisible = text.isNotEmpty()
+            }
+        }
+
         binding.filterApply.setOnClickListener {
+            val listener: SortFilterDialogListener = fragmentParent
+            chosenCity = binding.filterCityAutoComplete.text.toString()
+            chosenCategories = getSelectedCheckboxes()
+            listener.saveFilterOptions(chosenCity, chosenCategories)
+            // todo call for filter categ
             dialog!!.dismiss()
         }
 
         binding.filterCancel.setOnClickListener {
             dialog!!.dismiss()
         }
+    }
+
+    private fun restoreValues() {
+        val bundle = this.arguments
+        cities = bundle?.getStringArrayList("cities") ?: arrayListOf()
+
+        chosenCity = bundle?.getString("chosenCity") ?: ""
+        val categories = bundle?.getStringArrayList("chosenCategories") ?: arrayListOf()
+        categories.forEach {
+            chosenCategories.add(ItemCategory.valueOf(it))
+        }
+    }
+
+    private fun applySelections() {
+        if (chosenCity.isNotEmpty()) {
+            binding.filterCityAutoComplete.setText(chosenCity)
+            if (chosenCity in cities) {
+                binding.filterCityStatus.text = "OK"
+                binding.filterCityStatus.setTextColor(Color.GREEN)
+                binding.filterCityStatus.isVisible = true
+            } else {
+                binding.filterCityStatus.text = "Not found"
+                binding.filterCityStatus.setTextColor(Color.RED)
+                binding.filterCityStatus.isVisible = true
+            }
+        }
+
+        if (chosenCategories.isNotEmpty()) {
+            chosenCategories.forEach { category->
+                checkboxes[category]?.isChecked = true
+            }
+        }
+    }
+
+    private fun getSelectedCheckboxes(): MutableList<ItemCategory> {
+        val result = arrayListOf<ItemCategory>()
+
+        checkboxes.forEach {
+            if (it.value.isChecked) {
+                result.add(it.key)
+            }
+        }
+        return result
     }
 
     override fun onDestroyView() {

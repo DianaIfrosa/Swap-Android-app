@@ -1,6 +1,7 @@
 package com.diana.bachelorthesis.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -14,6 +15,9 @@ import com.diana.bachelorthesis.model.Item
 class ItemsRecyclerViewAdapter(var itemsList: List<Item>, var context: Context) :
     RecyclerView.Adapter<ItemsRecyclerViewAdapter.ItemViewHolder>(),
     CustomClickListener {
+
+    private val TAG: String = ItemsRecyclerViewAdapter::class.java.name
+
     inner class ItemViewHolder(val cardItemBinding: CardItemBinding) :
         RecyclerView.ViewHolder(cardItemBinding.root)
 
@@ -29,6 +33,7 @@ class ItemsRecyclerViewAdapter(var itemsList: List<Item>, var context: Context) 
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        Log.d(TAG, "on Bind for position $position")
         val currentItem: Item = itemsList[position]
         holder.cardItemBinding.model = currentItem
         holder.cardItemBinding.itemClickListener = this

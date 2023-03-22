@@ -10,6 +10,7 @@ class ItemDonation(
     itemId: String = "",
     owner: String = "",
     category: ItemCategory = ItemCategory.UNKNOWN,
+    city: String = "-",
     description: String = "",
     var donationInfo: History? = null, // null => is available
     location: GeoPoint = GeoPoint(0.0, 0.0),
@@ -17,5 +18,5 @@ class ItemDonation(
     photos: ArrayList<String> = arrayListOf(),
     postDate: Timestamp = Timestamp(0,0),
     year: Int? = null
-) : Item(itemId, category, description, location, name, photos, owner, postDate, year) {
+) : Item(itemId, category, city, description, location, name, photos, owner, postDate, year) {
 }

@@ -1,16 +1,20 @@
 package com.diana.bachelorthesis.viewmodel
 
+import android.os.Bundle
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.diana.bachelorthesis.OnCompleteCallback
 import com.diana.bachelorthesis.model.Item
+import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.repository.ItemRepository
+import com.diana.bachelorthesis.utils.LocationHelper
+import kotlinx.coroutines.launch
+import kotlin.collections.ArrayList
 
-class HomeViewModel : ViewModel() {
+
+class HomeViewModel (var locationHelper: LocationHelper): ViewModel() {
     private val TAG: String = HomeViewModel::class.java.name
-    val repository = ItemRepository.getInstance()
+    private val repository = ItemRepository.getInstance()
 
     private val _exchangeItems = MutableLiveData<List<Item>>()
     private val _donationItems = MutableLiveData<List<Item>>()
@@ -22,11 +26,23 @@ class HomeViewModel : ViewModel() {
     var currentItems: List<Item> = arrayListOf()
     var displayExchangeItems: Boolean = true
 
-    var searchText: String = ""
+    private var searchText: String = ""
     var sortOption: Int = 0
+    private var cityFilter: String = ""
+    private var categoriesFilter: List<ItemCategory> = arrayListOf()
 
     init {
         populateLiveData()
+    }
+
+    class ViewModelFactory(private val arg: LocationHelper): ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+                return HomeViewModel(arg) as T
+            }
+            throw IllegalArgumentException ("Unknown ViewModel class")
+        }
     }
 
     private fun populateLiveData() {
@@ -36,14 +52,29 @@ class HomeViewModel : ViewModel() {
         repository.getItems(true, object : OnCompleteCallback {
             override fun onCompleteGetItems(items: ArrayList<Item>) {
                 _exchangeItems.value = items
-                if (displayExchangeItems) updateCurrentItems(items)
+                if (displayExchangeItems)
+                    updateCurrentItems(items)
+
+                viewModelScope.launch{
+                    _exchangeItems.value = locationHelper.getItemsCities(items)
+                    if (displayExchangeItems)
+                        updateCurrentItems(items)
+                }
+
             }
         })
 
         repository.getItems(false, object : OnCompleteCallback {
             override fun onCompleteGetItems(items: ArrayList<Item>) {
                 _donationItems.value = items
-                if (!displayExchangeItems) updateCurrentItems(items)
+                if (!displayExchangeItems)
+                    updateCurrentItems(items)
+
+                viewModelScope.launch{
+                    _donationItems.value = locationHelper.getItemsCities(items)
+                    if (!displayExchangeItems)
+                        updateCurrentItems(items)
+                }
             }
         })
     }
@@ -53,21 +84,22 @@ class HomeViewModel : ViewModel() {
         // and the user's search, sort, filter preferences should be restored
 //
 //        var itemsTemp: List<Item> = items
+
         currentItems = items
         if (searchText.isNotEmpty()) {
             searchItem(searchText)
         }
 
-        sort(sortOption)
-
+        applySort(sortOption)
+        applyFilter(cityFilter, categoriesFilter)
         // trece le prin search, sort, filter care erau deja
-
     }
 
-    fun restoreDefaultOptions() {
+    private fun restoreDefaultOptions() {
         sortOption = 0
         searchText = ""
-        // todo add for filter
+        cityFilter = ""
+        categoriesFilter = arrayListOf()
     }
 
     fun searchItem(inputText: String) {
@@ -94,31 +126,75 @@ class HomeViewModel : ViewModel() {
         // restore default sort option and remove filter options selected
         restoreDefaultOptions()
 
-        // TODO pune pe default eventualele variabile salvate pt sort si filter
         currentItems = if (displayExchangeItems) _exchangeItems.value as ArrayList
         else _donationItems.value as ArrayList
-
-        //  sort(sortOption)
     }
 
-    fun sort(option: Int) {
-        Log.d(TAG, "Sorted by option $option")
-        // TODO toate metodele se aplica pe currentItems
+    fun applySort(option: Int) {
+        Log.d(TAG, "Sort by option $option")
         sortOption = option
+        currentItems = sort(option, currentItems)
+    }
 
-        currentItems = when (option) {
-            0 -> currentItems.sortedByDescending { item -> item.postDate } // new to old
-            1 -> currentItems.sortedBy { item -> item.postDate } // old to new
-            2 -> currentItems.sortedBy { item -> item.name.lowercase() } // alphabetical A-Z
-            3 -> currentItems.sortedByDescending { item -> item.name.lowercase() } // alphabetical Z-A
+    private fun sort(option: Int, items: List<Item>): List<Item> {
+        val itemsTemp = when (option) {
+            0 -> items.sortedByDescending { item -> item.postDate } // new to old
+            1 -> items.sortedBy { item -> item.postDate } // old to new
+            2 -> items.sortedBy { item -> item.name.lowercase() } // alphabetical A-Z
+            3 -> items.sortedByDescending { item -> item.name.lowercase() } // alphabetical Z-A
             else -> {
                 Log.w(TAG, "Invalid sorting option $option!")
-                currentItems
+                items
             }
         }
-        currentItems.forEach {
-            Log.d(TAG, it.name)
-        }
+        return itemsTemp
     }
 
+    fun applyFilter(city: String, categories: List<ItemCategory>) {
+        Log.d(TAG, "Filter by city $city and categories ${categories.joinToString { it.displayName }}")
+        cityFilter = city
+        categoriesFilter = categories
+
+        val rawData = if (displayExchangeItems) _exchangeItems.value as ArrayList
+        else _donationItems.value as ArrayList
+
+        // apply sort on raw data then filter, to manage check and uncheck situations
+        currentItems = filter(city, categories, sort(sortOption, rawData))
+    }
+
+    private fun filter(city: String, categories: List<ItemCategory>, items: List<Item>): List<Item> {
+        var itemsTemp = items
+
+        if (city.isNotEmpty()) {
+           itemsTemp = itemsTemp.filter { item -> item.city == city}
+        }
+
+        if (categories.isNotEmpty()) {
+            itemsTemp = itemsTemp.filter { item -> item.category in categories}
+        }
+
+        return itemsTemp
+    }
+
+    private fun getCurrentCities(): ArrayList<String> {
+        val cities = arrayListOf<String>()
+        currentItems.forEach {
+            cities.add(it.city)
+        }
+        return cities
+    }
+
+    fun getFilterBundle(): Bundle {
+        val bundle = Bundle()
+        val cities = getCurrentCities()
+        bundle.putStringArrayList("cities", cities)
+        bundle.putString("chosenCity", cityFilter)
+
+        val categories = arrayListOf<String>()
+        categoriesFilter.forEach {
+            categories.add(it.name) // uppercase values
+        }
+        bundle.putStringArrayList("chosenCategories", categories)
+        return bundle
+    }
 }

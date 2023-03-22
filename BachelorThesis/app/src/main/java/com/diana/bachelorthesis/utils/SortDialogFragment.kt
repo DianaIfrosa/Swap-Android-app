@@ -16,10 +16,12 @@ import com.diana.bachelorthesis.view.HomeFragment
 class SortDialogFragment : DialogFragment() {
     private val TAG: String = SortDialogFragment::class.java.name
 
-    lateinit var radioButtonsGroup: RadioGroup
+    private lateinit var radioButtonsGroup: RadioGroup
     private var _binding: FragmentSortDialogBinding? = null
     private val binding get() = _binding!!
-    lateinit var fragmentParent: HomeFragment
+    private lateinit var fragmentParent: HomeFragment
+
+    private var sortOption = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +35,13 @@ class SortDialogFragment : DialogFragment() {
         return root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val bundle = this.arguments
+        sortOption = bundle?.getInt("sortOption") ?: 0
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         radioButtonsGroup = binding.sortRadioButtons
@@ -41,11 +50,11 @@ class SortDialogFragment : DialogFragment() {
         binding.sortApply.setOnClickListener {
 
             val selectedRadioButtonId = radioButtonsGroup.checkedRadioButtonId
-            val index = radioButtonsGroup.indexOfChild(radioButtonsGroup.findViewById(selectedRadioButtonId))
+            val index =
+                radioButtonsGroup.indexOfChild(radioButtonsGroup.findViewById(selectedRadioButtonId))
 
-            fragmentParent.saveSortOption(index)
-            fragmentParent.homeViewModel.sort(index)
-            fragmentParent.updateRecyclerView(fragmentParent.homeViewModel.currentItems)
+            val listener: SortFilterDialogListener = fragmentParent
+            listener.saveSortOption(index)
 
             dialog!!.dismiss()
         }
@@ -57,8 +66,7 @@ class SortDialogFragment : DialogFragment() {
     }
 
     private fun restoreSortOption() {
-        val option = (parentFragment as HomeFragment).getSavedSortOption()
-        (radioButtonsGroup.getChildAt(option) as RadioButton).isChecked = true
+        (radioButtonsGroup.getChildAt(sortOption) as RadioButton).isChecked = true
     }
 
     override fun onDestroyView() {

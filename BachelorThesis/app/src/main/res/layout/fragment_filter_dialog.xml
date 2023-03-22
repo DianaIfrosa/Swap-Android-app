@@ -5,8 +5,7 @@
     android:layout_width="350dp"
     android:layout_height="wrap_content"
     android:background="@drawable/custom_layout_dialog"
-    android:orientation="vertical"
-    android:padding="10dp"
+    android:padding="15dp"
     tools:context=".utils.FilterDialogFragment">
 
     <TextView
@@ -14,18 +13,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:text="@string/filter"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/filterCity"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/filterCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/filter_categories_title"
+        app:layout_constraintTop_toBottomOf="@id/filter_title"
+        tools:layout_editor_absoluteX="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:text="City:"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <AutoCompleteTextView
+            android:id="@+id/filterCityAutoComplete"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="type here"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/filterCityStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:visibility="invisible"
+            android:textColor="#ff0000"
+            android:textSize="11sp" />
+    </LinearLayout>
+
     <TextView
-        android:id="@+id/filter_categories"
+        android:id="@+id/filter_categories_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -36,62 +71,73 @@
         android:textStyle="italic"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filter_title" />
+        app:layout_constraintTop_toBottomOf="@id/filterCity" />
 
     <ScrollView
         android:id="@+id/scroll_categories"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="150dp"
+        android:layout_marginStart="1dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filter_categories"
-        android:scrollbars="vertical"
+        android:layout_marginEnd="1dp"
         android:fadeScrollbars="false"
-        android:verticalScrollbarPosition="right"
-        android:background="@color/purple_medium">
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_categories_title">
 
         <LinearLayout
+            android:id="@+id/filter_categories"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:orientation="vertical"
-            android:background="@color/yellow_medium">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <CheckBox
+                android:id="@+id/filter_appliances"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/categ_appliances" />
 
             <CheckBox
+                android:id="@+id/filter_clothesshoes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/categ_clothesshoes" />
 
             <CheckBox
+                android:id="@+id/filter_devices"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/categ_devices" />
 
             <CheckBox
+                android:id="@+id/filter_education"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/categ_education" />
 
             <CheckBox
+                android:id="@+id/filter_fooddrink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/categ_fooddrink" />
 
             <CheckBox
+                android:id="@+id/filter_furniture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/categ_furniture" />
 
             <CheckBox
+                android:id="@+id/filter_garden"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/categ_garden" />
 
             <CheckBox
+                android:id="@+id/filter_medical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/categ_medical" />
@@ -99,7 +145,9 @@
         </LinearLayout>
     </ScrollView>
 
+
     <LinearLayout
+        android:id="@+id/filterCancelApply"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"

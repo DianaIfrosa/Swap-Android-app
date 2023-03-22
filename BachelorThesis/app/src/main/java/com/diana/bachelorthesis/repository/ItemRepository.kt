@@ -40,12 +40,16 @@ class ItemRepository {
             db.collection(DONATION_COLLECTION)
         }
 
+//        Log.d(TAG, "inainte de listener" + Thread.currentThread().toString())
+
         collRef.addSnapshotListener { snapshot, error ->
             if (error != null) {
                 Log.w(TAG, "Listen failed", error)
                 return@addSnapshotListener
             }
             if (snapshot != null) {
+//                Log.d(TAG, "in listener" + Thread.currentThread().toString())
+
                 val allItems = ArrayList<Item>()
                 val documents = snapshot.documents
                 documents.forEach {

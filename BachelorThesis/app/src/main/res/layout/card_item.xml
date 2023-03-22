@@ -37,10 +37,10 @@
                     android:id="@+id/item_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxWidth="230sp"
                     android:layout_marginStart="25dp"
                     android:layout_marginBottom="45dp"
                     android:hint="name"
+                    android:maxWidth="230sp"
                     android:text="@{model.name}"
                     android:textColor="@color/black"
                     android:textSize="15sp"
@@ -72,18 +72,18 @@
                 <com.denzcoskun.imageslider.ImageSlider
                     android:id="@+id/photo_carousel"
                     android:layout_width="0dp"
-                    android:layout_height="100dp"
-
-                    android:layout_margin="20dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:isScrollContainer="true"
                     app:iss_corner_radius="30"
+                    app:iss_error_image="@drawable/unavailable"
                     app:layout_constraintBottom_toTopOf="@+id/item_name"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.16"
-                    android:isScrollContainer="true"
-                    android:background="@color/yellow_medium">
+                    app:layout_constraintTop_toTopOf="parent">
 
                 </com.denzcoskun.imageslider.ImageSlider>
 

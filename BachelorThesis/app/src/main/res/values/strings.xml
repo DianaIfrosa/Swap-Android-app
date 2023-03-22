@@ -40,5 +40,9 @@
     <string name="categ_furniture">Furniture</string>
     <string name="categ_garden">Garden</string>
     <string name="categ_medical">Medical</string>
+    <string name="not_found">Not found</string>
+    <string name="ok">OK</string>
+    <string name="exchange">Exchange</string>
+    <string name="donate">Donate</string>
 
 </resources>

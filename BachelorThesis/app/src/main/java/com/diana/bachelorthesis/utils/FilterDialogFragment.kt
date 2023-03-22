@@ -12,6 +12,7 @@ import android.widget.CheckBox
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
+import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentFilterDialogBinding
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.view.HomeFragment
@@ -27,6 +28,7 @@ class FilterDialogFragment : DialogFragment() {
     private var chosenCity = ""
     private var chosenCategories: MutableList<ItemCategory> = arrayListOf()
     private lateinit var checkboxes: Map<ItemCategory, CheckBox>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +67,7 @@ class FilterDialogFragment : DialogFragment() {
         applySelections()
 
         binding.filterCityAutoComplete.setOnItemClickListener { _, _, position, _ ->
-            binding.filterCityStatus.text = "OK"
+            binding.filterCityStatus.text = getString(R.string.ok)
             binding.filterCityStatus.isVisible = true
             binding.filterCityStatus.setTextColor(Color.GREEN)
             chosenCity = adapter.getItem(position) ?: ""
@@ -73,7 +75,7 @@ class FilterDialogFragment : DialogFragment() {
 
         binding.filterCityAutoComplete.doOnTextChanged { text, _, _, _ ->
             // TODO handle special characters (diacritics)
-            binding.filterCityStatus.text = "Not found"
+            binding.filterCityStatus.text = getString(R.string.not_found)
 
             binding.filterCityStatus.setTextColor(Color.RED)
 
@@ -111,11 +113,11 @@ class FilterDialogFragment : DialogFragment() {
         if (chosenCity.isNotEmpty()) {
             binding.filterCityAutoComplete.setText(chosenCity)
             if (chosenCity in cities) {
-                binding.filterCityStatus.text = "OK"
+                binding.filterCityStatus.text = getString(R.string.ok)
                 binding.filterCityStatus.setTextColor(Color.GREEN)
                 binding.filterCityStatus.isVisible = true
             } else {
-                binding.filterCityStatus.text = "Not found"
+                binding.filterCityStatus.text = getString(R.string.not_found)
                 binding.filterCityStatus.setTextColor(Color.RED)
                 binding.filterCityStatus.isVisible = true
             }

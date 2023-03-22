@@ -16,7 +16,6 @@ import javax.inject.Singleton
 class ItemRepository {
     private val TAG: String = ItemRepository::class.java.name
     val db = Firebase.firestore
-    // val homeViewModel = HomeViewModel.getInstance()
 
     // for cloud
     val firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()

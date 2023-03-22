@@ -1,13 +1,12 @@
 package com.diana.bachelorthesis.view
 
-import android.content.SharedPreferences
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -86,8 +85,16 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
        initSwitchCategoriesListener()
 
         binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Redirect to addItemFragment", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
+
+//            val addItemFragment = AddItemFragment()
+//            val transaction = activity?.supportFragmentManager?.beginTransaction()
+//            if (transaction != null) {
+//                transaction.replace(R.id.nav_add_item, addItemFragment)
+//                transaction.addToBackStack(null)
+//                transaction.commit()
+//            }
         }
 
         binding.searchSwitchLayout.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {

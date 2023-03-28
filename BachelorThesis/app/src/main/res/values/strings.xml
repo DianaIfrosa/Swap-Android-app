@@ -30,8 +30,10 @@
     <string name="sort_alphabetical_reversed"> Alphabetical order: Z-A  </string>
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
+    <string name ="select">Select</string>
 
-    <string name="categories"><u>Categories</u></string>
+    <string name="categories_title"><u>Categories</u></string>
+
     <string name="categ_appliances">Appliances</string>
     <string name="categ_clothesshoes">Clothes &amp; Shoes</string>
     <string name="categ_devices">Devices</string>
@@ -40,9 +42,36 @@
     <string name="categ_furniture">Furniture</string>
     <string name="categ_garden">Garden</string>
     <string name="categ_medical">Medical</string>
+
+
     <string name="not_found">Not found</string>
     <string name="ok">OK</string>
     <string name="exchange">Exchange</string>
     <string name="donate">Donate</string>
+
+    <string name="invalid_fields">Invalid fields!</string>
+    <string name="item_title_short">At least 3 characters required</string>
+    <string name="item_description_short">At least 5 characters required</string>
+    <string name="required">Required</string>
+    <string name="description">Description</string>
+    <string name="purpose">Purpose</string>
+    <string name="question_add_item_preferences">What category of objects would you like to trade with?</string>
+    <string name="category">Category</string>
+    <string name="photos_min_2">Photos (min. 2)</string>
+    <string name="location">Location</string>
+    <string name="other_details">Other details</string>
+    <string name="manufacturing_year">Manufacturing year</string>
+    <string name="condition">Condition</string>
+    <string name="save">Save</string>
+    <string name="select_on_map">Select on map</string>
+    <string name="select_from_gallery">Select from gallery</string>
+    <string name="item_title">Item title</string>
+
+    <string-array name="condition_array">
+        <item name="new">New/Like new</item>
+        <item name="used">Used</item>
+        <item name="not_working">For parts or not working</item>
+    </string-array>
+
 
 </resources>

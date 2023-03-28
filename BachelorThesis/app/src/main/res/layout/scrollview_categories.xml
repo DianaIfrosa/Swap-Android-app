@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_categories"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:id="@+id/categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/categ_appliances"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_appliances" />
+
+            <CheckBox
+                android:id="@+id/categ_clothesshoes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_clothesshoes" />
+
+            <CheckBox
+                android:id="@+id/categ_devices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_devices" />
+
+            <CheckBox
+                android:id="@+id/categ_education"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_education" />
+
+            <CheckBox
+                android:id="@+id/categ_fooddrink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_fooddrink" />
+
+            <CheckBox
+                android:id="@+id/categ_furniture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_furniture" />
+
+            <CheckBox
+                android:id="@+id/categ_garden"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_garden" />
+
+            <CheckBox
+                android:id="@+id/categ_medical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_medical" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

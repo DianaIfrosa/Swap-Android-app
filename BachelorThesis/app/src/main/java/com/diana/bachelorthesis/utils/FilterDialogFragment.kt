@@ -55,21 +55,23 @@ class FilterDialogFragment : DialogFragment() {
         binding.filterCityAutoComplete.setAdapter(adapter)
 
         checkboxes = mapOf(
-            ItemCategory.APPLIANCES to binding.filterAppliances,
-            ItemCategory.CLOTHESSHOES to binding.filterClothesshoes,
-            ItemCategory.DEVICES to binding.filterDevices,
-            ItemCategory.EDUCATION to binding.filterEducation,
-            ItemCategory.FOODDRINK to  binding.filterFooddrink ,
-            ItemCategory.FURNITURE to  binding.filterFurniture,
-            ItemCategory.GARDEN to binding.filterGarden,
-            ItemCategory.MEDICAL to binding.filterMedical
+            ItemCategory.APPLIANCES to binding.categories.categAppliances,
+            ItemCategory.CLOTHESSHOES to binding.categories.categClothesshoes,
+            ItemCategory.DEVICES to binding.categories.categDevices,
+            ItemCategory.EDUCATION to binding.categories.categEducation,
+            ItemCategory.FOODDRINK to  binding.categories.categFooddrink ,
+            ItemCategory.FURNITURE to  binding.categories.categFurniture,
+            ItemCategory.GARDEN to binding.categories.categGarden,
+            ItemCategory.MEDICAL to binding.categories.categMedical
         )
         applySelections()
 
         binding.filterCityAutoComplete.setOnItemClickListener { _, _, position, _ ->
-            binding.filterCityStatus.text = getString(R.string.ok)
-            binding.filterCityStatus.isVisible = true
-            binding.filterCityStatus.setTextColor(Color.GREEN)
+            binding.filterCityStatus.apply {
+                text = getString(R.string.ok)
+                setTextColor(Color.GREEN)
+                isVisible = true
+            }
             chosenCity = adapter.getItem(position) ?: ""
         }
 
@@ -113,13 +115,17 @@ class FilterDialogFragment : DialogFragment() {
         if (chosenCity.isNotEmpty()) {
             binding.filterCityAutoComplete.setText(chosenCity)
             if (chosenCity in cities) {
-                binding.filterCityStatus.text = getString(R.string.ok)
-                binding.filterCityStatus.setTextColor(Color.GREEN)
-                binding.filterCityStatus.isVisible = true
+                binding.filterCityStatus.apply {
+                    text = getString(R.string.ok)
+                    setTextColor(Color.GREEN)
+                    isVisible = true
+                }
             } else {
-                binding.filterCityStatus.text = getString(R.string.not_found)
-                binding.filterCityStatus.setTextColor(Color.RED)
-                binding.filterCityStatus.isVisible = true
+                binding.filterCityStatus.apply {
+                    text = getString(R.string.not_found)
+                    setTextColor(Color.RED)
+                    isVisible = true
+                }
             }
         }
 

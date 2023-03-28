@@ -1,6 +1,5 @@
 package com.diana.bachelorthesis.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,11 +25,9 @@ import com.google.android.material.snackbar.Snackbar
 class HomeFragment : Fragment(), SortFilterDialogListener {
     private val TAG: String = HomeFragment::class.java.name
     private var _binding: FragmentHomeBinding? = null
-    private var screenWidth: Int = 0
-    private var screenHeight: Int = 0
     lateinit var homeViewModel: HomeViewModel
 
-    // TODO class adapter to acces recycler view component to manipulate the photo carousel
+    // todo add logo in app bar for home screen and name of the page for the other pages
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -49,7 +46,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
         val root: View = binding.root
         binding.searchSwitchLayout.searchView.clearFocus()
 
-        updateRecyclerView(arrayListOf())
+        updateRecyclerView(arrayListOf(), true)
         initListeners()
 
 //        if (screenWidth == 0 || screenHeight == 0) {
@@ -74,7 +71,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
         homeViewModel.donationItems.observe(viewLifecycleOwner) {
             if (!homeViewModel.displayExchangeItems)
                 updateRecyclerView(homeViewModel.currentItems)
-
         }
 
         homeViewModel.exchangeItems.observe(viewLifecycleOwner) {
@@ -171,36 +167,21 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
         }
     }
 
-    fun updateRecyclerView(items: List<Item>) {
+    fun updateRecyclerView(items: List<Item>, progressBarAppears: Boolean = false) {
+        if (progressBarAppears) {
+            binding.progressBarHome.visibility = View.VISIBLE
+            binding.homeRecyclerView.visibility = View.INVISIBLE
+        } else {
+            binding.homeRecyclerView.visibility = View.VISIBLE
+            binding.progressBarHome.visibility = View.INVISIBLE
+        }
+
         binding.itemsAdapter =
             ItemsRecyclerViewAdapter(items, requireContext())
         binding.textNumberItems.text = items.size.toString()
     }
 
-
-//    fun setChipsDimensions() {
-//        val layoutParamsExchangeChip = binding.homeExchangeButton.layoutParams
-//        //layoutParamsExchangeChip?.setMargins(((1/20) * screenWidth).toInt(), 0, 0 , 0)
-//        layoutParamsExchangeChip?.width = ((6.0/10.0) * screenWidth).toInt()
-//        binding.homeExchangeButton.layoutParams = layoutParamsExchangeChip
-//
-//        val layoutParamsDonationChip = binding.homeDonationButton.layoutParams
-//        layoutParamsDonationChip?.width = ((6.0/10.0) * screenWidth).toInt()
-//        binding.homeDonationButton.layoutParams = layoutParamsDonationChip
-//
-////        val marginLayoutParamsDonation = binding.homeDonationButton.layoutParams as MarginLayoutParams
-////        marginLayoutParamsDonation.setMargins( -((1.0/10.0) * screenWidth).toInt() , 0, 0, 0)
-////        binding.homeDonationButton.layoutParams = marginLayoutParamsDonation
-
-//    }
-
-    fun getScreenPixelDensity(pixels: Float): Float {
-        val screenPixelDensity = requireContext().resources.displayMetrics.density
-        val dpValue = pixels / screenPixelDensity
-        return dpValue
-    }
-
-    fun saveDefaultOptions() {
+    private fun saveDefaultOptions() {
 
         // FIXME duplicated code ugly
         if (!homeViewModel.displayExchangeItems) {
@@ -217,7 +198,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
 
     override fun onStop() {
         super.onStop()
-        saveDefaultOptions()
+        // TODO uncomment this: saveDefaultOptions()
         _binding = null
         Log.d(TAG, "HomeFragment is destroyed")
     }

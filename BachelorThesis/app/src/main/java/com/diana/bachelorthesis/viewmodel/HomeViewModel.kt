@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
 
-class HomeViewModel (var locationHelper: LocationHelper): ViewModel() {
+class HomeViewModel(var locationHelper: LocationHelper) : ViewModel() {
     private val TAG: String = HomeViewModel::class.java.name
     private val repository = ItemRepository.getInstance()
 
@@ -35,13 +35,13 @@ class HomeViewModel (var locationHelper: LocationHelper): ViewModel() {
         populateLiveData()
     }
 
-    class ViewModelFactory(private val arg: LocationHelper): ViewModelProvider.Factory {
+    class ViewModelFactory(private val arg: LocationHelper) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
                 return HomeViewModel(arg) as T
             }
-            throw IllegalArgumentException ("Unknown ViewModel class")
+            throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
 
@@ -55,12 +55,11 @@ class HomeViewModel (var locationHelper: LocationHelper): ViewModel() {
                 if (displayExchangeItems)
                     updateCurrentItems(items)
 
-                viewModelScope.launch{
+                viewModelScope.launch {
                     _exchangeItems.value = locationHelper.getItemsCities(items)
                     if (displayExchangeItems)
                         updateCurrentItems(items)
                 }
-
             }
         })
 
@@ -70,19 +69,19 @@ class HomeViewModel (var locationHelper: LocationHelper): ViewModel() {
                 if (!displayExchangeItems)
                     updateCurrentItems(items)
 
-                viewModelScope.launch{
+                viewModelScope.launch {
                     _donationItems.value = locationHelper.getItemsCities(items)
                     if (!displayExchangeItems)
                         updateCurrentItems(items)
                 }
             }
         })
+
     }
 
     fun updateCurrentItems(items: ArrayList<Item>) {
         // called when there is a change in DB and the data must be updated
         // and the user's search, sort, filter preferences should be restored
-//
 //        var itemsTemp: List<Item> = items
 
         currentItems = items
@@ -92,7 +91,6 @@ class HomeViewModel (var locationHelper: LocationHelper): ViewModel() {
 
         applySort(sortOption)
         applyFilter(cityFilter, categoriesFilter)
-        // trece le prin search, sort, filter care erau deja
     }
 
     private fun restoreDefaultOptions() {
@@ -151,7 +149,10 @@ class HomeViewModel (var locationHelper: LocationHelper): ViewModel() {
     }
 
     fun applyFilter(city: String, categories: List<ItemCategory>) {
-        Log.d(TAG, "Filter by city $city and categories ${categories.joinToString { it.displayName }}")
+        Log.d(
+            TAG,
+            "Filter by city $city and categories ${categories.joinToString { it.displayName }}"
+        )
         cityFilter = city
         categoriesFilter = categories
 
@@ -162,15 +163,19 @@ class HomeViewModel (var locationHelper: LocationHelper): ViewModel() {
         currentItems = filter(city, categories, sort(sortOption, rawData))
     }
 
-    private fun filter(city: String, categories: List<ItemCategory>, items: List<Item>): List<Item> {
+    private fun filter(
+        city: String,
+        categories: List<ItemCategory>,
+        items: List<Item>
+    ): List<Item> {
         var itemsTemp = items
 
         if (city.isNotEmpty()) {
-           itemsTemp = itemsTemp.filter { item -> item.city == city}
+            itemsTemp = itemsTemp.filter { item -> item.city == city }
         }
 
         if (categories.isNotEmpty()) {
-            itemsTemp = itemsTemp.filter { item -> item.category in categories}
+            itemsTemp = itemsTemp.filter { item -> item.category in categories }
         }
 
         return itemsTemp

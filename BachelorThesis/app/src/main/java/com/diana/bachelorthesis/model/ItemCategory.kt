@@ -1,7 +1,7 @@
 package com.diana.bachelorthesis.model
 
 enum class ItemCategory(
-    val displayName: String,
+    val displayName: String, // TODO modify this as it is not useful for translation to Romanian or other languages
     private var availableItems: ArrayList<Item> = ArrayList(),
     private var totalItems: Int = 0
 ) {
@@ -26,5 +26,15 @@ enum class ItemCategory(
         }
         availableItems.removeAt(index)
         totalItems--
+    }
+
+    companion object {
+        fun stringToItemCategory(name: String): ItemCategory {
+            for (categ in values())
+                if (categ.displayName.equals(name, true))
+                    return categ
+
+            return UNKNOWN
+        }
     }
 }

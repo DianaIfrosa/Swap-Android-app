@@ -12,4 +12,5 @@
     <color name="grey_light_transparent">#E6EDEDED </color>
     <color name="grey_light">#EDEDED </color>
     <color name="grey">#ADADAD </color>
+    <color name="red">#FF0000</color>
 </resources>

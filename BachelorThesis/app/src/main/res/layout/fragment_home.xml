@@ -15,9 +15,11 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_home_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp">
+        android:paddingTop="10dp"
+        android:paddingRight="10dp">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
@@ -32,6 +34,17 @@
             app:srcCompat="@android:drawable/ic_input_add"
             tools:ignore="ImageContrastCheck" />
 
+        <ProgressBar
+            android:id="@+id/progressBarHome"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <include
             android:id="@+id/searchSwitchLayout"
             layout="@layout/search_switch_header"/>
@@ -42,12 +55,13 @@
             android:layout_marginTop="20dp"
             app:layout_constraintTop_toBottomOf="@id/searchSwitchLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            android:scrollbars="none">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:layout_marginStart="10dp"
                 app:layout_constraintTop_toBottomOf="@id/searchSwitchLayout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -80,10 +94,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="end|center_vertical"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="6dp"
+                        android:layout_marginStart="5dp"
                         android:text="0"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
                         android:layout_weight="1"
                         app:layout_constraintHorizontal_bias="0.95" />
 
@@ -91,12 +106,12 @@
                         android:id="@+id/text_items"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="1dp"
+                        android:layout_marginEnd="5dp"
                         android:baselineAligned="false"
                         android:gravity="clip_vertical|center_vertical"
                         android:text="@string/items"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
                         android:layout_weight="1"
                         app:layout_constraintHorizontal_bias="0.95" />
 
@@ -126,17 +141,19 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/sort_info_filter_layout" />
+                    app:layout_constraintTop_toBottomOf="@id/sort_info_filter_layout"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="100dp"/>
 
-                <!-- Dummy view for correct spacing -->
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/home_recycler_view" />
+<!--                &lt;!&ndash; Dummy view for correct spacing &ndash;&gt;-->
+<!--                <View-->
+<!--                    android:id="@+id/view"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="100dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/home_recycler_view" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

@@ -35,7 +35,6 @@ class ItemsRecyclerViewAdapter(private var itemsList: List<Item>, var context: C
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        Log.d(TAG, "on Bind for position $position")
         val currentItem: Item = itemsList[position]
         holder.cardItemBinding.model = currentItem
         holder.cardItemBinding.itemClickListener = this

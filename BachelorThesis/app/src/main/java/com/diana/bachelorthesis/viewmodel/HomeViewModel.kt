@@ -3,7 +3,7 @@ package com.diana.bachelorthesis.viewmodel
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.*
-import com.diana.bachelorthesis.OnCompleteCallback
+import com.diana.bachelorthesis.ListParamCallback
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.repository.ItemRepository
@@ -49,40 +49,38 @@ class HomeViewModel(var locationHelper: LocationHelper) : ViewModel() {
         //_exchangeItems.value = repository.getItems(true)
         //_donationItems.value = repository.getItems(false)
 
-        repository.getItems(true, object : OnCompleteCallback {
-            override fun onCompleteGetItems(items: ArrayList<Item>) {
-                _exchangeItems.value = items
+        repository.getItems(true, object : ListParamCallback<Item> {
+            override fun onComplete(values: ArrayList<Item>) {
+                _exchangeItems.value = values
                 if (displayExchangeItems)
-                    updateCurrentItems(items)
+                    updateCurrentItems(values)
 
-                viewModelScope.launch {
-                    _exchangeItems.value = locationHelper.getItemsCities(items)
-                    if (displayExchangeItems)
-                        updateCurrentItems(items)
-                }
+//                viewModelScope.launch {
+//                    _exchangeItems.value = locationHelper.getItemsCities(values)
+//                    if (displayExchangeItems)
+//                        updateCurrentItems(values)
+//                }
             }
         })
 
-        repository.getItems(false, object : OnCompleteCallback {
-            override fun onCompleteGetItems(items: ArrayList<Item>) {
-                _donationItems.value = items
+        repository.getItems(false, object : ListParamCallback<Item> {
+            override fun onComplete(values: ArrayList<Item>) {
+                _donationItems.value = values
                 if (!displayExchangeItems)
-                    updateCurrentItems(items)
+                    updateCurrentItems(values)
 
-                viewModelScope.launch {
-                    _donationItems.value = locationHelper.getItemsCities(items)
-                    if (!displayExchangeItems)
-                        updateCurrentItems(items)
-                }
+//                viewModelScope.launch {
+//                    _donationItems.value = locationHelper.getItemsCities(values)
+//                    if (!displayExchangeItems)
+//                        updateCurrentItems(values)
+//                }
             }
         })
-
     }
 
     fun updateCurrentItems(items: ArrayList<Item>) {
         // called when there is a change in DB and the data must be updated
         // and the user's search, sort, filter preferences should be restored
-//        var itemsTemp: List<Item> = items
 
         currentItems = items
         if (searchText.isNotEmpty()) {
@@ -201,5 +199,9 @@ class HomeViewModel(var locationHelper: LocationHelper) : ViewModel() {
         }
         bundle.putStringArrayList("chosenCategories", categories)
         return bundle
+    }
+
+    fun detachListeners() {
+        repository.detachListeners()
     }
 }

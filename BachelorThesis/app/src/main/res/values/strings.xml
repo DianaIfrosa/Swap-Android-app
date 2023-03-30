@@ -66,6 +66,9 @@
     <string name="select_on_map">Select on map</string>
     <string name="select_from_gallery">Select from gallery</string>
     <string name="item_title">Item title</string>
+    <string name="select_photo">Select photo from:</string>
+    <string name="infoPhotos">We recommend that you upload at least 2 photos etc to complete</string>
+    <string name="infoLocation">We need your location because blabla to complete</string>
 
     <string-array name="condition_array">
         <item name="new">New/Like new</item>

@@ -6,5 +6,4 @@ interface SortFilterDialogListener {
 
     fun saveSortOption(option: Int)
     fun saveFilterOptions(city: String, categories: List<ItemCategory>)
-    fun saveCategoriesFilter()
 }

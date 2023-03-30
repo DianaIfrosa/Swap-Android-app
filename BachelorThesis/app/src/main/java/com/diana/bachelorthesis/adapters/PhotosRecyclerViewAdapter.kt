@@ -22,7 +22,6 @@ class PhotosRecyclerViewAdapter(private var photosList: List<Uri>, var context: 
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        Log.d(TAG, "on Bind for position $position")
         val currentPhoto: Uri = photosList[position]
         currentPhoto.let{
             Picasso.get().load(it).into(holder.cardPhotoBinding.photo)

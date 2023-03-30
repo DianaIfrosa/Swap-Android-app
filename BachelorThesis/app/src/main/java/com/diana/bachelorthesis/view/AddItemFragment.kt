@@ -5,21 +5,24 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources.NotFoundException
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.FrameLayout.LayoutParams
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apachat.loadingbutton.core.customViews.CircularProgressButton
@@ -28,7 +31,12 @@ import com.diana.bachelorthesis.adapters.PhotosRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentAddItemBinding
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.ItemCondition
+import com.diana.bachelorthesis.utils.LocationHelper
 import com.diana.bachelorthesis.viewmodel.AddItemViewModel
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 
 class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
@@ -36,6 +44,8 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val TAG: String = AddItemFragment::class.java.name
     private val MIN_LENGTH_TITLE = 3
     private val MIN_LENGTH_DESCRIPTION = 5
+    private val MIN_PHOTOS = 2
+    private val PICK_IMAGE_CODE = 10
 
     lateinit var addItemViewModel: AddItemViewModel
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
@@ -50,11 +60,13 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
+        Log.d(TAG, "AddItemFragment is onCreateView")
+
+        val viewModelFactory = AddItemViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
+        addItemViewModel = ViewModelProvider(this, viewModelFactory).get(AddItemViewModel::class.java)
 
         _binding = FragmentAddItemBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
 
         val recyclerView: RecyclerView = binding.photosRecyclerView
         val horizontalLayoutManager =
@@ -71,13 +83,14 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        registerActivityForResult()
+        // registerActivityForResult()
     }
 
     // TODO make a general function for spinner adapter that returns the adapter and receives the arrayList of elements
     private fun attachCategoryAdapter() {
         val spinnerCategories = binding.spinnerCategories
         spinnerCategories.onItemSelectedListener = this
+        spinnerCategories.setSelection(0)
         val categories = ItemCategory.values().map { it.displayName } as MutableList
         categories.add(0, getString(R.string.select)) // hint
 
@@ -118,6 +131,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private fun attachConditionAdapter() {
         val spinnerCondition = binding.spinnerCondition
         spinnerCondition.onItemSelectedListener = this
+        spinnerCondition.setSelection(0)
         val conditionArray = ItemCondition.values().map { it.displayName } as MutableList
         conditionArray.add(0, getString(R.string.select)) // hint
 
@@ -190,8 +204,21 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         binding.deletePhotos.setOnClickListener {
             (it as ImageButton).visibility = View.GONE
-            addItemViewModel.itemPhotos = arrayListOf()
-            updatePhotosRecyclerView(addItemViewModel.itemPhotos)
+            addItemViewModel.photosUri = arrayListOf()
+            updatePhotosRecyclerView(addItemViewModel.photosUri)
+        }
+
+        binding.itemLocationButton.setOnClickListener {
+            cleanUIElements()
+            //TODO add here
+        }
+
+        binding.iconLocationButton.setOnClickListener {
+            createSnackBar(resources.getString(R.string.infoLocation), it).show()
+        }
+
+        binding.iconPhotosButton.setOnClickListener {
+            createSnackBar(resources.getString(R.string.infoPhotos), it).show()
         }
 
         binding.saveItem.setOnClickListener {
@@ -202,10 +229,23 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             if (fieldsOk) {
                 // save into Firestore DB async, and after display the done sign
-                it.doneLoadingAnimation(
-                    Color.GREEN,
-                    BitmapFactory.decodeResource(resources, R.drawable.ic_done)
-                )
+
+                lifecycleScope.launch(CoroutineName("fragment launch")) {
+                    coroutineScope {
+                        Log.d(
+                            TAG,
+                            "Apelez launch ul din fragment , ${coroutineContext[CoroutineName.Key]}"
+                        )
+                        addItemViewModel.addItem()
+                    }
+
+                    // TODO make this a callback result maybe
+                    it.doneLoadingAnimation(
+                        Color.GREEN, // TODO choose a lighter green
+                        ContextCompat.getDrawable(requireActivity(),R.drawable.ic_done)!!.toBitmap()
+                    )
+                }
+
             } else {
                 it.revertAnimation()
                 Toast.makeText(
@@ -215,7 +255,26 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 ).show()
             }
         }
+    }
 
+    private fun createSnackBar(text: String, view: View): Snackbar {
+        val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_INDEFINITE)
+            .setAction("OK"){}.
+            setActionTextColor(resources.getColor(R.color.black)).
+            setTextColor(resources.getColor(R.color.black))
+
+        val margin = 15
+        val snackbarView: View = snackbar.view
+        snackbarView.setBackgroundColor(resources.getColor(R.color.grey_light))
+
+        val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        layoutParams.leftMargin = margin
+        layoutParams.rightMargin = margin
+
+        snackbarView.layoutParams = layoutParams
+        // TODO make it appear at the bottom with bottom margin as well
+
+        return snackbar
     }
 
     private fun choosePhoto() {
@@ -224,7 +283,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 READ_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // cere permisiune daca nu e data deja
+            // ask for permission if it is not given already
             ActivityCompat.requestPermissions(
                 requireActivity(),
                 arrayOf(READ_EXTERNAL_STORAGE),
@@ -232,10 +291,14 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
             ) // 1 e standard
 
         } else {
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            activityResultLauncher.launch(intent)
+            val getIntent = Intent(Intent.ACTION_GET_CONTENT)
+            getIntent.type = "image/*"
+            val pickIntent =
+                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            val chooserIntent = Intent.createChooser(getIntent, resources.getString(R.string.select_photo))
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
+
+            startActivityForResult(chooserIntent, PICK_IMAGE_CODE)
         }
     }
 
@@ -282,7 +345,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
             binding.itemTitleStatus.visibility = View.VISIBLE
             completedFields = false
         } else {
-            binding.itemTitleStatus.visibility = View.INVISIBLE
+            binding.itemTitleStatus.visibility = View.GONE
         }
 
         // description
@@ -297,15 +360,15 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
             binding.itemDescriptionStatus.visibility = View.VISIBLE
             completedFields = false
         } else {
-            binding.itemDescriptionStatus.visibility = View.INVISIBLE
+            binding.itemDescriptionStatus.visibility = View.GONE
         }
 
         // purpose & item object
         val forExchange: Boolean? = if (binding.radioButtonExchange.isChecked) {
-            binding.itemPurposeStatus.visibility = View.INVISIBLE
+            binding.itemPurposeStatus.visibility = View.GONE
             true
         } else if (binding.radioButtonDonate.isChecked) {
-            binding.itemPurposeStatus.visibility = View.INVISIBLE
+            binding.itemPurposeStatus.visibility = View.GONE
             false
         } else {
             binding.itemPurposeStatus.text = resources.getString(R.string.required)
@@ -320,19 +383,19 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
             binding.itemCategoryStatus.visibility = View.VISIBLE
             completedFields = false
         } else {
-            binding.itemCategoryStatus.visibility = View.INVISIBLE
+            binding.itemCategoryStatus.visibility = View.GONE
         }
 
-        // exchange preferences
+        // exchange preferences - optional
         val exchangePreferences = getExchangePreferences()
 
         // photos
-        if (addItemViewModel.itemPhotos.isEmpty()) {
+        if (addItemViewModel.photosUri.size < MIN_PHOTOS) {
             binding.itemPhotosStatus.text = resources.getString(R.string.required)
             binding.itemPhotosStatus.visibility = View.VISIBLE
             completedFields = false
         } else {
-            binding.itemPhotosStatus.visibility = View.INVISIBLE
+            binding.itemPhotosStatus.visibility = View.GONE
         }
 
         // location
@@ -341,7 +404,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
             binding.itemLocationStatus.visibility = View.VISIBLE
             completedFields = false
         } else {
-            binding.itemLocationStatus.visibility = View.INVISIBLE
+            binding.itemLocationStatus.visibility = View.GONE
         }
 
         // year - optional
@@ -360,26 +423,22 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private fun registerActivityForResult(): Uri? {
-        var imageUri: Uri? = null
-        activityResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                val resultCode = result.resultCode
-                val imageData = result.data
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, intent)
 
-                if (resultCode == RESULT_OK && imageData != null) {
-                    imageUri = imageData.data
-
+        when (requestCode) {
+            PICK_IMAGE_CODE -> {
+                if (resultCode == RESULT_OK) {
+                    val imageUri: Uri? =  intent?.data
                     imageUri?.let {
                         binding.photosRecyclerView.visibility = View.VISIBLE
-                        addItemViewModel.itemPhotos.add(it)
+                        addItemViewModel.photosUri.add(it)
                         binding.deletePhotos.visibility = View.VISIBLE
-                        updatePhotosRecyclerView(addItemViewModel.itemPhotos)
+                        updatePhotosRecyclerView(addItemViewModel.photosUri)
                     }
                 }
             }
-
-        return imageUri
+        }
     }
 
     private fun updatePhotosRecyclerView(photos: List<Uri>) {
@@ -426,8 +485,23 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
         return result
     }
 
+    private fun cleanUIElements() {
+        binding.itemTitleEdittext.text.clear()
+        binding.itemDescriptionEdittext.text.clear()
+
+        binding.radioButtonDonate.isChecked = false
+        binding.radioButtonExchange.isChecked = false
+
+        binding.spinnerCategories.setSelection(0)
+        binding.itemYearEdittext.text.clear()
+        binding.spinnerCondition.setSelection(0)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        cleanUIElements() //TODO MAKE THIS WORK
         _binding = null
+        addItemViewModel.restoreDefaultValues()
+        Log.d(TAG, "AddItemFragment is onDestroyView")
     }
 }

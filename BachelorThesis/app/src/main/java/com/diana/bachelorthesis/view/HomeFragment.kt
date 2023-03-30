@@ -195,14 +195,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
     }
 
     // TODO add onPause to restore data with bundle?
-
-    override fun onStop() {
-        super.onStop()
-        // TODO uncomment this: saveDefaultOptions()
-        _binding = null
-        Log.d(TAG, "HomeFragment is destroyed")
-    }
-
     override fun saveSortOption(option: Int) {
         homeViewModel.applySort(option)
         updateRecyclerView(homeViewModel.currentItems)
@@ -213,7 +205,11 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
         updateRecyclerView(homeViewModel.currentItems)
     }
 
-    override fun saveCategoriesFilter() {
-        TODO("Not yet implemented")
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // TODO uncomment this: saveDefaultOptions()
+        _binding = null
+        homeViewModel.detachListeners()
+        Log.d(TAG, "HomeFragment is onDestroyView")
     }
 }

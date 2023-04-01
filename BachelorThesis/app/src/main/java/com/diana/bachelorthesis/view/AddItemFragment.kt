@@ -19,7 +19,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -34,7 +33,6 @@ import com.diana.bachelorthesis.model.ItemCondition
 import com.diana.bachelorthesis.utils.LocationHelper
 import com.diana.bachelorthesis.viewmodel.AddItemViewModel
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
@@ -81,10 +79,23 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
         return root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // registerActivityForResult()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Log.d(TAG, "AddItemFragment is onActivityCreated")
+        setAppbar()
     }
+
+
+    private fun setAppbar() {
+        activity?.findViewById<TextView>(R.id.titleAppBar)?.apply {
+            visibility = View.VISIBLE
+            text = context.getString(R.string.addItemPageTitle)
+        }
+        activity?.findViewById<ImageView>(R.id.logoApp)?.apply {
+            visibility = View.GONE
+        }
+    }
+
 
     // TODO make a general function for spinner adapter that returns the adapter and receives the arrayList of elements
     private fun attachCategoryAdapter() {
@@ -209,7 +220,6 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
         binding.itemLocationButton.setOnClickListener {
-            cleanUIElements()
             //TODO add here
         }
 
@@ -230,16 +240,11 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
             if (fieldsOk) {
                 // save into Firestore DB async, and after display the done sign
 
-                lifecycleScope.launch(CoroutineName("fragment launch")) {
+                lifecycleScope.launch {
                     coroutineScope {
-                        Log.d(
-                            TAG,
-                            "Apelez launch ul din fragment , ${coroutineContext[CoroutineName.Key]}"
-                        )
                         addItemViewModel.addItem()
                     }
-
-                    // TODO make this a callback result maybe
+                    
                     it.doneLoadingAnimation(
                         Color.GREEN, // TODO choose a lighter green
                         ContextCompat.getDrawable(requireActivity(),R.drawable.ic_done)!!.toBitmap()
@@ -266,6 +271,8 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val margin = 15
         val snackbarView: View = snackbar.view
         snackbarView.setBackgroundColor(resources.getColor(R.color.grey_light))
+        snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 7
+
 
         val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         layoutParams.leftMargin = margin
@@ -499,9 +506,14 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        cleanUIElements() //TODO MAKE THIS WORK
+        Log.d(TAG, "AddItemFragment is onDestroyView")
         _binding = null
         addItemViewModel.restoreDefaultValues()
-        Log.d(TAG, "AddItemFragment is onDestroyView")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "AddItemFragment is onStop")
+        cleanUIElements()
     }
 }

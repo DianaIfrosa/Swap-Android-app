@@ -8,12 +8,11 @@ import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.repository.ItemRepository
 import com.diana.bachelorthesis.utils.LocationHelper
-import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
 
-class HomeViewModel(var locationHelper: LocationHelper) : ViewModel() {
-    private val TAG: String = HomeViewModel::class.java.name
+class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
+    private val TAG: String = ItemsViewModel::class.java.name
     private val repository = ItemRepository.getInstance()
 
     private val _exchangeItems = MutableLiveData<List<Item>>()
@@ -38,8 +37,8 @@ class HomeViewModel(var locationHelper: LocationHelper) : ViewModel() {
     class ViewModelFactory(private val arg: LocationHelper) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-                return HomeViewModel(arg) as T
+            if (modelClass.isAssignableFrom(ItemsViewModel::class.java)) {
+                return ItemsViewModel(arg) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

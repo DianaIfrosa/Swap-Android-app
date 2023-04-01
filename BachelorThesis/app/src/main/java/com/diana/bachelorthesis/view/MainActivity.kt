@@ -1,9 +1,6 @@
 package com.diana.bachelorthesis.view
 
-import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,8 +11,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.ActivityMainBinding
-
-enum class WindowSizeClass { COMPACT, MEDIUM, EXPANDED }
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,43 +39,10 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        // computeWindowSizeClasses()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-//    private fun computeWindowSizeClasses() {
-//        val metrics = WindowMetricsCalculator.getOrCreate()
-//            .computeCurrentWindowMetrics(this)
-//
-//        val widthDp = metrics.bounds.width() /
-//                resources.displayMetrics.density
-//        val widthWindowSizeClass = when {
-//            widthDp < 600f -> WindowSizeClass.COMPACT
-//            widthDp < 840f -> WindowSizeClass.MEDIUM
-//            else -> WindowSizeClass.EXPANDED
-//        }
-//
-//        val heightDp = metrics.bounds.height() /
-//                resources.displayMetrics.density
-//        val heightWindowSizeClass = when {
-//            heightDp < 480f -> WindowSizeClass.COMPACT
-//            heightDp < 900f -> WindowSizeClass.MEDIUM
-//            else -> WindowSizeClass.EXPANDED
-//        }
-//
-//        // Use widthWindowSizeClass and heightWindowSizeClass.
-//    }
-
-//    companion object {
-//        fun getScreenPixelDensity(): Float {
-//            val screenPixelDensity = context.resources.displayMetrics.density
-//            val dpValue = pixels / screenPixelDensity
-//            return dpValue
-//        }
-//    }
 }

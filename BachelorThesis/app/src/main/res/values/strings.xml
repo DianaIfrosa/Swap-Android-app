@@ -30,7 +30,7 @@
     <string name="sort_alphabetical_reversed"> Alphabetical order: Z-A  </string>
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
-    <string name ="select">Select</string>
+    <string name="select">Select</string>
 
     <string name="categories_title"><u>Categories</u></string>
 
@@ -67,14 +67,31 @@
     <string name="select_from_gallery">Select from gallery</string>
     <string name="item_title">Item title</string>
     <string name="select_photo">Select photo from:</string>
-    <string name="infoPhotos">We recommend that you upload at least 2 photos etc to complete</string>
-    <string name="infoLocation">We need your location because blabla to complete</string>
+    <string name="infoPhotos">We recommend that you upload at least 2 different photos so others can
+        see the particularities of your item. Also, make sure that those pictures are made in good lighting
+        and capture the relevant details of the product (including defects).</string>
+    <string name="infoLocation">The location you choose will be displayed in the item\'s page
+        and in the map page. This helps other users acknowledge the item\'s location for pick-up/exchange
+        meetings. Note that you should not give the exact location, but an approximate one, for security reasons.</string>
 
     <string-array name="condition_array">
         <item name="new">New/Like new</item>
         <item name="used">Used</item>
         <item name="not_working">For parts or not working</item>
     </string-array>
+    <string name="title_activity_item_page">ItemPageActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="addItemPageTitle">Add item</string>
+    <string name="mapPageTitle">Map</string>
+    <string name="titleLocationPermission">Location permission needed</string>
+    <string name="messageLocationPermission">"The location permission is required so that you can see items around you in real time! "</string>
 
 
 </resources>

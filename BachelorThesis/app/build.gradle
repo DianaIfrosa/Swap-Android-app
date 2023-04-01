@@ -71,7 +71,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // maps
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
 
     // opensource libraries
     implementation 'com.github.denzcoskun:ImageSlideShow:0.1.0'

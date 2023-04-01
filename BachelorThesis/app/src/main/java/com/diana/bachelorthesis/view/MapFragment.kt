@@ -42,7 +42,7 @@ class MapFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var googleMap : GoogleMap
+    private var googleMap : GoogleMap? = null
     var mapFragment: SupportMapFragment? = null
     lateinit var locationRequest: LocationRequest
     private var currentLocationMarker: Marker? = null
@@ -54,15 +54,18 @@ class MapFragment : Fragment() {
     private var locationCallback: LocationCallback = object: LocationCallback() {
         override fun onLocationResult(locRes: LocationResult) {
             val locList = locRes.locations
+            Log.d(TAG, "Sunt in callback")
             if (locList.isNotEmpty()) {
                 lastLocation = locList.last()
+                Log.d(TAG, "Last location este ${lastLocation}")
                 currentLocationMarker?.remove() // the last location saved has changed
 
                 // update the current location marker
                 val latLng = LatLng(lastLocation.latitude, lastLocation.longitude)
                 val markerOptions = MarkerOptions().position(latLng).title("Current").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-                currentLocationMarker = googleMap.addMarker(markerOptions)
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
+                currentLocationMarker = googleMap?.addMarker(markerOptions)
+                Log.d(TAG, "muta autocarul!")
+                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
             }
         }
     }
@@ -84,6 +87,7 @@ class MapFragment : Fragment() {
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment?
 
         mapFragment?.getMapAsync {
@@ -93,8 +97,6 @@ class MapFragment : Fragment() {
             setupMap()
             updateMapMarkers()
         }
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         initListeners()
 
@@ -108,11 +110,11 @@ class MapFragment : Fragment() {
     }
 
     private fun setupMap() {
-        googleMap.uiSettings.isZoomControlsEnabled = true
-        googleMap.uiSettings.isMyLocationButtonEnabled = true
+        googleMap?.uiSettings?.isZoomControlsEnabled = true
+        googleMap?.uiSettings?.isMyLocationButtonEnabled = true
 
         locationRequest = LocationRequest()
-        locationRequest.priority= LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         locationRequest.interval = 180000 // 3 minutes
         locationRequest.fastestInterval = 180000
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -121,25 +123,29 @@ class MapFragment : Fragment() {
                     Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 // location permission granted
                 fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
-                googleMap.isMyLocationEnabled = true
+                googleMap?.isMyLocationEnabled = true
             } else {
                 // request location permission
                 requestLocationPermission()
             }
         } else {
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
-            googleMap.isMyLocationEnabled = true
+            googleMap?.isMyLocationEnabled = true
         }
     }
 
     private fun requestLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+            !=  PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
                 // We have to show an explanation to the user
                 AlertDialog.Builder(requireActivity())
                     .setTitle(resources.getString(R.string.titleLocationPermission))
                     .setMessage(resources.getString(R.string.messageLocationPermission))
                     .setPositiveButton("OK") { _, _ ->
+                        Log.d(TAG, "Am apasat pe ok")
                         ActivityCompat.requestPermissions(
                             requireActivity(),
                             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -157,25 +163,29 @@ class MapFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingPermission")
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when(requestCode) {
             LOCATION_PERMISSION_REQUEST -> {
+                Log.d(TAG, "Verific permisiuni in onResult")
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "am gasit o permisiune acceptata")
                     if (ContextCompat.checkSelfPermission(
                             requireActivity(),
                             Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED
                     ) {
+                        Log.d(TAG, "e cea buna")
                         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
-                        googleMap.isMyLocationEnabled = true
+                        googleMap?.isMyLocationEnabled = true
                     }
                 }
+                return
             }
         }
     }
@@ -191,6 +201,10 @@ class MapFragment : Fragment() {
             mapViewModel.updateItems(true, items)
             updateMapMarkers()
         }
+
+        googleMap?.setOnMyLocationButtonClickListener {
+            false
+        }
     }
 
     private fun updateMapMarkers() {
@@ -199,14 +213,14 @@ class MapFragment : Fragment() {
             mapViewModel.allItems.forEach { item ->
                 val marker = LatLng(item.location.latitude, item.location.longitude)
                 if (item is ItemExchange) {
-                    googleMap.addMarker(
+                    googleMap?.addMarker(
                         MarkerOptions()
                             .position(marker)
                             .title(item.name)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
                     )
                 } else {
-                    googleMap.addMarker(
+                    googleMap?.addMarker(
                         MarkerOptions()
                             .position(marker)
                             .title(item.name)
@@ -251,8 +265,9 @@ class MapFragment : Fragment() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "on stop")
         // when fragment is not visible stop location updates
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }

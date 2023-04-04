@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="13dp">
 
             <!--    <TextView-->
             <!--        android:id="@+id/textAddItem"-->
@@ -137,7 +137,7 @@
                     android:gravity="start|top"
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine"
-                    android:padding="20dp"
+                    android:padding="15dp"
                     android:text=""/>
 
             </LinearLayout>
@@ -347,12 +347,11 @@
                         android:orientation="horizontal">
                     <ImageButton
                         android:id="@+id/delete_photos"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/ic_cancel"
-                        android:background="@drawable/btn_radio"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_delete"
                         android:layout_alignParentRight="true"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         />
                     </RelativeLayout>
                 </LinearLayout>
@@ -370,6 +369,7 @@
                     android:id="@+id/photos_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/grey_light"
                     android:adapter="@{photosAdapter}"
                     android:visibility="gone"
                     tools:listitem="@layout/card_photo"

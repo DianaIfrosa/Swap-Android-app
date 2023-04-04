@@ -13,10 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.os.Build
-import android.os.Looper
 import androidx.core.content.ContextCompat
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentMapBinding
@@ -27,48 +24,28 @@ import com.diana.bachelorthesis.viewmodel.MapViewModel
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
-class MapFragment : Fragment() {
+class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private val TAG: String = MapFragment::class.java.name
-    private var LOCATION_PERMISSION_REQUEST: Int = 50
+    companion object {
+        private var LOCATION_PERMISSION_REQUEST: Int = 50
+    }
     private var _binding: FragmentMapBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-    private var googleMap : GoogleMap? = null
-    var mapFragment: SupportMapFragment? = null
-    lateinit var locationRequest: LocationRequest
-    private var currentLocationMarker: Marker? = null
+    private lateinit var googleMap : GoogleMap
+    private var lastLocation: Location? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private lateinit var lastLocation : Location
-    private lateinit var fusedLocationClient : FusedLocationProviderClient
     private var mapLoaded: Boolean = false
-
-    private var locationCallback: LocationCallback = object: LocationCallback() {
-        override fun onLocationResult(locRes: LocationResult) {
-            val locList = locRes.locations
-            Log.d(TAG, "Sunt in callback")
-            if (locList.isNotEmpty()) {
-                lastLocation = locList.last()
-                Log.d(TAG, "Last location este ${lastLocation}")
-                currentLocationMarker?.remove() // the last location saved has changed
-
-                // update the current location marker
-                val latLng = LatLng(lastLocation.latitude, lastLocation.longitude)
-                val markerOptions = MarkerOptions().position(latLng).title("Current").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-                currentLocationMarker = googleMap?.addMarker(markerOptions)
-                Log.d(TAG, "muta autocarul!")
-                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
-            }
-        }
-    }
+    private var locationPermissionAccepted: Boolean = false
 
     private lateinit var mapViewModel: MapViewModel
     private lateinit var itemsViewModel: ItemsViewModel
@@ -87,20 +64,24 @@ class MapFragment : Fragment() {
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment?
 
-        mapFragment?.getMapAsync {
-            map ->
-            googleMap = map
-            mapLoaded = true
-            setupMap()
-            updateMapMarkers()
-        }
+        mapFragment.getMapAsync(this)
 
         initListeners()
 
         return root
+    }
+
+    private fun getAllItems() {
+        if (itemsViewModel.donationItems.value != null) {
+            mapViewModel.updateItems(false, itemsViewModel.donationItems.value!!)
+        }
+
+        if (itemsViewModel.exchangeItems.value != null) {
+            mapViewModel.updateItems(true, itemsViewModel.exchangeItems.value!!)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -109,43 +90,26 @@ class MapFragment : Fragment() {
         setAppbar()
     }
 
-    private fun setupMap() {
-        googleMap?.uiSettings?.isZoomControlsEnabled = true
-        googleMap?.uiSettings?.isMyLocationButtonEnabled = true
+    override fun onMapReady(map: GoogleMap) {
+        googleMap = map
+        mapLoaded = true
 
-        locationRequest = LocationRequest()
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest.interval = 180000 // 3 minutes
-        locationRequest.fastestInterval = 180000
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(
-                    requireActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                // location permission granted
-                fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
-                googleMap?.isMyLocationEnabled = true
-            } else {
-                // request location permission
-                requestLocationPermission()
-            }
-        } else {
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
-            googleMap?.isMyLocationEnabled = true
-        }
+        getAllItems()
+        updateMapMarkers()
+
+        googleMap.uiSettings.isZoomControlsEnabled = true
+        googleMap.setOnMarkerClickListener(this)
+        setupMap()
     }
 
     private fun requestLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-            !=  PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
+
             if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
                 // We have to show an explanation to the user
                 AlertDialog.Builder(requireActivity())
                     .setTitle(resources.getString(R.string.titleLocationPermission))
                     .setMessage(resources.getString(R.string.messageLocationPermission))
                     .setPositiveButton("OK") { _, _ ->
-                        Log.d(TAG, "Am apasat pe ok")
                         ActivityCompat.requestPermissions(
                             requireActivity(),
                             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -160,36 +124,36 @@ class MapFragment : Fragment() {
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     LOCATION_PERMISSION_REQUEST)
             }
-        }
+
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode) {
-            LOCATION_PERMISSION_REQUEST -> {
-                Log.d(TAG, "Verific permisiuni in onResult")
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d(TAG, "am gasit o permisiune acceptata")
-                    if (ContextCompat.checkSelfPermission(
-                            requireActivity(),
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED
-                    ) {
-                        Log.d(TAG, "e cea buna")
-                        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
-                        googleMap?.isMyLocationEnabled = true
-                    }
-                }
-                return
+    private fun setupMap() {
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestLocationPermission()
+
+        } else {
+        googleMap.isMyLocationEnabled = true
+        googleMap.setOnMyLocationButtonClickListener { false }
+
+        fusedLocationClient.lastLocation.addOnSuccessListener(requireActivity()) { location ->
+            if (location != null) {
+                lastLocation = location
+                Log.d(tag, "last location is $location")
+                markerCurrentLocation(lastLocation!!)
+                val currentLatLng = LatLng(location.latitude, location.longitude)
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 13f))
+
             }
         }
+        }
     }
 
+    private fun markerCurrentLocation(location: Location) {
+        val currentLatLng = LatLng(location.latitude, location.longitude)
+        val markerOptions = MarkerOptions().position(currentLatLng).title("You").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+        googleMap.addMarker(markerOptions)
+    }
 
     private fun initListeners() {
         itemsViewModel.donationItems.observe(viewLifecycleOwner) { items ->
@@ -201,26 +165,23 @@ class MapFragment : Fragment() {
             mapViewModel.updateItems(true, items)
             updateMapMarkers()
         }
-
-        googleMap?.setOnMyLocationButtonClickListener {
-            false
-        }
     }
 
     private fun updateMapMarkers() {
         if (mapLoaded) {
-            // googleMap.clear()
+            googleMap.clear() // TODO make sure the current location marker is added again
+            lastLocation?.let { markerCurrentLocation(it) }
             mapViewModel.allItems.forEach { item ->
                 val marker = LatLng(item.location.latitude, item.location.longitude)
                 if (item is ItemExchange) {
-                    googleMap?.addMarker(
+                    googleMap.addMarker(
                         MarkerOptions()
                             .position(marker)
                             .title(item.name)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
                     )
                 } else {
-                    googleMap?.addMarker(
+                    googleMap.addMarker(
                         MarkerOptions()
                             .position(marker)
                             .title(item.name)
@@ -255,6 +216,34 @@ class MapFragment : Fragment() {
 //        }
 //    }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.d(TAG, "in onRequestPermissionsResult")
+        Log.d(TAG, "$requestCode")
+        Log.d(TAG, "${grantResults.isNotEmpty()}")
+
+        when(requestCode) {
+            LOCATION_PERMISSION_REQUEST -> {
+                Log.d(TAG, "Verific permisiuni in onResult")
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "am gasit o permisiune acceptata")
+                    if (ContextCompat.checkSelfPermission(
+                            requireActivity(),
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        setupMap()
+                    }
+                }
+                return
+            }
+        }
+    }
+
     private fun setAppbar() {
         activity?.findViewById<TextView>(R.id.titleAppBar)?.apply {
             visibility = View.VISIBLE
@@ -265,12 +254,12 @@ class MapFragment : Fragment() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "on stop")
-        // when fragment is not visible stop location updates
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-    }
+//    override fun onStop() {
+//        super.onStop()
+//        Log.d(TAG, "on stop")
+//        // when fragment is not visible stop location updates
+//        fusedLocationClient.removeLocationUpdates(locationCallback)
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -278,4 +267,5 @@ class MapFragment : Fragment() {
         _binding = null
     }
 
+    override fun onMarkerClick(marker: Marker) = false
 }

@@ -89,13 +89,14 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
         // FIXME is it really ok this choice of live data?
 
         itemsViewModel.donationItems.observe(viewLifecycleOwner) {
-            if (!itemsViewModel.displayExchangeItems)
-                updateRecyclerView(itemsViewModel.currentItems)
+            if (!itemsViewModel.displayExchangeItems) {
+                updateRecyclerView(itemsViewModel.currentItems, itemsViewModel.currentItems.isEmpty())
+            }
         }
 
         itemsViewModel.exchangeItems.observe(viewLifecycleOwner) {
             if (itemsViewModel.displayExchangeItems)
-                updateRecyclerView(itemsViewModel.currentItems)
+                updateRecyclerView(itemsViewModel.currentItems, itemsViewModel.currentItems.isEmpty())
         }
 
        initSwitchCategoriesListener()
@@ -194,25 +195,24 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
         } else {
             binding.homeRecyclerView.visibility = View.VISIBLE
             binding.progressBarHome.visibility = View.INVISIBLE
-        }
-
-        binding.itemsAdapter =
-            ItemsRecyclerViewAdapter(items, requireContext())
-        binding.textNumberItems.text = items.size.toString()
-    }
-
-    private fun saveDefaultOptions() {
-
-        // FIXME duplicated code ugly
-        if (!itemsViewModel.displayExchangeItems) {
-            binding.searchSwitchLayout.switchDonationExchange.performClick()
-        } else {
-            // clear search bar text
-            binding.searchSwitchLayout.searchView.setQuery("", false)
-            binding.searchSwitchLayout.searchView.clearFocus()
-            itemsViewModel.restoreDefaultCurrentItems()
+            binding.itemsAdapter =
+                ItemsRecyclerViewAdapter(items, requireContext())
+            binding.textNumberItems.text = items.size.toString()
         }
     }
+
+//    private fun saveDefaultOptions() {
+//
+//        // FIXME duplicated code ugly
+//        if (!itemsViewModel.displayExchangeItems) {
+//            binding.searchSwitchLayout.switchDonationExchange.performClick()
+//        } else {
+//            // clear search bar text
+//            binding.searchSwitchLayout.searchView.setQuery("", false)
+//            binding.searchSwitchLayout.searchView.clearFocus()
+//            itemsViewModel.restoreDefaultCurrentItems()
+//        }
+//    }
 
     // TODO add onPause to restore data with bundle?
     override fun saveSortOption(option: Int) {

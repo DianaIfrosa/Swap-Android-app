@@ -50,9 +50,9 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
 
         repository.getItems(true, object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
-                _exchangeItems.value = values
                 if (displayExchangeItems)
                     updateCurrentItems(values)
+                _exchangeItems.value = values
 
 //                viewModelScope.launch {
 //                    _exchangeItems.value = locationHelper.getItemsCities(values)
@@ -64,10 +64,9 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
 
         repository.getItems(false, object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
-                _donationItems.value = values
                 if (!displayExchangeItems)
                     updateCurrentItems(values)
-
+                _donationItems.value = values
 //                viewModelScope.launch {
 //                    _donationItems.value = locationHelper.getItemsCities(values)
 //                    if (!displayExchangeItems)
@@ -87,7 +86,7 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         }
 
         applySort(sortOption)
-        applyFilter(cityFilter, categoriesFilter)
+        applyFilter(cityFilter, categoriesFilter, items)
     }
 
     private fun restoreDefaultOptions() {
@@ -145,7 +144,7 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         return itemsTemp
     }
 
-    fun applyFilter(city: String, categories: List<ItemCategory>) {
+    fun applyFilter(city: String, categories: List<ItemCategory>, data: ArrayList<Item>? = null) {
         Log.d(
             TAG,
             "Filter by city $city and categories ${categories.joinToString { it.displayName }}"
@@ -153,8 +152,13 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         cityFilter = city
         categoriesFilter = categories
 
-        val rawData = if (displayExchangeItems) _exchangeItems.value as ArrayList
-        else _donationItems.value as ArrayList
+        var rawData: ArrayList<Item>
+        if (data != null) {
+            rawData = data
+        } else {
+            rawData = if (displayExchangeItems) _exchangeItems.value as ArrayList
+            else _donationItems.value as ArrayList
+        }
 
         // apply sort on raw data then filter, to manage check and uncheck situations
         currentItems = filter(city, categories, sort(sortOption, rawData))

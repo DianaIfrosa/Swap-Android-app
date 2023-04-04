@@ -75,8 +75,10 @@ dependencies {
     // maps
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
 
     // opensource libraries
     implementation 'com.github.denzcoskun:ImageSlideShow:0.1.0'
     implementation group: 'com.apachat', name: 'loadingbutton-android', version: '1.0.11'
+    implementation 'com.github.adrianotelesc:ExpandableSearchBar:0.1.0'
 }

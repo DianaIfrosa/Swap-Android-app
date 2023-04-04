@@ -2,6 +2,7 @@ package com.diana.bachelorthesis.view
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources.NotFoundException
@@ -44,6 +45,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val MIN_LENGTH_DESCRIPTION = 5
     private val MIN_PHOTOS = 2
     private val PICK_IMAGE_CODE = 10
+    private var shouldCleanUI = true
 
     lateinit var addItemViewModel: AddItemViewModel
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
@@ -78,6 +80,51 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         return root
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.d(TAG, "AddItemFragment is onAttach")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "AddItemFragment is onCreate")
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "AddItemFragment is onViewCreated")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "AddItemFragment is onStart")
+        Log.d(TAG, shouldCleanUI.toString())
+
+        if (shouldCleanUI)
+            cleanUIElements()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "AddItemFragment is onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "AddItemFragment is onPause")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "AddItemFragment is onDestroy")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d(TAG, "AddItemFragment is onDetach")
+    }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -271,8 +318,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val margin = 15
         val snackbarView: View = snackbar.view
         snackbarView.setBackgroundColor(resources.getColor(R.color.grey_light))
-        snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 7
-
+        snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 15
 
         val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         layoutParams.leftMargin = margin
@@ -432,10 +478,11 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
-
+        Log.d(TAG, "onActivityResult")
         when (requestCode) {
             PICK_IMAGE_CODE -> {
                 if (resultCode == RESULT_OK) {
+                    shouldCleanUI = false
                     val imageUri: Uri? =  intent?.data
                     imageUri?.let {
                         binding.photosRecyclerView.visibility = View.VISIBLE
@@ -493,27 +540,33 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     private fun cleanUIElements() {
-        binding.itemTitleEdittext.text.clear()
-        binding.itemDescriptionEdittext.text.clear()
+        Log.d(TAG, "clean elements")
+        binding.itemTitleEdittext.setText("")
+        binding.itemDescriptionEdittext.setText("")
 
         binding.radioButtonDonate.isChecked = false
+        binding.radioButtonDonate.isPressed = false
+//        binding.radioButtonDonate.setBackgroundResource(R.drawable.btn_radio_unchecked)
+
         binding.radioButtonExchange.isChecked = false
+        binding.radioButtonExchange.isPressed = false
+//        binding.radioButtonExchange.setBackgroundResource(R.drawable.btn_radio_unchecked)
 
         binding.spinnerCategories.setSelection(0)
-        binding.itemYearEdittext.text.clear()
+        binding.itemYearEdittext.setText("")
         binding.spinnerCondition.setSelection(0)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d(TAG, "AddItemFragment is onDestroyView")
+//        cleanUIElements()
         _binding = null
-        addItemViewModel.restoreDefaultValues()
     }
 
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "AddItemFragment is onStop")
-        cleanUIElements()
+        shouldCleanUI = false
     }
 }

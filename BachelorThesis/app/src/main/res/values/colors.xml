@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="branding">#602060</color>
     <color name="purple_light">#E5D1FA</color>
     <color name="purple_blue_light">#E3DFFD</color>
     <color name="blue_light">#ECF2FF</color>

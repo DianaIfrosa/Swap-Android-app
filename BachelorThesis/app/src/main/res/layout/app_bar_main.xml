@@ -31,19 +31,23 @@
                     android:text="Title"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:textSize="25sp"
-                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textColor="@color/branding"
                     android:layout_weight="1"
                     android:visibility="gone"/>
+
                 <ImageView
                     android:id="@+id/logoApp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_info"
-                    android:contentDescription="Logo of the app"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:visibility="gone"
-                    android:layout_gravity="center"/>
+                    android:contentDescription="Logo of the app"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/logo_swap"
+                    android:visibility="gone" />
+
                 <ImageButton
                     android:id="@+id/profilePhotoAppBar"
                     android:layout_width="50dp"

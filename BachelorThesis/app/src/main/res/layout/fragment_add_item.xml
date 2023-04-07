@@ -69,7 +69,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:text="@string/required"
-                        android:textColor="@color/red"
+                        android:textColor="@color/red_light"
                         android:textSize="11sp"
                         android:visibility="gone" />
                 </LinearLayout>
@@ -121,7 +121,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:text="@string/required"
-                        android:textColor="@color/red"
+                        android:textColor="@color/red_light"
                         android:textSize="11sp"
                         android:visibility="gone" />
                 </LinearLayout>
@@ -174,7 +174,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:text="@string/required"
-                        android:textColor="@color/red"
+                        android:textColor="@color/red_light"
                         android:textSize="11sp"
                         android:visibility="gone" />
                 </LinearLayout>
@@ -189,17 +189,20 @@
 
                     <RadioButton
                         android:id="@+id/radioButtonExchange"
+                        style="@style/ButtonStyle"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
                         android:background="@drawable/btn_radio"
                         android:button="@android:color/transparent"
-                        android:gravity="center"
                         android:checked="false"
+                        android:fontFamily="@font/istok_web"
+                        android:gravity="center"
                         android:padding="10dp"
-                        android:text="@string/exchange" />
+                        android:text="@string/exchange"
+                        android:textSize="13sp" />
 
-                    <RadioButton
+                    <RadioButton style = "@style/ButtonStyle"
                         android:id="@+id/radioButtonDonate"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
@@ -208,7 +211,9 @@
                         android:gravity="center"
                         android:checked="false"
                         android:padding="10dp"
-                        android:text="@string/donate" />
+                        android:text="@string/donate"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/istok_web"/>
                 </RadioGroup>
 
                 <LinearLayout
@@ -229,7 +234,7 @@
                         layout="@layout/scrollview_categories"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:layout_marginStart="1dp"
+                        android:layout_marginStart="23dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="1dp"
                         app:layout_constraintBottom_toTopOf="@+id/filterCancelApply"
@@ -273,7 +278,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:text="@string/required"
-                        android:textColor="@color/red"
+                        android:textColor="@color/red_light"
                         android:textSize="11sp"
                         android:visibility="gone" />
                 </LinearLayout>
@@ -282,6 +287,8 @@
                     android:id="@+id/spinner_categories"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:textSize="15sp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"/>
 
@@ -337,7 +344,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:text="@string/required"
-                        android:textColor="@color/red"
+                        android:textColor="@color/red_light"
                         android:textSize="11sp"
                         android:visibility="gone" />
 
@@ -351,12 +358,12 @@
                         android:layout_height="22dp"
                         android:src="@drawable/ic_delete"
                         android:layout_alignParentRight="true"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         />
                     </RelativeLayout>
                 </LinearLayout>
 
-                <Button
+                <Button style = "@style/ButtonStyle"
                     android:id="@+id/item_photos_button"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -418,19 +425,20 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:text="@string/required"
-                        android:textColor="@color/red"
+                        android:textColor="@color/red_light"
                         android:textSize="11sp"
                         android:visibility="gone" />
 
                 </LinearLayout>
 
-                <Button
+                <Button style = "@style/ButtonStyle"
                     android:id="@+id/item_location_button"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginStart="20dp"
                     android:text="@string/select_on_map"
-                    android:textSize="11sp" />
+                    android:textSize="11sp"
+                    />
 
             </LinearLayout>
 
@@ -531,7 +539,9 @@
                             android:id="@+id/spinner_condition"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"/>
+                            android:padding="2dp"
+                            android:textSize="12sp"
+                            android:layout_marginStart="20dp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -546,7 +556,9 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="30dp"
                 android:text="@string/save"
-                android:textSize="13sp"
+                android:textSize="17sp"
+                android:background="@color/red_light"
+                android:padding="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

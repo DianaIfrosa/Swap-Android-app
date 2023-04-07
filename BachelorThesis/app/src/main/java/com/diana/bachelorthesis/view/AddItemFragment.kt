@@ -293,7 +293,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     }
                     
                     it.doneLoadingAnimation(
-                        Color.GREEN, // TODO choose a lighter green
+                        R.color.green_light,
                         ContextCompat.getDrawable(requireActivity(),R.drawable.ic_done)!!.toBitmap()
                     )
                 }

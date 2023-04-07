@@ -52,6 +52,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/make_exchange"
+                android:padding="2dp"
                 android:textSize="12sp" />
 
             <TextView
@@ -62,6 +63,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/make_donation"
+                android:padding="2dp"
                 android:textSize="12sp" />
         </LinearLayout>
     </RelativeLayout>

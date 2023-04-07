@@ -53,21 +53,22 @@
                     android:id="@+id/item_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxWidth="130sp"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="16dp"
                     android:gravity="center"
                     android:hint="address"
 
-                    android:text="@{model.city}"
+                    android:maxWidth="130sp"
+                    android:textStyle="italic"
 
+                    android:text="@{model.city}"
                     android:textColor="@color/black"
                     android:textSize="12sp"
+                    app:drawableLeftCompat="@drawable/ic_map_point"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/item_name"
-                    app:drawableLeftCompat="@drawable/ic_map_point" />
+                    app:layout_constraintTop_toBottomOf="@id/item_name" />
 
                 <com.denzcoskun.imageslider.ImageSlider
                     android:id="@+id/photo_carousel"
@@ -107,6 +108,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="15dp"
+                        android:fontFamily="More Fonts..."
                         android:maxWidth="50dp"
                         android:text="Alexandrad"
                         android:textSize="10sp" />

@@ -1,21 +1,21 @@
 package com.diana.bachelorthesis.view
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.location.Location
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import android.Manifest
-import android.app.AlertDialog
 import androidx.core.content.ContextCompat
-import com.diana.bachelorthesis.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.diana.bachelorthesis.databinding.FragmentMapBinding
 import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.utils.LocationHelper
@@ -30,8 +30,19 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.diana.bachelorthesis.R
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 
-class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+import com.google.android.gms.maps.MapsInitializer
+import com.google.android.gms.maps.MapsInitializer.Renderer
+import com.google.android.gms.maps.OnMapsSdkInitializedCallback
+import com.google.android.libraries.places.api.Places
+import java.util.*
+
+class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, OnMapsSdkInitializedCallback {
 
     private val TAG: String = MapFragment::class.java.name
     companion object {
@@ -50,17 +61,26 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     private lateinit var mapViewModel: MapViewModel
     private lateinit var itemsViewModel: ItemsViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "MapFragment is onCreate")
+        MapsInitializer.initialize(requireActivity().applicationContext, Renderer.LATEST, this)
+
+        if (!Places.isInitialized()) {
+            Places.initialize(requireActivity().applicationContext, getString(R.string.api_key));
+        }
+
+        mapViewModel = ViewModelProvider(this).get(MapViewModel::class.java)
+        val viewModelFactory = ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
+        itemsViewModel = ViewModelProvider(this, viewModelFactory).get(ItemsViewModel::class.java)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         Log.d(TAG, "MapFragment is onCreateView")
-
-        mapViewModel = ViewModelProvider(this).get(MapViewModel::class.java)
-        val viewModelFactory = ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
-        itemsViewModel = ViewModelProvider(this, viewModelFactory).get(ItemsViewModel::class.java)
-
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -74,6 +94,35 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         return root
     }
 
+    override fun onMapsSdkInitialized(renderer: Renderer) {
+        when (renderer) {
+            Renderer.LATEST -> Log.d(TAG, "The latest version of the renderer is used.")
+            Renderer.LEGACY -> Log.d(TAG, "The legacy version of the renderer is used.")
+        }
+    }
+
+     private fun initMapPlaces() {
+
+        val autocompleteFragment =
+            childFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
+
+         // specify the types of place data to return
+         autocompleteFragment.setPlaceFields(listOf(Place.Field.LAT_LNG, Place.Field.NAME))
+
+         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+             override fun onPlaceSelected(place: Place) {
+                 place.latLng?.let { latLng ->
+                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
+                 }
+                 Log.i(TAG, "Place selected: ${place.name}, ${place.latLng}")
+             }
+
+             override fun onError(status: Status) {
+                 Log.i(TAG, "An error occurred (or the user didn't type anything): $status")
+             }
+         })
+     }
+
     private fun getAllItems() {
         if (itemsViewModel.donationItems.value != null) {
             mapViewModel.updateItems(false, itemsViewModel.donationItems.value!!)
@@ -84,6 +133,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "MapFragment is onActivityCreated")
@@ -94,6 +144,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         googleMap = map
         mapLoaded = true
 
+        initMapPlaces()
         getAllItems()
         updateMapMarkers()
 
@@ -216,6 +267,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 //        }
 //    }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,

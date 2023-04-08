@@ -96,5 +96,18 @@
     <string name="titleLocationPermission">Location permission needed</string>
     <string name="messageLocationPermission">"The location permission is required so that you can see items around you in real time! "</string>
 
+    <!-- Authentication -->
+    <string name="login">Log in</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="register">Register</string>
+    <string name="create_account">Create account</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="name_register">Name</string>
+    <string name="or">or</string>
+    <string name="sign_up_with_facebook">Sign up with Facebook</string>
+    <string name="sign_up_with_google">Sign up with Google</string>
+    <string name="sign_up">Sign up</string>
+
 
 </resources>

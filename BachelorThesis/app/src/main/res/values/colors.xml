@@ -16,4 +16,9 @@
     <color name="grey_light">#EDEDED </color>
     <color name="grey">#ADADAD </color>
     <color name="red">#FF0000</color>
+
+
+    <!-- 3rd party colors -->
+    <color name="facebook_blue">#4267B2</color>
+    <color name="google_red">#DB4437</color>
 </resources>

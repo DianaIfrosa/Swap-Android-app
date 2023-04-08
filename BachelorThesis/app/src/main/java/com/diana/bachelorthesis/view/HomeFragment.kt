@@ -1,5 +1,6 @@
 package com.diana.bachelorthesis.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,7 +30,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
     private var _binding: FragmentHomeBinding? = null
     lateinit var itemsViewModel: ItemsViewModel
 
-    // todo add logo in app bar for home screen and name of the page for the other pages
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -102,7 +102,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
        initSwitchCategoriesListener()
 
         binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Redirect to addItemFragment", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Redirect to addItemFragment if authenticated", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
 
 //            val addItemFragment = AddItemFragment()
@@ -112,6 +112,9 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
 //                transaction.addToBackStack(null)
 //                transaction.commit()
 //            }
+
+            val intent = Intent(activity, IntroAuthActivity::class.java)
+            startActivity(intent)
         }
 
         binding.searchSwitchLayout.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {

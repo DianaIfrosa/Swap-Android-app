@@ -12,18 +12,22 @@ import androidx.navigation.NavOptions
 import androidx.navigation.ui.*
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.ActivityMainBinding
+import com.diana.bachelorthesis.databinding.FragmentHomeBinding
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val TAG: String = MainActivity::class.java.name
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+    private var _binding: ActivityMainBinding? = null
+
+    private val binding get() = _binding!!
+
     private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)

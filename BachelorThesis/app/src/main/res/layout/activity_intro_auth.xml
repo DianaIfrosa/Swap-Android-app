@@ -2,62 +2,70 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/purple_dark"
     android:orientation="vertical"
-    tools:showln="@layout/activity_intro_auth"
-    android:gravity="center">
+    tools:context=".view.IntroAuthActivity">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:paddingTop="30dp"
+        />
 
-    <LinearLayout
-        android:id="@+id/layout_dots"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:layout_below="@id/view_pager"
-        android:orientation="horizontal"
-        android:layout_marginBottom="20dp"/>
-
-    <View
-        android:id="@+id/dummy_view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/layout_dots"
-        android:alpha=".5"
-        android:background="@color/white" />
-
+    <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
+        android:id="@+id/spring_dots_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:dampingRatio="0.5"
+        app:dotsColor="@color/white"
+        app:dotsStrokeColor="@color/black"
+        app:dotsCornerRadius="6dp"
+        app:dotsSize="12dp"
+        app:dotsSpacing="4dp"
+        app:dotsStrokeWidth="1dp"
+        app:stiffness="300"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
+        android:layout_above="@id/btn_signup"
+        android:layout_centerHorizontal="true"
+        />
     <Button
         android:id="@+id/btn_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_dots"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/btn_transparent_with_stroke"
+        android:layout_above="@id/btn_login"
+        android:layout_centerHorizontal="true"
         android:paddingStart="50dp"
-        android:paddingEnd="50dp"
         android:paddingTop="10dp"
+        android:paddingEnd="50dp"
         android:paddingBottom="10dp"
-        android:background="@null"
-        android:textSize="20sp"
         android:text="@string/sign_up"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_signup"
-
-        android:background="@null"
-        android:textSize="15sp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        android:background="@android:color/transparent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:paddingStart="15dp"
-        android:paddingEnd="15dp"
         android:paddingTop="10dp"
+        android:paddingEnd="15dp"
         android:paddingBottom="10dp"
         android:text="@string/login"
         android:textColor="@color/white"
-        android:layout_marginBottom="50dp"/>
+        android:textSize="17sp" />
 
 </RelativeLayout>

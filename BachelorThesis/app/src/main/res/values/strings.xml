@@ -109,5 +109,13 @@
     <string name="sign_up_with_google">Sign up with Google</string>
     <string name="sign_up">Sign up</string>
 
+    <!-- Intro screens -->
+    <string name="intro1_title">Add items</string>
+    <string name="intro1_content">Some text about adding items and seeing them in dashboard.</string>
+    <string name="intro2_title">Personal recommendations</string>
+    <string name="intro2_content">Some text about recommendations based on preferences.</string>
+    <string name="intro3_title">Items around you</string>
+    <string name="intro3_content">Some text about the live map.</string>
+
 
 </resources>

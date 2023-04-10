@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         drawerLayout.close()
-        // TODO change this so it is not plagiated from stackoverflow
+        // TODO change this!!
 
         // this part checks if current fragment is the same as destination
         return if (findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id != item.itemId) {

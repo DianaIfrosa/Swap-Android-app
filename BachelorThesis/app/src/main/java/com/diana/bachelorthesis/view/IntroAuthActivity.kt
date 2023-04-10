@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.LinearLayout.LayoutParams
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.PagerAdapter
@@ -32,10 +34,14 @@ class IntroAuthActivity : AppCompatActivity() {
             positionOffset: Float,
             positionOffsetPixels: Int
         ) {
-            displayDots(position)
+
         }
 
-        override fun onPageSelected(position: Int) {}
+        override fun onPageSelected(position: Int) {
+            // binding.linearLayout.setBackgroundResource(colors[position])
+            // displayDots(position)
+            Log.d(TAG, "on page selected")
+        }
 
         override fun onPageScrollStateChanged(state: Int) {}
 
@@ -53,10 +59,10 @@ class IntroAuthActivity : AppCompatActivity() {
         changeStatusBarColor()
 
         layouts = arrayListOf(R.layout.intro_slide_1, R.layout.intro_slide_2, R.layout.intro_slide_3)
-        displayDots(0)
 
         val introScreensAdapter = IntroScreensAdapter()
         binding.viewPager.adapter = introScreensAdapter
+        binding.springDotsIndicator.attachTo(binding.viewPager)
         binding.viewPager.addOnPageChangeListener(viewPagerPageChangeListener)
 
         initListeners()
@@ -74,23 +80,6 @@ class IntroAuthActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayDots(currentPage: Int) {
-        val dots = arrayListOf<TextView>()
-
-        binding.layoutDots.removeAllViews()
-        for (index in 0 until layouts.size) {
-            val dot = TextView(this)
-            dot.setTextColor(resources.getColor(R.color.grey))
-            dot.apply {
-                text = Html.fromHtml("?")
-                setTextColor(resources.getColor(R.color.grey)) // mark as not current
-                textSize = 35F
-            }
-            dots.add(dot)
-        }
-
-        dots[currentPage].setTextColor(resources.getColor(R.color.grey_light)) // mark as current
-    }
     private fun changeStatusBarColor() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = Color.TRANSPARENT

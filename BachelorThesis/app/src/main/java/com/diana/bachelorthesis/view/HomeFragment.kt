@@ -103,7 +103,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
 
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Redirect to addItemFragment if authenticated", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+                .setAction("Action", null).show() //TODO delete
 
 //            val addItemFragment = AddItemFragment()
 //            val transaction = activity?.supportFragmentManager?.beginTransaction()

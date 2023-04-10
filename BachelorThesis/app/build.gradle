@@ -82,4 +82,5 @@ dependencies {
     // opensource libraries
     implementation 'com.github.denzcoskun:ImageSlideShow:0.1.0'
     implementation group: 'com.apachat', name: 'loadingbutton-android', version: '1.0.11'
+    implementation "com.tbuonomo:dotsindicator:4.3"
 }

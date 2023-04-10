@@ -40,6 +40,8 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginBottom="45dp"
                     android:hint="name"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:maxWidth="230sp"
                     android:text="@{model.name}"
                     android:textColor="@color/black"

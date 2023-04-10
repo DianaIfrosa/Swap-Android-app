@@ -1,12 +1,18 @@
 package com.diana.bachelorthesis.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.ActivityRegisterBinding
 import java.util.regex.Pattern
+
 
 class RegisterActivity : AppCompatActivity() {
     private val TAG: String = RegisterActivity::class.java.name
@@ -31,7 +37,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun initListeners() {
         binding.editextEmail.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                //TODO verify if email is ok
+                showStatusEmail(binding.editextEmail.text.toString())
                 Log.d(TAG, "Verify email")
             }
         }
@@ -81,6 +87,29 @@ class RegisterActivity : AppCompatActivity() {
                 R.color.google_red
             )
         )
+    }
+
+    private fun showStatusEmail(email: String) {
+        binding.iconEmailStatus.visibility = View.VISIBLE
+        if (validEmail(email)) {
+            val icon: Drawable =
+                DrawableCompat.wrap(
+                    AppCompatResources.getDrawable(this, com.diana.bachelorthesis.R.drawable.ic_check)!!)
+            binding.iconEmailStatus.setBackgroundDrawable(icon)
+            binding.emailInputLayout.isHelperTextEnabled = false
+            binding.emailInputLayout.helperText = ""
+        } else {
+            val icon: Drawable =
+                DrawableCompat.wrap(
+                    AppCompatResources.getDrawable(this, com.diana.bachelorthesis.R.drawable.ic_cancel)!!)
+            DrawableCompat.setTint(icon, resources.getColor(com.diana.bachelorthesis.R.color.red_light))
+            binding.iconEmailStatus.setBackgroundDrawable(icon)
+            binding.emailInputLayout.isHelperTextEnabled = true
+            if (email.isEmpty())
+                binding.emailInputLayout.helperText = "Email is required" // TODO make string res
+            else
+                binding.emailInputLayout.helperText = "Email is invalid" // TODO make string res
+        }
     }
 
     private fun validEmail(email: String): Boolean {

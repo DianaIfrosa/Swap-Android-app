@@ -1,4 +1,4 @@
-package com.diana.bachelorthesis
+package com.diana.bachelorthesis.utils
 
 import com.diana.bachelorthesis.model.Item
 

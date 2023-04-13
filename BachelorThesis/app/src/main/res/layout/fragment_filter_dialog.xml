@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/custom_layout_dialog"
     android:padding="15dp"
-    tools:context=".utils.FilterDialogFragment">
+    tools:context=".view.FilterDialogFragment">
 
     <TextView
         android:id="@+id/filter_title"

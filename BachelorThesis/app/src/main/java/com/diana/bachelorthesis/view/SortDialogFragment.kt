@@ -1,4 +1,4 @@
-package com.diana.bachelorthesis.utils
+package com.diana.bachelorthesis.view
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -11,7 +11,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.fragment.app.DialogFragment
 import com.diana.bachelorthesis.databinding.FragmentSortDialogBinding
-import com.diana.bachelorthesis.view.HomeFragment
+import com.diana.bachelorthesis.utils.SortFilterDialogListener
 
 class SortDialogFragment : DialogFragment() {
     private val TAG: String = SortDialogFragment::class.java.name

@@ -1,15 +1,6 @@
 package com.diana.bachelorthesis.adapters
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.diana.bachelorthesis.CustomClickListener
-import com.diana.bachelorthesis.R
-import com.diana.bachelorthesis.databinding.CardItemBinding
-import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.User
 
 class UsersRecyclerViewAdapter (var usersList: ArrayList<User>, var context: Context) {

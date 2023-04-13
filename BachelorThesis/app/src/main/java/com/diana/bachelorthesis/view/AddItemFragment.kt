@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources.NotFoundException
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -23,6 +22,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apachat.loadingbutton.core.customViews.CircularProgressButton
@@ -31,14 +31,15 @@ import com.diana.bachelorthesis.adapters.PhotosRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentAddItemBinding
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.ItemCondition
+import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.LocationHelper
 import com.diana.bachelorthesis.viewmodel.AddItemViewModel
+import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-
-class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFragment {
 
     private val TAG: String = AddItemFragment::class.java.name
     private val MIN_LENGTH_TITLE = 3
@@ -46,6 +47,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val MIN_PHOTOS = 2
     private val PICK_IMAGE_CODE = 10
     private var shouldCleanUI = true
+    lateinit var userViewModel: UserViewModel
 
     lateinit var addItemViewModel: AddItemViewModel
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
@@ -55,15 +57,18 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "AddItemFragment is onCreate")
+        getViewModels()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         Log.d(TAG, "AddItemFragment is onCreateView")
-
-        val viewModelFactory = AddItemViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
-        addItemViewModel = ViewModelProvider(this, viewModelFactory).get(AddItemViewModel::class.java)
 
         _binding = FragmentAddItemBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -74,26 +79,26 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
         recyclerView.layoutManager = horizontalLayoutManager
         updatePhotosRecyclerView(arrayListOf())
 
-        initButtonListeners()
+        initListeners()
         attachCategoryAdapter()
         attachConditionAdapter()
 
         return root
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.d(TAG, "AddItemFragment is onAttach")
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "AddItemFragment is onCreate")
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "AddItemFragment is onViewCreated")
+        if (userViewModel.getCurrentUser() == null) {
+            // Redirect to auth page
+            view.findNavController().navigate(R.id.nav_intro_auth)
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Log.d(TAG, "AddItemFragment is onActivityCreated")
+        setAppbar()
     }
 
     override fun onStart() {
@@ -105,44 +110,24 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
             cleanUIElements()
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "AddItemFragment is onResume")
+    private fun getViewModels() {
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        val viewModelFactory = AddItemViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
+        addItemViewModel = ViewModelProvider(this, viewModelFactory)[AddItemViewModel::class.java]
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "AddItemFragment is onPause")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "AddItemFragment is onDestroy")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.d(TAG, "AddItemFragment is onDetach")
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "AddItemFragment is onActivityCreated")
-        setAppbar()
-    }
-
-
-    private fun setAppbar() {
-        activity?.findViewById<TextView>(R.id.titleAppBar)?.apply {
+    override fun setAppbar() {
+        requireActivity().findViewById<TextView>(R.id.titleAppBar)?.apply {
             visibility = View.VISIBLE
-            text = context.getString(R.string.addItemPageTitle)
+            text = requireView().findNavController().currentDestination!!.label
         }
-        activity?.findViewById<ImageView>(R.id.logoApp)?.apply {
+        requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
             visibility = View.GONE
         }
+        requireActivity().findViewById<ImageButton>(R.id.profilePhotoAppBar)?.apply {
+            visibility = View.VISIBLE
+        }
     }
-
 
     // TODO make a general function for spinner adapter that returns the adapter and receives the arrayList of elements
     private fun attachCategoryAdapter() {
@@ -227,7 +212,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener {
         spinnerCondition.adapter = conditionAdapter
     }
 
-    private fun initButtonListeners() {
+    override fun initListeners() {
         binding.textOtherDetails.setOnClickListener {
             if (binding.hiddenLayoutOtherDetails.visibility == View.GONE) {
                 (it as TextView).setCompoundDrawablesWithIntrinsicBounds(

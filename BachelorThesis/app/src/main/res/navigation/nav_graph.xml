@@ -2,27 +2,88 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.diana.bachelorthesis.view.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
+        android:id="@+id/nav_home"
+        android:name="com.diana.bachelorthesis.view.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_nav_home_to_nav_add_item"
+            app:destination="@id/nav_add_item"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />
+        <action
+            android:id="@+id/action_nav_home_to_introAuthFragment"
+            app:destination="@id/nav_intro_auth" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_add_item"
+        android:name="com.diana.bachelorthesis.view.AddItemFragment"
+        android:label="@string/menu_add_item"
+        tools:layout= "@layout/fragment_add_item" >
+        <action
+            android:id="@+id/action_nav_add_item_to_nav_intro_auth"
+            app:destination="@id/nav_intro_auth"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.diana.bachelorthesis.view.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
+        android:id="@+id/nav_map"
+        android:name="com.diana.bachelorthesis.view.MapFragment"
+        android:label="@string/menu_map"
+        tools:layout= "@layout/fragment_map" />
+    <fragment
+        android:id="@+id/nav_recommendations"
+        android:name="com.diana.bachelorthesis.view.RecommendationsFragment"
+        android:label="@string/menu_recommendations"
+        tools:layout= "@layout/fragment_recommendations" />
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.diana.bachelorthesis.view.HistoryFragment"
+        android:label="@string/menu_history"
+        tools:layout= "@layout/fragment_history" />
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.diana.bachelorthesis.view.ChatFragment"
+        android:label="@string/menu_chat"
+        tools:layout= "@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/nav_favorites"
+        android:name="com.diana.bachelorthesis.view.FavoritesFragment"
+        android:label="@string/menu_favorites"
+        tools:layout= "@layout/fragment_favorites" />
+    <fragment
+        android:id="@+id/nav_intro_auth"
+        android:name="com.diana.bachelorthesis.view.IntroAuthFragment"
+        android:label="@string/authentication"
+        tools:layout="@layout/fragment_intro_auth" >
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_introAuthFragment_to_loginFragment"
+            app:destination="@id/nav_login" />
+        <action
+            android:id="@+id/action_introAuthFragment_to_registerFragment"
+            app:destination="@id/nav_register" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.diana.bachelorthesis.view.LoginFragment"
+        android:label="@string/login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_nav_home"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_register"
+        android:name="com.diana.bachelorthesis.view.RegisterFragment"
+        android:label="@string/register"
+        tools:layout="@layout/fragment_register" />
+
+
 </navigation>

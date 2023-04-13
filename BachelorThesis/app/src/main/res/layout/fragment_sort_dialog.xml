@@ -7,7 +7,7 @@
     android:background="@drawable/custom_layout_dialog"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".utils.SortDialogFragment">
+    tools:context=".view.SortDialogFragment">
 
     <TextView
         android:id="@+id/sort_title"

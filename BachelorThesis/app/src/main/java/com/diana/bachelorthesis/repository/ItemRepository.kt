@@ -1,7 +1,7 @@
 package com.diana.bachelorthesis.repository
 
 import android.util.Log
-import com.diana.bachelorthesis.ListParamCallback
+import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemDonation
 import com.diana.bachelorthesis.model.ItemExchange

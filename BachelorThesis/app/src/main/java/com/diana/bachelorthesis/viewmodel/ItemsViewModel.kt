@@ -3,7 +3,7 @@ package com.diana.bachelorthesis.viewmodel
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.*
-import com.diana.bachelorthesis.ListParamCallback
+import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.repository.ItemRepository

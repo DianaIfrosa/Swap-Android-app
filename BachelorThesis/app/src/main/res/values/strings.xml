@@ -103,11 +103,26 @@
     <string name="register">Register</string>
     <string name="create_account">Create account</string>
     <string name="confirm_password">Confirm password</string>
-    <string name="name_register">Name</string>
+    <string name="name_register">Full name</string>
     <string name="or">or</string>
     <string name="sign_up_with_facebook">Sign up with Facebook</string>
     <string name="sign_up_with_google">Sign up with Google</string>
     <string name="sign_up">Sign up</string>
+    <string name="account_exists_already">Email already used for another account!</string>
+    <string name="something_failed">Something failed. Please try again!</string>
+
+    <string name="email_required">Email is required</string>
+    <string name="email_invalid">Email is invalid</string>
+
+    <string name="name_required">Full name is required</string>
+    <string name="name_invalid">First name and last name are required</string>
+
+    <string name="pass_required">Password is required</string>
+    <string name="pass_invalid">Should have minimum 8 characters, at least 1 uppercase letter,
+        1 lowercase letter and 1 number</string>
+
+    <string name="pass_confirmed_required">Password confirmation is required</string>
+    <string name="pass_confirmed_invalid">Passwords are not identical</string>
 
     <!-- Intro screens -->
     <string name="intro1_title">Add items</string>
@@ -116,6 +131,8 @@
     <string name="intro2_content">Some text about recommendations based on preferences.</string>
     <string name="intro3_title">Items around you</string>
     <string name="intro3_content">Some text about the live map.</string>
-
+    <string name="pass_or_email_invalid">Email or password is wrong!</string>
+    <string name="help">Help</string>
+    <string name="authentication">Authentication</string>
 
 </resources>

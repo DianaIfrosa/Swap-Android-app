@@ -9,13 +9,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.diana.bachelorthesis.databinding.FragmentMapBinding
 import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.utils.LocationHelper
@@ -31,6 +32,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.diana.bachelorthesis.R
+import com.diana.bachelorthesis.utils.BasicFragment
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
@@ -42,7 +44,7 @@ import com.google.android.gms.maps.OnMapsSdkInitializedCallback
 import com.google.android.libraries.places.api.Places
 import java.util.*
 
-class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, OnMapsSdkInitializedCallback {
+class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, OnMapsSdkInitializedCallback {
 
     private val TAG: String = MapFragment::class.java.name
     companion object {
@@ -67,13 +69,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         MapsInitializer.initialize(requireActivity().applicationContext, Renderer.LATEST, this)
 
         if (!Places.isInitialized()) {
-            Places.initialize(requireActivity().applicationContext, getString(R.string.api_key));
+            Places.initialize(requireActivity().applicationContext, getString(R.string.api_key))
         }
 
-        mapViewModel = ViewModelProvider(this).get(MapViewModel::class.java)
-        val viewModelFactory = ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
-        itemsViewModel = ViewModelProvider(this, viewModelFactory).get(ItemsViewModel::class.java)
-    }
+        getViewModels()
+       }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,14 +84,31 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-
-        mapFragment.getMapAsync(this)
+        binding.mapFragment.visibility = View.GONE
+        binding.placeAutocompleteFragment.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
 
         initListeners()
 
         return root
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Log.d(TAG, "MapFragment is onActivityCreated")
+        setAppbar()
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        mapFragment.getMapAsync(this)
+    }
+
+    private fun getViewModels() {
+        mapViewModel = ViewModelProvider(this)[MapViewModel::class.java]
+        val viewModelFactory = ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
+        itemsViewModel = ViewModelProvider(this, viewModelFactory)[ItemsViewModel::class.java]
     }
 
     override fun onMapsSdkInitialized(renderer: Renderer) {
@@ -133,16 +150,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "MapFragment is onActivityCreated")
-        setAppbar()
-    }
-
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
         mapLoaded = true
+
+        binding.progressBar.visibility = View.GONE
+        binding.mapFragment.visibility = View.VISIBLE
+        binding.placeAutocompleteFragment.visibility = View.VISIBLE
 
         initMapPlaces()
         getAllItems()
@@ -206,7 +220,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         googleMap.addMarker(markerOptions)
     }
 
-    private fun initListeners() {
+    override fun initListeners() {
         itemsViewModel.donationItems.observe(viewLifecycleOwner) { items ->
             mapViewModel.updateItems(false, items)
             updateMapMarkers()
@@ -296,13 +310,16 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         }
     }
 
-    private fun setAppbar() {
+    override fun setAppbar() {
         activity?.findViewById<TextView>(R.id.titleAppBar)?.apply {
             visibility = View.VISIBLE
-            text = context.getString(R.string.mapPageTitle)
+            text = requireView().findNavController().currentDestination!!.label
         }
         activity?.findViewById<ImageView>(R.id.logoApp)?.apply {
             visibility = View.GONE
+        }
+        activity?.findViewById<ImageButton>(R.id.profilePhotoAppBar)?.apply {
+            visibility = View.VISIBLE
         }
     }
 

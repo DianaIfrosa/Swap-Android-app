@@ -1,38 +1,44 @@
 package com.diana.bachelorthesis.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHomeBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
-import com.diana.bachelorthesis.utils.FilterDialogFragment
+import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.LocationHelper
-import com.diana.bachelorthesis.utils.SortDialogFragment
 import com.diana.bachelorthesis.utils.SortFilterDialogListener
 import com.diana.bachelorthesis.viewmodel.ItemsViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.diana.bachelorthesis.viewmodel.UserViewModel
 
 
-class HomeFragment : Fragment(), SortFilterDialogListener {
+class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     private val TAG: String = HomeFragment::class.java.name
     private var _binding: FragmentHomeBinding? = null
     lateinit var itemsViewModel: ItemsViewModel
+    lateinit var userViewModel: UserViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getViewModels()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,8 +46,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
         savedInstanceState: Bundle?
     ): View {
         Log.d(TAG, "HomeFragment is onCreateView")
-        val viewModelFactory = ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
-        itemsViewModel = ViewModelProvider(this, viewModelFactory).get(ItemsViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.searchSwitchLayout.switchDonationExchange.isChecked = false
@@ -67,25 +71,34 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
         return root
     }
 
+    private fun getViewModels() {
+        val viewModelFactory = ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
+        itemsViewModel = ViewModelProvider(this, viewModelFactory)[ItemsViewModel::class.java]
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "HomeFragment is onActivityCreated")
         setAppbar()
     }
 
-    private fun setAppbar() {
+     override fun setAppbar() {
 
-        activity?.findViewById<ImageView>(R.id.logoApp)?.apply {
-            Log.d(TAG, "applied")
+        requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
             visibility = View.VISIBLE
         }
-        activity?.findViewById<TextView>(R.id.titleAppBar)?.apply {
-            Log.d(TAG, "applied")
+        requireActivity().findViewById<TextView>(R.id.titleAppBar)?.apply {
             visibility = View.GONE
         }
+         requireActivity().findViewById<ImageButton>(R.id.profilePhotoAppBar)?.apply {
+
+             visibility =  if (userViewModel.getCurrentUser() == null) View.INVISIBLE // TODO add auth button
+             else View.VISIBLE
+         }
     }
 
-    private fun initListeners() {
+    override fun initListeners() {
         // FIXME is it really ok this choice of live data?
 
         itemsViewModel.donationItems.observe(viewLifecycleOwner) {
@@ -102,19 +115,14 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
        initSwitchCategoriesListener()
 
         binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Redirect to addItemFragment if authenticated", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show() //TODO delete
-
-//            val addItemFragment = AddItemFragment()
-//            val transaction = activity?.supportFragmentManager?.beginTransaction()
-//            if (transaction != null) {
-//                transaction.replace(R.id.nav_add_item, addItemFragment)
-//                transaction.addToBackStack(null)
-//                transaction.commit()
-//            }
-
-            val intent = Intent(activity, IntroAuthActivity::class.java)
-            startActivity(intent)
+            userViewModel.signOut()
+           if (userViewModel.getCurrentUser() != null) {
+                // Redirect to add item page
+                view.findNavController().navigate(R.id.nav_add_item)
+            } else {
+                // Redirect to auth page
+               view.findNavController().navigate(R.id.nav_intro_auth)
+            }
         }
 
         binding.searchSwitchLayout.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
@@ -160,7 +168,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener {
 
             filterDialogFragment.show(childFragmentManager, "FilterDialogFragment")
         }
-
     }
 
     private fun initSwitchCategoriesListener() {

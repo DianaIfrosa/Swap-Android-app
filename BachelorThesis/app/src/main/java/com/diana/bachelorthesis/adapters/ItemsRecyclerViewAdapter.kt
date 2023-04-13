@@ -1,7 +1,6 @@
 package com.diana.bachelorthesis.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -9,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
-import com.diana.bachelorthesis.CustomClickListener
+import com.diana.bachelorthesis.utils.CustomClickListener
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.CardItemBinding
 import com.diana.bachelorthesis.model.Item

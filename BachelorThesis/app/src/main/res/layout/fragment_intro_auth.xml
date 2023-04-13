@@ -7,13 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/purple_dark"
     android:orientation="vertical"
-    tools:context=".view.IntroAuthActivity">
+    tools:context=".view.IntroAuthFragment">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="30dp"
         />
 
     <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,19 +7,15 @@
     android:layout_marginStart="20dp"
     android:layout_marginEnd="20dp"
     android:gravity="center"
-    android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".view.RegisterActivity">
+    tools:context=".view.RegisterFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:text="@string/register"
-        android:textSize="23sp"
-        android:textStyle="bold" />
-
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +23,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/email_input_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:boxBackgroundMode="outline"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -48,8 +44,9 @@
             android:id="@+id/icon_email_status"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
             android:visibility="gone" />
 
     </LinearLayout>
@@ -61,7 +58,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/name_input_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:boxBackgroundMode="outline"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -81,8 +78,9 @@
             android:id="@+id/icon_name_status"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
             android:visibility="gone" />
 
 
@@ -95,9 +93,10 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/pass_input_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:boxBackgroundMode="outline"
+            app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_weight="1"
             android:layout_marginBottom="10dp"
@@ -107,7 +106,6 @@
                 android:id="@+id/editext_pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:hint="@string/password_hint"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -116,8 +114,9 @@
             android:id="@+id/icon_pass_status"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
             android:visibility="gone" />
     </LinearLayout>
 
@@ -129,9 +128,10 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/confirm_pass_input_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:boxBackgroundMode="outline"
+            app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:helperTextTextColor="@color/red_light"
             android:layout_weight="1">
@@ -148,42 +148,38 @@
             android:id="@+id/icon_passconfirm_status"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
             android:visibility="gone" />
     </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp">
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:background="@drawable/shape_rounded"
+        android:gravity="center_vertical"
         android:padding="8dp"
         android:text="@string/create_account" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
+        android:layout_marginStart="15dp"
+        android:layout_gravity="center"
         android:text="@string/or" />
+    </LinearLayout>
 
-    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
-        android:id="@+id/btn_register_google"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:background="@drawable/shape_rounded"
-        android:padding="8dp"
-        android:text="@string/sign_up_with_google" />
 
-    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
-        android:id="@+id/btn_register_facebook"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/shape_rounded"
-        android:padding="8dp"
-        android:text="@string/sign_up_with_facebook" />
-
-</LinearLayout>
+</RelativeLayout>

@@ -19,33 +19,6 @@
         android:theme="@style/Theme.BachelorThesis"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".view.IntroAuthActivity"
-            android:exported="false"
-            android:theme="@style/Theme.BachelorThesis.NoActionBar"/>
-        <activity
-            android:name=".view.RegisterActivity"
-            android:exported="false"
-            android:label="@string/register">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.IntroAuthActivity" />
-
-        </activity>
-        <activity
-            android:name=".view.LoginActivity"
-            android:exported="false"
-            android:label="@string/login">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.IntroAuthActivity" />
-        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

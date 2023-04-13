@@ -11,7 +11,7 @@
 
         <variable
             name="itemClickListener"
-            type="com.diana.bachelorthesis.CustomClickListener" />
+            type="com.diana.bachelorthesis.utils.CustomClickListener" />
 
     </data>
 

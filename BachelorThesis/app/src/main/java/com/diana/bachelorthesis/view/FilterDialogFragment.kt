@@ -1,4 +1,4 @@
-package com.diana.bachelorthesis.utils
+package com.diana.bachelorthesis.view
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentFilterDialogBinding
 import com.diana.bachelorthesis.model.ItemCategory
-import com.diana.bachelorthesis.view.HomeFragment
+import com.diana.bachelorthesis.utils.SortFilterDialogListener
 import java.util.ArrayList
 
 class FilterDialogFragment : DialogFragment() {

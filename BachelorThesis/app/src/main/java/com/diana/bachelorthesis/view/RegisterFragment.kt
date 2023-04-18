@@ -128,6 +128,7 @@ class RegisterFragment : Fragment(), BasicFragment {
                                 )!!.toBitmap()
                             )
                             userViewModel.addUser(email, name)
+                            userViewModel.signOut() // Firebase register automatically signs in
                         }
 
                         override fun onError(e: Exception?) {
@@ -165,7 +166,7 @@ class RegisterFragment : Fragment(), BasicFragment {
         requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
             visibility = View.GONE
         }
-        requireActivity().findViewById<ImageButton>(R.id.profilePhotoAppBar)?.apply {
+        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
             visibility = View.INVISIBLE
         }
     }

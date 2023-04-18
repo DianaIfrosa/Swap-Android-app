@@ -109,7 +109,7 @@
     <string name="sign_up_with_google">Sign up with Google</string>
     <string name="sign_up">Sign up</string>
     <string name="account_exists_already">Email already used for another account!</string>
-    <string name="something_failed">Something failed. Please try again!</string>
+    <string name="something_failed">Something went wrong. Please try again!</string>
 
     <string name="email_required">Email is required</string>
     <string name="email_invalid">Email is invalid</string>
@@ -134,5 +134,9 @@
     <string name="pass_or_email_invalid">Email or password is wrong!</string>
     <string name="help">Help</string>
     <string name="authentication">Authentication</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile">Profile</string>
+    <string name="log_in_register">Log in / Register</string>
 
 </resources>

@@ -152,7 +152,7 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         cityFilter = city
         categoriesFilter = categories
 
-        var rawData: ArrayList<Item>
+        val rawData: ArrayList<Item>
         if (data != null) {
             rawData = data
         } else {

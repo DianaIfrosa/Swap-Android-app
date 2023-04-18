@@ -66,13 +66,7 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "MapFragment is onCreate")
-        MapsInitializer.initialize(requireActivity().applicationContext, Renderer.LATEST, this)
 
-        if (!Places.isInitialized()) {
-            Places.initialize(requireActivity().applicationContext, getString(R.string.api_key))
-        }
-
-        getViewModels()
        }
 
     override fun onCreateView(
@@ -88,9 +82,19 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
         binding.placeAutocompleteFragment.visibility = View.GONE
         binding.progressBar.visibility = View.VISIBLE
 
-        initListeners()
-
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        MapsInitializer.initialize(requireActivity().applicationContext, Renderer.LATEST, this)
+
+        if (!Places.isInitialized()) {
+            Places.initialize(requireActivity().applicationContext, getString(R.string.api_key))
+        }
+
+        getViewModels()
+        initListeners()
     }
 
     @Deprecated("Deprecated in Java")
@@ -318,7 +322,7 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
         activity?.findViewById<ImageView>(R.id.logoApp)?.apply {
             visibility = View.GONE
         }
-        activity?.findViewById<ImageButton>(R.id.profilePhotoAppBar)?.apply {
+        activity?.findViewById<ImageButton>(R.id.iconAppBar)?.apply {
             visibility = View.VISIBLE
         }
     }

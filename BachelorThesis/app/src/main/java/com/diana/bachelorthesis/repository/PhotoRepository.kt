@@ -15,18 +15,22 @@ import kotlin.coroutines.suspendCoroutine
 class PhotoRepository {
     private val TAG: String = PhotoRepository::class.java.name
 
+    var defaultProfilePhotoUri: Uri =
+        Uri.parse("android.resource://com.diana.bachelorthesis/drawable/default_profile_picture")
+    val unavailablePhotoUrl =
+        "https://firebasestorage.googleapis.com/v0/b/bachelorthesis-3092d.appspot.com/o/unavailable.jpg?alt=media&token=bbf854a6-162d-47e4-9006-7d8fe5ef083e"
+
     // for cloud
-    val firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
-    val storageReference: StorageReference = firebaseStorage.reference
+    private val firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
+    private val storageReference: StorageReference = firebaseStorage.reference
 
     companion object {
         @Volatile
         private var instance: PhotoRepository? = null
         fun getInstance() = instance ?: PhotoRepository().also { instance = it }
-
     }
 
-    fun uploadPhotoToCloud(
+    private fun uploadItemPhoto(
         owner: String,
         itemId: String,
         imageUri: Uri,
@@ -67,18 +71,17 @@ class PhotoRepository {
         }
     }
 
-    suspend fun uploadPhotosToCloud(
+    suspend fun uploadPhotos(
         owner: String,
         itemId: String, imagesUri: List<Uri>
     ): List<String> {
 
         val result: ArrayList<String?> = arrayListOf()
 
-
         for (imageUri in imagesUri) {
             runBlocking {
                 val url = async(Dispatchers.Default) {
-                    uploadPhotoToCloudAndWait(owner, itemId, imageUri)
+                    uploadPhotoAndWait(owner, itemId, imageUri)
                 }
                 result.add(url.await())
             }
@@ -87,9 +90,9 @@ class PhotoRepository {
         return result.filterNotNull()
     }
 
-    private suspend fun uploadPhotoToCloudAndWait(owner: String, itemId: String, imageUri: Uri): String? =
+    private suspend fun uploadPhotoAndWait(owner: String, itemId: String, imageUri: Uri): String? =
         suspendCoroutine { cont ->
-            uploadPhotoToCloud(
+            uploadItemPhoto(
                 owner,
                 itemId,
                 imageUri,
@@ -97,6 +100,7 @@ class PhotoRepository {
                     override fun onComplete(value: String?) {
                         cont.resume(value)
                     }
+
                     override fun onError(e: Exception?) {
                         Log.w(TAG, "Upload photo failed")
                         if (e != null) {
@@ -106,4 +110,41 @@ class PhotoRepository {
                     }
                 })
         }
+
+    fun uploadProfilePhoto(user: String, photoUri: Uri?, callback: OneParamCallback<String>) {
+        val uploadPhoto = photoUri ?: defaultProfilePhotoUri
+        val imageReference = storageReference
+            .child(user)
+            .child("profile_photo.png")
+
+       imageReference
+            .putFile(uploadPhoto)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    imageReference.downloadUrl.addOnSuccessListener { url ->
+                        val imageUrl = url.toString()
+                        Log.d(
+                            TAG,
+                            "Successfully uploaded profile photo for user $user"
+                        )
+                        callback.onComplete(imageUrl)
+
+                    }.addOnFailureListener {
+                        Log.w(
+                            TAG,
+                            "\"Couldn't get url for profile photo for user $user"
+                        )
+                        callback.onError(task.exception)
+                    }
+
+                } else {
+                    Log.w(
+                        TAG,
+                        "Profile photo for user $user failed to upload!"
+                    )
+                    callback.onError(task.exception)
+                }
+            }
+
+    }
 }

@@ -2,7 +2,6 @@ package com.diana.bachelorthesis.view
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources.NotFoundException
@@ -89,8 +88,9 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "AddItemFragment is onViewCreated")
-        if (userViewModel.getCurrentUser() == null) {
+        if (!userViewModel.verifyUserLoggedIn()) {
             // Redirect to auth page
+            view.findNavController().popBackStack()
             view.findNavController().navigate(R.id.nav_intro_auth)
         }
     }
@@ -124,7 +124,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
             visibility = View.GONE
         }
-        requireActivity().findViewById<ImageButton>(R.id.profilePhotoAppBar)?.apply {
+        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
             visibility = View.VISIBLE
         }
     }

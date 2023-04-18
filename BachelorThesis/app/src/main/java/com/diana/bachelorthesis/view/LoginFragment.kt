@@ -5,21 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import com.apachat.loadingbutton.core.customViews.CircularProgressButton
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentLoginBinding
 import com.diana.bachelorthesis.utils.BasicFragment
+import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -67,17 +63,32 @@ class LoginFragment : Fragment(), BasicFragment {
                 //TODO display helper text here as well
             } else {
                 button.startAnimation()
-                userViewModel.signInUser(email, pass,
+                userViewModel.logInUser(email, pass,
                     object : OneParamCallback<FirebaseUser> {
                         override fun onComplete(value: FirebaseUser?) {
-                            button.doneLoadingAnimation(
-                                R.color.green_light,
-                                ContextCompat.getDrawable(
-                                    requireActivity(),
-                                    R.drawable.ic_done
-                                )!!.toBitmap()
-                            )
-                            view.findNavController().navigate(R.id.nav_home)
+                            userViewModel.setCurrentUserData(email, object: NoParamCallback{
+                                override fun onComplete() {
+                                    button.doneLoadingAnimation(
+                                        R.color.green_light,
+                                        ContextCompat.getDrawable(
+                                            requireActivity(),
+                                            R.drawable.ic_done
+                                        )!!.toBitmap()
+                                    )
+                                    (requireActivity() as MainActivity).updateIconAppBar()
+                                    (requireActivity() as MainActivity).updateNavHeader()
+                                    view.findNavController().navigate(R.id.nav_home)
+                                }
+
+                                override fun onError(e: Exception?) {
+                                    button.revertAnimation()
+                                    Toast.makeText(
+                                        requireActivity(),
+                                        R.string.something_failed,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            })
                         }
 
                         override fun onError(e: Exception?) {
@@ -110,8 +121,9 @@ class LoginFragment : Fragment(), BasicFragment {
         requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
             visibility = View.GONE
         }
-        requireActivity().findViewById<ImageButton>(R.id.profilePhotoAppBar)?.apply {
+        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
             visibility = View.INVISIBLE
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package com.diana.bachelorthesis.model
 
+import android.net.Uri
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.DocumentReference
 

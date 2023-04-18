@@ -54,7 +54,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         binding.searchSwitchLayout.searchView.clearFocus()
 
         updateRecyclerView(arrayListOf(), true)
-        initListeners()
 
 //        if (screenWidth == 0 || screenHeight == 0) {
 //            root.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
@@ -72,7 +71,8 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     }
 
     private fun getViewModels() {
-        val viewModelFactory = ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
+        val viewModelFactory =
+            ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
         itemsViewModel = ViewModelProvider(this, viewModelFactory)[ItemsViewModel::class.java]
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
     }
@@ -80,10 +80,11 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "HomeFragment is onActivityCreated")
+        initListeners()
         setAppbar()
     }
 
-     override fun setAppbar() {
+    override fun setAppbar() {
 
         requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
             visibility = View.VISIBLE
@@ -91,11 +92,9 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         requireActivity().findViewById<TextView>(R.id.titleAppBar)?.apply {
             visibility = View.GONE
         }
-         requireActivity().findViewById<ImageButton>(R.id.profilePhotoAppBar)?.apply {
-
-             visibility =  if (userViewModel.getCurrentUser() == null) View.INVISIBLE // TODO add auth button
-             else View.VISIBLE
-         }
+        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
+            visibility = View.VISIBLE
+        }
     }
 
     override fun initListeners() {
@@ -103,31 +102,38 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 
         itemsViewModel.donationItems.observe(viewLifecycleOwner) {
             if (!itemsViewModel.displayExchangeItems) {
-                updateRecyclerView(itemsViewModel.currentItems, itemsViewModel.currentItems.isEmpty())
+                updateRecyclerView(
+                    itemsViewModel.currentItems,
+                    itemsViewModel.currentItems.isEmpty()
+                )
             }
         }
 
         itemsViewModel.exchangeItems.observe(viewLifecycleOwner) {
             if (itemsViewModel.displayExchangeItems)
-                updateRecyclerView(itemsViewModel.currentItems, itemsViewModel.currentItems.isEmpty())
+                updateRecyclerView(
+                    itemsViewModel.currentItems,
+                    itemsViewModel.currentItems.isEmpty()
+                )
         }
 
-       initSwitchCategoriesListener()
+        initSwitchCategoriesListener()
 
-        binding.fab.setOnClickListener { view ->
-            userViewModel.signOut()
-           if (userViewModel.getCurrentUser() != null) {
+        binding.addItemButton.setOnClickListener {
+//            userViewModel.signOut()
+            if (userViewModel.verifyUserLoggedIn()) {
                 // Redirect to add item page
-                view.findNavController().navigate(R.id.nav_add_item)
+                requireView().findNavController().navigate(R.id.nav_add_item)
             } else {
                 // Redirect to auth page
-               view.findNavController().navigate(R.id.nav_intro_auth)
+                requireView().findNavController().navigate(R.id.nav_intro_auth)
             }
         }
 
-        binding.searchSwitchLayout.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+        binding.searchSwitchLayout.searchView.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(inputText: String?): Boolean {
-                if (! inputText.isNullOrEmpty()) {
+                if (!inputText.isNullOrEmpty()) {
                     itemsViewModel.restoreDefaultCurrentItems()
 
                     itemsViewModel.searchItem(inputText)

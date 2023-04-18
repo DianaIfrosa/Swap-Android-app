@@ -12,13 +12,13 @@ import com.diana.bachelorthesis.utils.CustomClickListener
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.CardItemBinding
 import com.diana.bachelorthesis.model.Item
+import com.diana.bachelorthesis.repository.PhotoRepository
 
 class ItemsRecyclerViewAdapter(private var itemsList: List<Item>, var context: Context) :
     RecyclerView.Adapter<ItemsRecyclerViewAdapter.ItemViewHolder>(),
     CustomClickListener {
 
     private val TAG: String = ItemsRecyclerViewAdapter::class.java.name
-    private val unavailablePhotoUrl = "https://firebasestorage.googleapis.com/v0/b/bachelorthesis-3092d.appspot.com/o/unavailable.jpg?alt=media&token=bbf854a6-162d-47e4-9006-7d8fe5ef083e"
 
     inner class ItemViewHolder(val cardItemBinding: CardItemBinding) :
         RecyclerView.ViewHolder(cardItemBinding.root)
@@ -60,7 +60,8 @@ class ItemsRecyclerViewAdapter(private var itemsList: List<Item>, var context: C
         }
 
         if (photosList.isEmpty()) {
-            photosList.add(SlideModel(unavailablePhotoUrl, scaleType = ScaleTypes.CENTER_CROP))
+            val url = PhotoRepository.getInstance().unavailablePhotoUrl
+            photosList.add(SlideModel(url, scaleType = ScaleTypes.CENTER_CROP))
         }
 
         return photosList

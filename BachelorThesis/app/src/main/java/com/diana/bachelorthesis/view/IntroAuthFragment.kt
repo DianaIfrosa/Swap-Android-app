@@ -69,7 +69,7 @@ class IntroAuthFragment : Fragment(), BasicFragment {
         requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
             visibility = View.VISIBLE
         }
-        requireActivity().findViewById<ImageButton>(R.id.profilePhotoAppBar)?.apply {
+        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
             visibility = View.INVISIBLE
         }
     }

@@ -2,22 +2,27 @@ package com.diana.bachelorthesis.view
 
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.NavOptions
 import androidx.navigation.ui.*
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.ActivityMainBinding
+import com.diana.bachelorthesis.repository.PhotoRepository
+import com.diana.bachelorthesis.viewmodel.UserViewModel
+import com.squareup.picasso.Picasso
 
-class MainActivity : AppCompatActivity()
-//    , NavigationView.OnNavigationItemSelectedListener
-{
+class MainActivity : AppCompatActivity() {
     private val TAG: String = MainActivity::class.java.name
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -28,6 +33,8 @@ class MainActivity : AppCompatActivity()
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
     private lateinit var navView: NavigationView
+    private lateinit var headerLayout: View
+    lateinit var userViewModel: UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,31 +44,85 @@ class MainActivity : AppCompatActivity()
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         drawerLayout = binding.drawerLayout
         navView = binding.navView
+        headerLayout = navView.getHeaderView(0)
         navController = findNavController(R.id.nav_host_fragment_content_main)
-
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
-            navController.graph, drawerLayout
+            setOf(
+                R.id.nav_home, R.id.nav_add_item, R.id.nav_recommendations,
+                R.id.nav_chat, R.id.nav_favorites, R.id.nav_map,
+                R.id.nav_history // TODO add here the rest of the ids
+            ), drawerLayout
         )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+    }
 
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-        NavigationUI.setupWithNavController(navView, navController)
+    override fun onStart() {
+        super.onStart()
+        initListeners()
+        updateNavHeader()
+        updateIconAppBar()
+    }
 
-        // make other menu options inaccessible to user
-        navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, _: Bundle? ->
-            if (nd.id == nc.graph.startDestinationId) {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+     fun updateIconAppBar() {
+        if (userViewModel.verifyUserLoggedIn()) {
+            binding.appBarMain.iconAppBar.setImageResource(R.drawable.ic_person)
+        } else {
+            binding.appBarMain.iconAppBar.setImageResource(R.drawable.ic_login)
+        }
+    }
+
+    fun updateNavHeader() {
+        val btnAuth = headerLayout.findViewById<Button>(R.id.btnAuthNavHeader)
+        val nameTextView = headerLayout.findViewById<TextView>(R.id.nameNavHeader)
+        val emailTextView = headerLayout.findViewById<TextView>(R.id.emailNavHeader)
+        val photoImageView = headerLayout.findViewById<ImageView>(R.id.photoNavHeader)
+
+        if (userViewModel.verifyUserLoggedIn()) {
+            val currentUser = userViewModel.getCurrentUser()
+            btnAuth.visibility = View.GONE
+
+            nameTextView.apply {
+                visibility = View.VISIBLE
+                text = currentUser.name
+            }
+            emailTextView.apply {
+                visibility = View.VISIBLE
+                text = currentUser.email
+            }
+            photoImageView.visibility = View.VISIBLE
+            Picasso.get().load(currentUser.profilePhoto).into(photoImageView)
+        } else {
+            btnAuth.visibility = View.VISIBLE
+            nameTextView.visibility = View.INVISIBLE
+            emailTextView.visibility = View.INVISIBLE
+            photoImageView.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun initListeners() {
+        binding.appBarMain.iconAppBar.setOnClickListener { view ->
+            if (userViewModel.verifyUserLoggedIn()) {
+                navController.navigate(R.id.nav_profile)
             } else {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                navController.navigate(R.id.nav_intro_auth)
+            }
+        }
+        headerLayout.findViewById<Button>(R.id.btnAuthNavHeader)?.setOnClickListener { view ->
+            if (!userViewModel.verifyUserLoggedIn()) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+                navController.navigate(R.id.nav_intro_auth)
             }
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(navController, drawerLayout)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     override fun onBackPressed() {
@@ -73,37 +134,4 @@ class MainActivity : AppCompatActivity()
             super.onBackPressed()
         }
     }
-
-//    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-//        drawerLayout.close()
-//        // TODO change this!!
-//
-//        // this part checks if current fragment is the same as destination
-//        return if (navController.currentDestination?.id != item.itemId) {
-//            val builder = NavOptions.Builder()
-//                .setLaunchSingleTop(true)
-//                .setEnterAnim(R.anim.enter_left_to_right)
-//                .setExitAnim(R.anim.exit_right_to_left)
-//                .setPopEnterAnim(R.anim.popenter_right_to_left)
-//                .setPopExitAnim(R.anim.popexit_left_to_right)
-//
-//            // this part set proper pop up destination to prevent "looping" fragments
-//            // deleted
-//
-//            val options = builder.build()
-//            return try {
-//               navController.navigate(
-//                    item.itemId,
-//                    null,
-//                    options
-//                )
-//                true
-//            } catch (e: IllegalArgumentException) // couldn't find destination, do nothing
-//            {
-//                false
-//            }
-//        } else {
-//            false
-//        }
-//    }
 }

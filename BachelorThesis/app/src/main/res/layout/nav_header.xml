@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
@@ -14,12 +14,15 @@
 
     <ImageView
         android:id="@+id/photoNavHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center"
         android:contentDescription="@string/nav_header_profile"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@mipmap/ic_launcher_round"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/nameNavHeader"
@@ -27,13 +30,28 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="@string/nav_header_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:layout_centerHorizontal="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:visibility="invisible"
+        android:layout_below="@id/photoNavHeader"/>
 
     <TextView
         android:id="@+id/emailNavHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/nav_header_email" />
-</LinearLayout>
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:layout_below="@id/nameNavHeader"/>
+
+    <Button
+        android:id="@+id/btnAuthNavHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:text="@string/log_in_register"
+        android:background="@drawable/btn_small"
+        android:visibility="visible"/>
+</RelativeLayout>

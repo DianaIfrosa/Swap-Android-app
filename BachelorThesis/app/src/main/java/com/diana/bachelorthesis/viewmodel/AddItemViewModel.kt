@@ -1,7 +1,6 @@
 package com.diana.bachelorthesis.viewmodel
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.diana.bachelorthesis.model.ItemCategory
@@ -10,6 +9,7 @@ import com.diana.bachelorthesis.model.ItemDonation
 import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.repository.ItemRepository
 import com.diana.bachelorthesis.repository.PhotoRepository
+import com.diana.bachelorthesis.repository.UserRepository
 import com.diana.bachelorthesis.utils.LocationHelper
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
@@ -21,6 +21,7 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
     private val TAG: String = AddItemViewModel::class.java.name
     private val itemRepository = ItemRepository.getInstance()
     private val photoRepository = PhotoRepository.getInstance()
+    private val userRepository = UserRepository.getInstance()
 
     var categoryChosen: ItemCategory = ItemCategory.UNKNOWN
     var conditionChosen: ItemCondition? = null
@@ -32,8 +33,7 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
     var itemYear: Int? = null
     var itemExchangePreferences:  ArrayList<ItemCategory> = arrayListOf()
     var itemLocation: GeoPoint? = GeoPoint(46.778412423269, 23.60968729915669)  // FIXME get city from geopoint and assign to item
-    var itemOwner: String = "diana.ifrosa@gmail.com" // FIXME get user's identity and assign to item !!
-
+    var itemOwner: String = userRepository.currentUser.email
 
     class ViewModelFactory(private val arg: LocationHelper) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
@@ -66,7 +66,7 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
             launch (context = Dispatchers.Default) {
                 coroutineScope {
                     launch {
-                        val photos = async {photoRepository.uploadPhotosToCloud(
+                        val photos = async {photoRepository.uploadPhotos(
                             itemOwner,
                             item.itemId,
                             photosUri,
@@ -95,7 +95,7 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
         itemYear = null
         itemExchangePreferences = arrayListOf()
         itemLocation = GeoPoint(46.778412423269, 23.60968729915669)  // FIXME get city from geopoint and assign to item
-        itemOwner = "diana.ifrosa@gmail.com" // FIXME get user's identity and assign to item !!
+        itemOwner = userRepository.currentUser.email
     }
 
 

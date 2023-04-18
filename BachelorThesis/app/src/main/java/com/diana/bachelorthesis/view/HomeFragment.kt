@@ -20,9 +20,11 @@ import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.LocationHelper
+import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.SortFilterDialogListener
 import com.diana.bachelorthesis.viewmodel.ItemsViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
+import java.lang.Exception
 
 
 class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
@@ -80,6 +82,19 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "HomeFragment is onActivityCreated")
+
+        if (userViewModel.verifyUserLoggedIn()) {
+            userViewModel.restoreCurrentUserData(object : NoParamCallback {
+                override fun onComplete() {
+                    (requireActivity() as MainActivity).updateNavHeader()
+                }
+
+                override fun onError(e: Exception?) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+        }
         initListeners()
         setAppbar()
     }

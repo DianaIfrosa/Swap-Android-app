@@ -3,6 +3,7 @@ package com.diana.bachelorthesis.repository
 import android.util.Log
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.model.User
+import com.diana.bachelorthesis.utils.NoParamCallback
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -32,17 +33,12 @@ class UserRepository {
             instance ?: UserRepository().also { instance = it }
     }
 
-    init {
-        if (auth.currentUser != null) {
-            restoreCurrentUserData()
-        }
-    }
-
-    private fun restoreCurrentUserData() {
+     fun restoreCurrentUserData(callback: NoParamCallback) {
         getUserData(auth.currentUser!!.email!!, object: OneParamCallback<User>{
             override fun onComplete(value: User?) {
                 currentUser = value!!
                 Log.d(TAG, "Restored current user's data!")
+                callback.onComplete()
             }
 
             override fun onError(e: Exception?) {
@@ -50,6 +46,7 @@ class UserRepository {
                 if (e != null) {
                     e.message?.let { Log.w(TAG, it) }
                 }
+                callback.onError(e)
             }
         })
     }

@@ -24,6 +24,10 @@ class UserViewModel : ViewModel() {
         return userRepository.currentUser
     }
 
+    fun restoreCurrentUserData(callback:NoParamCallback) {
+        userRepository.restoreCurrentUserData(callback)
+    }
+
     fun registerUser(email: String, pass: String, callback: OneParamCallback<FirebaseUser>) {
         userRepository.registerUser(email, pass, callback)
     }

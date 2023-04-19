@@ -4,22 +4,19 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.android.material.navigation.NavigationView
-import androidx.navigation.findNavController
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.isVisible
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.ActivityMainBinding
-import com.diana.bachelorthesis.repository.PhotoRepository
 import com.diana.bachelorthesis.viewmodel.UserViewModel
+import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
-    private lateinit var navView: NavigationView
+    lateinit var navView: NavigationView
     private lateinit var headerLayout: View
     lateinit var userViewModel: UserViewModel
 

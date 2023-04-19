@@ -51,11 +51,6 @@ class RecommendationsFragment : Fragment(), BasicFragment {
         setAppbar()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun initListeners() {
         TODO("Not yet implemented")
     }
@@ -71,6 +66,12 @@ class RecommendationsFragment : Fragment(), BasicFragment {
         requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
             visibility = View.VISIBLE
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d(TAG, "RecommendationsFragment is onDestroyView")
+        _binding = null
     }
 
 }

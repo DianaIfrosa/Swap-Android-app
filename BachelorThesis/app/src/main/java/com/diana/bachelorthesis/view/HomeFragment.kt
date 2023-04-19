@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHomeBinding
@@ -68,7 +69,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 //            })
 //        }
 
-        // TODO, set custom layout based on the height width to the ui items
         return root
     }
 
@@ -138,7 +138,12 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 //            userViewModel.signOut()
             if (userViewModel.verifyUserLoggedIn()) {
                 // Redirect to add item page
-                requireView().findNavController().navigate(R.id.nav_add_item)
+                // Chose to use this approach and not the one commented below because it is
+                // not buggy in terms of back stack pop
+                val item =
+                    (requireActivity() as MainActivity).navView.findViewById<View>(R.id.nav_add_item)
+                item.callOnClick()
+//              requireView().findNavController().navigate(R.id.nav_add_item)
             } else {
                 // Redirect to auth page
                 requireView().findNavController().navigate(R.id.nav_intro_auth)

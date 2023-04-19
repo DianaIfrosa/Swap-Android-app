@@ -90,7 +90,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         Log.d(TAG, "AddItemFragment is onViewCreated")
         if (!userViewModel.verifyUserLoggedIn()) {
             // Redirect to auth page
-            view.findNavController().popBackStack()
+//            view.findNavController().popBackStack()
             view.findNavController().navigate(R.id.nav_intro_auth)
         }
     }

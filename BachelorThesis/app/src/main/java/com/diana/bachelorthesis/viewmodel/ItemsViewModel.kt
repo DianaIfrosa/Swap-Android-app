@@ -30,10 +30,6 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
     private var cityFilter: String = ""
     private var categoriesFilter: List<ItemCategory> = arrayListOf()
 
-    init {
-        populateLiveData()
-    }
-
     class ViewModelFactory(private val arg: LocationHelper) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -44,15 +40,17 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         }
     }
 
-    private fun populateLiveData() {
+     fun populateLiveData() {
         //_exchangeItems.value = repository.getItems(true)
         //_donationItems.value = repository.getItems(false)
 
+        Log.d(TAG, "Populate live data in itemsViewModel")
         repository.getItems(true, object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
                 if (displayExchangeItems)
                     updateCurrentItems(values)
                 _exchangeItems.value = values
+                Log.d(TAG, "Updated exchange items")
 
 //                viewModelScope.launch {
 //                    _exchangeItems.value = locationHelper.getItemsCities(values)
@@ -67,6 +65,7 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
                 if (!displayExchangeItems)
                     updateCurrentItems(values)
                 _donationItems.value = values
+                Log.d(TAG, "Updated donation items")
 //                viewModelScope.launch {
 //                    _donationItems.value = locationHelper.getItemsCities(values)
 //                    if (!displayExchangeItems)

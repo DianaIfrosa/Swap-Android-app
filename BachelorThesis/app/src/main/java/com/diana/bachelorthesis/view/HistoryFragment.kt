@@ -22,8 +22,6 @@ class HistoryFragment : Fragment(), BasicFragment {
     private val TAG: String = HistoryFragment::class.java.name
     private var _binding: FragmentHistoryBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(

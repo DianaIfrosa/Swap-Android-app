@@ -34,13 +34,11 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     lateinit var itemsViewModel: ItemsViewModel
     lateinit var userViewModel: UserViewModel
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getViewModels()
+        Log.d(TAG, "HomeFragment is onCreate")
     }
 
     override fun onCreateView(
@@ -57,7 +55,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         binding.searchSwitchLayout.searchView.clearFocus()
 
         updateRecyclerView(arrayListOf(), true)
-
+        getViewModels()
 //        if (screenWidth == 0 || screenHeight == 0) {
 //            root.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
 //                override fun onGlobalLayout() {
@@ -76,6 +74,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         val viewModelFactory =
             ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
         itemsViewModel = ViewModelProvider(this, viewModelFactory)[ItemsViewModel::class.java]
+        itemsViewModel.populateLiveData()
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
     }
 

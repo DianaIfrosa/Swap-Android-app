@@ -66,7 +66,6 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "MapFragment is onCreate")
-
        }
 
     override fun onCreateView(
@@ -113,6 +112,7 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
         mapViewModel = ViewModelProvider(this)[MapViewModel::class.java]
         val viewModelFactory = ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
         itemsViewModel = ViewModelProvider(this, viewModelFactory)[ItemsViewModel::class.java]
+        itemsViewModel.populateLiveData()
     }
 
     override fun onMapsSdkInitialized(renderer: Renderer) {

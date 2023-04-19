@@ -52,16 +52,12 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private var _binding: FragmentAddItemBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "AddItemFragment is onCreate")
-        getViewModels()
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -77,6 +73,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = horizontalLayoutManager
         updatePhotosRecyclerView(arrayListOf())
+        getViewModels()
 
         initListeners()
         attachCategoryAdapter()

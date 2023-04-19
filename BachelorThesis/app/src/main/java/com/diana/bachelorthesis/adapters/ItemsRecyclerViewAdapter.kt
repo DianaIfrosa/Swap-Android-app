@@ -46,7 +46,7 @@ class ItemsRecyclerViewAdapter(private var itemsList: List<Item>, var context: C
     }
 
     override fun cardClicked(item: Item?) {
-        // TODO open item page -> another activity
+        // TODO open item page -> another fragment
         Toast.makeText(
             context, "You clicked " + item!!.name,
             Toast.LENGTH_LONG

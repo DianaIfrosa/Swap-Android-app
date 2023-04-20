@@ -2,6 +2,8 @@ package com.diana.bachelorthesis.view
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         navView = binding.navView
         headerLayout = navView.getHeaderView(0)
         navController = findNavController(R.id.nav_host_fragment_content_main)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -57,6 +60,21 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        navView.setNavigationItemSelectedListener { item: MenuItem ->
+            // Block access to certain fragments unless the user is authenticated
+            if (item.itemId == R.id.nav_add_item || item.itemId == R.id.nav_map) {
+                navController.navigate(R.id.nav_intro_auth)
+                drawerLayout.closeDrawer(GravityCompat.START)
+                true
+
+            } else {
+                // Treat other normal cases
+                val handled = NavigationUI.onNavDestinationSelected(item, navController)
+                if (handled) drawerLayout.closeDrawer(GravityCompat.START)
+                handled
+            }
+        }
     }
 
     override fun onStart() {
@@ -64,10 +82,20 @@ class MainActivity : AppCompatActivity() {
         initListeners()
         updateNavHeader()
         updateIconAppBar()
+        updateMenuItemsVisibility()
     }
 
-     fun updateIconAppBar() {
-         Log.d(TAG, "Updating icon from app bar")
+     fun updateMenuItemsVisibility() {
+         //FIXME not finding the corresponding menu items
+        val userLogged = userViewModel.verifyUserLoggedIn()
+        navView.menu.getItem(R.id.nav_recommendations).isVisible = userLogged
+        navView.menu.getItem(R.id.nav_favorites).isVisible = userLogged
+        navView.menu.getItem(R.id.nav_chat).isVisible = userLogged
+        navView.menu.getItem(R.id.nav_history).isVisible = userLogged
+    }
+
+    fun updateIconAppBar() {
+        Log.d(TAG, "Updating icon from app bar")
         if (userViewModel.verifyUserLoggedIn()) {
             binding.appBarMain.iconAppBar.setImageResource(R.drawable.ic_person)
         } else {
@@ -129,8 +157,8 @@ class MainActivity : AppCompatActivity() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             Log.d(TAG, "Drawer was open during back press")
             drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
+        } else
             super.onBackPressed()
-        }
     }
+
 }

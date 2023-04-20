@@ -129,6 +129,7 @@ class IntroAuthFragment : Fragment(), BasicFragment {
                             override fun onComplete() {
                                 (requireActivity() as MainActivity).updateIconAppBar()
                                 (requireActivity() as MainActivity).updateNavHeader()
+                                (requireActivity() as MainActivity).updateMenuItemsVisibility()
                                 requireView().findNavController().navigate(R.id.nav_home)
                             }
 

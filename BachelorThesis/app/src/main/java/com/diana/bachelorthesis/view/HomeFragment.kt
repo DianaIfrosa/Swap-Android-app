@@ -142,7 +142,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
                 val item =
                     (requireActivity() as MainActivity).navView.findViewById<View>(R.id.nav_add_item)
                 item.callOnClick()
-//              requireView().findNavController().navigate(R.id.nav_add_item)
             } else {
                 // Redirect to auth page
                 requireView().findNavController().navigate(R.id.nav_intro_auth)

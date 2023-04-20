@@ -54,10 +54,10 @@ class ProfileFragment : Fragment(), BasicFragment {
             userViewModel.signOut()
             (requireActivity() as MainActivity).updateIconAppBar()
             (requireActivity() as MainActivity).updateNavHeader()
+            (requireActivity() as MainActivity).updateMenuItemsVisibility()
             requireView().findNavController().navigate(R.id.nav_home)
         }
     }
-
 
     fun updateUI() {
         val currentUser = userViewModel.getCurrentUser()

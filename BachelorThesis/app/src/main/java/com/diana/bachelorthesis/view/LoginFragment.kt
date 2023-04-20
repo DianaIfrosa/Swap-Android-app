@@ -77,6 +77,7 @@ class LoginFragment : Fragment(), BasicFragment {
                                     )
                                     (requireActivity() as MainActivity).updateIconAppBar()
                                     (requireActivity() as MainActivity).updateNavHeader()
+                                    (requireActivity() as MainActivity).updateMenuItemsVisibility()
                                     view.findNavController().navigate(R.id.nav_home)
                                 }
 

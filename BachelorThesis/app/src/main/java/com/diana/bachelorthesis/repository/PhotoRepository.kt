@@ -112,6 +112,8 @@ class PhotoRepository {
         }
 
     fun uploadProfilePhoto(user: String, photoUri: Uri?, callback: OneParamCallback<String>) {
+        // FIXME not working when uploading Google's user's photo after sign up
+        val choseDefaultPhoto = (photoUri == null)
         val uploadPhoto = photoUri ?: defaultProfilePhotoUri
         val imageReference = storageReference
             .child(user)
@@ -134,7 +136,12 @@ class PhotoRepository {
                             TAG,
                             "\"Couldn't get url for profile photo for user $user"
                         )
-                        callback.onError(task.exception)
+                        if (!choseDefaultPhoto) {
+                            Log.d(TAG, "Trying to upload the default picture for user $user")
+                            uploadProfilePhoto(user, null, callback)
+                        } else {
+                            callback.onError(task.exception)
+                        }
                     }
 
                 } else {
@@ -142,9 +149,13 @@ class PhotoRepository {
                         TAG,
                         "Profile photo for user $user failed to upload!"
                     )
-                    callback.onError(task.exception)
+                    if (!choseDefaultPhoto) {
+                        Log.d(TAG, "Trying to upload the default picture for user $user")
+                        uploadProfilePhoto(user, null, callback)
+                    } else {
+                        callback.onError(task.exception)
+                    }
                 }
             }
-
     }
 }

@@ -34,7 +34,7 @@ class ProfileFragment : Fragment(), BasicFragment {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        Log.d(TAG, "ProfileFragment is onCreateView")
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
@@ -61,8 +61,6 @@ class ProfileFragment : Fragment(), BasicFragment {
 
     fun updateUI() {
         val currentUser = userViewModel.getCurrentUser()
-        Log.d(TAG, currentUser.name)
-        Log.d(TAG, currentUser.email)
         binding.profileName.text = currentUser.name
         binding.profileEmail.text = currentUser.email
         if (currentUser.profilePhoto != null) {
@@ -85,6 +83,7 @@ class ProfileFragment : Fragment(), BasicFragment {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d(TAG, "ProfileFragment is onDestroyView")
         _binding = null
     }
 }

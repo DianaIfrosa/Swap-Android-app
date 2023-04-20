@@ -126,4 +126,10 @@ class LoginFragment : Fragment(), BasicFragment {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d(TAG, "LoginFragment is onDestroyView")
+        _binding = null
+    }
+
 }

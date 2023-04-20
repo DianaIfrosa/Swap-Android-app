@@ -5,7 +5,6 @@
     tools:context=".view.MapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:weightSum="1">
 
 <!--    <androidx.cardview.widget.CardView-->
@@ -22,7 +21,6 @@
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/map_fragment"
         android:layout_alignParentTop="true"
         />
 
@@ -38,7 +36,9 @@
         android:id="@+id/map_fragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/place_autocomplete_fragment"
+        android:layout_alignParentBottom="true">
     </androidx.fragment.app.FragmentContainerView>
 
 </RelativeLayout>

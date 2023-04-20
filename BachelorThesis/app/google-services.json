@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "876857847998-hhfli463amja4s5diule7j8o9jmpht48.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.diana.bachelorthesis",
+            "certificate_hash": "0e2d797f209beaa7c7a1ebdcdb89a0d07a6e05ea"
+          }
+        },
+        {
           "client_id": "876857847998-ut7empm5ouf4p24v15pu6oouee8oj9fu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -22,7 +30,7 @@
           }
         },
         {
-          "client_id": "876857847998-2j7smj4s8qs4qg8tivnmnv1doaibhq0s.apps.googleusercontent.com",
+          "client_id": "876857847998-0nhelol0lkgs8jdiedpjgo7av93trssv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -35,7 +43,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "876857847998-2j7smj4s8qs4qg8tivnmnv1doaibhq0s.apps.googleusercontent.com",
+              "client_id": "876857847998-0nhelol0lkgs8jdiedpjgo7av93trssv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

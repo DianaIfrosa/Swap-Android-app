@@ -1,6 +1,7 @@
 package com.diana.bachelorthesis.view
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,17 +10,28 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentIntroAuthBinding
 import com.diana.bachelorthesis.utils.BasicFragment
+import com.diana.bachelorthesis.utils.NoParamCallback
+import com.diana.bachelorthesis.viewmodel.UserViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.GoogleAuthProvider
+import java.lang.Exception
 
 class IntroAuthFragment : Fragment(), BasicFragment {
     private val TAG: String = IntroAuthFragment::class.java.name
+    lateinit var userViewModel: UserViewModel
 
     private var _binding: FragmentIntroAuthBinding? = null
     private val binding get() = _binding!!
@@ -40,12 +52,14 @@ class IntroAuthFragment : Fragment(), BasicFragment {
         val introScreensAdapter = IntroScreensAdapter()
         binding.viewPager.adapter = introScreensAdapter
         binding.springDotsIndicator.attachTo(binding.viewPager)
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         initListeners()
 
         return root
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "IntroAuthFragment is onActivityCreated")
@@ -60,6 +74,88 @@ class IntroAuthFragment : Fragment(), BasicFragment {
         binding.btnSignup.setOnClickListener { view: View ->
             view.findNavController().navigate(R.id.nav_register)
         }
+
+        binding.btnGoogle.setOnClickListener {
+            setGoogleAuth()
+            val intent = userViewModel.getSignInIntentGoogle()
+            startActivityForResult(intent, 200)
+        }
+    }
+
+    private fun setGoogleAuth() {
+        val options: GoogleSignInOptions = GoogleSignInOptions
+            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .requestProfile()
+            .build()
+        userViewModel.setGoogleClient(GoogleSignIn.getClient(requireActivity(), options))
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when(requestCode) {
+            200 -> {
+                Log.d(TAG, "onActivityResult from RegisterFragment")
+                val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+                try {
+                    val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
+                    val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
+                    performGoogleAuth(credential)
+                } catch(e: ApiException) {
+                    e.printStackTrace()
+                    displayErrorToast()
+                }
+            }
+        }
+    }
+
+    private fun performGoogleAuth(credential: AuthCredential) {
+        Log.d(TAG, "Performing Google auth")
+        userViewModel.signUpWithGoogle(credential, object: NoParamCallback {
+            override fun onComplete() {
+                Log.d(TAG, "Sign up with Google completed")
+                val email = userViewModel.getCurrentUserEmail()
+                val name = userViewModel.getCurrentUserName()
+                val photoUri = userViewModel.getCurrentUserPhoto()
+
+                userViewModel.addUser(email, name, photoUri, object: NoParamCallback {
+                    override fun onComplete() {
+                        Log.d(TAG, "Add user completed")
+                        // After adding the user into the DB, update the currentUser object
+                        userViewModel.setCurrentUserData(email, object: NoParamCallback {
+                            override fun onComplete() {
+                                (requireActivity() as MainActivity).updateIconAppBar()
+                                (requireActivity() as MainActivity).updateNavHeader()
+                                requireView().findNavController().navigate(R.id.nav_home)
+                            }
+
+                            override fun onError(e: Exception?) {
+                                displayErrorToast()
+                            }
+                        })
+                    }
+
+                    override fun onError(e: Exception?) {
+                        displayErrorToast()
+                    }
+                })
+            }
+
+            override fun onError(e: Exception?) {
+                displayErrorToast()
+            }
+        })
+    }
+
+    private fun displayErrorToast() {
+        Toast.makeText(
+            requireActivity(),
+            R.string.something_failed,
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     override fun setAppbar() {

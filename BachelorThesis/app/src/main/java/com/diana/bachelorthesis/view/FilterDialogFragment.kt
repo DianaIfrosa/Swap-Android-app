@@ -29,7 +29,6 @@ class FilterDialogFragment : DialogFragment() {
     private var chosenCategories: MutableList<ItemCategory> = arrayListOf()
     private lateinit var checkboxes: Map<ItemCategory, CheckBox>
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

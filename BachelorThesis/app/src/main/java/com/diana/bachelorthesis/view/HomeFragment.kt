@@ -201,7 +201,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         val switchExchange = binding.searchSwitchLayout.homeExchangeSwitch
 
         switchMainCategories.setOnCheckedChangeListener { _, checked ->
-            Log.d(TAG, "Switch clicked")
+            Log.d(TAG, "Switch clicked in HomeFragment")
             itemsViewModel.displayExchangeItems = !checked
 
             // clear search bar text

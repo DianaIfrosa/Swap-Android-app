@@ -17,7 +17,6 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.apachat.loadingbutton.core.customViews.CircularProgressButton
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.R
@@ -52,15 +51,16 @@ class RegisterFragment : Fragment(), BasicFragment {
         _binding = FragmentRegisterBinding.inflate(layoutInflater)
         val root: View = binding.root
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        initListeners()
 
         return root
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "RegisterFragment is onActivityCreated")
         setAppbar()
+        initListeners()
     }
 
     override fun initListeners() {
@@ -104,6 +104,10 @@ class RegisterFragment : Fragment(), BasicFragment {
             }
         }
 
+        initButtonsListeners()
+    }
+
+    private fun initButtonsListeners() {
         binding.btnRegister.setOnClickListener {
             clearFocusFields()
             val name = binding.editextName.text.toString().trim()
@@ -127,7 +131,7 @@ class RegisterFragment : Fragment(), BasicFragment {
                                     R.drawable.ic_done
                                 )!!.toBitmap()
                             )
-                            userViewModel.addUser(email, name)
+                            userViewModel.addUser(email, name, null)
                             userViewModel.signOut() // Firebase register automatically signs in
                         }
 
@@ -256,5 +260,11 @@ class RegisterFragment : Fragment(), BasicFragment {
 
     private fun validPassConfirmed(passConfirmed: String): Boolean {
         return passConfirmed == binding.editextPass.text.toString()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d(TAG, "RegisterFragment is onDestroyView")
+        _binding = null
     }
 }

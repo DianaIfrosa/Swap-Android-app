@@ -50,15 +50,15 @@
         android:textColor="@color/white"
         android:textSize="20sp" />
 
+
     <Button
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
-        android:background="@android:color/transparent"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:layout_above="@id/login_layout"
         android:paddingStart="15dp"
         android:paddingTop="10dp"
         android:paddingEnd="15dp"
@@ -66,5 +66,32 @@
         android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="17sp" />
+    <LinearLayout
+        android:id="@+id/login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_marginBottom="30dp"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="or"
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:padding="5dp"/>
+    <Button
+        android:id="@+id/btn_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableRight="@drawable/google_logo"
+        android:background="@android:color/transparent"
+        android:text="Continue with" />
+    </LinearLayout>
+
+    <!-- Google logo source: https://icons8.com/icons/set/google-android-->
 
 </RelativeLayout>

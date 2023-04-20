@@ -101,7 +101,6 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "AddItemFragment is onStart")
-        Log.d(TAG, shouldCleanUI.toString())
 
         if (shouldCleanUI)
             cleanUIElements()
@@ -460,7 +459,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
-        Log.d(TAG, "onActivityResult")
+        Log.d(TAG, "onActivityResult from AddItemFragment")
         when (requestCode) {
             PICK_IMAGE_CODE -> {
                 if (resultCode == RESULT_OK) {
@@ -522,7 +521,6 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     }
 
     private fun cleanUIElements() {
-        Log.d(TAG, "clean elements")
         binding.itemTitleEdittext.setText("")
         binding.itemDescriptionEdittext.setText("")
 

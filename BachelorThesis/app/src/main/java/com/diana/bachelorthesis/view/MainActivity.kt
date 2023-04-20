@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
     }
 
      fun updateIconAppBar() {
+         Log.d(TAG, "Updating icon from app bar")
         if (userViewModel.verifyUserLoggedIn()) {
             binding.appBarMain.iconAppBar.setImageResource(R.drawable.ic_person)
         } else {
@@ -75,6 +76,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun updateNavHeader() {
+        Log.d(TAG, "Updating navigation header")
         val btnAuth = headerLayout.findViewById<Button>(R.id.btnAuthNavHeader)
         val nameTextView = headerLayout.findViewById<TextView>(R.id.nameNavHeader)
         val emailTextView = headerLayout.findViewById<TextView>(R.id.emailNavHeader)

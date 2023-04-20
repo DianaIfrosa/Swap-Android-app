@@ -86,6 +86,7 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "MapFragment is onViewCreated")
         MapsInitializer.initialize(requireActivity().applicationContext, Renderer.LATEST, this)
 
         if (!Places.isInitialized()) {
@@ -292,15 +293,10 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Log.d(TAG, "in onRequestPermissionsResult")
-        Log.d(TAG, "$requestCode")
-        Log.d(TAG, "${grantResults.isNotEmpty()}")
 
         when(requestCode) {
             LOCATION_PERMISSION_REQUEST -> {
-                Log.d(TAG, "Verific permisiuni in onResult")
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d(TAG, "am gasit o permisiune acceptata")
                     if (ContextCompat.checkSelfPermission(
                             requireActivity(),
                             Manifest.permission.ACCESS_FINE_LOCATION)

@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -86,12 +87,11 @@ class MainActivity : AppCompatActivity() {
     }
 
      fun updateMenuItemsVisibility() {
-         //FIXME not finding the corresponding menu items
         val userLogged = userViewModel.verifyUserLoggedIn()
-        navView.menu.getItem(R.id.nav_recommendations).isVisible = userLogged
-        navView.menu.getItem(R.id.nav_favorites).isVisible = userLogged
-        navView.menu.getItem(R.id.nav_chat).isVisible = userLogged
-        navView.menu.getItem(R.id.nav_history).isVisible = userLogged
+        navView.menu.findItem(R.id.nav_recommendations).isVisible = userLogged
+        navView.menu.findItem(R.id.nav_favorites).isVisible = userLogged
+        navView.menu.findItem(R.id.nav_chat).isVisible = userLogged
+        navView.menu.findItem(R.id.nav_history).isVisible = userLogged
     }
 
     fun updateIconAppBar() {
@@ -157,8 +157,20 @@ class MainActivity : AppCompatActivity() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             Log.d(TAG, "Drawer was open during back press")
             drawerLayout.closeDrawer(GravityCompat.START)
-        } else
+        } else {
+//            if (navController.currentDestination?.label?.equals(getString(R.string.menu_home)) == true) {
+//                navController.popBackStack(R.navigation.nav_graph, true)
+//                Log.d(TAG, "Popped all back stack while home.")
+//            }
             super.onBackPressed()
+
+        }
+    }
+
+    fun updateAuthUIElements() {
+        updateIconAppBar()
+        updateNavHeader()
+        updateMenuItemsVisibility()
     }
 
 }

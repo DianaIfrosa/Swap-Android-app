@@ -36,7 +36,6 @@ class UserRepository {
     }
 
 
-
      fun restoreCurrentUserData(callback: NoParamCallback) {
         getUserData(auth.currentUser!!.email!!, object: OneParamCallback<User>{
             override fun onComplete(value: User?) {

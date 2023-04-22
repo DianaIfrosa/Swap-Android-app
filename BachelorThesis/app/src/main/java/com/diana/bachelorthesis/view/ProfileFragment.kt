@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.diana.bachelorthesis.R
@@ -52,10 +53,13 @@ class ProfileFragment : Fragment(), BasicFragment {
     override fun initListeners() {
         binding.btnSignOut.setOnClickListener {
             userViewModel.signOut()
-            (requireActivity() as MainActivity).updateIconAppBar()
-            (requireActivity() as MainActivity).updateNavHeader()
-            (requireActivity() as MainActivity).updateMenuItemsVisibility()
-            requireView().findNavController().navigate(R.id.nav_home)
+            (requireActivity() as MainActivity).updateAuthUIElements()
+            requireView().findNavController()
+                .navigate(
+                    R.id.nav_home,
+                    null,
+                    NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
+                )
         }
     }
 

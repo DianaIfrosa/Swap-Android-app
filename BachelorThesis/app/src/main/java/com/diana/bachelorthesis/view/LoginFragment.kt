@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.R
@@ -75,10 +76,13 @@ class LoginFragment : Fragment(), BasicFragment {
                                             R.drawable.ic_done
                                         )!!.toBitmap()
                                     )
-                                    (requireActivity() as MainActivity).updateIconAppBar()
-                                    (requireActivity() as MainActivity).updateNavHeader()
-                                    (requireActivity() as MainActivity).updateMenuItemsVisibility()
-                                    view.findNavController().navigate(R.id.nav_home)
+                                    (requireActivity() as MainActivity).updateAuthUIElements()
+                                    requireView().findNavController()
+                                        .navigate(
+                                            R.id.nav_home,
+                                            null,
+                                            NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
+                                        )
                                 }
 
                                 override fun onError(e: Exception?) {

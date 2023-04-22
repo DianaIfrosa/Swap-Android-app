@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.viewpager.widget.PagerAdapter
 import com.diana.bachelorthesis.R
@@ -127,10 +128,13 @@ class IntroAuthFragment : Fragment(), BasicFragment {
                         // After adding the user into the DB, update the currentUser object
                         userViewModel.setCurrentUserData(email, object: NoParamCallback {
                             override fun onComplete() {
-                                (requireActivity() as MainActivity).updateIconAppBar()
-                                (requireActivity() as MainActivity).updateNavHeader()
-                                (requireActivity() as MainActivity).updateMenuItemsVisibility()
-                                requireView().findNavController().navigate(R.id.nav_home)
+                                (requireActivity() as MainActivity).updateAuthUIElements()
+                                requireView().findNavController()
+                                    .navigate(
+                                        R.id.nav_home,
+                                        null,
+                                        NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
+                                    )
                             }
 
                             override fun onError(e: Exception?) {

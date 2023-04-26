@@ -52,6 +52,7 @@
         android:gravity="center"
         android:layout_centerInParent="true"
         android:text="@string/log_in_register"
-        android:background="@drawable/btn_small"
+        android:background="@drawable/btn_transparent_with_stroke"
+        android:drawableLeft="@drawable/ic_login"
         android:visibility="visible"/>
 </RelativeLayout>

@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
         navView.setNavigationItemSelectedListener { item: MenuItem ->
             // Block access to certain fragments unless the user is authenticated
-            if (item.itemId == R.id.nav_add_item || item.itemId == R.id.nav_map) {
+            if (!userViewModel.verifyUserLoggedIn() && (item.itemId == R.id.nav_add_item || item.itemId == R.id.nav_map)) {
                 navController.navigate(R.id.nav_intro_auth)
                 drawerLayout.closeDrawer(GravityCompat.START)
                 true
@@ -145,6 +145,25 @@ class MainActivity : AppCompatActivity() {
                 drawerLayout.closeDrawer(GravityCompat.START)
                 navController.navigate(R.id.nav_intro_auth)
             }
+        }
+
+        headerLayout.findViewById<ImageView>(R.id.photoNavHeader)?.setOnClickListener { view ->
+            goToProfileFromMenu()
+        }
+
+        headerLayout.findViewById<TextView>(R.id.nameNavHeader)?.setOnClickListener { view ->
+            goToProfileFromMenu()
+        }
+
+        headerLayout.findViewById<TextView>(R.id.emailNavHeader)?.setOnClickListener { view ->
+            goToProfileFromMenu()
+        }
+    }
+
+    private fun goToProfileFromMenu() {
+        if (userViewModel.verifyUserLoggedIn()) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+            navController.navigate(R.id.nav_profile)
         }
     }
 

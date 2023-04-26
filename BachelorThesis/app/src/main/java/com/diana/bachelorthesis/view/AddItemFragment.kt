@@ -212,6 +212,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
                     R.drawable.ic_arrow_dropup,
                     0
                 )
+                it.setTag(R.drawable.ic_arrow_dropup)
                 binding.hiddenLayoutOtherDetails.visibility = View.VISIBLE
             } else {
                 (it as TextView).setCompoundDrawablesWithIntrinsicBounds(
@@ -220,6 +221,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
                     R.drawable.ic_arrow_dropdown,
                     0
                 )
+                it.setTag(R.drawable.ic_arrow_dropdown)
                 binding.hiddenLayoutOtherDetails.visibility = View.GONE
             }
         }
@@ -243,7 +245,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         }
 
         binding.itemLocationButton.setOnClickListener {
-            //TODO add here
+            //TODO add here the location logic
         }
 
         binding.iconLocationButton.setOnClickListener {
@@ -301,7 +303,6 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         layoutParams.rightMargin = margin
 
         snackbarView.layoutParams = layoutParams
-        // TODO make it appear at the bottom with bottom margin as well
 
         return snackbar
     }
@@ -317,7 +318,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
                 requireActivity(),
                 arrayOf(READ_EXTERNAL_STORAGE),
                 1
-            ) // 1 e standard
+            ) // 1 is standard
 
         } else {
             val getIntent = Intent(Intent.ACTION_GET_CONTENT)
@@ -495,14 +496,14 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
     private fun getExchangePreferences(): ArrayList<ItemCategory> {
         val checkboxes: Map<ItemCategory, CheckBox> = mapOf(
-            ItemCategory.APPLIANCES to binding.categories.categAppliances,
-            ItemCategory.CLOTHESSHOES to binding.categories.categClothesshoes,
-            ItemCategory.DEVICES to binding.categories.categDevices,
-            ItemCategory.EDUCATION to binding.categories.categEducation,
-            ItemCategory.FOODDRINK to binding.categories.categFooddrink,
-            ItemCategory.FURNITURE to binding.categories.categFurniture,
-            ItemCategory.GARDEN to binding.categories.categGarden,
-            ItemCategory.MEDICAL to binding.categories.categMedical
+            ItemCategory.APPLIANCES to binding.hiddenCategories.categAppliances,
+            ItemCategory.CLOTHESSHOES to binding.hiddenCategories.categClothesshoes,
+            ItemCategory.DEVICES to binding.hiddenCategories.categDevices,
+            ItemCategory.EDUCATION to binding.hiddenCategories.categEducation,
+            ItemCategory.FOODDRINK to binding.hiddenCategories.categFooddrink,
+            ItemCategory.FURNITURE to binding.hiddenCategories.categFurniture,
+            ItemCategory.GARDEN to binding.hiddenCategories.categGarden,
+            ItemCategory.MEDICAL to binding.hiddenCategories.categMedical
         )
 
         val result = arrayListOf<ItemCategory>()

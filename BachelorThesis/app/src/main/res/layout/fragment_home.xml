@@ -18,6 +18,7 @@
         android:id="@+id/main_home_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingStart="10dp"
         android:paddingTop="10dp"
         android:paddingEnd="10dp">
 
@@ -40,31 +41,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:foregroundGravity="center"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <include
             android:id="@+id/searchSwitchLayout"
-            layout="@layout/search_switch_header"/>
+            layout="@layout/search_switch_header" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/searchSwitchLayout"
-            app:layout_constraintStart_toStartOf="parent"
+            android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
-            android:scrollbars="none">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchSwitchLayout">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                app:layout_constraintTop_toBottomOf="@id/searchSwitchLayout"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/searchSwitchLayout">
 
                 <LinearLayout
                     android:id="@+id/sort_info_filter_layout"
@@ -73,10 +73,10 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/home_recycler_view"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/home_recycler_view">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <Button
                         android:id="@+id/buttonSort"
@@ -93,15 +93,15 @@
                         android:id="@+id/text_number_items"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="end|center_vertical"
-                        android:layout_marginEnd="6dp"
                         android:layout_marginStart="5dp"
-                        android:text="0"
-                        android:textSize="15sp"
-                        android:textColor="@color/black"
+                        android:layout_marginEnd="6dp"
                         android:layout_weight="1"
                         android:ellipsize="end"
+                        android:gravity="end|center_vertical"
                         android:maxLines="1"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
                         app:layout_constraintHorizontal_bias="0.95" />
 
                     <TextView
@@ -109,12 +109,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
                         android:baselineAligned="false"
                         android:gravity="clip_vertical|center_vertical"
                         android:text="@string/items"
-                        android:textSize="12sp"
                         android:textColor="@color/black"
-                        android:layout_weight="1"
+                        android:textSize="12sp"
                         app:layout_constraintHorizontal_bias="0.95" />
 
                     <Button
@@ -133,29 +133,27 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/home_recycler_view"
-                    android:layout_width="350dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/card_item"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="100dp"
                     android:adapter="@{itemsAdapter}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/sort_info_filter_layout"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="100dp"/>
+                    tools:listitem="@layout/card_item" />
 
-<!--                &lt;!&ndash; Dummy view for correct spacing &ndash;&gt;-->
-<!--                <View-->
-<!--                    android:id="@+id/view"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="100dp"-->
-<!--                    android:layout_weight="1"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/home_recycler_view" />-->
+                <!--                &lt;!&ndash; Dummy view for correct spacing &ndash;&gt;-->
+                <!--                <View-->
+                <!--                    android:id="@+id/view"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="100dp"-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@id/home_recycler_view" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

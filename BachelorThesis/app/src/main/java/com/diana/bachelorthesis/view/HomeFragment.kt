@@ -1,5 +1,6 @@
 package com.diana.bachelorthesis.view
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHomeBinding
@@ -53,6 +56,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         val root: View = binding.root
 
         binding.searchSwitchLayout.searchView.clearFocus()
+        updateRecyclerViewSpan()
 
         updateRecyclerView(arrayListOf(), true)
         getViewModels()
@@ -68,6 +72,14 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 //        }
 
         return root
+    }
+
+    private fun updateRecyclerViewSpan() {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            binding.homeRecyclerView.layoutManager = GridLayoutManager(requireActivity(), 1)
+        } else {
+            binding.homeRecyclerView.layoutManager = GridLayoutManager(requireActivity(), 2)
+        }
     }
 
     private fun getViewModels() {

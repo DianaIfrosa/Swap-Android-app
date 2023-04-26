@@ -22,7 +22,7 @@
 
     <string name="make_exchange">Exchanges</string>
     <string name="make_donation">Donations</string>
-    <string name="add_item_button_home">Add item button home</string>
+    <string name="add_item_button_home">Add item button from home</string>
     <string name="filter">Filter</string>
     <string name="sort">Sort</string>
     <string name="items">item(s)</string>

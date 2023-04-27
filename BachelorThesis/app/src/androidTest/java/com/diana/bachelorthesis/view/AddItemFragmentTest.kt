@@ -241,5 +241,6 @@ class AddItemFragmentTest
 
     //TODO pus strings in documentatie
     //TODO pus ss cu testele trecute in documentatie
+    //TODO de refacut pozele din documentatie ptc am schimbat intrebarea de la exchange
 
 }

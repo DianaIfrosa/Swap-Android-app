@@ -5,13 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/purple_dark"
-    android:orientation="vertical"
     tools:context=".view.IntroAuthFragment">
 
+<!--    <LinearLayout-->
+<!--        android:id="@+id/carousel_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical">-->
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
         />
 
     <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
@@ -26,11 +31,22 @@
         app:dotsSpacing="4dp"
         app:dotsStrokeWidth="1dp"
         app:stiffness="300"
-        android:layout_gravity="center"
-        android:layout_marginBottom="15dp"
-        android:layout_above="@id/btn_signup"
-        android:layout_centerHorizontal="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         />
+<!--    </LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="50dp"
+        android:layout_alignParentEnd="true">
+
     <Button
         android:id="@+id/btn_signup"
         android:layout_width="wrap_content"
@@ -39,8 +55,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/btn_transparent_with_stroke"
-        android:layout_above="@id/btn_login"
-        android:layout_centerHorizontal="true"
         android:paddingStart="50dp"
         android:paddingTop="10dp"
         android:paddingEnd="50dp"
@@ -49,15 +63,12 @@
         android:textColor="@color/white"
         android:textSize="20sp" />
 
-
     <Button
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
-        android:layout_above="@id/google_login_layout"
         android:paddingStart="15dp"
         android:paddingTop="10dp"
         android:paddingEnd="15dp"
@@ -69,7 +80,6 @@
         android:id="@+id/google_login_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:layout_marginBottom="30dp"
         android:gravity="center">
@@ -89,6 +99,7 @@
         android:drawableRight="@drawable/google_logo"
         android:background="@android:color/transparent"
         android:text="Continue with" />
+    </LinearLayout>
     </LinearLayout>
 
     <!-- Google logo source: https://icons8.com/icons/set/google-android-->

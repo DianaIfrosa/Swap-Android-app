@@ -58,7 +58,7 @@
     <string name="required">Required</string>
     <string name="description">Description</string>
     <string name="purpose">Purpose</string>
-    <string name="question_add_item_preferences">What category of objects would you like to trade with?</string>
+    <string name="question_add_item_preferences">What category of objects would you like to make exchange with?</string>
     <string name="category">Category</string>
     <string name="photos_min_2">Photos (min. 2)</string>
     <string name="location">Location</string>

@@ -35,7 +35,6 @@ class UserRepository {
             instance ?: UserRepository().also { instance = it }
     }
 
-
      fun restoreCurrentUserData(callback: NoParamCallback) {
         getUserData(auth.currentUser!!.email!!, object: OneParamCallback<User>{
             override fun onComplete(value: User?) {
@@ -125,7 +124,7 @@ class UserRepository {
                         callback.onError(task.exception)
                     }
                 } else {
-                    Log.w(TAG, "Error while retrieving user $email, see message below")
+                    Log.w(TAG, "Error while retrieving user $email data, see message below")
                     if (task.exception != null) {
                         Log.w(TAG, task.exception!!.message.toString())
                     }

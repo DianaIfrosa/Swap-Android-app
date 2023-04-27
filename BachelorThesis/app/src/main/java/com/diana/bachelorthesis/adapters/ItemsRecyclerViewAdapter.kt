@@ -12,13 +12,19 @@ import com.diana.bachelorthesis.utils.CustomClickListener
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.CardItemBinding
 import com.diana.bachelorthesis.model.Item
+import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.repository.PhotoRepository
+import com.diana.bachelorthesis.repository.UserRepository
+import com.diana.bachelorthesis.utils.OneParamCallback
+import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 class ItemsRecyclerViewAdapter(private var itemsList: List<Item>, var context: Context) :
     RecyclerView.Adapter<ItemsRecyclerViewAdapter.ItemViewHolder>(),
     CustomClickListener {
 
     private val TAG: String = ItemsRecyclerViewAdapter::class.java.name
+    private val userRepository = UserRepository.getInstance()
 
     inner class ItemViewHolder(val cardItemBinding: CardItemBinding) :
         RecyclerView.ViewHolder(cardItemBinding.root)
@@ -35,10 +41,24 @@ class ItemsRecyclerViewAdapter(private var itemsList: List<Item>, var context: C
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem: Item = itemsList[position]
+        userRepository.getUserData(currentItem.owner, object: OneParamCallback<User> {
+            override fun onComplete(value: User?) {
+                if (value != null) {
+                    holder.cardItemBinding.ownerName.text = value.name
+                    Picasso.get().load(value.profilePhoto).into(holder.cardItemBinding.ownerPicture)
+                } else {
+                    holder.cardItemBinding.ownerName.text = "-"
+                }
+            }
+
+            override fun onError(e: Exception?) {
+                holder.cardItemBinding.ownerName.text = "-"
+            }
+
+        })
         holder.cardItemBinding.model = currentItem
         holder.cardItemBinding.itemClickListener = this
         holder.cardItemBinding.photoCarousel.setImageList(getPhotos(currentItem))
-        holder.cardItemBinding.photoCarousel
     }
 
     override fun getItemCount(): Int {

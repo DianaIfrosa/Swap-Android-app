@@ -33,6 +33,7 @@ class FilterDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d(TAG, "FilterDialogFragment is onCreateView")
         _binding = FragmentFilterDialogBinding.inflate(inflater, container, false)
         val root: View = binding.root
         fragmentParent = parentFragment as HomeFragment
@@ -43,11 +44,13 @@ class FilterDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "FilterDialogFragment is onCreate")
         restoreValues()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "FilterDialogFragment is onViewCreated")
 
         val adapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, cities)
@@ -149,7 +152,7 @@ class FilterDialogFragment : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        Log.d(TAG, "FilterDialogFragment is destroyed")
+        Log.d(TAG, "FilterDialogFragment is onDestroyView")
     }
 
     // TODO filtrare dupa categorie, dupa owner (cautare dupa nume), oras, tara?

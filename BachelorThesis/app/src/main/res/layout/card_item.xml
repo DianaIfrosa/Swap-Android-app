@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -25,97 +25,95 @@
             android:layout_gravity="center"
             android:onClick="@{() -> itemClickListener.cardClicked(model)}">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:background="@color/blue_light">
 
-                <TextView
-                    android:id="@+id/item_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginBottom="45dp"
-                    android:hint="name"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:maxWidth="230sp"
-                    android:text="@{model.name}"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/photo_carousel" />
-
-                <TextView
-                    android:id="@+id/item_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="16dp"
-                    android:gravity="center"
-                    android:hint="address"
-
-                    android:maxWidth="130sp"
-                    android:textStyle="italic"
-
-                    android:text="@{model.city}"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    app:drawableLeftCompat="@drawable/ic_map_point"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/item_name" />
 
                 <com.denzcoskun.imageslider.ImageSlider
                     android:id="@+id/photo_carousel"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="120dp"
+                    android:layout_alignParentTop="true"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="10dp"
                     android:isScrollContainer="true"
                     app:iss_corner_radius="30"
-                    app:iss_error_image="@drawable/unavailable"
-                    app:layout_constraintBottom_toTopOf="@+id/item_name"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                </com.denzcoskun.imageslider.ImageSlider>
+                    app:iss_error_image="@drawable/unavailable" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center"
-                    android:maxWidth="70dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
-
-                    <ImageButton
-                        android:id="@+id/owner_picture"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:background="@drawable/circle_layout" />
+                    android:layout_below="@id/photo_carousel"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="25dp"
+                    android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/item_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="15dp"
-                        android:fontFamily="More Fonts..."
-                        android:maxWidth="50dp"
-                        android:text="Alexandrad"
-                        android:textSize="10sp" />
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:hint="name"
+                        android:maxWidth="230sp"
+                        android:maxLines="1"
+                        android:text="@{model.name}"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/item_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="15dp"
+                        android:gravity="center"
+                        android:hint="address"
+
+                        android:maxWidth="130sp"
+                        android:text="@{model.city}"
+
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="italic"
+                        app:drawableLeftCompat="@drawable/ic_map_point" />
 
                 </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageButton
+                    android:id="@+id/owner_picture"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/photo_carousel"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/shape_circle"
+                    android:clipToOutline="true"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/owner_name"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/owner_picture"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="10dp"
+                    android:ellipsize="end"
+                    android:maxWidth="60dp"
+                    android:maxLines="1"
+                    android:textSize="11sp" />
+
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
     </LinearLayout>

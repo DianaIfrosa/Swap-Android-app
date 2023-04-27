@@ -11,8 +11,6 @@ import com.diana.bachelorthesis.repository.UserRepository
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthProvider
 import com.google.firebase.auth.FirebaseUser
 import java.io.File
 import kotlin.Exception
@@ -68,7 +66,7 @@ class UserViewModel : ViewModel() {
         return userRepository.auth.currentUser!!.displayName!!
     }
 
-    fun setCurrentUserData(email: String, callback: NoParamCallback) {
+    fun setUserData(email: String, callback: NoParamCallback) {
         userRepository.getUserData(email, object : OneParamCallback<User> {
             override fun onComplete(value: User?) {
                 userRepository.currentUser = value!!

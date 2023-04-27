@@ -126,7 +126,7 @@ class IntroAuthFragment : Fragment(), BasicFragment {
                     override fun onComplete() {
                         Log.d(TAG, "Add user completed")
                         // After adding the user into the DB, update the currentUser object
-                        userViewModel.setCurrentUserData(email, object: NoParamCallback {
+                        userViewModel.setUserData(email, object: NoParamCallback {
                             override fun onComplete() {
                                 (requireActivity() as MainActivity).updateAuthUIElements()
                                 requireView().findNavController()

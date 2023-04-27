@@ -31,14 +31,17 @@ import com.diana.bachelorthesis.databinding.FragmentAddItemBinding
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.ItemCondition
 import com.diana.bachelorthesis.utils.BasicFragment
+import com.diana.bachelorthesis.utils.LocationDialogListener
 import com.diana.bachelorthesis.utils.LocationHelper
 import com.diana.bachelorthesis.viewmodel.AddItemViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFragment {
+class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFragment,
+    LocationDialogListener {
 
     private val TAG: String = AddItemFragment::class.java.name
     private val MIN_LENGTH_TITLE = 3
@@ -245,7 +248,9 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         }
 
         binding.itemLocationButton.setOnClickListener {
-            //TODO add here the location logic
+            val locationDialogFragment = LocationDialogFragment()
+            locationDialogFragment.isCancelable = true //TODO change to false
+            locationDialogFragment.show(childFragmentManager, "LocationDialogFragment")
         }
 
         binding.iconLocationButton.setOnClickListener {
@@ -531,6 +536,10 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         binding.spinnerCategories.setSelection(0)
         binding.itemYearEdittext.setText("")
         binding.spinnerCondition.setSelection(0)
+    }
+
+    override fun saveLocation(location: GeoPoint?) {
+        addItemViewModel.itemLocation = location
     }
 
     override fun onDestroyView() {

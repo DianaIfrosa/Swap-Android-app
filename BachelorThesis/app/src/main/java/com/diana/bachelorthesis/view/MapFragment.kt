@@ -330,11 +330,11 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
 //        fusedLocationClient.removeLocationUpdates(locationCallback)
 //    }
 
+    override fun onMarkerClick(marker: Marker) = false
+
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d(TAG, "MapFragment is onDestroyView")
         _binding = null
     }
-
-    override fun onMarkerClick(marker: Marker) = false
 }

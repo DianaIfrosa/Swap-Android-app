@@ -27,6 +27,7 @@ class SortDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d(TAG, "SortDialogFragment is onCreateView")
         _binding = FragmentSortDialogBinding.inflate(inflater, container, false)
         val root: View = binding.root
         fragmentParent = parentFragment as HomeFragment
@@ -37,6 +38,7 @@ class SortDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "SortDialogFragment is onCreate")
 
         val bundle = this.arguments
         sortOption = bundle?.getInt("sortOption") ?: 0
@@ -44,6 +46,7 @@ class SortDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "SortDialogFragment is onViewCreated")
         radioButtonsGroup = binding.sortRadioButtons
         restoreSortOption()
 
@@ -72,6 +75,6 @@ class SortDialogFragment : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        Log.d(TAG, "SortDialogFragment is destroyed")
+        Log.d(TAG, "SortDialogFragment is onDestroyView")
     }
 }

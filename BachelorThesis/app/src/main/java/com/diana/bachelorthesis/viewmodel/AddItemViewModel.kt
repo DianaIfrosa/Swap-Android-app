@@ -32,7 +32,7 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
     var itemDescription: String = ""
     var itemYear: Int? = null
     var itemExchangePreferences:  ArrayList<ItemCategory> = arrayListOf()
-    var itemLocation: GeoPoint? = GeoPoint(46.778412423269, 23.60968729915669)  // FIXME get city from geopoint and assign to item
+    var itemLocation: GeoPoint? = null
     var itemOwner: String = userRepository.currentUser.email
 
     class ViewModelFactory(private val arg: LocationHelper) : ViewModelProvider.Factory {

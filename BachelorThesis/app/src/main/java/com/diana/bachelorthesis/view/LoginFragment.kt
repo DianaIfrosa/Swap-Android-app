@@ -67,7 +67,7 @@ class LoginFragment : Fragment(), BasicFragment {
                 userViewModel.logInUser(email, pass,
                     object : OneParamCallback<FirebaseUser> {
                         override fun onComplete(value: FirebaseUser?) {
-                            userViewModel.setCurrentUserData(email, object: NoParamCallback{
+                            userViewModel.setUserData(email, object: NoParamCallback{
                                 override fun onComplete() {
                                     button.doneLoadingAnimation(
                                         R.color.green_light,

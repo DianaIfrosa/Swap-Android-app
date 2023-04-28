@@ -157,9 +157,37 @@ class RegisterFragment : Fragment(), BasicFragment {
 
             } else {
                 it.revertAnimation()
-                Toast.makeText(requireActivity(), R.string.invalid_fields, Toast.LENGTH_LONG).show()
+                displayRequiredStatus()
             }
         }
+    }
+
+    private fun displayRequiredStatus() {
+
+        val email = binding.editextEmail.text.toString().trim()
+        if (email.isEmpty()) {
+            emailOk = getFieldStatus(
+                email,
+                ::validEmail,
+                binding.iconEmailStatus,
+                binding.emailInputLayout,
+                getString(R.string.email_required),
+                getString(R.string.email_invalid)
+            )
+        }
+
+        val name = binding.editextName.text.toString().trim()
+        if (name.isEmpty()) {
+            nameOk = getFieldStatus(
+                name,
+                ::validName,
+                binding.iconNameStatus,
+                binding.nameInputLayout,
+                getString(R.string.name_required),
+                getString(R.string.name_invalid)
+            )
+        }
+        verifyPasswords()
     }
 
     override fun setAppbar() {
@@ -259,7 +287,7 @@ class RegisterFragment : Fragment(), BasicFragment {
     }
 
     private fun validPassConfirmed(passConfirmed: String): Boolean {
-        return passConfirmed == binding.editextPass.text.toString()
+        return passConfirmed == binding.editextPass.text.toString() && passConfirmed.isNotEmpty()
     }
 
     override fun onDestroyView() {

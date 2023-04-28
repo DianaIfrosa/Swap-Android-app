@@ -1,63 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    android:orientation="vertical"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp"
     tools:context=".view.LoginFragment">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="330dp"
-        android:src="@drawable/photo_login"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/email_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:boxBackgroundMode="outline">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editext_email"
+        <ImageView
+            android:id="@+id/login_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="330dp"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/photo_login" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/email_hint" />
+            android:layout_marginBottom="10dp"
+            app:boxBackgroundMode="outline"
+            android:layout_below="@id/login_picture"
+            app:helperTextTextColor="@color/red_light">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editext_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email_hint"
+                android:inputType="textEmailAddress"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/pass_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:boxBackgroundMode="outline"
-        app:passwordToggleEnabled="true">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editext_pass"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/pass_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password_hint"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginBottom="10dp"
+            app:boxBackgroundMode="outline"
+            app:helperTextTextColor="@color/red_light"
+            android:layout_below="@id/email_input_layout"
+            app:passwordToggleEnabled="true">
 
-    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
-        android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/shape_rounded"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:text="@string/login" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editext_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password_hint"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-</LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pass_input_layout"
+
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical">
+
+            <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+                android:id="@+id/btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_rounded"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/login" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</ScrollView>

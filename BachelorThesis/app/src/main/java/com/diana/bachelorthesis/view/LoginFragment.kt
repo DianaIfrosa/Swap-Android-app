@@ -55,14 +55,9 @@ class LoginFragment : Fragment(), BasicFragment {
             val email = binding.editextEmail.text.toString()
             val pass = binding.editextPass.text.toString()
 
-            if (email.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(
-                    requireActivity(),
-                    R.string.required,
-                    Toast.LENGTH_LONG
-                ).show()
-                //TODO display helper text here as well
-            } else {
+
+            getFieldStatus()
+            if (email.isNotEmpty() && pass.isNotEmpty()) {
                 button.startAnimation()
                 userViewModel.logInUser(email, pass,
                     object : OneParamCallback<FirebaseUser> {
@@ -114,6 +109,32 @@ class LoginFragment : Fragment(), BasicFragment {
                             }
                         }
                     })
+            }
+        }
+    }
+
+    private fun getFieldStatus() {
+        if (binding.editextEmail.text.toString().isEmpty()) {
+            binding.emailInputLayout.apply {
+                isHelperTextEnabled = true
+                helperText = getString(R.string.email_required)
+            }
+        } else {
+            binding.emailInputLayout.apply {
+                isHelperTextEnabled = false
+                helperText = ""
+            }
+        }
+
+        if (binding.editextPass.text.toString().isEmpty()) {
+            binding.passInputLayout.apply {
+                isHelperTextEnabled = true
+                helperText = getString(R.string.pass_required)
+            }
+        } else {
+            binding.passInputLayout.apply {
+                isHelperTextEnabled = false
+                helperText = ""
             }
         }
     }

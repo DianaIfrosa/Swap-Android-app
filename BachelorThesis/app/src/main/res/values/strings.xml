@@ -144,5 +144,7 @@
     <string name="you">You</string>
     <string name="location_chosen">Location chosen</string>
     <string name="search">Search</string>
+    <string name="sign_out">Sign out</string>
+    <string name="continue_with">Continue with</string>
 
 </resources>

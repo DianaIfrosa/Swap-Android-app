@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/blue_medium"
+    android:background="@color/pastel_purple"
     android:paddingStart="60dp">
 
 
@@ -14,7 +14,7 @@
         android:layout_marginTop="10dp"
         android:layout_gravity="start"
         android:background="@drawable/shape_circle"
-        android:src="@drawable/image_3"
+        android:src="@drawable/auth_map"
         android:scaleType="centerCrop"
         android:clipToOutline="true"
         />

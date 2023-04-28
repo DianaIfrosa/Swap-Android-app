@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/purple_medium">
+    android:background="@color/pastel_blue">
 
 
         <ImageView
@@ -12,7 +12,7 @@
             android:layout_marginTop="30dp"
             android:layout_gravity="center"
             android:background="@drawable/shape_circle"
-            android:src="@drawable/image_1"
+            android:src="@drawable/auth_add_item"
             android:scaleType="centerCrop"
             android:clipToOutline="true"
         />

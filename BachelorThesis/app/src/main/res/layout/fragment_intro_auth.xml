@@ -59,9 +59,9 @@
         android:background="@android:color/transparent"
         android:layout_above="@id/google_login_layout"
         android:paddingStart="15dp"
-        android:paddingTop="10dp"
+        android:paddingTop="5dp"
         android:paddingEnd="15dp"
-        android:paddingBottom="10dp"
+
         android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="17sp" />
@@ -76,7 +76,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="or"
+            android:text="@string/or"
             android:textSize="15sp"
             android:layout_gravity="center"
             android:textColor="@color/white" />
@@ -85,9 +85,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:drawableRight="@drawable/google_logo"
+        android:drawableEnd="@drawable/google_logo"
         android:background="@android:color/transparent"
-        android:text="Continue with" />
+        android:layout_marginBottom="10dp"
+        android:textSize="14sp"
+        android:text="@string/continue_with" />
     </LinearLayout>
 
     <!-- Google logo source: https://icons8.com/icons/set/google-android-->

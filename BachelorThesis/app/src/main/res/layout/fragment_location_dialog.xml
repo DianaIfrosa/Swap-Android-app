@@ -2,61 +2,76 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.LocationDialogFragment"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:weightSum="1">
+    tools:context=".view.LocationDialogFragment">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/place_autocomplete_fragment"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        />
+        android:layout_alignParentTop="true" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?android:attr/progressBarStyle"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
     <!--    </androidx.cardview.widget.CardView>-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map_fragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/place_autocomplete_fragment"
-        android:layout_alignParentBottom="true">
-    </androidx.fragment.app.FragmentContainerView>
+        android:layout_height="300dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@id/place_autocomplete_fragment"/>
 
-
-    <Button
-        android:id="@+id/cancel_location"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:background="@drawable/btn_small"
-        android:textColor="@color/black"
-        android:textSize="11sp"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_below="@id/map_fragment"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:padding="5dp"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/save_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/btn_small"
-        android:textColor="@color/black"
-        android:textSize="11sp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"/>
+        <Button
+            android:id="@+id/cancel_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/btn_small"
+            android:text="@string/cancel"
+            android:textColor="@color/black"
+            android:layout_alignParentStart="true"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="11sp" />
+
+<!--        &lt;!&ndash; Dummy view for correct spacing &ndash;&gt;-->
+<!--        <View-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1" />-->
+
+        <Button
+            android:id="@+id/save_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/btn_small"
+            android:text="@string/save"
+            android:textColor="@color/black"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="11sp" />
+    </RelativeLayout>
 
 </RelativeLayout>

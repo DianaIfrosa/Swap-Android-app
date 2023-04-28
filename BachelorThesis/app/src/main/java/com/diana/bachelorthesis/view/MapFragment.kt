@@ -221,7 +221,7 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
 
     private fun markerCurrentLocation(location: Location) {
         val currentLatLng = LatLng(location.latitude, location.longitude)
-        val markerOptions = MarkerOptions().position(currentLatLng).title("You").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+        val markerOptions = MarkerOptions().position(currentLatLng).title(getString(R.string.you)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
         googleMap.addMarker(markerOptions)
     }
 

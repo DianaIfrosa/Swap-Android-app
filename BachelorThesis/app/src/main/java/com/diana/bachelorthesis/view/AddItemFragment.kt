@@ -35,6 +35,7 @@ import com.diana.bachelorthesis.utils.LocationDialogListener
 import com.diana.bachelorthesis.utils.LocationHelper
 import com.diana.bachelorthesis.viewmodel.AddItemViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
+import com.google.android.libraries.places.api.model.Place
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.coroutineScope
@@ -249,7 +250,21 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
         binding.itemLocationButton.setOnClickListener {
             val locationDialogFragment = LocationDialogFragment()
-            locationDialogFragment.isCancelable = true //TODO change to false
+            locationDialogFragment.isCancelable = false
+            var lat: Double
+            var long: Double
+            if (addItemViewModel.itemLocation != null) {
+                lat = addItemViewModel.itemLocation!!.latitude
+                long = addItemViewModel.itemLocation!!.longitude
+            } else {
+                lat = 0.0
+                long = 0.0
+            }
+
+            val bundle = Bundle()
+            bundle.putDouble("latitude", lat)
+            bundle.putDouble("longitude", long)
+            locationDialogFragment.arguments = bundle
             locationDialogFragment.show(childFragmentManager, "LocationDialogFragment")
         }
 
@@ -538,13 +553,22 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         binding.spinnerCondition.setSelection(0)
     }
 
-    override fun saveLocation(location: GeoPoint?) {
-        addItemViewModel.itemLocation = location
+    override fun saveLocation(location: Place?) {
+
+        addItemViewModel.itemLocation = location?.latLng?.let { GeoPoint(it.latitude, it.longitude) }
+        if (location!= null) {
+            binding.locationChosen.apply {
+                visibility = View.VISIBLE
+                text = location.address
+            }
+            binding.itemLocationButton.text = getString(R.string.change_location)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d(TAG, "AddItemFragment is onDestroyView")
+        addItemViewModel.restoreDefaultValues()
 //        cleanUIElements()
         _binding = null
     }

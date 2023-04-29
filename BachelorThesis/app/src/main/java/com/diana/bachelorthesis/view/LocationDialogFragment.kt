@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
+
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentLocationDialogBinding
 import com.diana.bachelorthesis.utils.LocationDialogListener
@@ -27,10 +29,22 @@ class LocationDialogFragment : DialogFragment(), OnMapReadyCallback,
     private var _binding: FragmentLocationDialogBinding? = null
     private val binding get() = _binding!!
     private lateinit var fragmentParent: AddItemFragment
+    private lateinit var toolbar: Toolbar
     private lateinit var googleMap: GoogleMap
     private var mapLoaded: Boolean = false
     private var locationChosen: Place? = null
     private var previousLocationChosen: GeoPoint? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "ItemLocationFragment is onCreate")
+        setStyle(STYLE_NORMAL,  R.style.FullScreenDialog)
+
+        val bundle = this.arguments
+        val lat = bundle?.getDouble("latitude") ?: 0.0
+        val long = bundle?.getDouble("longitude") ?: 0.0
+        previousLocationChosen = GeoPoint(lat, long)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,27 +55,39 @@ class LocationDialogFragment : DialogFragment(), OnMapReadyCallback,
         val root: View = binding.root
         fragmentParent = parentFragment as AddItemFragment
 //        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
+        toolbar = root.findViewById(R.id.toolbar_dialog_location)
         binding.mapFragment.visibility = View.GONE
         binding.placeAutocompleteFragment.visibility = View.GONE
         binding.progressBar.visibility = View.VISIBLE
         return root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "ItemLocationFragment is onCreate")
 
-        val bundle = this.arguments
-        val lat = bundle?.getDouble("latitude") ?: 0.0
-        val long = bundle?.getDouble("longitude") ?: 0.0
-        previousLocationChosen = GeoPoint(lat, long)
-    }
+//    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+//        return super.onCreateDialog(savedInstanceState)
+//    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "ItemLocationFragment is onViewCreated")
+        toolbar.title = getString(R.string.choose_location)
+        toolbar.setTitleTextColor(resources.getColor(R.color.purple_dark))
+        toolbar.setNavigationOnClickListener {
+            dialog!!.dismiss()
+        }
+        toolbar.inflateMenu(R.menu.choose_location_menu)
+        toolbar.setOnMenuItemClickListener {
+            val listener: LocationDialogListener = fragmentParent
+            listener.saveLocation(locationChosen)
+            dialog!!.dismiss()
+            true
+        }
+        initMaps()
+//        initListeners()
+    }
+
+    private fun initMaps() {
         MapsInitializer.initialize(
             requireActivity().applicationContext,
             MapsInitializer.Renderer.LATEST,
@@ -70,20 +96,6 @@ class LocationDialogFragment : DialogFragment(), OnMapReadyCallback,
 
         if (!Places.isInitialized()) {
             Places.initialize(requireActivity().applicationContext, getString(R.string.api_key))
-        }
-
-        initListeners()
-    }
-
-    private fun initListeners() {
-        binding.saveLocation.setOnClickListener {
-            val listener: LocationDialogListener = fragmentParent
-            listener.saveLocation(locationChosen)
-            dialog!!.dismiss()
-        }
-
-        binding.cancelLocation.setOnClickListener {
-            dialog!!.dismiss()
         }
     }
 
@@ -94,6 +106,27 @@ class LocationDialogFragment : DialogFragment(), OnMapReadyCallback,
             childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
 
         mapFragment.getMapAsync(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (dialog != null) {
+            val width = ViewGroup.LayoutParams.MATCH_PARENT
+            val height = ViewGroup.LayoutParams.MATCH_PARENT
+            dialog!!.window?.setLayout(width, height)
+        }
+    }
+
+    private fun initListeners() {
+//        binding.toolbarDialogLocation.setOnClickListener {
+//            val listener: LocationDialogListener = fragmentParent
+//            listener.saveLocation(locationChosen)
+//            dialog!!.dismiss()
+//        }
+
+        binding.toolbarDialogLocation.setOnClickListener {
+            dialog!!.dismiss()
+        }
     }
 
     override fun onMapReady(map: GoogleMap) {

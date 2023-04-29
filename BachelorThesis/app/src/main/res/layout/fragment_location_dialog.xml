@@ -1,77 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".view.LocationDialogFragment">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/place_autocomplete_fragment"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+        android:theme="@style/Theme.BachelorThesis.AppBarOverlay">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
-    <!--    </androidx.cardview.widget.CardView>-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_dialog_location"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/purple_light"
+            app:popupTheme="@style/Theme.BachelorThesis.PopupOverlay"
+            app:navigationIcon="@drawable/ic_back"
+            app:contentInsetStartWithNavigation="0dp"
+            />
+        <!-- Change background to ?attr/colorPrimary-->
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map_fragment"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_below="@id/place_autocomplete_fragment"/>
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/map_fragment"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:padding="5dp"
-        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/cancel_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/btn_small"
-            android:text="@string/cancel"
-            android:textColor="@color/black"
-            android:layout_alignParentStart="true"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:textSize="11sp" />
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/place_autocomplete_fragment"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"/>
 
-<!--        &lt;!&ndash; Dummy view for correct spacing &ndash;&gt;-->
-<!--        <View-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1" />-->
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"/>
+            <!--    </androidx.cardview.widget.CardView>-->
 
-        <Button
-            android:id="@+id/save_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/btn_small"
-            android:text="@string/save"
-            android:textColor="@color/black"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:textSize="11sp" />
-    </RelativeLayout>
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/map_fragment"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@id/place_autocomplete_fragment"/>
 
-</RelativeLayout>
+            <!--    <RelativeLayout-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:layout_below="@id/map_fragment"-->
+            <!--        android:layout_marginTop="10dp"-->
+            <!--        android:layout_marginBottom="10dp"-->
+            <!--        android:padding="5dp"-->
+            <!--        android:orientation="horizontal">-->
+
+            <!--        <Button-->
+            <!--            android:id="@+id/cancel_location"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_marginStart="10dp"-->
+            <!--            android:layout_marginBottom="5dp"-->
+            <!--            android:background="@drawable/btn_small"-->
+            <!--            android:text="@string/cancel"-->
+            <!--            android:textColor="@color/black"-->
+            <!--            android:layout_alignParentStart="true"-->
+            <!--            android:paddingStart="10dp"-->
+            <!--            android:paddingEnd="10dp"-->
+            <!--            android:textSize="11sp" />-->
+
+            <!--&lt;!&ndash;        &lt;!&ndash; Dummy view for correct spacing &ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;        <View&ndash;&gt;-->
+            <!--&lt;!&ndash;            android:layout_width="0dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;            android:layout_weight="1" />&ndash;&gt;-->
+
+            <!--        <Button-->
+            <!--            android:id="@+id/save_location"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_marginEnd="10dp"-->
+            <!--            android:layout_marginBottom="5dp"-->
+            <!--            android:layout_alignParentEnd="true"-->
+            <!--            android:background="@drawable/btn_small"-->
+            <!--            android:text="@string/save"-->
+            <!--            android:textColor="@color/black"-->
+            <!--            android:paddingStart="10dp"-->
+            <!--            android:paddingEnd="10dp"-->
+            <!--            android:textSize="11sp" />-->
+            <!--    </RelativeLayout>-->
+
+        </RelativeLayout>
+    </FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -250,7 +250,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
         binding.itemLocationButton.setOnClickListener {
             val locationDialogFragment = LocationDialogFragment()
-            locationDialogFragment.isCancelable = false
+            locationDialogFragment.isCancelable = true //TODO Make it false?
             var lat: Double
             var long: Double
             if (addItemViewModel.itemLocation != null) {

@@ -147,5 +147,6 @@
     <string name="sign_out">Sign out</string>
     <string name="continue_with">Continue with</string>
     <string name="item">Item</string>
+    <string name="choose_location">Choose location</string>
 
 </resources>

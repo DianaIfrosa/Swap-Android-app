@@ -173,8 +173,9 @@ class LocationDialogFragment : DialogFragment(), OnMapReadyCallback,
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         Log.d(TAG, "ItemLocationFragment is onDestroyView")
+        _binding = null
+
     }
 
 }

@@ -8,6 +8,7 @@ import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.repository.ItemRepository
 import com.diana.bachelorthesis.utils.LocationHelper
+import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -47,9 +48,12 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         Log.d(TAG, "Populate live data in itemsViewModel")
         repository.getItems(true, object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
-                if (displayExchangeItems)
-                    updateCurrentItems(values)
-                _exchangeItems.value = values
+
+                val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate })// new to old
+                if (displayExchangeItems) {
+                    updateCurrentItems(valuesSorted)
+                }
+                _exchangeItems.value = valuesSorted
                 Log.d(TAG, "Updated exchange items")
 
 //                viewModelScope.launch {
@@ -62,9 +66,11 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
 
         repository.getItems(false, object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
-                if (!displayExchangeItems)
-                    updateCurrentItems(values)
-                _donationItems.value = values
+                val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate })// new to old
+                if (!displayExchangeItems) {
+                    updateCurrentItems(valuesSorted)
+                }
+                _donationItems.value = valuesSorted
                 Log.d(TAG, "Updated donation items")
 //                viewModelScope.launch {
 //                    _donationItems.value = locationHelper.getItemsCities(values)

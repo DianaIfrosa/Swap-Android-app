@@ -146,5 +146,6 @@
     <string name="search">Search</string>
     <string name="sign_out">Sign out</string>
     <string name="continue_with">Continue with</string>
+    <string name="item">Item</string>
 
 </resources>

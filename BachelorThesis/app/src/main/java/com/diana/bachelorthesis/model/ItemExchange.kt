@@ -19,5 +19,4 @@ class ItemExchange(
     photos: ArrayList<String> = arrayListOf(),
     postDate: Timestamp = Timestamp(0,0),
     year: Int? = null
-): Item (itemId, category, city, condition, description, location, name, photos, owner, postDate, year) {
-}
+): Item (itemId, category, city, condition, description, location, name, photos, owner, postDate, year)

@@ -5,7 +5,7 @@ import com.google.firebase.firestore.DocumentReference
 import java.time.LocalDate
 
 
-class History(
+data class History(
     @DocumentId
     var operationId: String,
     var confirmation1: Boolean = false,
@@ -16,6 +16,4 @@ class History(
     val item1: Item,
     val item2: Item? = null,
     val donationReceiver: User? = null // used only when the history object refers to a donation
-) {
-
-}
+)

@@ -32,8 +32,6 @@ class AddItemFragmentTest
 
     @Test
     fun mandatoryFieldsAreRequired() {
-        //TODO break into smaller tests?
-
         // click the Save button and wait for the fields validation to be finished
         onView(withId(R.id.save_item)).perform(scrollTo(),click())
         Thread.sleep(1500)
@@ -150,15 +148,14 @@ class AddItemFragmentTest
 
     @Test
     fun categorySelection() {
-        // FIXME
         val category = "Education"
 
         onView(withId(R.id.item_category)).perform(scrollTo())
-        onView(withId(R.id.item_category)).perform(click())
+        onView(withId(R.id.spinner_categories)).perform(click())
         onData(allOf(`is`(instanceOf(String::class.java)), `is`(category))).perform(click())
 
         // verify the category chosen is displayed
-        onView(withId(R.id.item_category)).check(matches(withSpinnerText(category)))
+        onView(withId(R.id.spinner_categories)).check(matches(withSpinnerText(containsString(category))))
         // verify the category status field does not have any message
         onView(withId(R.id.item_category_status)).check(matches(not(isDisplayed())))
     }
@@ -210,13 +207,13 @@ class AddItemFragmentTest
         // check hidden layout appears below the text and the drawable icon is changed into arrow up
         onView(withId(R.id.hidden_layout_other_details)).check(matches(isDisplayed()))
         onView(withId(R.id.hidden_layout_other_details)).check(isCompletelyBelow(withId(R.id.text_other_details)))
-//FIXME        onView(withId(R.id.hidden_layout_other_details)).check(matches(withTagValue(equalTo(R.drawable.ic_arrow_dropup))))
-//
-//        // check that after clicking again on the icon, the hidden layout disappears and
-//        // the drawable icon is changed into arrow down
+        onView(withId(R.id.text_other_details)).check(matches(withTagValue(equalTo(R.drawable.ic_arrow_dropup))))
+
+        // check that after clicking again on the icon, the hidden layout disappears and
+        // the drawable icon is changed into arrow down
         onView(withId(R.id.text_other_details)).perform(click())
         onView(withId(R.id.hidden_layout_other_details)).check(matches(not(isDisplayed())))
-// FIXME       onView(withId(R.id.hidden_layout_other_details)).check(matches(withTagValue(equalTo(R.drawable.ic_arrow_dropdown))))
+        onView(withId(R.id.text_other_details)).check(matches(withTagValue(equalTo(R.drawable.ic_arrow_dropdown))))
     }
 
     fun checkExchangePurpose() {
@@ -240,7 +237,5 @@ class AddItemFragmentTest
     }
 
     //TODO pus strings in documentatie
-    //TODO pus ss cu testele trecute in documentatie
-    //TODO de refacut pozele din documentatie ptc am schimbat intrebarea de la exchange
 
 }

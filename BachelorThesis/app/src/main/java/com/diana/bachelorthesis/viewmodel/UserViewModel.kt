@@ -66,7 +66,7 @@ class UserViewModel : ViewModel() {
         return userRepository.auth.currentUser!!.displayName!!
     }
 
-    fun setUserData(email: String, callback: NoParamCallback) {
+    fun setCurrentUserData(email: String, callback: NoParamCallback) {
         userRepository.getUserData(email, object : OneParamCallback<User> {
             override fun onComplete(value: User?) {
                 userRepository.currentUser = value!!
@@ -78,6 +78,10 @@ class UserViewModel : ViewModel() {
             }
 
         })
+    }
+
+    fun getUserData(email: String, callback: OneParamCallback<User>) {
+        userRepository.getUserData(email, callback)
     }
 
     fun signOut() {

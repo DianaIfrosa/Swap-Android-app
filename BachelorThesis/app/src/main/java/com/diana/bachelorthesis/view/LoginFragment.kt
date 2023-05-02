@@ -46,7 +46,7 @@ class LoginFragment : Fragment(), BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "LoginFragment is onActivityCreated")
-        setAppbar()
+        setAuthAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
     }
 
     override fun initListeners() {
@@ -62,7 +62,7 @@ class LoginFragment : Fragment(), BasicFragment {
                 userViewModel.logInUser(email, pass,
                     object : OneParamCallback<FirebaseUser> {
                         override fun onComplete(value: FirebaseUser?) {
-                            userViewModel.setUserData(email, object: NoParamCallback{
+                            userViewModel.setCurrentUserData(email, object: NoParamCallback{
                                 override fun onComplete() {
                                     button.doneLoadingAnimation(
                                         R.color.green_light,
@@ -136,19 +136,6 @@ class LoginFragment : Fragment(), BasicFragment {
                 isHelperTextEnabled = false
                 helperText = ""
             }
-        }
-    }
-
-    override fun setAppbar() {
-        requireActivity().findViewById<TextView>(R.id.titleAppBar)?.apply {
-            visibility = View.VISIBLE
-            text = requireView().findNavController().currentDestination!!.label
-        }
-        requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
-            visibility = View.GONE
-        }
-        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
-            visibility = View.INVISIBLE
         }
     }
 

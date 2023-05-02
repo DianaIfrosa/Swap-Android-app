@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentHistoryBinding
 import com.diana.bachelorthesis.utils.BasicFragment
@@ -29,6 +29,7 @@ class HistoryFragment : Fragment(), BasicFragment {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d(TAG, "HistoryFragment is onCreateView")
         val historyViewModel =
             ViewModelProvider(this).get(HistoryViewModel::class.java)
 
@@ -46,7 +47,7 @@ class HistoryFragment : Fragment(), BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "HistoryFragment is onActivityCreated")
-        setAppbar()
+        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
     }
 
     override fun onDestroyView() {
@@ -58,16 +59,4 @@ class HistoryFragment : Fragment(), BasicFragment {
         TODO("Not yet implemented")
     }
 
-    override fun setAppbar() {
-        requireActivity().findViewById<TextView>(R.id.titleAppBar)?.apply {
-            visibility = View.VISIBLE
-            text = requireView().findNavController().currentDestination!!.label
-        }
-        requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
-            visibility = View.GONE
-        }
-        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
-            visibility = View.VISIBLE
-        }
-    }
 }

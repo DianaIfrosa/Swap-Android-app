@@ -21,7 +21,6 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apachat.loadingbutton.core.customViews.CircularProgressButton
@@ -37,9 +36,12 @@ import com.diana.bachelorthesis.viewmodel.AddItemViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFragment,
     LocationDialogListener {
@@ -71,6 +73,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
         _binding = FragmentAddItemBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        val a= Date()
 
         val recyclerView: RecyclerView = binding.photosRecyclerView
         val horizontalLayoutManager =
@@ -94,7 +97,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "AddItemFragment is onActivityCreated")
-        setAppbar()
+//        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
     }
 
     override fun onStart() {
@@ -111,18 +114,6 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         addItemViewModel = ViewModelProvider(this, viewModelFactory)[AddItemViewModel::class.java]
     }
 
-    override fun setAppbar() {
-        requireActivity().findViewById<TextView>(R.id.titleAppBar)?.apply {
-            visibility = View.VISIBLE
-            text = requireView().findNavController().currentDestination!!.label
-        }
-        requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
-            visibility = View.GONE
-        }
-        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
-            visibility = View.VISIBLE
-        }
-    }
 
     // TODO make a general function for spinner adapter that returns the adapter and receives the arrayList of elements
     private fun attachCategoryAdapter() {
@@ -250,9 +241,9 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
         binding.itemLocationButton.setOnClickListener {
             val locationDialogFragment = LocationDialogFragment()
-            locationDialogFragment.isCancelable = true //TODO Make it false?
-            var lat: Double
-            var long: Double
+            locationDialogFragment.isCancelable = true
+            val lat: Double
+            val long: Double
             if (addItemViewModel.itemLocation != null) {
                 lat = addItemViewModel.itemLocation!!.latitude
                 long = addItemViewModel.itemLocation!!.longitude
@@ -523,6 +514,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
             ItemCategory.FOODDRINK to binding.hiddenCategories.categFooddrink,
             ItemCategory.FURNITURE to binding.hiddenCategories.categFurniture,
             ItemCategory.GARDEN to binding.hiddenCategories.categGarden,
+            ItemCategory.GAMES to binding.hiddenCategories.categGames,
             ItemCategory.MEDICAL to binding.hiddenCategories.categMedical
         )
 

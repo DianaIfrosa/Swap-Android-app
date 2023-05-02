@@ -24,20 +24,6 @@
             android:orientation="vertical"
             android:padding="13dp">
 
-            <!--    <TextView-->
-            <!--        android:id="@+id/textAddItem"-->
-            <!--        android:layout_width="match_parent"-->
-            <!--        android:layout_height="wrap_content"-->
-            <!--        android:layout_marginStart="8dp"-->
-            <!--        android:layout_marginTop="8dp"-->
-            <!--        android:layout_marginEnd="8dp"-->
-            <!--        android:textAlignment="center"-->
-            <!--        android:textSize="20sp"-->
-            <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--        app:layout_constraintEnd_toEndOf="parent"-->
-            <!--        app:layout_constraintStart_toStartOf="parent"-->
-            <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
             <LinearLayout
                 android:id="@+id/layout_title"
                 android:layout_width="match_parent"
@@ -320,15 +306,6 @@
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/icon_photos_button"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="5dp"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="18sp"-->
-<!--                        app:drawableRightCompat="@drawable/ic_info" />-->
-
                     <ImageButton
                         android:id="@+id/icon_photos_button"
                         android:layout_width="25dp"
@@ -471,14 +448,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_location">
 
-                <!--     <Button-->
-                <!--         android:id="@+id/button_other_details"-->
-                <!--         android:layout_width="wrap_content"-->
-                <!--         android:layout_height="wrap_content"-->
-                <!--         android:text="+ other details"-->
-                <!--         android:textSize="12sp"-->
-                <!--         android:layout_marginStart="15dp"/>-->
-
                 <TextView
                     android:id="@+id/text_other_details"
                     android:layout_width="wrap_content"
@@ -514,7 +483,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
-                            android:text="@string/manufacturing_year"
+                            android:text="@string/manufacture_year"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 

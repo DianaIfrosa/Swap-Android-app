@@ -19,7 +19,8 @@ import com.diana.bachelorthesis.utils.OneParamCallback
 import com.squareup.picasso.Picasso
 import java.lang.Exception
 
-class ItemsRecyclerViewAdapter(private var itemsList: List<Item>, var context: Context) :
+class ItemsRecyclerViewAdapter(private var itemsList: List<Item>, var context: Context,
+private val onItemClicked: (Item) -> Unit) :
     RecyclerView.Adapter<ItemsRecyclerViewAdapter.ItemViewHolder>(),
     CustomClickListener {
 
@@ -66,25 +67,25 @@ class ItemsRecyclerViewAdapter(private var itemsList: List<Item>, var context: C
     }
 
     override fun cardClicked(item: Item?) {
-        // TODO open item page -> another fragment
-        Toast.makeText(
-            context, "You clicked " + item!!.name,
-            Toast.LENGTH_LONG
-        ).show()
+        if (item != null) {
+            onItemClicked(item)
+        }
     }
 
-    private fun getPhotos(item: Item): List<SlideModel> {
-        val photosList = ArrayList<SlideModel>()
-        for (photo in item.photos) {
-            photosList.add(SlideModel(photo, scaleType = ScaleTypes.CENTER_CROP))
-        }
+    companion object {
+        fun getPhotos(item: Item): List<SlideModel> {
+            val photosList = ArrayList<SlideModel>()
+            for (photo in item.photos) {
+                photosList.add(SlideModel(photo, scaleType = ScaleTypes.CENTER_CROP))
+            }
 
-        if (photosList.isEmpty()) {
-            val url = PhotoRepository.getInstance().unavailablePhotoUrl
-            photosList.add(SlideModel(url, scaleType = ScaleTypes.CENTER_CROP))
-        }
+            if (photosList.isEmpty()) {
+                val url = PhotoRepository.getInstance().unavailablePhotoUrl
+                photosList.add(SlideModel(url, scaleType = ScaleTypes.CENTER_CROP))
+            }
 
-        return photosList
+            return photosList
+        }
     }
 
 }

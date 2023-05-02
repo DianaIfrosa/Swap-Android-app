@@ -14,7 +14,7 @@ import kotlin.collections.ArrayList
 
 class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
     private val TAG: String = ItemsViewModel::class.java.name
-    private val repository = ItemRepository.getInstance()
+    private val itemRepository = ItemRepository.getInstance()
 
     private val _exchangeItems = MutableLiveData<List<Item>>()
     private val _donationItems = MutableLiveData<List<Item>>()
@@ -23,13 +23,13 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
     val donationItems: LiveData<List<Item>> = _donationItems
     // TODO take into consideration to have current items as live data and only observe in fragment
 
-    var currentItems: List<Item> = arrayListOf()
+    var currentItems: ArrayList<Item> = arrayListOf()
     var displayExchangeItems: Boolean = true
 
-    private var searchText: String = ""
+    var searchText: String = ""
     var sortOption: Int = 0
-    private var cityFilter: String = ""
-    private var categoriesFilter: List<ItemCategory> = arrayListOf()
+    var cityFilter: String = ""
+    var categoriesFilter: List<ItemCategory> = arrayListOf()
 
     class ViewModelFactory(private val arg: LocationHelper) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
@@ -46,7 +46,7 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         //_donationItems.value = repository.getItems(false)
 
         Log.d(TAG, "Populate live data in itemsViewModel")
-        repository.getItems(true, object : ListParamCallback<Item> {
+        itemRepository.getItems(true, object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
 
                 val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate })// new to old
@@ -64,7 +64,7 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
             }
         })
 
-        repository.getItems(false, object : ListParamCallback<Item> {
+        itemRepository.getItems(false, object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
                 val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate })// new to old
                 if (!displayExchangeItems) {
@@ -91,7 +91,7 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         }
 
         applySort(sortOption)
-        applyFilter(cityFilter, categoriesFilter, items)
+        applyFilter(cityFilter, categoriesFilter, currentItems)
     }
 
     private fun restoreDefaultOptions() {
@@ -101,10 +101,22 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         categoriesFilter = arrayListOf()
     }
 
+    fun setSearchFilterSortOptions(search: String, sort: Int, city: String, categories: List<ItemCategory>) {
+        searchText = search
+        sortOption = sort
+        cityFilter = city
+        categoriesFilter = categories
+
+        Log.d(TAG, searchText)
+        Log.d(TAG, sortOption.toString())
+        Log.d(TAG, cityFilter)
+        Log.d(TAG, categoriesFilter.joinToString(","))
+    }
+
     fun searchItem(inputText: String) {
         // modifies the currentItems value accordingly
-
-        val result: MutableList<Item> = arrayListOf()
+        Log.d(TAG, "Search item by text $inputText")
+        val result: ArrayList<Item> = arrayListOf()
 
         searchText = inputText
         val inputWords = inputText.split(" ")
@@ -121,12 +133,23 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         currentItems = result
     }
 
-    fun restoreDefaultCurrentItems() {
+    fun restoreDefaultCurrentItemsAndOptions() {
         // restore default sort option and remove filter options selected
+        Log.d(TAG, "Restored default current items.")
         restoreDefaultOptions()
 
         currentItems = if (displayExchangeItems) _exchangeItems.value as ArrayList
         else _donationItems.value as ArrayList
+    }
+
+    fun restoreDefaultCurrentItems() {
+        // restore default sort option and remove filter options selected
+        Log.d(TAG, "Restored default current items.")
+//        restoreDefaultOptions()
+
+        currentItems = if (displayExchangeItems) _exchangeItems.value as ArrayList
+        else _donationItems.value as ArrayList
+        updateCurrentItems(currentItems)
     }
 
     fun applySort(option: Int) {
@@ -135,7 +158,7 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         currentItems = sort(option, currentItems)
     }
 
-    private fun sort(option: Int, items: List<Item>): List<Item> {
+    private fun sort(option: Int, items: ArrayList<Item>): ArrayList<Item> {
         val itemsTemp = when (option) {
             0 -> items.sortedByDescending { item -> item.postDate } // new to old
             1 -> items.sortedBy { item -> item.postDate } // old to new
@@ -146,7 +169,7 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
                 items
             }
         }
-        return itemsTemp
+        return ArrayList(itemsTemp)
     }
 
     fun applyFilter(city: String, categories: List<ItemCategory>, data: ArrayList<Item>? = null) {
@@ -172,16 +195,16 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
     private fun filter(
         city: String,
         categories: List<ItemCategory>,
-        items: List<Item>
-    ): List<Item> {
-        var itemsTemp = items
+        items: ArrayList<Item>
+    ): ArrayList<Item> {
+        var itemsTemp: ArrayList<Item> = items
 
         if (city.isNotEmpty()) {
-            itemsTemp = itemsTemp.filter { item -> item.city == city }
+            itemsTemp = ArrayList(itemsTemp.filter { item -> item.city == city })
         }
 
         if (categories.isNotEmpty()) {
-            itemsTemp = itemsTemp.filter { item -> item.category in categories }
+            itemsTemp = ArrayList(itemsTemp.filter { item -> item.category in categories })
         }
 
         return itemsTemp
@@ -210,6 +233,6 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
     }
 
     fun detachListeners() {
-        repository.detachListeners()
+        itemRepository.detachListeners()
     }
 }

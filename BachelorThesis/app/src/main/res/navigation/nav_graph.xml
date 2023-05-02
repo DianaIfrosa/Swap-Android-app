@@ -75,7 +75,11 @@
         android:id="@+id/nav_item"
         android:name="com.diana.bachelorthesis.view.ItemFragment"
         android:label="@string/item"
-        tools:layout="@layout/fragment_item" />
+        tools:layout="@layout/fragment_item">
+    <argument
+        android:name="ItemClicked"
+        app:argType="com.diana.bachelorthesis.model.Item" />
+    </fragment>
 
 
 </navigation>

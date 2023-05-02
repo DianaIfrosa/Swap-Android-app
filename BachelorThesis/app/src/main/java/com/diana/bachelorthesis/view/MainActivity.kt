@@ -1,8 +1,9 @@
 package com.diana.bachelorthesis.view
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
@@ -11,13 +12,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.ActivityMainBinding
+import com.diana.bachelorthesis.utils.SharedPreferencesUtils
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
@@ -35,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var navView: NavigationView
     private lateinit var headerLayout: View
     lateinit var userViewModel: UserViewModel
+    lateinit var sharedPref: SharedPreferences
+    var returnedHomeFromItemPage: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +79,8 @@ class MainActivity : AppCompatActivity() {
                 handled
             }
         }
+        sharedPref = getPreferences(Context.MODE_PRIVATE)
+        setDefaultSharedPreferencesHomeOptions()
     }
 
     override fun onStart() {
@@ -177,12 +182,25 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "Drawer was open during back press")
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-//            if (navController.currentDestination?.label?.equals(getString(R.string.menu_home)) == true) {
-//                navController.popBackStack(R.navigation.nav_graph, true)
-//                Log.d(TAG, "Popped all back stack while home.")
-//            }
+            if (navController.currentBackStackEntry != null && navController.previousBackStackEntry != null) {
+                if (navController.currentBackStackEntry!!.destination.id == R.id.nav_item &&
+                    navController.previousBackStackEntry!!.destination.id == R.id.nav_home
+                ) {
+                    returnedHomeFromItemPage = true
+                }
+            }
             super.onBackPressed()
+        }
+    }
 
+    private fun setDefaultSharedPreferencesHomeOptions() {
+        Log.d(TAG, "Set Shared Preferences values for home options to default.")
+        with(sharedPref.edit()) {
+            putString(SharedPreferencesUtils.sharedprefSearch, "")
+            putInt(SharedPreferencesUtils.sharedprefSortOption, 0)
+            putString(SharedPreferencesUtils.sharedprefCityFilter,"")
+            putString(SharedPreferencesUtils.sharedPrefCategoriesFilter, "")
+            apply() // asynchronously
         }
     }
 

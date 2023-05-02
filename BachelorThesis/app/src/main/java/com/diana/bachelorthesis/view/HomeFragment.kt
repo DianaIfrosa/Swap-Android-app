@@ -1,41 +1,36 @@
 package com.diana.bachelorthesis.view
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.SearchView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHomeBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
-import com.diana.bachelorthesis.utils.BasicFragment
-import com.diana.bachelorthesis.utils.LocationHelper
-import com.diana.bachelorthesis.utils.NoParamCallback
-import com.diana.bachelorthesis.utils.SortFilterDialogListener
+import com.diana.bachelorthesis.utils.*
 import com.diana.bachelorthesis.viewmodel.ItemsViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import java.lang.Exception
 
-
 class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     private val TAG: String = HomeFragment::class.java.name
+
     private var _binding: FragmentHomeBinding? = null
     lateinit var itemsViewModel: ItemsViewModel
     lateinit var userViewModel: UserViewModel
+    lateinit var sharedPref: SharedPreferences
 
     private val binding get() = _binding!!
 
@@ -60,16 +55,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 
         updateRecyclerView(arrayListOf(), true)
         getViewModels()
-//        if (screenWidth == 0 || screenHeight == 0) {
-//            root.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-//                override fun onGlobalLayout() {
-//                    view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
-//                    screenWidth = view!!.width
-//                    screenHeight = view!!.height
-//                    setChipsDimensions()
-//                }
-//            })
-//        }
 
         return root
     }
@@ -86,13 +71,16 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         val viewModelFactory =
             ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
         itemsViewModel = ViewModelProvider(this, viewModelFactory)[ItemsViewModel::class.java]
-        itemsViewModel.populateLiveData()
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "HomeFragment is onActivityCreated")
+
+        restoreSharedPreferencesData()
+        initListeners()
+        itemsViewModel.populateLiveData()
 
         if (userViewModel.verifyUserLoggedIn()) {
             userViewModel.restoreCurrentUserData(object : NoParamCallback {
@@ -103,43 +91,49 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
                 override fun onError(e: Exception?) {
                     TODO("Not yet implemented")
                 }
-
             })
         }
-        initListeners()
-        setAppbar()
+        setHomeAppbar(requireActivity())
     }
 
-    override fun setAppbar() {
+    private fun restoreSharedPreferencesData() {
+        sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
 
-        requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
-            visibility = View.VISIBLE
+        val categoriesString: String =
+            sharedPref.getString(SharedPreferencesUtils.sharedPrefCategoriesFilter, "") ?: ""
+        val categoriesList: MutableList<ItemCategory> = mutableListOf()
+        if (categoriesString.isNotEmpty()) {
+            categoriesString.split(",").forEach { categoryName ->
+                categoriesList.add(ItemCategory.stringToItemCategory(categoryName))
+            }
         }
-        requireActivity().findViewById<TextView>(R.id.titleAppBar)?.apply {
-            visibility = View.GONE
-        }
-        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
-            visibility = View.VISIBLE
-        }
+
+        itemsViewModel.setSearchFilterSortOptions(
+            sharedPref.getString(SharedPreferencesUtils.sharedprefSearch, "") ?: "",
+            sharedPref.getInt(SharedPreferencesUtils.sharedprefSortOption, 0),
+            sharedPref.getString(SharedPreferencesUtils.sharedprefCityFilter, "") ?: "",
+            categoriesList
+        )
+
     }
 
     override fun initListeners() {
         // FIXME is it really ok this choice of live data?
 
         itemsViewModel.donationItems.observe(viewLifecycleOwner) {
+            Log.d(TAG, "Observed change in donation items live data")
             if (!itemsViewModel.displayExchangeItems) {
                 updateRecyclerView(
-                    itemsViewModel.currentItems,
-                    itemsViewModel.currentItems.isEmpty()
+                    itemsViewModel.currentItems
                 )
             }
         }
 
         itemsViewModel.exchangeItems.observe(viewLifecycleOwner) {
+            Log.d(TAG, "Observed change in exchange items live data")
             if (itemsViewModel.displayExchangeItems)
                 updateRecyclerView(
-                    itemsViewModel.currentItems,
-                    itemsViewModel.currentItems.isEmpty()
+                    itemsViewModel.currentItems
                 )
         }
 
@@ -149,8 +143,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 //            userViewModel.signOut()
             if (userViewModel.verifyUserLoggedIn()) {
                 // Redirect to add item page
-                // Chose to use this approach and not the one commented below because it is
-                // not buggy in terms of back stack pop
+                // Chose to use this approach because it is not buggy in terms of back stack pop
                 val item =
                     (requireActivity() as MainActivity).navView.findViewById<View>(R.id.nav_add_item)
                 item.callOnClick()
@@ -164,8 +157,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(inputText: String?): Boolean {
                 if (!inputText.isNullOrEmpty()) {
-                    itemsViewModel.restoreDefaultCurrentItems()
-
+                    itemsViewModel.restoreDefaultCurrentItemsAndOptions()
                     itemsViewModel.searchItem(inputText)
                     updateRecyclerView(itemsViewModel.currentItems)
                 }
@@ -174,7 +166,8 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 
             override fun onQueryTextChange(inputText: String?): Boolean {
                 if (inputText.isNullOrEmpty()) {
-                    itemsViewModel.restoreDefaultCurrentItems()
+                    Log.d(TAG, "On query text change")
+                    itemsViewModel.restoreDefaultCurrentItemsAndOptions()
 
                     updateRecyclerView(itemsViewModel.currentItems)
                 }
@@ -215,10 +208,10 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
             Log.d(TAG, "Switch clicked in HomeFragment")
             itemsViewModel.displayExchangeItems = !checked
 
-            // clear search bar text
-            binding.searchSwitchLayout.searchView.setQuery("", false)
-            binding.searchSwitchLayout.searchView.clearFocus()
-
+//            // clear search bar text
+//            binding.searchSwitchLayout.searchView.setQuery("", false)
+//            binding.searchSwitchLayout.searchView.clearFocus()
+//
             itemsViewModel.restoreDefaultCurrentItems()
             updateRecyclerView(itemsViewModel.currentItems)
 
@@ -242,7 +235,10 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
             binding.homeRecyclerView.visibility = View.VISIBLE
             binding.progressBarHome.visibility = View.INVISIBLE
             binding.itemsAdapter =
-                ItemsRecyclerViewAdapter(items, requireContext())
+                ItemsRecyclerViewAdapter(items, requireContext()) { item ->
+                    val action = HomeFragmentDirections.actionNavHomeToNavItem(item)
+                    requireView().findNavController().navigate(action)
+                }
             binding.textNumberItems.text = items.size.toString()
         }
     }
@@ -271,11 +267,30 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         updateRecyclerView(itemsViewModel.currentItems)
     }
 
+    private fun writeSharedPreferencesData() {
+        with(sharedPref.edit()) {
+            putString(SharedPreferencesUtils.sharedprefSearch, itemsViewModel.searchText)
+            putInt(SharedPreferencesUtils.sharedprefSortOption, itemsViewModel.sortOption)
+            putString(SharedPreferencesUtils.sharedprefCityFilter, itemsViewModel.cityFilter)
+            putString(
+                SharedPreferencesUtils.sharedPrefCategoriesFilter,
+                itemsViewModel.categoriesFilter.joinToString(",")
+            )
+            apply() // asynchronously
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "HomeFragment is onStop")
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d(TAG, "HomeFragment is onDestroyView")
         // TODO uncomment this: saveDefaultOptions()
         _binding = null
+        writeSharedPreferencesData()
         itemsViewModel.detachListeners()
-        Log.d(TAG, "HomeFragment is onDestroyView")
     }
 }

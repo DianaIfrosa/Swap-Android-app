@@ -63,6 +63,7 @@ class FilterDialogFragment : DialogFragment() {
             ItemCategory.EDUCATION to binding.categories.categEducation,
             ItemCategory.FOODDRINK to  binding.categories.categFooddrink ,
             ItemCategory.FURNITURE to  binding.categories.categFurniture,
+            ItemCategory.GAMES to binding.categories.categGames,
             ItemCategory.GARDEN to binding.categories.categGarden,
             ItemCategory.MEDICAL to binding.categories.categMedical
         )

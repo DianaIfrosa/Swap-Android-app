@@ -17,14 +17,13 @@ import java.lang.Exception
 class UserRepository {
 
     private val TAG: String = UserRepository::class.java.name
-    val db = Firebase.firestore
+    private val db = Firebase.firestore
     val auth = Firebase.auth
-    var currentUser: User = User("Loading email", "Loading name") // TODO make string res
+    var currentUser: User = User("Loading email", "Loading name") // TODO make string res, make live data
     var googleClient: GoogleSignInClient? = null
 
     // for cloud
     val firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
-    val storageReference: StorageReference = firebaseStorage.reference
 
     val COLLECTION_NAME = "Users"
 

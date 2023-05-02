@@ -5,6 +5,7 @@ import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemDonation
 import com.diana.bachelorthesis.model.ItemExchange
+import com.diana.bachelorthesis.utils.OneParamCallback
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
@@ -98,9 +99,14 @@ class ItemRepository {
         }
     }
 
+    fun checkIsFavorite(itemId: String, oneParamCallback: OneParamCallback<Boolean>) {
+
+    }
+
     fun detachListeners() {
         itemsListenerRegistration?.remove()
     }
+
 
 // TODO write the rest of the CRUD operations and use picasso for images;
 // also store images in cloud firebase

@@ -11,13 +11,12 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentChatBinding
-import com.diana.bachelorthesis.databinding.FragmentMapBinding
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.viewmodel.ChatViewModel
-import com.diana.bachelorthesis.viewmodel.MapViewModel
+import androidx.appcompat.widget.Toolbar
+
 
 class ChatFragment : Fragment(), BasicFragment {
 
@@ -48,7 +47,7 @@ class ChatFragment : Fragment(), BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "ChatFragment is onActivityCreated")
-        setAppbar()
+        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
     }
 
     override fun onDestroyView() {
@@ -60,17 +59,5 @@ class ChatFragment : Fragment(), BasicFragment {
         TODO("Not yet implemented")
     }
 
-    override fun setAppbar() {
-        requireActivity().findViewById<TextView>(R.id.titleAppBar)?.apply {
-            visibility = View.VISIBLE
-            text = requireView().findNavController().currentDestination!!.label
-        }
-        requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
-            visibility = View.GONE
-        }
-        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
-            visibility = View.VISIBLE
-        }
-    }
 
 }

@@ -53,6 +53,12 @@
                 android:text="@string/categ_furniture" />
 
             <CheckBox
+                android:id="@+id/categ_games"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_games" />
+
+            <CheckBox
                 android:id="@+id/categ_garden"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

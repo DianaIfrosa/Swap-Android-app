@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -59,7 +60,7 @@ class RegisterFragment : Fragment(), BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "RegisterFragment is onActivityCreated")
-        setAppbar()
+        setAuthAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
         initListeners()
     }
 
@@ -188,19 +189,6 @@ class RegisterFragment : Fragment(), BasicFragment {
             )
         }
         verifyPasswords()
-    }
-
-    override fun setAppbar() {
-        requireActivity().findViewById<TextView>(R.id.titleAppBar)?.apply {
-            visibility = View.VISIBLE
-            text = requireView().findNavController().currentDestination!!.label
-        }
-        requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
-            visibility = View.GONE
-        }
-        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
-            visibility = View.INVISIBLE
-        }
     }
 
     private fun verifyPasswords() {

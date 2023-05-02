@@ -20,8 +20,8 @@
     <string name="menu_language">Change language</string>
     <string name="menu_report_problem">I have a problem</string>
 
-    <string name="make_exchange">Exchanges</string>
-    <string name="make_donation">Donations</string>
+    <string name="exchanges">Exchanges</string>
+    <string name="donations">Donations</string>
     <string name="add_item_button_home">Add item button from home</string>
     <string name="filter">Filter</string>
     <string name="sort">Sort</string>
@@ -43,14 +43,18 @@
     <string name="categ_education">Education</string>
     <string name="categ_fooddrink">Food &amp; Drink</string>
     <string name="categ_furniture">Furniture</string>
+    <string name="categ_games">Games</string>
     <string name="categ_garden">Garden</string>
     <string name="categ_medical">Medical</string>
-
 
     <string name="not_found">Not found</string>
     <string name="ok">OK</string>
     <string name="exchange">Exchange</string>
     <string name="donate">Donate</string>
+    <string name="for_exchange">For exchange</string>
+    <string name="for_donate">For donation</string>
+    <string name="make_exchange">Exchange</string>
+    <string name="get_donation">Get donation</string>
 
     <string name="invalid_fields">Invalid fields!</string>
     <string name="item_title_short">At least 3 characters required</string>
@@ -64,7 +68,7 @@
     <string name="location">Location</string>
     <string name="change_location">Change location</string>
     <string name="other_details">Other details</string>
-    <string name="manufacturing_year">Manufacturing year</string>
+    <string name="manufacture_year">Manufacture year</string>
     <string name="condition">Condition</string>
     <string name="save">Save</string>
     <string name="select_on_map">Select on map</string>
@@ -148,5 +152,6 @@
     <string name="continue_with">Continue with</string>
     <string name="item">Item</string>
     <string name="choose_location">Choose location</string>
+    <string name="send_message">Send message</string>
 
 </resources>

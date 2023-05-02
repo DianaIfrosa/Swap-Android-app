@@ -7,9 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -64,7 +61,7 @@ class IntroAuthFragment : Fragment(), BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "IntroAuthFragment is onActivityCreated")
-        setAppbar()
+        setAuthAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
     }
 
     override fun initListeners() {
@@ -126,7 +123,7 @@ class IntroAuthFragment : Fragment(), BasicFragment {
                     override fun onComplete() {
                         Log.d(TAG, "Add user completed")
                         // After adding the user into the DB, update the currentUser object
-                        userViewModel.setUserData(email, object: NoParamCallback {
+                        userViewModel.setCurrentUserData(email, object: NoParamCallback {
                             override fun onComplete() {
                                 (requireActivity() as MainActivity).updateAuthUIElements()
                                 requireView().findNavController()
@@ -162,19 +159,6 @@ class IntroAuthFragment : Fragment(), BasicFragment {
             Toast.LENGTH_LONG
         ).show()
     }
-
-    override fun setAppbar() {
-        requireActivity().findViewById<TextView>(R.id.titleAppBar)?.apply {
-            visibility = View.GONE
-        }
-        requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
-            visibility = View.VISIBLE
-        }
-        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
-            visibility = View.INVISIBLE
-        }
-    }
-
 
     // make adapter as inner class because I need activity context
     inner class IntroScreensAdapter: PagerAdapter() {

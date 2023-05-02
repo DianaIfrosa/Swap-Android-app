@@ -7,19 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentProfileBinding
-import com.diana.bachelorthesis.databinding.FragmentRecommendationsBinding
-import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.BasicFragment
-import com.diana.bachelorthesis.viewmodel.RecommendationsViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.squareup.picasso.Picasso
 
@@ -46,7 +42,7 @@ class ProfileFragment : Fragment(), BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "ProfileFragment is onActivityCreated")
-        setAppbar()
+        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
         updateUI()
     }
 
@@ -69,19 +65,6 @@ class ProfileFragment : Fragment(), BasicFragment {
         binding.profileEmail.text = currentUser.email
         if (currentUser.profilePhoto != null) {
             Picasso.get().load(currentUser.profilePhoto).into(binding.profilePhoto)
-        }
-    }
-
-    override fun setAppbar() {
-        requireActivity().findViewById<TextView>(R.id.titleAppBar)?.apply {
-            visibility = View.VISIBLE
-            text = requireView().findNavController().currentDestination!!.label
-        }
-        requireActivity().findViewById<ImageView>(R.id.logoApp)?.apply {
-            visibility = View.GONE
-        }
-        requireActivity().findViewById<ImageButton>(R.id.iconAppBar)?.apply {
-            visibility = View.INVISIBLE
         }
     }
 

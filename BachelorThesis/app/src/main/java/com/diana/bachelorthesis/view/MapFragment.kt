@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -101,7 +102,7 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "MapFragment is onActivityCreated")
-        setAppbar()
+        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -307,19 +308,6 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
                 }
                 return
             }
-        }
-    }
-
-    override fun setAppbar() {
-        activity?.findViewById<TextView>(R.id.titleAppBar)?.apply {
-            visibility = View.VISIBLE
-            text = requireView().findNavController().currentDestination!!.label
-        }
-        activity?.findViewById<ImageView>(R.id.logoApp)?.apply {
-            visibility = View.GONE
-        }
-        activity?.findViewById<ImageButton>(R.id.iconAppBar)?.apply {
-            visibility = View.VISIBLE
         }
     }
 

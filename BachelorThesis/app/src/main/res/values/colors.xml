@@ -9,16 +9,20 @@
     <color name="purple_blue_medium">#9999FF</color>
     <color name="blue_light">#ECF2FF</color>
     <color name="blue_medium">#6699FF</color>
+    <color name="yellow_pale">#FFFFF2</color>
     <color name="yellow_light">#FFF4D2</color>
     <color name="purple_dark">#7F669D</color>
     <color name="purple_medium">#BA94D1</color>
+    <color name="purple_pale">#F6F2FF</color>
     <color name="red_light">#FF9999</color>
     <color name="yellow_medium">#ECEA7B</color>
     <color name="green_light">#80FFBF</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="grey_light_transparent">#E6EDEDED </color>
+    <color name="grey_light_more_transparent">#4DEDEDED </color>
     <color name="grey_light">#EDEDED </color>
+    <color name="grey_medium">#D0D0D0</color>
     <color name="grey">#ADADAD </color>
     <color name="red">#FF0000</color>
 

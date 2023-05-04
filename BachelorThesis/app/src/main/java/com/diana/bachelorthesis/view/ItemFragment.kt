@@ -142,7 +142,7 @@ class ItemFragment : Fragment(), BasicFragment {
             binding.itemManufactureSection.visibility = View.GONE
         }
 
-        // exchange preferences & purpose
+        // exchange preferences & purpose (item + background color)
         if (binding.item is ItemExchange) {
             binding.itemExchangePreferencesSection.visibility = View.VISIBLE
             var value = ""
@@ -152,11 +152,13 @@ class ItemFragment : Fragment(), BasicFragment {
             }
             value = value.substring(0, value.length - 2)
             binding.itemExchangePreferences.text = value
-            binding.itemPurpose.text = " ${resources.getString(R.string.for_exchange)}"
+            binding.root.setBackgroundColor(resources.getColor(R.color.purple_pale))
+            binding.itemPurpose.setCompoundDrawablesWithIntrinsicBounds(resources.getDrawable(R.drawable.ic_exchange), null, null, null)
             binding.btnAction.text = resources.getString(R.string.make_exchange)
         } else {
             binding.itemExchangePreferencesSection.visibility = View.GONE
-            binding.itemPurpose.text = " ${resources.getString(R.string.for_donate)}"
+            binding.root.setBackgroundColor(resources.getColor(R.color.yellow_pale))
+            binding.itemPurpose.setCompoundDrawablesWithIntrinsicBounds(resources.getDrawable(R.drawable.ic_donate), null, null, null)
             binding.btnAction.text = resources.getString(R.string.get_donation)
         }
     }

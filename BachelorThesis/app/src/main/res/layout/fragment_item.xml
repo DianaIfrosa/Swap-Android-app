@@ -4,244 +4,321 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="item"
             type="com.diana.bachelorthesis.model.Item" />
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.ItemFragment">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true">
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/layout_buttons">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.denzcoskun.imageslider.ImageSlider
-                android:id="@+id/photo_carousel"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginBottom="10dp"
-                android:isScrollContainer="true"
-                app:iss_corner_radius="30"
-                app:iss_error_image="@drawable/unavailable"/>
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
-            <TextView
-                android:id="@+id/item_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@{item.name}"
-                android:layout_weight="1"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:gravity="center"/>
-                <ImageButton
-                    android:id="@+id/btn_favorite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_heart_animated"
-                    android:background="@android:color/transparent"
-                    />
-            </LinearLayout>
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/item_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@{item.description}"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:textSize="15sp"
-                android:layout_gravity="center"
-                android:gravity="start"/>
-            <TextView
-                android:id="@+id/item_purpose"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-"
-                android:layout_gravity="start"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:layout_marginTop="15dp"
-                android:textSize="13sp"
-                android:drawableStart="@drawable/ic_flag"
-                android:gravity="center"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:textSize="14sp"
-                android:layout_marginTop="15dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Posted by:"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_gravity="center"
-                    android:gravity="start"/>
-                <ImageButton
-                    android:id="@+id/owner_picture"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/shape_circle"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop" />
-                <TextView
-                    android:id="@+id/item_owner_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxWidth="150dp"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:layout_gravity="center"
-                    android:gravity="center"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- "
-                    android:textSize="14sp"
-                    android:layout_marginStart="10dp"
-                    android:layout_gravity="center"
-                    android:gravity="start"/>
-                <TextView
-                    android:id="@+id/item_post_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-"
-                    android:textSize="14sp"
+                <com.denzcoskun.imageslider.ImageSlider
+                    android:id="@+id/photo_carousel"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="10dp"
+                    android:isScrollContainer="true"
+                    app:iss_error_image="@drawable/unavailable"
+                    android:layout_alignParentTop="true"/>
 
-                    android:layout_gravity="center"
-                    android:gravity="start"/>
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layout_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:layout_below="@id/photo_carousel">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:textSize="14sp"
-                android:layout_marginTop="15dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
+                    <TextView
+                        android:id="@+id/item_purpose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/item_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"
+                        android:text="@{item.name}"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/btn_favorite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_heart_animated" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="13dp"
+                    android:background="@drawable/background_textview"
+                    android:orientation="vertical"
+                    android:paddingStart="7dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="7dp"
+                    android:paddingBottom="10dp"
+                    android:layout_below="@id/layout_name">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="start"
+                        android:text="Description"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/item_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:gravity="start"
+                        android:text="@{item.description}"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_owner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="13dp"
+                    android:background="@drawable/background_textview"
+                    android:orientation="vertical"
+                    android:paddingStart="7dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="7dp"
+                    android:paddingBottom="10dp"
+                    android:layout_below="@id/layout_description">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="start"
+                        android:text="Posted by"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="20dp"
+                        android:textSize="14sp">
+
+                        <ImageButton
+                            android:id="@+id/owner_picture"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/shape_circle"
+                            android:clipToOutline="true"
+                            android:scaleType="centerCrop" />
+
+                        <TextView
+                            android:id="@+id/item_owner_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:maxWidth="170dp"
+                            android:maxLines="1"
+                            android:text="@{item.owner}"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="7dp"
+                            android:layout_marginEnd="7dp"
+                            android:gravity="start"
+                            android:text="on"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/item_post_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="start"
+                            android:text="-"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="13dp"
+                    android:background="@drawable/background_textview"
+                    android:orientation="vertical"
+                    android:paddingStart="7dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="7dp"
+                    android:paddingBottom="10dp"
+                    android:layout_below="@id/layout_owner">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="start"
+                        android:text="Location"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/item_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:drawableStart="@drawable/ic_map_point"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:text="-"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="italic" />
+
+                    <LinearLayout
+                        android:id="@+id/item_exchange_preferences_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical"
+                        android:paddingEnd="10dp"
+                        android:textSize="14sp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:text="Exchange preferences"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/item_exchange_preferences"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:paddingStart="10dp"
+                            android:text="-"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/item_manufacture_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        android:paddingEnd="20dp"
+                        android:textSize="14sp"
+                        android:layout_below="@id/layout_location">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:drawableStart="@drawable/ic_calendar"
+                            android:gravity="center"
+                            android:text=" Manufacture year:"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/item_manufacture_year"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:text="-"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
                 <TextView
+                    android:id="@+id/report_post"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Location:"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"/>
-                <TextView
-                    android:id="@+id/item_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-"
-                    android:drawableStart="@drawable/ic_map_point"
-                    android:textSize="14sp"
+                    android:text="Report post"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
                     android:textStyle="italic"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/item_manufacture_section"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:textSize="14sp"
-                android:layout_marginTop="15dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Manufacture year:"
-                    android:drawableStart="@drawable/ic_calendar"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center"/>
-                <TextView
-                    android:id="@+id/item_manufacture_year"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1980"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/item_exchange_preferences_section"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:textSize="14sp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="90dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Exchange preferences:"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center"/>
-                <TextView
-                    android:id="@+id/item_exchange_preferences"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-
-        </LinearLayout>
+                    android:textColor="@color/red_light"
+                    android:layout_below="@id/layout_details"/>
+            </RelativeLayout>
         </ScrollView>
 
         <LinearLayout
+            android:id="@+id/layout_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="20dp"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:layout_alignParentBottom="true"
-            android:background="@android:color/transparent">
+            android:textSize="14sp">
 
             <Button
                 android:id="@+id/btn_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/exchange"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_small"
-                android:layout_marginBottom="5dp"
-                android:textSize="14sp"
-                />
+                android:textSize="14sp" />
             <!--                 Dummy view for correct spacing -->
             <View
                 android:layout_width="50dp"
@@ -252,14 +329,12 @@
                 android:id="@+id/btn_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/send_message"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_small"
-                android:layout_marginBottom="5dp"
-                android:textSize="14sp"
-                />
+                android:text="@string/send_message"
+                android:textSize="14sp" />
         </LinearLayout>
 
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

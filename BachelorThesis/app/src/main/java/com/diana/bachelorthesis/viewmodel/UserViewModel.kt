@@ -24,15 +24,6 @@ class UserViewModel : ViewModel() {
         return (userRepository.auth.currentUser != null)
     }
 
-    fun getCurrentUser(): User {
-        //TODO write current user to shared pref or some permanent storage
-        return userRepository.currentUser
-    }
-
-    fun restoreCurrentUserData(callback: NoParamCallback) {
-        userRepository.restoreCurrentUserData(callback)
-    }
-
     fun registerUser(email: String, pass: String, callback: OneParamCallback<FirebaseUser>) {
         userRepository.registerUser(email, pass, callback)
     }
@@ -42,7 +33,7 @@ class UserViewModel : ViewModel() {
             override fun onComplete(value: String?) {
                 val user = User(email = email, name = name, profilePhoto = value)
 
-                userRepository.addUser(user, callback)
+                userRepository.addOrUpdateUser(user, callback)
             }
 
             override fun onError(e: Exception?) {
@@ -52,6 +43,10 @@ class UserViewModel : ViewModel() {
                 callback?.onError(e)
             }
         })
+    }
+
+    fun updateCurrentUser(user: User) {
+        userRepository.addOrUpdateUser(user)
     }
 
     fun logInUser(email: String, pass: String, callback: OneParamCallback<FirebaseUser>) {
@@ -66,19 +61,6 @@ class UserViewModel : ViewModel() {
         return userRepository.auth.currentUser!!.displayName!!
     }
 
-    fun setCurrentUserData(email: String, callback: NoParamCallback) {
-        userRepository.getUserData(email, object : OneParamCallback<User> {
-            override fun onComplete(value: User?) {
-                userRepository.currentUser = value!!
-                callback.onComplete()
-            }
-
-            override fun onError(e: Exception?) {
-                callback.onError(e)
-            }
-
-        })
-    }
 
     fun getUserData(email: String, callback: OneParamCallback<User>) {
         userRepository.getUserData(email, callback)

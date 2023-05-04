@@ -6,5 +6,6 @@ class SharedPreferencesUtils {
         val sharedprefSortOption = "SORT_OPTION"
         val sharedprefCityFilter = "CITY_FILTER"
         val sharedPrefCategoriesFilter = "CATEGORIES_FILTER"
+        val sharedPrefCurrentUser = "CURRENT_USER"
     }
 }

@@ -2,6 +2,7 @@ package com.diana.bachelorthesis.repository
 
 import android.net.Uri
 import android.util.Log
+import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -111,12 +112,13 @@ class PhotoRepository {
                 })
         }
 
-    fun uploadProfilePhoto(user: String, photoUri: Uri?, callback: OneParamCallback<String>) {
+
+    fun uploadProfilePhoto(userEmail: String, photoUri: Uri?, callback: OneParamCallback<String>) {
         // FIXME not working when uploading Google's user's photo after sign up
         val choseDefaultPhoto = (photoUri == null)
         val uploadPhoto = photoUri ?: defaultProfilePhotoUri
         val imageReference = storageReference
-            .child(user)
+            .child(userEmail)
             .child("profile_photo.png")
 
        imageReference
@@ -127,18 +129,18 @@ class PhotoRepository {
                         val imageUrl = url.toString()
                         Log.d(
                             TAG,
-                            "Successfully uploaded profile photo for user $user"
+                            "Successfully uploaded profile photo for user $userEmail"
                         )
                         callback.onComplete(imageUrl)
 
                     }.addOnFailureListener {
                         Log.w(
                             TAG,
-                            "\"Couldn't get url for profile photo for user $user"
+                            "\"Couldn't get url for profile photo for user $userEmail"
                         )
                         if (!choseDefaultPhoto) {
-                            Log.d(TAG, "Trying to upload the default picture for user $user")
-                            uploadProfilePhoto(user, null, callback)
+                            Log.d(TAG, "Trying to upload the default picture for user $userEmail")
+                            uploadProfilePhoto(userEmail, null, callback)
                         } else {
                             callback.onError(task.exception)
                         }
@@ -147,11 +149,11 @@ class PhotoRepository {
                 } else {
                     Log.w(
                         TAG,
-                        "Profile photo for user $user failed to upload!"
+                        "Profile photo for user $userEmail failed to upload!"
                     )
                     if (!choseDefaultPhoto) {
-                        Log.d(TAG, "Trying to upload the default picture for user $user")
-                        uploadProfilePhoto(user, null, callback)
+                        Log.d(TAG, "Trying to upload the default picture for user $userEmail")
+                        uploadProfilePhoto(userEmail, null, callback)
                     } else {
                         callback.onError(task.exception)
                     }

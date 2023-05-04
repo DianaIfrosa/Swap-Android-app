@@ -22,7 +22,6 @@ import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.utils.*
 import com.diana.bachelorthesis.viewmodel.ItemsViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
-import java.lang.Exception
 
 class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     private val TAG: String = HomeFragment::class.java.name
@@ -82,17 +81,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         initListeners()
         itemsViewModel.populateLiveData()
 
-        if (userViewModel.verifyUserLoggedIn()) {
-            userViewModel.restoreCurrentUserData(object : NoParamCallback {
-                override fun onComplete() {
-                    (requireActivity() as MainActivity).updateNavHeader()
-                }
-
-                override fun onError(e: Exception?) {
-                    TODO("Not yet implemented")
-                }
-            })
-        }
         setHomeAppbar(requireActivity())
     }
 
@@ -166,7 +154,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 
             override fun onQueryTextChange(inputText: String?): Boolean {
                 if (inputText.isNullOrEmpty()) {
-                    Log.d(TAG, "On query text change")
                     itemsViewModel.restoreDefaultCurrentItemsAndOptions()
 
                     updateRecyclerView(itemsViewModel.currentItems)

@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentItemBinding
@@ -17,7 +15,7 @@ import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.LocationHelper
 import com.diana.bachelorthesis.utils.OneParamCallback
-import com.diana.bachelorthesis.viewmodel.ItemProfileViewModel
+import com.diana.bachelorthesis.viewmodel.ItemPageViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.squareup.picasso.Picasso
 import java.lang.Exception
@@ -29,9 +27,8 @@ class ItemFragment : Fragment(), BasicFragment {
     private val TAG: String = ItemFragment::class.java.name
     private var _binding: FragmentItemBinding? = null
     private val binding get() = _binding!!
-    private val args by navArgs<ItemFragmentArgs>()
     lateinit var userViewModel: UserViewModel
-    lateinit var itemViewModel: ItemProfileViewModel
+    lateinit var itemViewModel: ItemPageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,16 +52,20 @@ class ItemFragment : Fragment(), BasicFragment {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "ItemFragment is on onViewCreated")
 
-        itemViewModel.item = ItemFragmentArgs.fromBundle(requireArguments()).ItemClicked
+        itemViewModel.currentItem = ItemFragmentArgs.fromBundle(requireArguments()).ItemClicked
+        updateUIElements()
 
-        userViewModel.getUserData(itemViewModel.item.owner, object: OneParamCallback<User> {
+        userViewModel.getUserData(itemViewModel.currentItem.owner, object : OneParamCallback<User> {
             override fun onComplete(value: User?) {
                 if (value != null)
                     showItemOwnerDetails(value)
             }
 
             override fun onError(e: Exception?) {
-               Log.w(TAG, "Item's owner with email ${itemViewModel.item.owner} could not been retrieved!")
+                Log.w(
+                    TAG,
+                    "Item's owner with email ${itemViewModel.currentItem.owner} could not been retrieved!"
+                )
             }
         })
         showItemDetails()
@@ -74,29 +75,44 @@ class ItemFragment : Fragment(), BasicFragment {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "ItemFragment is on onActivityCreated")
         initListeners()
-        setSubPageAppbar(requireActivity(), itemViewModel.item.name)
+        setSubPageAppbar(requireActivity(), itemViewModel.currentItem.name)
     }
 
     private fun getViewModels() {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        itemViewModel = ViewModelProvider(this)[ItemProfileViewModel::class.java]
+        itemViewModel = ViewModelProvider(this)[ItemPageViewModel::class.java]
     }
 
     override fun initListeners() {
-        binding.btnFavorite.setOnClickListener {  view ->
-            if (userViewModel.verifyUserLoggedIn()) {
-                val drawable = binding.btnFavorite.drawable
-                if (drawable.constantState!! == resources.getDrawable(R.drawable.ic_heart_filled).constantState) {
-                    binding.btnFavorite.setImageResource(R.drawable.ic_heart_unfilled)
-                    //TODO add logic
-                } else {
-                    binding.btnFavorite.setImageResource(R.drawable.ic_heart_filled)
-                    //TODO add logic
-                }
+        binding.btnFavorite.setOnClickListener { view ->
+            val drawable = binding.btnFavorite.drawable
+            if (drawable.constantState!! == resources.getDrawable(R.drawable.ic_heart_filled).constantState) {
+                // remove from favorites
+                binding.btnFavorite.setImageResource(R.drawable.ic_heart_unfilled)
+                (requireActivity() as MainActivity).removeFavoriteItem(itemViewModel.currentItem)
             } else {
-                view.findNavController().navigate(R.id.nav_intro_auth)
+                // add to favorites
+                binding.btnFavorite.setImageResource(R.drawable.ic_heart_filled)
+                (requireActivity() as MainActivity).addFavoriteItem(itemViewModel.currentItem)
             }
         }
+    }
+
+    private fun updateUIElements() {
+        if (userViewModel.verifyUserLoggedIn()) {
+            binding.btnFavorite.visibility = View.VISIBLE
+            if ((requireActivity() as MainActivity).itemIsFavorite(itemViewModel.currentItem)) {
+                binding.btnFavorite.setImageDrawable(resources.getDrawable(R.drawable.ic_heart_filled))
+            } else {
+                binding.btnFavorite.setImageDrawable(resources.getDrawable(R.drawable.ic_heart_unfilled))
+            }
+        } else {
+            binding.btnFavorite.visibility = View.INVISIBLE
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
     private fun showItemOwnerDetails(owner: User) {
@@ -105,23 +121,23 @@ class ItemFragment : Fragment(), BasicFragment {
     }
 
     private fun showItemDetails() {
-        binding.item = itemViewModel.item
+        binding.item = itemViewModel.currentItem
 
         // photos
-        binding.photoCarousel.setImageList(ItemsRecyclerViewAdapter.getPhotos(itemViewModel.item))
-        val city = LocationHelper(requireContext()).getItemCity(itemViewModel.item.location)
+        binding.photoCarousel.setImageList(ItemsRecyclerViewAdapter.getPhotos(itemViewModel.currentItem))
+        val city = LocationHelper(requireContext()).getItemCity(itemViewModel.currentItem.location)
         binding.itemAddress.text = city
 
         // post date
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         binding.itemPostDate.text = dateFormatter.format(
-            itemViewModel.item.postDate!!.toDate()
+            itemViewModel.currentItem.postDate!!.toDate()
         ).toString()
 
         // manufacture year
-        if (itemViewModel.item.year != null) {
+        if (itemViewModel.currentItem.year != null) {
             binding.itemManufactureSection.visibility = View.VISIBLE
-            binding.itemManufactureYear.text = itemViewModel.item.year.toString()
+            binding.itemManufactureYear.text = itemViewModel.currentItem.year.toString()
         } else {
             binding.itemManufactureSection.visibility = View.GONE
         }
@@ -130,7 +146,7 @@ class ItemFragment : Fragment(), BasicFragment {
         if (binding.item is ItemExchange) {
             binding.itemExchangePreferencesSection.visibility = View.VISIBLE
             var value = ""
-            (itemViewModel.item as ItemExchange).exchangePreferences.forEach {
+            (itemViewModel.currentItem as ItemExchange).exchangePreferences.forEach {
                 val name = it.displayName
                 value += "$name, "
             }

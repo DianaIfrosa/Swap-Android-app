@@ -106,11 +106,6 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         sortOption = sort
         cityFilter = city
         categoriesFilter = categories
-
-        Log.d(TAG, searchText)
-        Log.d(TAG, sortOption.toString())
-        Log.d(TAG, cityFilter)
-        Log.d(TAG, categoriesFilter.joinToString(","))
     }
 
     fun searchItem(inputText: String) {

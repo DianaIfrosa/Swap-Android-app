@@ -15,12 +15,13 @@ import androidx.navigation.findNavController
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentLoginBinding
+import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.BasicFragment
-import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
+import com.google.gson.Gson
 import java.lang.Exception
 
 class LoginFragment : Fragment(), BasicFragment {
@@ -62,22 +63,35 @@ class LoginFragment : Fragment(), BasicFragment {
                 userViewModel.logInUser(email, pass,
                     object : OneParamCallback<FirebaseUser> {
                         override fun onComplete(value: FirebaseUser?) {
-                            userViewModel.setCurrentUserData(email, object: NoParamCallback{
-                                override fun onComplete() {
-                                    button.doneLoadingAnimation(
-                                        R.color.green_light,
-                                        ContextCompat.getDrawable(
-                                            requireActivity(),
-                                            R.drawable.ic_done
-                                        )!!.toBitmap()
-                                    )
-                                    (requireActivity() as MainActivity).updateAuthUIElements()
-                                    requireView().findNavController()
-                                        .navigate(
-                                            R.id.nav_home,
-                                            null,
-                                            NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
+
+                            userViewModel.getUserData(email, object: OneParamCallback<User>{
+                                override fun onComplete(value: User?) {
+                                    if (value != null) {
+                                        (requireActivity() as MainActivity).addCurrentUserToSharedPreferences(value)
+
+                                        button.doneLoadingAnimation(
+                                            R.color.green_light,
+                                            ContextCompat.getDrawable(
+                                                requireActivity(),
+                                                R.drawable.ic_done
+                                            )!!.toBitmap()
                                         )
+                                        (requireActivity() as MainActivity).updateAuthUIElements()
+                                        requireView().findNavController()
+                                            .navigate(
+                                                R.id.nav_home,
+                                                null,
+                                                NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
+                                            )
+                                    } else {
+                                        userViewModel.signOut()
+                                        button.revertAnimation()
+                                        Toast.makeText(
+                                            requireActivity(),
+                                            R.string.something_failed,
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
                                 }
 
                                 override fun onError(e: Exception?) {
@@ -88,7 +102,9 @@ class LoginFragment : Fragment(), BasicFragment {
                                         Toast.LENGTH_LONG
                                     ).show()
                                 }
+
                             })
+
                         }
 
                         override fun onError(e: Exception?) {

@@ -7,10 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.diana.bachelorthesis.R
@@ -48,7 +44,14 @@ class ProfileFragment : Fragment(), BasicFragment {
 
     override fun initListeners() {
         binding.btnSignOut.setOnClickListener {
+            // Write current user's data that was stored in shared preferences to cloud database
+            userViewModel.updateCurrentUser((requireActivity() as MainActivity).getCurrentUser()!!)
+
+            // sign out from firebase auth system
             userViewModel.signOut()
+
+            (requireActivity() as MainActivity).deleteCurrentUserFromSharedPreferences()
+
             (requireActivity() as MainActivity).updateAuthUIElements()
             requireView().findNavController()
                 .navigate(
@@ -60,7 +63,7 @@ class ProfileFragment : Fragment(), BasicFragment {
     }
 
     fun updateUI() {
-        val currentUser = userViewModel.getCurrentUser()
+        val currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
         binding.profileName.text = currentUser.name
         binding.profileEmail.text = currentUser.email
         if (currentUser.profilePhoto != null) {

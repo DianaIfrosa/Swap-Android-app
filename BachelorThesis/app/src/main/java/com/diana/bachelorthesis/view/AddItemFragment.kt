@@ -36,7 +36,6 @@ import com.diana.bachelorthesis.viewmodel.AddItemViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -73,7 +72,6 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
         _binding = FragmentAddItemBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val a= Date()
 
         val recyclerView: RecyclerView = binding.photosRecyclerView
         val horizontalLayoutManager =
@@ -458,7 +456,8 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
                 title,
                 description,
                 year?.toInt(),
-                exchangePreferences
+                exchangePreferences,
+                (requireActivity() as MainActivity).getCurrentUser()!!.email
             )
             true
         }

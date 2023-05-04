@@ -21,7 +21,6 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
     private val TAG: String = AddItemViewModel::class.java.name
     private val itemRepository = ItemRepository.getInstance()
     private val photoRepository = PhotoRepository.getInstance()
-    private val userRepository = UserRepository.getInstance()
 
     var categoryChosen: ItemCategory = ItemCategory.UNKNOWN
     var conditionChosen: ItemCondition? = null
@@ -33,7 +32,7 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
     var itemYear: Int? = null
     var itemExchangePreferences:  ArrayList<ItemCategory> = arrayListOf()
     var itemLocation: GeoPoint? = null
-    var itemOwner: String = userRepository.currentUser.email
+    var itemOwner: String = ""
 
     class ViewModelFactory(private val arg: LocationHelper) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
@@ -95,15 +94,16 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
         itemYear = null
         itemExchangePreferences = arrayListOf()
         itemLocation = null
-        itemOwner = userRepository.currentUser.email
+        itemOwner = ""
     }
 
 
-    fun saveItemData(forExchange: Boolean, title: String, description: String, year: Int?, exchangePreferences: ArrayList<ItemCategory>) {
+    fun saveItemData(forExchange: Boolean, title: String, description: String, year: Int?, exchangePreferences: ArrayList<ItemCategory>, ownerEmail: String) {
         itemForExchange = forExchange
         itemTitle = title
         itemDescription = description
         itemYear = year
         itemExchangePreferences= exchangePreferences
+        itemOwner = ownerEmail
     }
 }

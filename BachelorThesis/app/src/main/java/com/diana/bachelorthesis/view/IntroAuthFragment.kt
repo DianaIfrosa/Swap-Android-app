@@ -2,12 +2,15 @@ package com.diana.bachelorthesis.view
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
@@ -15,8 +18,11 @@ import androidx.navigation.findNavController
 import androidx.viewpager.widget.PagerAdapter
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentIntroAuthBinding
+import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.NoParamCallback
+import com.diana.bachelorthesis.utils.OneParamCallback
+import com.diana.bachelorthesis.utils.SharedPreferencesUtils
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -25,6 +31,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.gson.Gson
 import java.lang.Exception
 
 class IntroAuthFragment : Fragment(), BasicFragment {
@@ -33,7 +40,6 @@ class IntroAuthFragment : Fragment(), BasicFragment {
 
     private var _binding: FragmentIntroAuthBinding? = null
     private val binding get() = _binding!!
-
     internal lateinit var layouts: ArrayList<Int>
 
     override fun onCreateView(
@@ -121,22 +127,29 @@ class IntroAuthFragment : Fragment(), BasicFragment {
 
                 userViewModel.addUser(email, name, photoUri, object: NoParamCallback {
                     override fun onComplete() {
-                        Log.d(TAG, "Add user completed")
-                        // After adding the user into the DB, update the currentUser object
-                        userViewModel.setCurrentUserData(email, object: NoParamCallback {
-                            override fun onComplete() {
-                                (requireActivity() as MainActivity).updateAuthUIElements()
-                                requireView().findNavController()
-                                    .navigate(
-                                        R.id.nav_home,
-                                        null,
-                                        NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
-                                    )
+                        Log.d(TAG, "Added user after Google login completed.")
+
+                        userViewModel.getUserData(email, object: OneParamCallback<User> {
+                            override fun onComplete(value: User?) {
+                                if (value != null) {
+                                    (requireActivity() as MainActivity).addCurrentUserToSharedPreferences(value)
+                                    (requireActivity() as MainActivity).updateAuthUIElements()
+                                    requireView().findNavController()
+                                        .navigate(
+                                            R.id.nav_home,
+                                            null,
+                                            NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
+                                        )
+                                } else {
+                                    userViewModel.signOut()
+                                    displayErrorToast()
+                                }
                             }
 
                             override fun onError(e: Exception?) {
                                 displayErrorToast()
                             }
+
                         })
                     }
 

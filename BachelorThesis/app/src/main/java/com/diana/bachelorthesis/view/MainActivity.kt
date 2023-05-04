@@ -18,9 +18,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.ActivityMainBinding
+import com.diana.bachelorthesis.model.Item
+import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.SharedPreferencesUtils
+import com.diana.bachelorthesis.viewmodel.MainViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.material.navigation.NavigationView
+import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
@@ -35,7 +39,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     lateinit var navView: NavigationView
     private lateinit var headerLayout: View
+
     lateinit var userViewModel: UserViewModel
+    lateinit var mainViewModel: MainViewModel
+
     lateinit var sharedPref: SharedPreferences
     var returnedHomeFromItemPage: Boolean = false
 
@@ -46,8 +53,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
+        getViewModels()
 
-        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         drawerLayout = binding.drawerLayout
         navView = binding.navView
         headerLayout = navView.getHeaderView(0)
@@ -80,15 +87,28 @@ class MainActivity : AppCompatActivity() {
             }
         }
         sharedPref = getPreferences(Context.MODE_PRIVATE)
+        restoreCurrentUserData()
+        updateAuthUIElements()
         setDefaultSharedPreferencesHomeOptions()
     }
 
     override fun onStart() {
         super.onStart()
         initListeners()
-        updateNavHeader()
-        updateIconAppBar()
-        updateMenuItemsVisibility()
+    }
+
+    fun restoreCurrentUserData() {
+        val gson = Gson()
+        val json: String? = sharedPref.getString(SharedPreferencesUtils.sharedPrefCurrentUser, "")
+        if (!json.isNullOrEmpty()) {
+            val user: User = gson.fromJson(json, User::class.java)
+            mainViewModel.currentUser = user
+        }
+    }
+
+    private fun getViewModels() {
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
     }
 
      fun updateMenuItemsVisibility() {
@@ -116,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         val photoImageView = headerLayout.findViewById<ImageView>(R.id.photoNavHeader)
 
         if (userViewModel.verifyUserLoggedIn()) {
-            val currentUser = userViewModel.getCurrentUser()
+            val currentUser = getCurrentUser()!!
             btnAuth.visibility = View.GONE
 
             nameTextView.apply {
@@ -204,10 +224,57 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun deleteCurrentUserFromSharedPreferences() {
+        mainViewModel.currentUser = null
+        with(sharedPref.edit()) {
+            remove(SharedPreferencesUtils.sharedPrefCurrentUser)
+            commit() // synchronously
+        }
+    }
+
+    fun addCurrentUserToSharedPreferences(user: User) {
+        mainViewModel.currentUser = user
+        with(sharedPref.edit()) {
+            val gson = Gson()
+            val json: String = gson.toJson(user)
+            putString(SharedPreferencesUtils.sharedPrefCurrentUser, json)
+            commit() // synchronously
+        }
+    }
+
+    fun addFavoriteItem(item: Item) {
+       mainViewModel.addFavoriteItem(item)
+        updateCurrentUserSharedPreferences()
+    }
+
+    fun itemIsFavorite(item: Item): Boolean = mainViewModel.itemIsFavorite(item)
+
+
+    fun removeFavoriteItem(item: Item) {
+        mainViewModel.removeFavoriteItem(item)
+        updateCurrentUserSharedPreferences()
+    }
+
+    fun getCurrentUser() = mainViewModel.currentUser
+
+    private fun updateCurrentUserSharedPreferences() {
+        with(sharedPref.edit()) {
+            val gson = Gson()
+            val json: String = gson.toJson(mainViewModel.currentUser)
+            putString(SharedPreferencesUtils.sharedPrefCurrentUser, json)
+            commit() // synchronously
+        }
+    }
+
     fun updateAuthUIElements() {
         updateIconAppBar()
         updateNavHeader()
         updateMenuItemsVisibility()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
     }
 
 }

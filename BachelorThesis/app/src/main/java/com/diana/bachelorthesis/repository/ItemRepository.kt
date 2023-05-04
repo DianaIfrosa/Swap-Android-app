@@ -99,10 +99,6 @@ class ItemRepository {
         }
     }
 
-    fun checkIsFavorite(itemId: String, oneParamCallback: OneParamCallback<Boolean>) {
-
-    }
-
     fun detachListeners() {
         itemsListenerRegistration?.remove()
     }

@@ -11,15 +11,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import java.lang.Exception
 
 class UserRepository {
 
-    private val TAG: String = UserRepository::class.java.name
+    val TAG: String = UserRepository::class.java.name
     private val db = Firebase.firestore
     val auth = Firebase.auth
-    var currentUser: User = User("Loading email", "Loading name") // TODO make string res, make live data
+
     var googleClient: GoogleSignInClient? = null
 
     // for cloud
@@ -31,37 +29,22 @@ class UserRepository {
         @Volatile
         private var instance: UserRepository? = null
         fun getInstance() =
-            instance ?: UserRepository().also { instance = it }
+            instance ?: UserRepository().also {
+                instance = it
+                Log.d("UserRepository", "UserRepository has been created.")
+            }
     }
 
-     fun restoreCurrentUserData(callback: NoParamCallback) {
-        getUserData(auth.currentUser!!.email!!, object: OneParamCallback<User>{
-            override fun onComplete(value: User?) {
-                currentUser = value!!
-                Log.d(TAG, "Restored current user's data!")
-                callback.onComplete()
-            }
-
-            override fun onError(e: Exception?) {
-                Log.w(TAG, "Could not restore current user's data, see error below:")
-                if (e != null) {
-                    e.message?.let { Log.w(TAG, it) }
-                }
-                callback.onError(e)
-            }
-        })
-    }
-
-    fun addUser(userToAdd: User, callback: NoParamCallback? = null) {
+    fun addOrUpdateUser(userToAdd: User, callback: NoParamCallback? = null) {
         db.collection(COLLECTION_NAME)
             .document(userToAdd.email)
             .set(userToAdd)
             .addOnSuccessListener {
-                Log.d(TAG, "Successful addition of DocumentSnapshot with id ${userToAdd.email}")
+                Log.d(TAG, "Successful addition or update of DocumentSnapshot with id ${userToAdd.email}")
                 callback?.onComplete()
             }
             .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document ${e.message}")
+                Log.w(TAG, "Error adding or updating document ${e.message}")
                 callback?.onError(e)
             }
     }
@@ -80,7 +63,7 @@ class UserRepository {
     }
 
     fun signUpWithGoogle(credential: AuthCredential, callback: NoParamCallback) {
-        auth.signInWithCredential(credential).addOnCompleteListener {task ->
+        auth.signInWithCredential(credential).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 callback.onComplete()
             } else {
@@ -108,7 +91,7 @@ class UserRepository {
             }
     }
 
-    fun getUserData(email: String, callback: OneParamCallback<User>){
+    fun getUserData(email: String, callback: OneParamCallback<User>) {
         db.collection(COLLECTION_NAME)
             .document(email)
             .get()

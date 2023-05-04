@@ -11,7 +11,8 @@ data class User(
     @DocumentId
     val email: String = "",
     var name: String = "",
-    var favoritePosts: ArrayList<Item> = ArrayList(),
+    var favoriteDonations: ArrayList<String> = ArrayList(),
+    var favoriteExchanges: ArrayList<String> = ArrayList(),
     var preferences: ArrayList<String> = ArrayList(),
     var profilePhoto: String? = null
 ) : Parcelable

@@ -40,11 +40,17 @@
         android:name="com.diana.bachelorthesis.view.ChatFragment"
         android:label="@string/menu_chat"
         tools:layout= "@layout/fragment_chat" />
+
     <fragment
         android:id="@+id/nav_favorites"
         android:name="com.diana.bachelorthesis.view.FavoritesFragment"
         android:label="@string/menu_favorites"
-        tools:layout= "@layout/fragment_favorites" />
+        tools:layout= "@layout/fragment_favorites">
+    <action
+        android:id="@+id/action_nav_favorites_to_nav_item"
+        app:destination="@id/nav_item" />
+    </fragment>
+
     <fragment
         android:id="@+id/nav_intro_auth"
         android:name="com.diana.bachelorthesis.view.IntroAuthFragment"
@@ -80,6 +86,16 @@
         android:name="ItemClicked"
         app:argType="com.diana.bachelorthesis.model.Item" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_favorite_donations"
+        android:name="com.diana.bachelorthesis.view.FavoriteDonationsFragment"
+        tools:layout="@layout/fragment_favorite_donations" />
+
+    <fragment
+        android:id="@+id/nav_favorite_exchanges"
+        android:name="com.diana.bachelorthesis.view.FavoriteExchangesFragment"
+        tools:layout="@layout/fragment_favorite_exchanges" />
+
 
 
 </navigation>

@@ -23,7 +23,11 @@ class ItemRepository {
     val EXCHANGE_COLLECTION = "ExchangeItems"
     val DONATION_COLLECTION = "DonationItems"
 
-    var itemsListenerRegistration: ListenerRegistration? = null
+    var itemsExchangeListenerRegistration: ListenerRegistration? = null
+    var itemsDonationsListenerRegistration: ListenerRegistration? = null
+
+    var favDonationsListenerRegistration: ListenerRegistration? = null
+    var favExchangesListenerRegistration: ListenerRegistration? = null
 
     companion object {
         @Volatile
@@ -33,33 +37,106 @@ class ItemRepository {
 
     // TODO  de analizat folosirea cache-lui : https://firebase.google.com/docs/firestore/query-data/get-data
 
-    fun getItems(forExchange: Boolean, callback: ListParamCallback<Item>) {
-        val collRef: CollectionReference = if (forExchange) {
-            db.collection(EXCHANGE_COLLECTION)
-        } else {
-            db.collection(DONATION_COLLECTION)
-        }
-
-        itemsListenerRegistration = collRef.addSnapshotListener { snapshot, error ->
+    fun getExchangeItems(callback: ListParamCallback<Item>) {
+        itemsExchangeListenerRegistration =  db.collection(EXCHANGE_COLLECTION).addSnapshotListener { snapshot, error ->
             if (error != null) {
-                Log.w(TAG, "Listen failed", error)
+                Log.w(TAG, "Listen failed for exchange items", error)
                 return@addSnapshotListener
             }
             if (snapshot != null) {
-
                 val allItems = ArrayList<Item>()
                 val documents = snapshot.documents
                 documents.forEach {
-                    val item = if (forExchange) it.toObject(ItemExchange::class.java)
-                    else it.toObject(ItemDonation::class.java)
+                    val item = it.toObject(ItemExchange::class.java)
                     if (item != null) {
-                        Log.d(TAG, "Retrieved item ${it.data}")
+                        Log.d(TAG, "Retrieved exchange item ${it.data}")
                         allItems.add(item)
                     }
                 }
                 callback.onComplete(allItems)
             } else {
-                Log.w(TAG, "No such snapshot $snapshot")
+                Log.w(TAG, "No such snapshot")
+            }
+        }
+    }
+
+    fun getDonationItems(callback: ListParamCallback<Item>) {
+        itemsDonationsListenerRegistration = db.collection(DONATION_COLLECTION).addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                Log.w(TAG, "Listen failed for donation items", error)
+                return@addSnapshotListener
+            }
+            if (snapshot != null) {
+                val allItems = ArrayList<Item>()
+                val documents = snapshot.documents
+                documents.forEach {
+                    val item = it.toObject(ItemDonation::class.java)
+                    if (item != null) {
+                        Log.d(TAG, "Retrieved donation item ${it.data}")
+                        allItems.add(item)
+                    }
+                }
+                callback.onComplete(allItems)
+            } else {
+                Log.w(TAG, "No such snapshot")
+            }
+        }
+    }
+
+    fun getFavoriteDonations(favoriteItemsIds: List<String>, callback: ListParamCallback<Pair<Int, Item>>) {
+        favDonationsListenerRegistration = db.collection(DONATION_COLLECTION).addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                Log.w(TAG, "Listen failed for favorite donations", error)
+                return@addSnapshotListener
+            }
+            if (snapshot != null) {
+
+                val favItems = ArrayList<Pair<Int, Item>>() // save the item and its position in
+                // order to recreate the order the used added the item to its favorites
+
+                val documents = snapshot.documents
+                documents.forEach {
+                    val item = it.toObject(ItemDonation::class.java)
+                    if (item != null) {
+                        val position = favoriteItemsIds.indexOfFirst {id -> item.itemId == id }
+                        if (position != -1) {
+                            Log.d(TAG, "Retrieved favorite donation item ${it.data}")
+                            favItems.add(Pair(position, item))
+                        }
+                    }
+                }
+                callback.onComplete(favItems)
+            } else {
+                Log.w(TAG, "No such snapshot")
+            }
+        }
+    }
+
+    fun getFavoriteExchanges(favoriteItemsIds: List<String>, callback: ListParamCallback<Pair<Int, Item>>) {
+        favExchangesListenerRegistration = db.collection(EXCHANGE_COLLECTION).addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                Log.w(TAG, "Listen failed for favorite exchanges", error)
+                return@addSnapshotListener
+            }
+            if (snapshot != null) {
+
+                val favItems = ArrayList<Pair<Int, Item>>() // save the item and its position in
+                // order to recreate the order the used added the item to its favorites
+
+                val documents = snapshot.documents
+                documents.forEach {
+                    val item = it.toObject(ItemExchange::class.java)
+                    if (item != null) {
+                        val position = favoriteItemsIds.indexOfFirst {id -> item.itemId == id }
+                        if (position != -1) {
+                            Log.d(TAG, "Retrieved favorite  exchange item ${it.data}")
+                            favItems.add(Pair(position, item))
+                        }
+                    }
+                }
+                callback.onComplete(favItems)
+            } else {
+                Log.w(TAG, "No such snapshot")
             }
         }
     }
@@ -99,8 +176,14 @@ class ItemRepository {
         }
     }
 
-    fun detachListeners() {
-        itemsListenerRegistration?.remove()
+    fun detachHomeListeners() {
+        itemsDonationsListenerRegistration?.remove()
+        itemsExchangeListenerRegistration?.remove()
+    }
+
+    fun detachFavoritesListener() {
+        favDonationsListenerRegistration?.remove()
+        favExchangesListenerRegistration?.remove()
     }
 
 

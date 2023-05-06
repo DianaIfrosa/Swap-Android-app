@@ -33,7 +33,7 @@ class LocationHelper(var applicationContext : Context) {
         return result
     }
 
-    fun getItemCity(itemLocation: GeoPoint): String {
+     fun getItemCity(itemLocation: GeoPoint): String {
         val addresses = geocoder.getFromLocation(itemLocation.latitude, itemLocation.longitude, 3)
         var resultCity: String? = null
 

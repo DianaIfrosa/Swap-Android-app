@@ -276,6 +276,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
                 lifecycleScope.launch {
                     coroutineScope {
+                        addItemViewModel.itemCity = LocationHelper(requireContext()).getItemCity(addItemViewModel.itemLocation!!)
                         addItemViewModel.addItem()
                     }
                     
@@ -551,6 +552,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
             binding.locationChosen.apply {
                 visibility = View.VISIBLE
                 text = location.address
+                addItemViewModel.itemAddress = location.address
             }
             binding.itemLocationButton.text = getString(R.string.change_location)
         }

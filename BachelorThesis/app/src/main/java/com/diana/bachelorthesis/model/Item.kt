@@ -10,6 +10,7 @@ import kotlin.collections.ArrayList
 open class Item(
     @DocumentId
     var itemId: String,
+    var address: String,
     var category: ItemCategory,
     var city: String = "-",
     var condition: ItemCondition?,
@@ -20,11 +21,12 @@ open class Item(
     var owner: String,
     var postDate: Timestamp?,
     var year: Int?
-): Parcelable
-{
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         itemId = parcel.readString() ?: "",
-        category = parcel.readParcelable(ItemCategory::class.java.classLoader) ?: ItemCategory.UNKNOWN,
+        address = parcel.readString() ?: "",
+        category = parcel.readParcelable(ItemCategory::class.java.classLoader)
+            ?: ItemCategory.UNKNOWN,
         city = parcel.readString() ?: "",
         condition = parcel.readParcelable(ItemCondition::class.java.classLoader),
         description = parcel.readString() ?: "",
@@ -39,6 +41,7 @@ open class Item(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(itemId)
+        parcel.writeString(address)
         parcel.writeParcelable(category, flags)
         parcel.writeString(city)
         parcel.writeParcelable(condition, flags)
@@ -66,4 +69,21 @@ open class Item(
         }
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (other !is Item) return false
+
+        return (this.itemId == other.itemId &&
+                this.category == other.category &&
+                this.address == other.address &&
+                this.city == other.city &&
+                this.condition == other.condition &&
+                this.description == other.description &&
+                this.location == other.location &&
+                this.name == other.name &&
+                this.photos == other.photos &&
+                this.owner == other.owner &&
+                this.postDate == other.postDate &&
+                this.year == other.year
+                )
+    }
 }

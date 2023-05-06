@@ -52,7 +52,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
     implementation 'com.google.firebase:firebase-firestore-ktx'
@@ -69,8 +69,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
     debugImplementation 'androidx.fragment:fragment-testing:1.5.7'
     debugImplementation "androidx.test:monitor:1.6.1"
-    testImplementation 'org.mockito:mockito-core:2.24.5'
-    androidTestImplementation 'org.mockito:mockito-android:2.24.5'
+//    testImplementation 'org.mockito:mockito-core:2.24.5'
+//    androidTestImplementation 'org.mockito:mockito-android:2.24.5'
 
     // maps
     implementation 'com.google.android.gms:play-services-maps:18.1.0'

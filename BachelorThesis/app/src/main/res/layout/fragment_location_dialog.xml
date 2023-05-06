@@ -22,8 +22,6 @@
             app:contentInsetStartWithNavigation="0dp"
             />
         <!-- Change background to ?attr/colorPrimary-->
-
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout

@@ -125,8 +125,9 @@ class ItemFragment : Fragment(), BasicFragment {
 
         // photos
         binding.photoCarousel.setImageList(ItemsRecyclerViewAdapter.getPhotos(itemViewModel.currentItem))
-        val city = LocationHelper(requireContext()).getItemCity(itemViewModel.currentItem.location)
-        binding.itemAddress.text = city
+
+        // location
+        binding.itemAddress.text = itemViewModel.currentItem.address
 
         // post date
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())

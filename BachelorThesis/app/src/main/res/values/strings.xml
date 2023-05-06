@@ -153,5 +153,6 @@
     <string name="item">Item</string>
     <string name="choose_location">Choose location</string>
     <string name="send_message">Send message</string>
+    <string name="loading">Loading</string>
 
 </resources>

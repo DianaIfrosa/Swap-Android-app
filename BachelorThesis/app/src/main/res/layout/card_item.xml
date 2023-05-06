@@ -73,7 +73,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="15dp"
                         android:gravity="center"
-                        android:hint="address"
+                        android:hint="city"
 
                         android:maxWidth="130sp"
                         android:text="@{model.city}"

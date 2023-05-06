@@ -59,4 +59,9 @@ data class History(
             return arrayOfNulls(size)
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is History) return false
+        return (this.confirmation1 == other.confirmation1 && this.confirmation2 == other.confirmation2)
+    }
 }

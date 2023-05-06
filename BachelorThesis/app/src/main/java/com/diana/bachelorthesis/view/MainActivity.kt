@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mainViewModel: MainViewModel
 
     lateinit var sharedPref: SharedPreferences
-    var returnedHomeFromItemPage: Boolean = false
+    var returnedHomeFromItemPage: Boolean = false //TODO delete if no longer used
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -202,16 +202,10 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "Drawer was open during back press")
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            if (navController.currentBackStackEntry != null && navController.previousBackStackEntry != null) {
-                if (navController.currentBackStackEntry!!.destination.id == R.id.nav_item &&
-                    navController.previousBackStackEntry!!.destination.id == R.id.nav_home
-                ) {
-                    returnedHomeFromItemPage = true
-                }
-            }
             super.onBackPressed()
         }
     }
+
 
     private fun setDefaultSharedPreferencesHomeOptions() {
         Log.d(TAG, "Set Shared Preferences values for home options to default.")

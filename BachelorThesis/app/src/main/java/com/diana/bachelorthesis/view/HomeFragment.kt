@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHomeBinding
@@ -27,11 +29,13 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     private val TAG: String = HomeFragment::class.java.name
 
     private var _binding: FragmentHomeBinding? = null
+    private var firstVisiblePosition = 0
     lateinit var itemsViewModel: ItemsViewModel
     lateinit var userViewModel: UserViewModel
     lateinit var sharedPref: SharedPreferences
 
     private val binding get() = _binding!!
+    private lateinit var smoothScroller: RecyclerView.SmoothScroller
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,11 +82,28 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         Log.d(TAG, "HomeFragment is onActivityCreated")
 
         restoreSharedPreferencesData()
+        smoothScroller = object : LinearSmoothScroller(context) {
+            override fun getVerticalSnapPreference(): Int {
+                return SNAP_TO_START
+            }
+        }
+
         initListeners()
         itemsViewModel.populateLiveData()
 
         setHomeAppbar(requireActivity())
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "HomeFragment is onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "HomeFragment is onResume")
+    }
+
 
     private fun restoreSharedPreferencesData() {
         sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
@@ -114,76 +135,87 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
                 updateRecyclerView(
                     itemsViewModel.currentItems
                 )
+                scrollRecyclerView()
             }
         }
 
         itemsViewModel.exchangeItems.observe(viewLifecycleOwner) {
             Log.d(TAG, "Observed change in exchange items live data")
-            if (itemsViewModel.displayExchangeItems)
+            if (itemsViewModel.displayExchangeItems) {
                 updateRecyclerView(
                     itemsViewModel.currentItems
                 )
-        }
-
-        initSwitchCategoriesListener()
-
-        binding.addItemButton.setOnClickListener {
-//            userViewModel.signOut()
-            if (userViewModel.verifyUserLoggedIn()) {
-                // Redirect to add item page
-                // Chose to use this approach because it is not buggy in terms of back stack pop
-                val item =
-                    (requireActivity() as MainActivity).navView.findViewById<View>(R.id.nav_add_item)
-                item.callOnClick()
-            } else {
-                // Redirect to auth page
-                requireView().findNavController().navigate(R.id.nav_intro_auth)
+                scrollRecyclerView()
             }
-        }
 
-        binding.searchSwitchLayout.searchView.setOnQueryTextListener(object :
-            SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(inputText: String?): Boolean {
-                if (!inputText.isNullOrEmpty()) {
-                    itemsViewModel.restoreDefaultCurrentItemsAndOptions()
-                    itemsViewModel.searchItem(inputText)
-                    updateRecyclerView(itemsViewModel.currentItems)
+            initSwitchCategoriesListener()
+
+            binding.addItemButton.setOnClickListener {
+                if (userViewModel.verifyUserLoggedIn()) {
+                    // Redirect to add item page
+                    // Chose to use this approach because it is not buggy in terms of back stack pop
+                    val item =
+                        (requireActivity() as MainActivity).navView.findViewById<View>(R.id.nav_add_item)
+                    item.callOnClick()
+                } else {
+                    // Redirect to auth page
+                    requireView().findNavController().navigate(R.id.nav_intro_auth)
                 }
-                return false
             }
 
-            override fun onQueryTextChange(inputText: String?): Boolean {
-                if (inputText.isNullOrEmpty()) {
-                    itemsViewModel.restoreDefaultCurrentItemsAndOptions()
-
-                    updateRecyclerView(itemsViewModel.currentItems)
+            binding.searchSwitchLayout.searchView.setOnQueryTextListener(object :
+                SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(inputText: String?): Boolean {
+                    if (!inputText.isNullOrEmpty()) {
+                        itemsViewModel.restoreDefaultCurrentItemsAndOptions()
+                        itemsViewModel.searchItem(inputText)
+                        updateRecyclerView(itemsViewModel.currentItems)
+                    }
+                    return false
                 }
-                return false
+
+                override fun onQueryTextChange(inputText: String?): Boolean {
+                    if (inputText.isNullOrEmpty()) {
+                        itemsViewModel.restoreDefaultCurrentItemsAndOptions()
+
+                        updateRecyclerView(itemsViewModel.currentItems)
+                    }
+                    return false
+                }
+
+            })
+
+            binding.buttonSort.setOnClickListener {
+                val sortDialogFragment = SortDialogFragment()
+                sortDialogFragment.isCancelable = false
+
+                val bundle = Bundle()
+                bundle.putInt("sortOption", itemsViewModel.sortOption)
+                sortDialogFragment.arguments = bundle
+
+                sortDialogFragment.show(childFragmentManager, "SortDialogFragment")
             }
 
-        })
+            binding.buttonFilter.setOnClickListener {
+                val filterDialogFragment = FilterDialogFragment()
+                filterDialogFragment.isCancelable = false
 
-        binding.buttonSort.setOnClickListener {
-            val sortDialogFragment = SortDialogFragment()
-            sortDialogFragment.isCancelable = false
+                val bundle = itemsViewModel.getFilterBundle()
 
-            val bundle = Bundle()
-            bundle.putInt("sortOption", itemsViewModel.sortOption)
-            sortDialogFragment.arguments = bundle
+                filterDialogFragment.arguments = bundle
 
-            sortDialogFragment.show(childFragmentManager, "SortDialogFragment")
+                filterDialogFragment.show(childFragmentManager, "FilterDialogFragment")
+            }
         }
+    }
 
-        binding.buttonFilter.setOnClickListener {
-            val filterDialogFragment = FilterDialogFragment()
-            filterDialogFragment.isCancelable = false
-
-            val bundle = itemsViewModel.getFilterBundle()
-
-            filterDialogFragment.arguments = bundle
-
-            filterDialogFragment.show(childFragmentManager, "FilterDialogFragment")
-        }
+    private fun scrollRecyclerView() {
+        Log.d(
+            TAG,
+            "Restored recycler scroll position ${itemsViewModel.lastScollPosition}"
+        )
+        smoothScroller.targetPosition = itemsViewModel.lastScollPosition
+        binding.homeRecyclerView.layoutManager!!.startSmoothScroll(smoothScroller)
     }
 
     private fun initSwitchCategoriesListener() {
@@ -194,6 +226,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         switchMainCategories.setOnCheckedChangeListener { _, checked ->
             Log.d(TAG, "Switch clicked in HomeFragment")
             itemsViewModel.displayExchangeItems = !checked
+            itemsViewModel.lastScollPosition = 0
 
 //            // clear search bar text
 //            binding.searchSwitchLayout.searchView.setQuery("", false)
@@ -201,6 +234,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 //
             itemsViewModel.restoreDefaultCurrentItems()
             updateRecyclerView(itemsViewModel.currentItems)
+            scrollRecyclerView()
 
             if (checked) {
                 switchExchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
@@ -217,12 +251,14 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     fun updateRecyclerView(items: List<Item>, progressBarAppears: Boolean = false) {
         if (progressBarAppears) {
             binding.progressBarHome.visibility = View.VISIBLE
+            binding.textNumberItems.text = resources.getString(R.string.loading)
             binding.homeRecyclerView.visibility = View.INVISIBLE
         } else {
             binding.homeRecyclerView.visibility = View.VISIBLE
             binding.progressBarHome.visibility = View.INVISIBLE
             binding.itemsAdapter =
                 ItemsRecyclerViewAdapter(items, requireContext()) { item ->
+                    (requireActivity() as MainActivity).returnedHomeFromItemPage = true
                     val action = HomeFragmentDirections.actionNavHomeToNavItem(item)
                     requireView().findNavController().navigate(action)
                 }
@@ -265,6 +301,13 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
             )
             apply() // asynchronously
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "HomeFragment is onPause")
+        itemsViewModel.lastScollPosition =
+            (binding.homeRecyclerView.layoutManager as GridLayoutManager).findFirstVisibleItemPosition()
     }
 
     override fun onStop() {

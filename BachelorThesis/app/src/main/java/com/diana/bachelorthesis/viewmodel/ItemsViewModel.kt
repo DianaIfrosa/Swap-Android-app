@@ -31,6 +31,8 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
     var cityFilter: String = ""
     var categoriesFilter: List<ItemCategory> = arrayListOf()
 
+    var lastScollPosition = 0
+
     class ViewModelFactory(private val arg: LocationHelper) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -46,9 +48,8 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         //_donationItems.value = repository.getItems(false)
 
         Log.d(TAG, "Populate live data in itemsViewModel")
-        itemRepository.getItems(true, object : ListParamCallback<Item> {
+        itemRepository.getExchangeItems(object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
-
                 val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate })// new to old
                 if (displayExchangeItems) {
                     updateCurrentItems(valuesSorted)
@@ -64,7 +65,7 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
             }
         })
 
-        itemRepository.getItems(false, object : ListParamCallback<Item> {
+        itemRepository.getDonationItems(object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
                 val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate })// new to old
                 if (!displayExchangeItems) {
@@ -228,6 +229,6 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
     }
 
     fun detachListeners() {
-        itemRepository.detachListeners()
+        itemRepository.detachHomeListeners()
     }
 }

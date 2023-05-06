@@ -28,6 +28,8 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
 
     var itemForExchange: Boolean = true
     var itemTitle: String = ""
+    var itemAddress: String = ""
+    var itemCity: String = ""
     var itemDescription: String = ""
     var itemYear: Int? = null
     var itemExchangePreferences:  ArrayList<ItemCategory> = arrayListOf()
@@ -51,6 +53,8 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
         item.itemId =  UUID.randomUUID().toString()
         item.name = itemTitle
         item.description = itemDescription
+        item.city = itemCity
+        item.address = itemAddress
         item.category = categoryChosen
         item.condition = conditionChosen
         item.postDate = Timestamp.now()
@@ -90,6 +94,8 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
 
         itemForExchange = true
         itemTitle = ""
+        itemAddress = ""
+        itemCity = ""
         itemDescription= ""
         itemYear = null
         itemExchangePreferences = arrayListOf()

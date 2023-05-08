@@ -199,6 +199,29 @@ class ItemRepository {
         }
     }
 
+    fun getExchangeItems(callback: ListParamCallback<Item>) {
+        db.collection(EXCHANGE_COLLECTION).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Retrieved all exchange items.")
+                val allItems = ArrayList<Item>()
+                task.result.forEach {
+                    val item = it.toObject(ItemExchange::class.java)
+                    allItems.add(item)
+                }
+                callback.onComplete(allItems)
+            } else {
+                Log.w(
+                    TAG,
+                    "Error while retrieving all exchange items, see message below"
+                )
+                if (task.exception != null) {
+                    Log.w(TAG, task.exception!!.message.toString())
+                }
+                callback.onError(task.exception)
+            }
+        }
+    }
+
     fun getDonationsItemsCities(callback: ListParamCallback<String>) {
         db.collection(DONATION_COLLECTION).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -213,6 +236,29 @@ class ItemRepository {
                 Log.w(
                     TAG,
                     "Error while retrieving all exchange items, see message below"
+                )
+                if (task.exception != null) {
+                    Log.w(TAG, task.exception!!.message.toString())
+                }
+                callback.onError(task.exception)
+            }
+        }
+    }
+
+    fun getDonationItems(callback: ListParamCallback<Item>) {
+        db.collection(DONATION_COLLECTION).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Retrieved all donation items.")
+                val allItems = ArrayList<Item>()
+                task.result.forEach {
+                    val item = it.toObject(ItemDonation::class.java)
+                    allItems.add(item)
+                }
+                callback.onComplete(allItems)
+            } else {
+                Log.w(
+                    TAG,
+                    "Error while retrieving all donation items, see message below"
                 )
                 if (task.exception != null) {
                     Log.w(TAG, task.exception!!.message.toString())

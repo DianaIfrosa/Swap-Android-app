@@ -212,10 +212,10 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     private fun scrollRecyclerView() {
         Log.d(
             TAG,
-            "Restored recycler scroll position ${itemsViewModel.lastScollPosition}"
+            "Restored recycler scroll position ${itemsViewModel.lastScrollPosition}"
         )
         try {
-            smoothScroller.targetPosition = itemsViewModel.lastScollPosition
+            smoothScroller.targetPosition = itemsViewModel.lastScrollPosition
             binding.homeRecyclerView.layoutManager!!.startSmoothScroll(smoothScroller)
         } catch (e: IllegalArgumentException) {
             Log.w(TAG, "Cannot scroll recycler view because because target position is incorrect.")
@@ -230,7 +230,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         switchMainCategories.setOnCheckedChangeListener { _, checked ->
             Log.d(TAG, "Switch clicked in HomeFragment")
             itemsViewModel.displayExchangeItems = !checked
-            itemsViewModel.lastScollPosition = 0
+            itemsViewModel.lastScrollPosition = 0
 
 //            // clear search bar text
 //            binding.searchSwitchLayout.searchView.setQuery("", false)
@@ -310,7 +310,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     override fun onPause() {
         super.onPause()
         Log.d(TAG, "HomeFragment is onPause")
-        itemsViewModel.lastScollPosition =
+        itemsViewModel.lastScrollPosition =
             (binding.homeRecyclerView.layoutManager as GridLayoutManager).findFirstVisibleItemPosition()
     }
 

@@ -9,12 +9,10 @@ import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.repository.UserRepository
 
 class MainViewModel : ViewModel() {
-    // The purpose of this view model is to keep a reference to the user repository that saves the
-    // current user, so that the User object will not be deleted by the garbage collector until the
-    // app is completely closed.
-
     private val TAG: String = MainViewModel::class.java.name
     var currentUser: User? = null
+
+    var clickedOnRecommendations = false
 
     fun addFavoriteItem(item: Item) {
         Log.d(TAG, "Added item ${item.name} to favorites.")

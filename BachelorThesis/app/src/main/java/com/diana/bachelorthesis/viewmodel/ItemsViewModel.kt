@@ -31,7 +31,7 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
     var cityFilter: String = ""
     var categoriesFilter: List<ItemCategory> = arrayListOf()
 
-    var lastScollPosition = 0
+    var lastScrollPosition = 0
 
     class ViewModelFactory(private val arg: LocationHelper) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")

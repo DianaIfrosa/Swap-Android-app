@@ -167,5 +167,7 @@
     <string name="categories_preferences_description">Items that fall under one of these categories.</string>
     <string name="cities_preferences_description">Items that are located in one of these cities.</string>
     <string name="exchange_preferences_description">Items for which the owner wants to exchange with an object from one of these categories</string>
+    <string name="no_items_favorites">Nothing... \n Tap ♡ in an item\'s page and you will have it saved here.</string>
+    <string name="no_items_recommendations">Nothing... \n Customize yout preferences in the dedicated page from profile section.</string>
 
 </resources>

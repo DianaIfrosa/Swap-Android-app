@@ -34,6 +34,7 @@
             android:textSize="14sp"
             android:textColor="@color/black"
             android:textStyle="italic"
+            android:text="@string/no_items_favorites"
             />
 
         <ScrollView

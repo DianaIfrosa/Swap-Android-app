@@ -116,8 +116,10 @@ class ItemFragment : Fragment(), BasicFragment {
     }
 
     private fun showItemOwnerDetails(owner: User) {
-        binding.itemOwnerName.text = owner.name
-        Picasso.get().load(owner.profilePhoto).into(binding.ownerPicture)
+        if (binding != null) {
+            binding.itemOwnerName.text = owner.name
+            Picasso.get().load(owner.profilePhoto).into(binding.ownerPicture)
+        }
     }
 
     private fun showItemDetails() {

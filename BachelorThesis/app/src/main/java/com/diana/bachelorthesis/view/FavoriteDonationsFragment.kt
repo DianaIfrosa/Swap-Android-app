@@ -72,6 +72,13 @@ class FavoriteDonationsFragment : Fragment() {
         Log.d(TAG, "FavoriteDonationsFragment is onPause")
     }
 
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "FavoriteDonationsFragment is onStop")
+        favoritesViewModel.lastScrollPosition =
+            (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+    }
+
      private fun updateRecyclerView(items: List<Item>, progressBarAppears: Boolean = false) {
          if (progressBarAppears) {
              binding.progressBar.visibility = View.VISIBLE
@@ -93,7 +100,6 @@ class FavoriteDonationsFragment : Fragment() {
              binding.recyclerView.visibility = View.INVISIBLE
              binding.textNoItems.visibility = View.VISIBLE
              binding.textNumberItems.text = items.size.toString()
-             binding.textNoItems.text = "Nothing... \n Tap ♡ in an item's page and you will have it saved here."
          }
     }
 

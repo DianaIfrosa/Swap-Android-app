@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
@@ -94,8 +95,14 @@ class FavoriteExchangesFragment : Fragment() {
             binding.recyclerView.visibility = View.INVISIBLE
             binding.textNoItems.visibility = View.VISIBLE
             binding.textNumberItems.text = items.size.toString()
-            binding.textNoItems.text = "Nothing... \n Tap ♡ in an item's page and you will have it saved here."
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "FavoriteExchangesFragment is onStop")
+        favoritesViewModel.lastScrollPosition =
+            (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
     }
 
     override fun onDestroyView() {

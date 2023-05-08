@@ -9,7 +9,7 @@ import com.diana.bachelorthesis.repository.ItemRepository
 import com.diana.bachelorthesis.utils.ListParamCallback
 
 class FavoritesViewModel : ViewModel() {
-    private val TAG: String = ItemsViewModel::class.java.name
+    private val TAG: String = FavoritesViewModel::class.java.name
     private val itemRepository = ItemRepository.getInstance()
 
     private val _exchangeItems = MutableLiveData<List<Item>>()
@@ -24,8 +24,7 @@ class FavoritesViewModel : ViewModel() {
     var lastScrollPosition = 0
 
     fun populateLiveDataExchanges() {
-        Log.d(TAG, "Populate live data exchanges in FavoritesViewModel.")
-        Log.d(TAG, " Exchanges ${favoriteExchangesIds.size}")
+        Log.d(TAG, "Populating live data exchanges in FavoritesViewModel.")
         itemRepository.getFavoriteExchanges(favoriteExchangesIds, object : ListParamCallback<Pair<Int, Item>> {
             override fun onComplete(values: ArrayList<Pair<Int, Item>>) {
                 val valuesSorted = ArrayList(values.sortedByDescending { item -> item.first }).map { it.second}
@@ -43,13 +42,12 @@ class FavoritesViewModel : ViewModel() {
     }
 
     fun populateLiveDataDonations() {
-        Log.d(TAG, "Populate live data  donations in FavoritesViewModel.")
-
+        Log.d(TAG, "Populating live data  donations in FavoritesViewModel.")
         itemRepository.getFavoriteDonations(favoriteDonationsIds, object : ListParamCallback<Pair<Int, Item>> {
             override fun onComplete(values: ArrayList<Pair<Int, Item>>) {
                 val valuesSorted = ArrayList(values.sortedByDescending { item -> item.first }).map { it.second}
                 if (valuesSorted != donationItems.value) {
-//                     update the UI only when the selected items are updated
+                    // update the UI only when the selected items are updated
                     _donationItems.value = valuesSorted
                     Log.d(TAG, "Updated favorite donation items")
                 }

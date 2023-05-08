@@ -26,7 +26,7 @@ class UserRepository {
     // for cloud
     val firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
 
-    val COLLECTION_NAME = "Users"
+    private val COLLECTION_NAME = "Users"
 
     companion object {
         @Volatile
@@ -119,6 +119,38 @@ class UserRepository {
                     callback.onError(task.exception)
                 }
             }
+    }
+
+    fun getUsersEmailsFromNames(names: ArrayList<String>, callback: ListParamCallback<String>) {
+        db.collection(COLLECTION_NAME).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Retrieved all users.")
+                val allUsersEmails = mutableListOf<String>()
+                task.result.forEach verifyUsers@{
+                    val user = it.toObject(User::class.java)
+                    names.forEach { text ->
+                        val words = text.split(" ")
+                        if (words.all { word ->
+                                user.name.contains(word, true)
+                            }) {
+                            allUsersEmails.add(user.email)
+                            return@verifyUsers
+                        }
+                    }
+                }
+                callback.onComplete(allUsersEmails as ArrayList<String>)
+            } else {
+                Log.w(
+                    TAG,
+                    "Error while retrieving all users, see message below"
+                )
+                if (task.exception != null) {
+                    Log.w(TAG, task.exception!!.message.toString())
+                }
+                callback.onError(task.exception)
+            }
+        }
+
     }
     fun getAllUsersName(callback: ListParamCallback<String>) {
         db.collection(COLLECTION_NAME).get().addOnCompleteListener { task ->

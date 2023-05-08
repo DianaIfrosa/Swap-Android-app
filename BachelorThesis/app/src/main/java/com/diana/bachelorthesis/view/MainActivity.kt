@@ -82,6 +82,11 @@ class MainActivity : AppCompatActivity() {
 
             } else {
                 // Treat other normal cases
+
+                if (item.itemId == R.id.nav_recommendations) {
+                    mainViewModel.clickedOnRecommendations = true
+                }
+
                 val handled = NavigationUI.onNavDestinationSelected(item, navController)
                 if (handled) drawerLayout.closeDrawer(GravityCompat.START)
                 handled
@@ -112,7 +117,7 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
     }
 
-     fun updateMenuItemsVisibility() {
+     private fun updateMenuItemsVisibility() {
         val userLogged = userViewModel.verifyUserLoggedIn()
         navView.menu.findItem(R.id.nav_recommendations).isVisible = userLogged
         navView.menu.findItem(R.id.nav_favorites).isVisible = userLogged
@@ -120,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         navView.menu.findItem(R.id.nav_history).isVisible = userLogged
     }
 
-    fun updateIconAppBar() {
+    private fun updateIconAppBar() {
         Log.d(TAG, "Updating icon from app bar")
         if (userViewModel.verifyUserLoggedIn()) {
             binding.appBarMain.iconAppBar.setImageResource(R.drawable.ic_person)
@@ -129,7 +134,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun updateNavHeader() {
+    private fun updateNavHeader() {
         Log.d(TAG, "Updating navigation header")
         val btnAuth = headerLayout.findViewById<Button>(R.id.btnAuthNavHeader)
         val nameTextView = headerLayout.findViewById<TextView>(R.id.nameNavHeader)
@@ -277,9 +282,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun updateAuthUIElements() {
-        updateIconAppBar()
-        updateNavHeader()
-        updateMenuItemsVisibility()
+        try {
+            updateIconAppBar()
+            updateNavHeader()
+            updateMenuItemsVisibility()
+        } catch (e: Exception) {
+            Log.e(TAG, "Some unexpected error occurred during update Auth UI elements, see error below")
+            e.message?.let { Log.e(TAG, it) }
+        }
     }
 
     override fun onDestroy() {

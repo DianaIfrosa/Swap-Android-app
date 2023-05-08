@@ -48,7 +48,7 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
         //_donationItems.value = repository.getItems(false)
 
         Log.d(TAG, "Populate live data in itemsViewModel")
-        itemRepository.getExchangeItems(object : ListParamCallback<Item> {
+        itemRepository.getExchangeItemsAndListen(object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
                 val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate })// new to old
                 if (displayExchangeItems) {
@@ -63,9 +63,11 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
 //                        updateCurrentItems(values)
 //                }
             }
+
+            override fun onError(e: Exception?) {}
         })
 
-        itemRepository.getDonationItems(object : ListParamCallback<Item> {
+        itemRepository.getDonationItemsAndListen(object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
                 val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate })// new to old
                 if (!displayExchangeItems) {
@@ -79,6 +81,8 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
 //                        updateCurrentItems(values)
 //                }
             }
+
+            override fun onError(e: Exception?) {}
         })
     }
 

@@ -5,7 +5,6 @@ import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemDonation
 import com.diana.bachelorthesis.model.ItemExchange
-import com.diana.bachelorthesis.utils.OneParamCallback
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
@@ -37,7 +36,7 @@ class ItemRepository {
 
     // TODO  de analizat folosirea cache-lui : https://firebase.google.com/docs/firestore/query-data/get-data
 
-    fun getExchangeItems(callback: ListParamCallback<Item>) {
+    fun getExchangeItemsAndListen(callback: ListParamCallback<Item>) {
         itemsExchangeListenerRegistration =  db.collection(EXCHANGE_COLLECTION).addSnapshotListener { snapshot, error ->
             if (error != null) {
                 Log.w(TAG, "Listen failed for exchange items", error)
@@ -60,7 +59,7 @@ class ItemRepository {
         }
     }
 
-    fun getDonationItems(callback: ListParamCallback<Item>) {
+    fun getDonationItemsAndListen(callback: ListParamCallback<Item>) {
         itemsDonationsListenerRegistration = db.collection(DONATION_COLLECTION).addSnapshotListener { snapshot, error ->
             if (error != null) {
                 Log.w(TAG, "Listen failed for donation items", error)
@@ -137,6 +136,7 @@ class ItemRepository {
                 callback.onComplete(favItems)
             } else {
                 Log.w(TAG, "No such snapshot")
+                callback.onError(null)
             }
         }
     }
@@ -173,6 +173,52 @@ class ItemRepository {
                     .addOnSuccessListener { Log.d(TAG, "Item successfully added!") }
                     .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
             }.await()
+        }
+    }
+
+    fun getExchangeItemsCities(callback: ListParamCallback<String>) {
+        db.collection(EXCHANGE_COLLECTION).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Retrieved all exchange items.")
+                val allCities = ArrayList<String>()
+                task.result.forEach {
+                    val item = it.toObject(ItemExchange::class.java)
+                    allCities.add(item.city)
+                }
+                callback.onComplete(allCities)
+            } else {
+                Log.w(
+                    TAG,
+                    "Error while retrieving all exchange items, see message below"
+                )
+                if (task.exception != null) {
+                    Log.w(TAG, task.exception!!.message.toString())
+                }
+                callback.onError(task.exception)
+            }
+        }
+    }
+
+    fun getDonationsItemsCities(callback: ListParamCallback<String>) {
+        db.collection(DONATION_COLLECTION).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Retrieved all donation items.")
+                val allCities = ArrayList<String>()
+                task.result.forEach {
+                    val item = it.toObject(ItemDonation::class.java)
+                    allCities.add(item.city)
+                }
+                callback.onComplete(allCities)
+            } else {
+                Log.w(
+                    TAG,
+                    "Error while retrieving all exchange items, see message below"
+                )
+                if (task.exception != null) {
+                    Log.w(TAG, task.exception!!.message.toString())
+                }
+                callback.onError(task.exception)
+            }
         }
     }
 

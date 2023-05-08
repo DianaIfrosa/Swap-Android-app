@@ -1,8 +1,11 @@
 package com.diana.bachelorthesis.repository
 
 import android.util.Log
+import com.diana.bachelorthesis.model.ItemCategory
+import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.model.User
+import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.AuthCredential
@@ -40,7 +43,10 @@ class UserRepository {
             .document(userToAdd.email)
             .set(userToAdd)
             .addOnSuccessListener {
-                Log.d(TAG, "Successful addition or update of DocumentSnapshot with id ${userToAdd.email}")
+                Log.d(
+                    TAG,
+                    "Successful addition or update of DocumentSnapshot with id ${userToAdd.email}"
+                )
                 callback?.onComplete()
             }
             .addOnFailureListener { e ->
@@ -114,5 +120,77 @@ class UserRepository {
                 }
             }
     }
+    fun getAllUsersName(callback: ListParamCallback<String>) {
+        db.collection(COLLECTION_NAME).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Retrieved all users.")
+                val allUsersNames = mutableListOf<String>()
+                task.result.forEach {
+                    val user = it.toObject(User::class.java)
+                    allUsersNames.add(user.name)
+                }
+                callback.onComplete(allUsersNames as ArrayList<String>)
+            } else {
+                Log.w(
+                    TAG,
+                    "Error while retrieving all users, see message below"
+                )
+                if (task.exception != null) {
+                    Log.w(TAG, task.exception!!.message.toString())
+                }
+                callback.onError(task.exception)
+            }
+        }
+    }
 
+    fun changeUserNotificationOption(userEmail: String, option: Int) {
+        db.collection(COLLECTION_NAME)
+            .document(userEmail)
+            .update("notifications.notificationsOption", option)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "Updated user notifications option for email $userEmail")
+                } else {
+                    Log.w(
+                        TAG,
+                        "Error while updating user $userEmail notifications option, see message below"
+                    )
+                    if (task.exception != null) {
+                        Log.w(TAG, task.exception!!.message.toString())
+                    }
+                }
+            }
+    }
+
+    fun changeUserPreferences(
+        userEmail: String,
+        words: List<String>,
+        owners: List<String>,
+        cities: List<String>,
+        categories: List<ItemCategory>,
+        exchangePreferences: List<ItemCategory>
+    ) {
+        db.collection(COLLECTION_NAME)
+            .document(userEmail)
+            .update(
+                "notifications.preferredWords", words,
+                "notifications.preferredOwners", owners,
+                "notifications.preferredCities", cities,
+                "notifications.preferredCategories", categories,
+                "notifications.preferredExchangePreferences", exchangePreferences
+            )
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "Updated user preferences for recommendations for email $userEmail")
+                } else {
+                    Log.w(
+                        TAG,
+                        "Error while updating user $userEmail preferences for recommendations, see message below"
+                    )
+                    if (task.exception != null) {
+                        Log.w(TAG, task.exception!!.message.toString())
+                    }
+                }
+            }
+    }
 }

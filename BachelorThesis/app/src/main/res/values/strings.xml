@@ -35,7 +35,7 @@
     <string name="cancel">Cancel</string>
     <string name="select">Select</string>
 
-    <string name="categories_title"><u>Categories</u></string>
+    <string name="categories"><u>Categories</u></string>
 
     <string name="categ_appliances">Appliances</string>
     <string name="categ_clothesshoes">Clothes &amp; Shoes</string>
@@ -105,7 +105,7 @@
 
     <!-- Authentication -->
     <string name="login">Log in</string>
-    <string name="email_hint">Email</string>
+    <string name="email">Email</string>
     <string name="password_hint">Password</string>
     <string name="register">Register</string>
     <string name="create_account">Create account</string>
@@ -154,5 +154,18 @@
     <string name="choose_location">Choose location</string>
     <string name="send_message">Send message</string>
     <string name="loading">Loading</string>
+    <string name="notifications">Notifications</string>
+    <string name="preferences_for_recommendations">Preferences for recommendations</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="name">Name</string>
+    <string name="edit_notifications">Edit notifications</string>
+    <string name="edit_preferences">Edit preferences</string>
+    <string name="words_preferences_description">Items that contain at least one of these words in their name or description.</string>
+    <string name="words">Words</string>
+    <string name="exchange_preferences">Exchange preferences</string>
+    <string name="owners_preferences_description">Items that are posted by one of these owners.</string>
+    <string name="categories_preferences_description">Items that fall under one of these categories.</string>
+    <string name="cities_preferences_description">Items that are located in one of these cities.</string>
+    <string name="exchange_preferences_description">Items for which the owner wants to exchange with an object from one of these categories</string>
 
 </resources>

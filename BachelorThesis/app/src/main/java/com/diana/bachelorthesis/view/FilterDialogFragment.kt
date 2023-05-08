@@ -29,6 +29,12 @@ class FilterDialogFragment : DialogFragment() {
     private var chosenCategories: MutableList<ItemCategory> = arrayListOf()
     private lateinit var checkboxes: Map<ItemCategory, CheckBox>
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "FilterDialogFragment is onCreate")
+        restoreValues()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,12 +46,6 @@ class FilterDialogFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "FilterDialogFragment is onCreate")
-        restoreValues()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

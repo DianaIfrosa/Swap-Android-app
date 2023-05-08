@@ -10,7 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
 
         <ImageView
             android:id="@+id/profile_photo"
@@ -18,6 +20,7 @@
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/shape_rounded" />
 
         <TextView
@@ -26,7 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="5dp"
+            android:text="@string/name"
+            android:textStyle="bold"
             android:textSize="20sp" />
 
         <TextView
@@ -34,9 +39,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textAlignment="center"
+            android:layout_marginBottom="30dp"
             android:gravity="center"
-            android:paddingBottom="10dp"
+            android:padding="5dp"
+            android:text="@string/email"
             android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/edit_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:gravity="start"
+            android:padding="10dp"
+            android:text="@string/edit_profile"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:drawableEnd="@drawable/ic_forward"
+            android:background="@drawable/btn_small"/>
+
+        <TextView
+            android:id="@+id/edit_preferences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:gravity="start"
+            android:padding="10dp"
+            android:text="@string/preferences_for_recommendations"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:drawableEnd="@drawable/ic_forward"
+            android:background="@drawable/btn_small"/>
+
+        <TextView
+            android:id="@+id/edit_notifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:gravity="start"
+            android:padding="10dp"
+            android:text="@string/notifications"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:drawableEnd="@drawable/ic_forward"
+            android:background="@drawable/btn_small"/>
 
         <Button
             android:id="@+id/btn_sign_out"

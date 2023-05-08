@@ -94,8 +94,12 @@ class FavoritesFragment : Fragment(), BasicFragment {
             TAG,
             "Restored recycler scroll position ${favoritesViewModel.lastScrollPosition}"
         )
+        try {
         smoothScroller.targetPosition = favoritesViewModel.lastScrollPosition
         recyclerView.layoutManager!!.startSmoothScroll(smoothScroller)
+        } catch (e: IllegalArgumentException) {
+            Log.w(TAG, "Cannot scroll recycler view because target position is incorrect.")
+        }
     }
 
     override fun onDestroyView() {

@@ -35,6 +35,10 @@ class FavoritesViewModel : ViewModel() {
                     Log.d(TAG, "Updated favorite exchange items")
                 }
             }
+
+            override fun onError(e: Exception?) {
+                _exchangeItems.value = listOf()
+            }
         })
     }
 
@@ -49,6 +53,10 @@ class FavoritesViewModel : ViewModel() {
                     _donationItems.value = valuesSorted
                     Log.d(TAG, "Updated favorite donation items")
                 }
+            }
+
+            override fun onError(e: Exception?) {
+                _donationItems.value = listOf()
             }
         })
     }

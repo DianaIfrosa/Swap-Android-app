@@ -214,8 +214,12 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
             TAG,
             "Restored recycler scroll position ${itemsViewModel.lastScollPosition}"
         )
-        smoothScroller.targetPosition = itemsViewModel.lastScollPosition
-        binding.homeRecyclerView.layoutManager!!.startSmoothScroll(smoothScroller)
+        try {
+            smoothScroller.targetPosition = itemsViewModel.lastScollPosition
+            binding.homeRecyclerView.layoutManager!!.startSmoothScroll(smoothScroller)
+        } catch (e: IllegalArgumentException) {
+            Log.w(TAG, "Cannot scroll recycler view because because target position is incorrect.")
+        }
     }
 
     private fun initSwitchCategoriesListener() {

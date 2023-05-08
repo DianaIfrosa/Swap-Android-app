@@ -76,7 +76,7 @@ class LocationDialogFragment : DialogFragment(), OnMapReadyCallback,
         toolbar.setNavigationOnClickListener {
             dialog!!.dismiss()
         }
-        toolbar.inflateMenu(R.menu.choose_location_menu)
+        toolbar.inflateMenu(R.menu.dialog_fragment_menu)
         toolbar.setOnMenuItemClickListener {
             val listener: LocationDialogListener = fragmentParent
             listener.saveLocation(locationChosen)

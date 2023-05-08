@@ -4,10 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.repository.PhotoRepository
 import com.diana.bachelorthesis.repository.UserRepository
+import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.AuthCredential
@@ -66,11 +68,16 @@ class UserViewModel : ViewModel() {
         userRepository.getUserData(email, callback)
     }
 
+    fun getAllUsersName(callback: ListParamCallback<String>) {
+        userRepository.getAllUsersName(callback)
+    }
+
     fun signOut() {
         if (userRepository.auth.currentUser!!
-                .providerData[userRepository.auth.currentUser!!.providerData.size -1]
+                .providerData[userRepository.auth.currentUser!!.providerData.size - 1]
                 .providerId
-                .equals("google.com", true)) {
+                .equals("google.com", true)
+        ) {
             Log.d(TAG, "User was logged in with Google")
             userRepository.googleClient?.signOut()
         } else {
@@ -97,5 +104,27 @@ class UserViewModel : ViewModel() {
 
     fun getSignInIntentGoogle(): Intent {
         return userRepository.googleClient!!.signInIntent
+    }
+
+    fun changeUserNotificationsOption(userEmail: String, option: Int) {
+        userRepository.changeUserNotificationOption(userEmail, option)
+    }
+
+    fun changeUserPreferences(
+        userEmail: String,
+        words: List<String>,
+        owners: List<String>,
+        cities: List<String>,
+        categories: List<ItemCategory>,
+        exchangePreferences: List<ItemCategory>
+    ) {
+        userRepository.changeUserPreferences(
+            userEmail,
+            words,
+            owners,
+            cities,
+            categories,
+            exchangePreferences
+        )
     }
 }

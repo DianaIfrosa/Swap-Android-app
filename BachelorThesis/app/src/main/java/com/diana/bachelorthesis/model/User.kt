@@ -13,6 +13,6 @@ data class User(
     var name: String = "",
     var favoriteDonations: ArrayList<String> = ArrayList(),
     var favoriteExchanges: ArrayList<String> = ArrayList(),
-    var preferences: ArrayList<String> = ArrayList(),
-    var profilePhoto: String? = null
+    var profilePhoto: String? = null,
+    var notifications: NotificationsPreferences = NotificationsPreferences()
 ) : Parcelable

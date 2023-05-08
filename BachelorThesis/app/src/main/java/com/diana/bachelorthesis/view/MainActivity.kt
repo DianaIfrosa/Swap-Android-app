@@ -19,6 +19,7 @@ import androidx.navigation.ui.*
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.ActivityMainBinding
 import com.diana.bachelorthesis.model.Item
+import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.SharedPreferencesUtils
 import com.diana.bachelorthesis.viewmodel.MainViewModel
@@ -241,6 +242,21 @@ class MainActivity : AppCompatActivity() {
         updateCurrentUserSharedPreferences()
     }
 
+    fun changeNotificationsOption(option: Int) {
+        mainViewModel.updateNotificationOption(option)
+        updateCurrentUserSharedPreferences()
+    }
+    fun changeUserPreferences(
+        words: List<String>,
+        owners: List<String>,
+        cities: List<String>,
+        categories: List<ItemCategory>,
+        exchangePreferences: List<ItemCategory>
+    ) {
+        mainViewModel.updateUserPreferences(words, owners, cities, categories, exchangePreferences)
+        updateCurrentUserSharedPreferences()
+    }
+
     fun itemIsFavorite(item: Item): Boolean = mainViewModel.itemIsFavorite(item)
 
 
@@ -268,7 +284,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
+        Log.d(TAG, "MainActivity is onDestroy")
+        _binding = null
     }
-
 }

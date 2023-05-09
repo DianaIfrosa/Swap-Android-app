@@ -16,8 +16,6 @@ import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.utils.ProfileOptionsListener
-import com.diana.bachelorthesis.utils.SharedPreferencesUtils
-import com.diana.bachelorthesis.viewmodel.ItemsViewModel
 import com.diana.bachelorthesis.viewmodel.ProfileViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.squareup.picasso.Picasso

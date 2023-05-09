@@ -23,9 +23,6 @@ class UserRepository {
 
     var googleClient: GoogleSignInClient? = null
 
-    // for cloud
-    val firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
-
     private val COLLECTION_NAME = "Users"
 
     companion object {

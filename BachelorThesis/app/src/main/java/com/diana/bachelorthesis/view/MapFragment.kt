@@ -113,8 +113,7 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
     private fun getViewModels() {
         mapViewModel = ViewModelProvider(this)[MapViewModel::class.java]
         val viewModelFactory = ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
-        itemsViewModel = ViewModelProvider(this, viewModelFactory)[ItemsViewModel::class.java]
-        itemsViewModel.populateLiveData()
+        itemsViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[ItemsViewModel::class.java]
     }
 
     override fun onMapsSdkInitialized(renderer: Renderer) {

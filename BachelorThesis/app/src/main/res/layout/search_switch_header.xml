@@ -1,27 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="30dp">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="20dp">
 
-    <SearchView
-        android:id="@+id/searchView"
+    <EditText
+        android:id="@+id/searchEditText"
         android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="10dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="Search"
+        android:layout_height="wrap_content"
+        android:paddingStart="5dp"
+        android:layout_weight="1"
+        android:imeOptions="actionDone"
+        android:drawableStart="@drawable/ic_search"
+        android:inputType="text"
+        android:drawablePadding="5dp"
+        android:hint="@string/search"
+        android:maxLines="1"
+        android:gravity="start"
         app:layout_constraintEnd_toStartOf="@+id/relativeLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+    <ImageButton
+        android:id="@+id/btn_clear_search"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_clear"
+        android:background="@android:color/transparent" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_height="32dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -68,4 +83,4 @@
         </LinearLayout>
     </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -6,10 +6,13 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -50,14 +53,10 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         Log.d(TAG, "HomeFragment is onCreateView")
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        binding.searchSwitchLayout.switchDonationExchange.isChecked = false
+//        binding.searchSwitchLayout.switchDonationExchange.isChecked = false
         val root: View = binding.root
 
-        binding.searchSwitchLayout.searchView.clearFocus()
         updateRecyclerViewSpan()
-
-        updateRecyclerView(arrayListOf(), true)
-        getViewModels()
 
         return root
     }
@@ -73,7 +72,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     private fun getViewModels() {
         val viewModelFactory =
             ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
-        itemsViewModel = ViewModelProvider(this, viewModelFactory)[ItemsViewModel::class.java]
+        itemsViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[ItemsViewModel::class.java]
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
     }
 
@@ -81,12 +80,27 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "HomeFragment is onActivityCreated")
 
-        restoreSharedPreferencesData()
         smoothScroller = object : LinearSmoothScroller(context) {
             override fun getVerticalSnapPreference(): Int {
                 return SNAP_TO_START
             }
         }
+        getViewModels()
+
+//        restoreSharedPreferencesData()
+
+        if (itemsViewModel.currentItems.isNotEmpty()) {
+            updateRecyclerView(itemsViewModel.currentItems)
+        } else {
+            updateRecyclerView(arrayListOf(), true)
+        }
+
+//        // restore search bar text
+//        binding.searchSwitchLayout.searchEditText.isActivated = true
+//        binding.searchSwitchLayout.searchEditText.onActionViewExpanded()
+//        binding.searchSwitchLayout.searchView.isIconified = false
+//        binding.searchSwitchLayout.searchView.clearFocus()
+//        binding.searchSwitchLayout.searchView.setQuery("text", false)
 
         initListeners()
         itemsViewModel.populateLiveData()
@@ -94,8 +108,18 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         setHomeAppbar(requireActivity())
     }
 
+    private fun setSearchBarUI() {
+        binding.searchSwitchLayout.searchEditText.setText(itemsViewModel.searchText)
+        if (itemsViewModel.searchText.isNotEmpty()) {
+            binding.searchSwitchLayout.btnClearSearch.visibility = View.VISIBLE
+        } else {
+            binding.searchSwitchLayout.btnClearSearch.visibility = View.GONE
+        }
+    }
+
     override fun onStart() {
         super.onStart()
+        setSearchBarUI()
         Log.d(TAG, "HomeFragment is onStart")
     }
 
@@ -163,27 +187,35 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
                 }
             }
 
-            binding.searchSwitchLayout.searchView.setOnQueryTextListener(object :
-                SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(inputText: String?): Boolean {
-                    if (!inputText.isNullOrEmpty()) {
+            binding.searchSwitchLayout.searchEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    val inputText = textView.text.toString()
+                    if (inputText.isNotEmpty()) {
                         itemsViewModel.restoreDefaultCurrentItemsAndOptions()
                         itemsViewModel.searchItem(inputText)
                         updateRecyclerView(itemsViewModel.currentItems)
-                    }
-                    return false
-                }
-
-                override fun onQueryTextChange(inputText: String?): Boolean {
-                    if (inputText.isNullOrEmpty()) {
+                    } else {
                         itemsViewModel.restoreDefaultCurrentItemsAndOptions()
-
                         updateRecyclerView(itemsViewModel.currentItems)
                     }
-                    return false
-                }
+                    false
+                } else false
+            }
 
-            })
+            binding.searchSwitchLayout.searchEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.searchSwitchLayout.btnClearSearch.visibility = View.VISIBLE
+                } else {
+                    binding.searchSwitchLayout.btnClearSearch.visibility = View.GONE
+                }
+            }
+
+            binding.searchSwitchLayout.btnClearSearch.setOnClickListener {
+                itemsViewModel.restoreDefaultCurrentItemsAndOptions()
+                binding.searchSwitchLayout.searchEditText.setText(itemsViewModel.searchText)
+                updateRecyclerView(itemsViewModel.currentItems)
+                binding.searchSwitchLayout.btnClearSearch.visibility = View.GONE
+            }
 
             binding.buttonSort.setOnClickListener {
                 val sortDialogFragment = SortDialogFragment()
@@ -232,10 +264,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
             itemsViewModel.displayExchangeItems = !checked
             itemsViewModel.lastScrollPosition = 0
 
-//            // clear search bar text
-//            binding.searchSwitchLayout.searchView.setQuery("", false)
-//            binding.searchSwitchLayout.searchView.clearFocus()
-//
             itemsViewModel.restoreDefaultCurrentItems()
             updateRecyclerView(itemsViewModel.currentItems)
             scrollRecyclerView()
@@ -283,7 +311,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 //        }
 //    }
 
-    // TODO add onPause to restore data with bundle?
     override fun saveSortOption(option: Int) {
         itemsViewModel.applySort(option)
         updateRecyclerView(itemsViewModel.currentItems)
@@ -322,9 +349,8 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d(TAG, "HomeFragment is onDestroyView")
-        // TODO uncomment this: saveDefaultOptions()
         _binding = null
-        writeSharedPreferencesData()
+//        writeSharedPreferencesData()
         itemsViewModel.detachListeners()
     }
 }

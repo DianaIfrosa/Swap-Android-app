@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -21,7 +22,9 @@ import com.diana.bachelorthesis.databinding.ActivityMainBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.User
+import com.diana.bachelorthesis.utils.LocationHelper
 import com.diana.bachelorthesis.utils.SharedPreferencesUtils
+import com.diana.bachelorthesis.viewmodel.ItemsViewModel
 import com.diana.bachelorthesis.viewmodel.MainViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.material.navigation.NavigationView
@@ -43,12 +46,14 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var userViewModel: UserViewModel
     lateinit var mainViewModel: MainViewModel
+    lateinit var itemsViewModel: ItemsViewModel
 
     lateinit var sharedPref: SharedPreferences
     var returnedHomeFromItemPage: Boolean = false //TODO delete if no longer used
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -87,6 +92,10 @@ class MainActivity : AppCompatActivity() {
                     mainViewModel.clickedOnRecommendations = true
                 }
 
+                if (item.itemId != R.id.nav_home) {
+                    itemsViewModel.restoreDefaultCurrentItemsAndOptions()
+                }
+
                 val handled = NavigationUI.onNavDestinationSelected(item, navController)
                 if (handled) drawerLayout.closeDrawer(GravityCompat.START)
                 handled
@@ -115,6 +124,9 @@ class MainActivity : AppCompatActivity() {
     private fun getViewModels() {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        val viewModelFactory =
+            ItemsViewModel.ViewModelFactory(LocationHelper(this.applicationContext))
+        itemsViewModel = ViewModelProvider(this, viewModelFactory)[ItemsViewModel::class.java]
     }
 
      private fun updateMenuItemsVisibility() {

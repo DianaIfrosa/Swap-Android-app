@@ -14,14 +14,18 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profile_photo"
             android:layout_width="150dp"
             android:layout_height="150dp"
+            app:strokeColor="@color/grey"
+            app:strokeWidth="1dp"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            android:scaleType="centerCrop"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/shape_rounded" />
+            android:background="@drawable/circle_layout" />
 
         <TextView
             android:id="@+id/profile_name"

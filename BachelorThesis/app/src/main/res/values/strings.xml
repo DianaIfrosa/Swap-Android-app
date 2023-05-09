@@ -36,6 +36,7 @@
     <string name="select">Select</string>
 
     <string name="categories"><u>Categories</u></string>
+    <string name="categories_no_underline">Categories</string>
 
     <string name="categ_appliances">Appliances</string>
     <string name="categ_clothesshoes">Clothes &amp; Shoes</string>
@@ -106,7 +107,7 @@
     <!-- Authentication -->
     <string name="login">Log in</string>
     <string name="email">Email</string>
-    <string name="password_hint">Password</string>
+    <string name="password">Password</string>
     <string name="register">Register</string>
     <string name="create_account">Create account</string>
     <string name="confirm_password">Confirm password</string>
@@ -169,5 +170,15 @@
     <string name="exchange_preferences_description">Items for which the owner wants to exchange with an object from one of these categories</string>
     <string name="no_items_favorites">Nothing... \n Tap ♡ in an item\'s page and you will have it saved here.</string>
     <string name="no_items_recommendations">Nothing... \n Customize yout preferences in the dedicated page from profile section.</string>
+    <string name="old_password">Old password</string>
+    <string name="select_from_gallery_2_rows">Select from \n gallery</string>
+    <string name="profile_photo">Profile photo</string>
+    <string name="new_password">New password</string>
+    <string name="old_pass_invalid">Invalid password!</string>
+    <string name="owners">Owners</string>
+    <string name="owners_autocomplete">Search for a name</string>
+    <string name="city_autocomplete">e.g. Bucuresti</string>
+    <string name="words_autocomplete">e.g. table</string>
+    <string name="edit_preferences_description">Based on your preferences you will see the corresponding items in your Recommendations page and receive notifications for them (if turned on).</string>
 
 </resources>

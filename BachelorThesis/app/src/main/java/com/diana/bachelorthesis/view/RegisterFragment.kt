@@ -51,7 +51,7 @@ class RegisterFragment : Fragment(), BasicFragment {
         Log.d(TAG, "RegisterFragment is onCreateView")
         _binding = FragmentRegisterBinding.inflate(layoutInflater)
         val root: View = binding.root
-        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
 
         return root
     }

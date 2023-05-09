@@ -13,6 +13,7 @@ import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseUser
 import java.io.File
 import kotlin.Exception
@@ -59,6 +60,7 @@ class UserViewModel : ViewModel() {
         return userRepository.auth.currentUser!!.email!!
     }
 
+
     fun getCurrentUserName(): String {
         return userRepository.auth.currentUser!!.displayName!!
     }
@@ -72,12 +74,15 @@ class UserViewModel : ViewModel() {
         userRepository.getAllUsersName(callback)
     }
 
+    fun userLoggedInWithGoogle(): Boolean {
+        return (userRepository.auth.currentUser!!
+            .providerData[userRepository.auth.currentUser!!.providerData.size - 1]
+            .providerId
+            .equals("google.com", true))
+    }
+
     fun signOut() {
-        if (userRepository.auth.currentUser!!
-                .providerData[userRepository.auth.currentUser!!.providerData.size - 1]
-                .providerId
-                .equals("google.com", true)
-        ) {
+        if (userLoggedInWithGoogle()) {
             Log.d(TAG, "User was logged in with Google")
             userRepository.googleClient?.signOut()
         } else {
@@ -126,5 +131,9 @@ class UserViewModel : ViewModel() {
             categories,
             exchangePreferences
         )
+    }
+
+    fun updatePassword(newPass: String, callback: NoParamCallback) {
+        userRepository.updatePassword(newPass, callback)
     }
 }

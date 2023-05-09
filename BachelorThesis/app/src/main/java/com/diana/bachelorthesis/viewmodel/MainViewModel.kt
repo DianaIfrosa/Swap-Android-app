@@ -6,7 +6,6 @@ import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.ItemDonation
 import com.diana.bachelorthesis.model.User
-import com.diana.bachelorthesis.repository.UserRepository
 
 class MainViewModel : ViewModel() {
     private val TAG: String = MainViewModel::class.java.name
@@ -58,5 +57,9 @@ class MainViewModel : ViewModel() {
         currentUser!!.notifications.preferredCities = cities
         currentUser!!.notifications.preferredCategories = categories
         currentUser!!.notifications.preferredExchangePreferences = exchangePreferences
+    }
+
+    fun updateProfilePhoto(photo: String) {
+        currentUser!!.profilePhoto = photo
     }
 }

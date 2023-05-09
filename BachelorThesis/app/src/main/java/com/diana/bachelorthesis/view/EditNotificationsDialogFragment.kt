@@ -10,9 +10,11 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentEditNotificationsDialogBinding
 import com.diana.bachelorthesis.utils.ProfileOptionsListener
+import com.diana.bachelorthesis.viewmodel.ProfileViewModel
 
 class EditNotificationsDialogFragment : DialogFragment() {
     private val TAG: String = EditNotificationsDialogFragment::class.java.name
@@ -21,7 +23,8 @@ class EditNotificationsDialogFragment : DialogFragment() {
     private val binding get() = _binding!!
     private lateinit var fragmentParent: ProfileFragment
     private lateinit var toolbar: Toolbar
-    private var categorySelected: Int = 1 // default = option regarding the preferred items
+
+    private lateinit var profileViewModel: ProfileViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +45,9 @@ class EditNotificationsDialogFragment : DialogFragment() {
         customizeToolbar()
 
         fragmentParent = parentFragment as ProfileFragment
+        profileViewModel = ViewModelProvider(fragmentParent)[ProfileViewModel::class.java]
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-        restoreValues()
+        restoreOption()
 
         return root
     }
@@ -58,9 +62,9 @@ class EditNotificationsDialogFragment : DialogFragment() {
         toolbar.setOnMenuItemClickListener {
             val listener: ProfileOptionsListener = fragmentParent
             val selectedRadioButtonId = binding.notificationsRadioButtons.checkedRadioButtonId
-            categorySelected =
+            profileViewModel.notificationsOptionSelected =
                 binding.notificationsRadioButtons.indexOfChild(binding.notificationsRadioButtons.findViewById(selectedRadioButtonId))
-            listener.saveNotificationOption(categorySelected)
+            listener.saveNotificationOption(profileViewModel.notificationsOptionSelected)
             dialog!!.dismiss()
             true
         }
@@ -71,10 +75,8 @@ class EditNotificationsDialogFragment : DialogFragment() {
         Log.d(TAG, "EditNotificationsDialogFragment is onActivityCreated")
     }
 
-    private fun restoreValues() {
-        val bundle = this.arguments
-        categorySelected = bundle?.getInt("notificationsOption") ?: 1
-        (binding.notificationsRadioButtons.getChildAt(categorySelected) as RadioButton).isChecked = true
+    private fun restoreOption() {
+        (binding.notificationsRadioButtons.getChildAt(profileViewModel.notificationsOptionSelected) as RadioButton).isChecked = true
     }
 
     override fun onDestroyView() {

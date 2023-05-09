@@ -3,7 +3,6 @@ package com.diana.bachelorthesis.view
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,11 +11,9 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
-import android.widget.LinearLayout
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ListAdapter
 import com.diana.bachelorthesis.databinding.FragmentEditPreferencesDialogBinding
@@ -24,6 +21,7 @@ import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.utils.HelperListAdapter
 import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.utils.ProfileOptionsListener
+import com.diana.bachelorthesis.viewmodel.ProfileViewModel
 
 
 class EditPreferencesDialogFragment : DialogFragment() {
@@ -33,19 +31,15 @@ class EditPreferencesDialogFragment : DialogFragment() {
     private val binding get() = _binding!!
     private lateinit var fragmentParent: ProfileFragment
     private lateinit var toolbar: Toolbar
-
-    private var preferredOwners: MutableList<String> = mutableListOf()
-    private var preferredCities: MutableList<String> = mutableListOf()
-    private var preferredWords: MutableList<String> = mutableListOf()
-    private var preferredCategories: MutableList<ItemCategory> = mutableListOf()
-    private var preferredExchangePreferences: MutableList<ItemCategory> = mutableListOf()
-
-    private lateinit var checkboxesCategories: Map<ItemCategory, CheckBox>
-    private lateinit var checkboxesExchangePreferences: Map<ItemCategory, CheckBox>
+    private lateinit var profileViewModel: ProfileViewModel
 
     private lateinit var adapterOwners: ListAdapter
     private lateinit var adapterCities: ListAdapter
     private lateinit var adapterWords: ListAdapter
+
+    var checkboxesCategories: Map<ItemCategory, CheckBox> = mapOf()
+    var checkboxesExchangePreferences: Map<ItemCategory, CheckBox> = mapOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,11 +60,10 @@ class EditPreferencesDialogFragment : DialogFragment() {
         customizeToolbar()
 
         fragmentParent = parentFragment as ProfileFragment
+        profileViewModel = ViewModelProvider(fragmentParent)[ProfileViewModel::class.java]
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
 
         initCheckboxes()
-        changeSectionsColor()
-        restoreValues()
         updateUI()
         setAdaptersAutocomplete()
         initListeners()
@@ -114,11 +107,11 @@ class EditPreferencesDialogFragment : DialogFragment() {
         binding.btnAddCity.setOnClickListener {
             val city = binding.autocompleteCities.text.toString()
             if (city.isNotEmpty()) {
-                preferredCities = adapterCities.getItems()
-                preferredCities.add(city)
+                profileViewModel.preferredCities = adapterCities.getItems()
+                profileViewModel.preferredCities.add(city)
                 adapterCities = ListAdapter(
                     requireContext(),
-                    ArrayList(preferredCities)
+                    ArrayList(profileViewModel.preferredCities)
                 )
                 binding.citiesList.adapter = adapterCities
                 HelperListAdapter.adjustListViewSize(binding.citiesList)
@@ -132,11 +125,11 @@ class EditPreferencesDialogFragment : DialogFragment() {
         binding.btnAddOwner.setOnClickListener {
             val owner = binding.autocompleteOwners.text.toString()
             if (owner.isNotEmpty()) {
-                preferredOwners = adapterOwners.getItems()
-                preferredOwners.add(owner)
+                profileViewModel.preferredOwners = adapterOwners.getItems()
+                profileViewModel.preferredOwners.add(owner)
                 adapterOwners = ListAdapter(
                     requireContext(),
-                    ArrayList(preferredOwners)
+                    ArrayList(profileViewModel.preferredOwners)
                 )
                 binding.ownersList.adapter = adapterOwners
                 HelperListAdapter.adjustListViewSize(binding.ownersList)
@@ -150,11 +143,11 @@ class EditPreferencesDialogFragment : DialogFragment() {
         binding.btnAddWord.setOnClickListener {
             val word = binding.editextWords.text.toString()
             if (word.isNotEmpty()) {
-                preferredWords = adapterWords.getItems()
-                preferredWords.add(word)
+                profileViewModel.preferredWords = adapterWords.getItems()
+                profileViewModel.preferredWords.add(word)
                 adapterWords = ListAdapter(
                     requireContext(),
-                    ArrayList(preferredWords)
+                    ArrayList(profileViewModel.preferredWords)
                 )
                 binding.wordsList.adapter = adapterWords
                 HelperListAdapter.adjustListViewSize(binding.wordsList)
@@ -201,55 +194,19 @@ class EditPreferencesDialogFragment : DialogFragment() {
         )
     }
 
-    private fun changeSectionsColor() {
-        changeSectionColor(binding.wordsSection, resources.getColor(R.color.blue_pale))
-        changeSectionColor(binding.ownersSection, resources.getColor(R.color.turquoise_pale))
-        changeSectionColor(binding.categoriesSection, resources.getColor(R.color.green_pale))
-        changeSectionColor(binding.citiesSection, resources.getColor(R.color.salmon_pale))
-        changeSectionColor(binding.exchangePreferencesSection, resources.getColor(R.color.salmon_red_pale))
-    }
 
-    private fun changeSectionColor(section: LinearLayout, color: Int) {
-        val unwrappedDrawable: Drawable =
-            AppCompatResources.getDrawable(requireContext(), R.drawable.tab_indicator)!!
-        val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable)
-        DrawableCompat.setTint(wrappedDrawable, color)
-
-        section.background = wrappedDrawable
-    }
-
-    private fun restoreValues() {
-        val bundle = this.arguments
-
-        val categories = bundle?.getStringArrayList("categories") ?: mutableListOf()
-        val chosenCategories = arrayListOf<ItemCategory>()
-        categories.forEach {
-            chosenCategories.add(ItemCategory.valueOf(it))
-        }
-        preferredCategories = chosenCategories
-        preferredCities = bundle?.getStringArrayList("cities") ?: mutableListOf()
-        preferredOwners = bundle?.getStringArrayList("owners") ?: mutableListOf()
-        preferredWords = bundle?.getStringArrayList("words") ?: mutableListOf()
-
-        val exchangePreferences = bundle?.getStringArrayList("exchange_preferences") ?: mutableListOf()
-        val chosenPreferences = arrayListOf<ItemCategory>()
-        exchangePreferences.forEach {
-            chosenPreferences.add(ItemCategory.valueOf(it))
-        }
-        preferredExchangePreferences = chosenPreferences
-    }
 
     private fun updateUI() {
         // categories
-        if (preferredCategories.isNotEmpty()) {
-            preferredCategories.forEach { category->
+        if (profileViewModel.preferredCategories.isNotEmpty()) {
+            profileViewModel.preferredCategories.forEach { category->
                 checkboxesCategories[category]?.isChecked = true
             }
         }
 
         // exchange preferences
-        if (preferredExchangePreferences.isNotEmpty()) {
-            preferredExchangePreferences.forEach { category->
+        if (profileViewModel.preferredExchangePreferences.isNotEmpty()) {
+            profileViewModel.preferredExchangePreferences.forEach { category->
                 checkboxesExchangePreferences[category]?.isChecked = true
             }
         }
@@ -257,7 +214,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
         // owners
         adapterOwners = ListAdapter(
             requireContext(),
-            ArrayList(preferredOwners)
+            ArrayList(profileViewModel.preferredOwners)
         )
         binding.ownersList.adapter = adapterOwners
         HelperListAdapter.adjustListViewSize(binding.ownersList)
@@ -265,7 +222,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
         // cities
         adapterCities = ListAdapter(
             requireContext(),
-            ArrayList(preferredCities)
+            ArrayList(profileViewModel.preferredCities)
         )
         binding.citiesList.adapter = adapterCities
         HelperListAdapter.adjustListViewSize(binding.citiesList)
@@ -273,7 +230,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
         // words
         adapterWords = ListAdapter(
             requireContext(),
-            ArrayList(preferredWords)
+            ArrayList(profileViewModel.preferredWords)
         )
         binding.wordsList.adapter = adapterWords
         HelperListAdapter.adjustListViewSize(binding.wordsList)
@@ -286,7 +243,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
                 selectedCategories.add(it.key)
             }
         }
-        preferredCategories = selectedCategories
+        profileViewModel.preferredCategories = selectedCategories
 
         val selectedExchangePreferences = arrayListOf<ItemCategory>()
         checkboxesExchangePreferences.forEach {
@@ -294,7 +251,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
                 selectedExchangePreferences.add(it.key)
             }
         }
-        preferredExchangePreferences = selectedExchangePreferences
+        profileViewModel.preferredExchangePreferences = selectedExchangePreferences
     }
 
     private fun customizeToolbar() {
@@ -308,11 +265,11 @@ class EditPreferencesDialogFragment : DialogFragment() {
             val listener: ProfileOptionsListener = fragmentParent
             getCheckboxesSelections()
 
-            preferredWords = adapterWords.getItems()
-            preferredOwners = adapterOwners.getItems()
-            preferredCities = adapterCities.getItems()
+            profileViewModel.preferredWords = adapterWords.getItems()
+            profileViewModel.preferredOwners = adapterOwners.getItems()
+            profileViewModel.preferredCities = adapterCities.getItems()
 
-            listener.savePreferencesForRecommendations(preferredWords, preferredOwners, preferredCities, preferredCategories, preferredExchangePreferences)
+            listener.savePreferencesForRecommendations(profileViewModel.preferredWords, profileViewModel.preferredOwners, profileViewModel.preferredCities, profileViewModel.preferredCategories, profileViewModel.preferredExchangePreferences)
             dialog!!.dismiss()
             true
         }

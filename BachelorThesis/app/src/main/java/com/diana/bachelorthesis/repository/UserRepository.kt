@@ -222,4 +222,17 @@ class UserRepository {
                 }
             }
     }
+
+    fun updatePassword(newPass: String, callback: NoParamCallback) {
+        auth.currentUser!!.updatePassword(newPass).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Password updated successfully")
+                callback.onComplete()
+            } else {
+                Log.d(TAG, "Password couldn't be updated")
+                callback.onError(task.exception)
+            }
+        }
+    }
+
 }

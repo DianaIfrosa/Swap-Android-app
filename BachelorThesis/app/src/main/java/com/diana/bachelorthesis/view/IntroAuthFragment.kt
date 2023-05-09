@@ -56,7 +56,7 @@ class IntroAuthFragment : Fragment(), BasicFragment {
         val introScreensAdapter = IntroScreensAdapter()
         binding.viewPager.adapter = introScreensAdapter
         binding.springDotsIndicator.attachTo(binding.viewPager)
-        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
 
         initListeners()
 

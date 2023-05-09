@@ -1,11 +1,12 @@
 package com.diana.bachelorthesis.utils
 
+import android.net.Uri
 import com.diana.bachelorthesis.model.ItemCategory
 
 interface ProfileOptionsListener {
 
     fun saveNotificationOption(option: Int)
-    fun saveProfileChanges() //todo add uri for profile photo and new pass?
+    fun saveProfileChanges(profileUri: Uri?, newPass: String)
     fun savePreferencesForRecommendations(
         words: List<String>,
         owners: List<String>,

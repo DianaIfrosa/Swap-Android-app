@@ -79,7 +79,7 @@ class ItemFragment : Fragment(), BasicFragment {
     }
 
     private fun getViewModels() {
-        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         itemViewModel = ViewModelProvider(this)[ItemPageViewModel::class.java]
     }
 

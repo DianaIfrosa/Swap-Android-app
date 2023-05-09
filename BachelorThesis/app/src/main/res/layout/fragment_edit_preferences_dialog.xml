@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -20,7 +19,6 @@
             app:contentInsetStartWithNavigation="0dp"
             app:navigationIcon="@drawable/ic_back"
             app:popupTheme="@style/Theme.BachelorThesis.PopupOverlay" />
-        <!-- Change background to ?attr/colorPrimary-->
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
@@ -46,13 +44,14 @@
                     android:textSize="14sp"
                     android:gravity="center"
                     android:layout_marginTop="20dp"
-                    android:text="Based on your preferences you will see the corresponding items in your Recommendations page and receive notifications for them (if turned on)."/>
+                    android:text="@string/edit_preferences_description"/>
 
                 <LinearLayout
                     android:id="@+id/words_section"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/blue_pale"
                     android:background="@drawable/tab_indicator"
                     android:orientation="vertical"
                     android:padding="6dp">
@@ -89,7 +88,7 @@
                             android:maxLines="1"
                             android:inputType="text"
                             android:layout_weight="1"
-                            android:hint="e.g. table" />
+                            android:hint="@string/words_autocomplete" />
 
                         <!--button for adding item from edit text to list-->
                         <TextView
@@ -113,6 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/turquoise_pale"
                     android:background="@drawable/tab_indicator"
                     android:orientation="vertical"
                     android:padding="6dp">
@@ -122,7 +122,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"
-                        android:text="Owners"
+                        android:text="@string/owners"
                         android:textColor="@color/black"
                         android:textSize="17sp"
                         android:textStyle="bold" />
@@ -149,7 +149,7 @@
                             android:maxLines="1"
                             android:inputType="text"
                             android:layout_weight="1"
-                            android:hint="Search for a name" />
+                            android:hint="@string/owners_autocomplete" />
 
                         <!--button for adding item from edit text to list-->
                         <TextView
@@ -172,6 +172,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/purple_blue_pale"
                     android:background="@drawable/tab_indicator"
                     android:orientation="vertical"
                     android:padding="6dp">
@@ -181,7 +182,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"
-                        android:text="Categories"
+                        android:text="@string/categories_no_underline"
                         android:textColor="@color/black"
                         android:textSize="17sp"
                         android:textStyle="bold" />
@@ -209,6 +210,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/purple_pale_darker"
                     android:background="@drawable/tab_indicator"
                     android:orientation="vertical"
                     android:padding="6dp">
@@ -245,7 +247,7 @@
                             android:maxLines="1"
                             android:inputType="text"
                             android:layout_weight="1"
-                            android:hint="e.g. Bucuresti" />
+                            android:hint="@string/city_autocomplete" />
 
                         <!--button for adding item from edit text to list-->
                         <TextView
@@ -269,6 +271,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="30dp"
+                    android:backgroundTint="@color/pink_light"
                     android:background="@drawable/tab_indicator"
                     android:orientation="vertical"
                     android:padding="6dp">

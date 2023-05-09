@@ -28,10 +28,10 @@
 
     <color name="blue_pale">#CBE4F9</color>
     <color name="turquoise_pale">#CDF5F6</color>
-    <color name="green_pale">#EFF9DA</color>
-    <color name="salmon_pale">#F9EBDF</color>
-    <color name="salmon_red_pale">#F9D8D6</color>
+    <color name="purple_blue_pale">#C8C7F7</color>
 
+    <color name="purple_pale_darker">#DEC3FA</color>
+    <color name="pink_light">#F1DEF4</color>
 
     <!-- 3rd party colors -->
     <color name="facebook_blue">#4267B2</color>

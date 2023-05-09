@@ -21,7 +21,6 @@ import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
-import com.google.gson.Gson
 import java.lang.Exception
 
 class LoginFragment : Fragment(), BasicFragment {
@@ -38,7 +37,7 @@ class LoginFragment : Fragment(), BasicFragment {
         Log.d(TAG, "LoginFragment is onCreateView")
         _binding = FragmentLoginBinding.inflate(layoutInflater)
         val root: View = binding.root
-        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         initListeners()
 
         return root

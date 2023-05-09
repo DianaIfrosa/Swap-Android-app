@@ -73,7 +73,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         val viewModelFactory =
             ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
         itemsViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[ItemsViewModel::class.java]
-        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -33,7 +33,6 @@ import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.LocationDialogListener
 import com.diana.bachelorthesis.utils.LocationHelper
 import com.diana.bachelorthesis.viewmodel.AddItemViewModel
-import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.GeoPoint
@@ -51,7 +50,6 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     private val MIN_PHOTOS = 2
     private val PICK_IMAGE_CODE = 10
     private var shouldCleanUI = true
-    lateinit var userViewModel: UserViewModel
 
     lateinit var addItemViewModel: AddItemViewModel
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
@@ -107,11 +105,9 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     }
 
     private fun getViewModels() {
-        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         val viewModelFactory = AddItemViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
         addItemViewModel = ViewModelProvider(this, viewModelFactory)[AddItemViewModel::class.java]
     }
-
 
     // TODO make a general function for spinner adapter that returns the adapter and receives the arrayList of elements
     private fun attachCategoryAdapter() {

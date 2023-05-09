@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         itemsViewModel = ViewModelProvider(this, viewModelFactory)[ItemsViewModel::class.java]
     }
 
-     private fun updateMenuItemsVisibility() {
+    private fun updateMenuItemsVisibility() {
         val userLogged = userViewModel.verifyUserLoggedIn()
         navView.menu.findItem(R.id.nav_recommendations).isVisible = userLogged
         navView.menu.findItem(R.id.nav_favorites).isVisible = userLogged
@@ -230,7 +230,7 @@ class MainActivity : AppCompatActivity() {
         with(sharedPref.edit()) {
             putString(SharedPreferencesUtils.sharedprefSearch, "")
             putInt(SharedPreferencesUtils.sharedprefSortOption, 0)
-            putString(SharedPreferencesUtils.sharedprefCityFilter,"")
+            putString(SharedPreferencesUtils.sharedprefCityFilter, "")
             putString(SharedPreferencesUtils.sharedPrefCategoriesFilter, "")
             apply() // asynchronously
         }
@@ -255,7 +255,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addFavoriteItem(item: Item) {
-       mainViewModel.addFavoriteItem(item)
+        mainViewModel.addFavoriteItem(item)
         updateCurrentUserSharedPreferences()
     }
 
@@ -263,6 +263,21 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.updateNotificationOption(option)
         updateCurrentUserSharedPreferences()
     }
+
+    fun changeCurrentUserProfilePhoto(photo: String) {
+        mainViewModel.updateProfilePhoto(photo)
+        updateCurrentUserSharedPreferences()
+        try {
+            updateNavHeader()
+        } catch (e: Exception) {
+            Log.e(
+                TAG,
+                "Some unexpected error occurred during update Auth UI elements, see error below"
+            )
+            e.message?.let { Log.e(TAG, it) }
+        }
+    }
+
     fun changeUserPreferences(
         words: List<String>,
         owners: List<String>,
@@ -299,7 +314,10 @@ class MainActivity : AppCompatActivity() {
             updateNavHeader()
             updateMenuItemsVisibility()
         } catch (e: Exception) {
-            Log.e(TAG, "Some unexpected error occurred during update Auth UI elements, see error below")
+            Log.e(
+                TAG,
+                "Some unexpected error occurred during update Auth UI elements, see error below"
+            )
             e.message?.let { Log.e(TAG, it) }
         }
     }

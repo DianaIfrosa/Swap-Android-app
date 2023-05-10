@@ -89,6 +89,9 @@
     <argument
         android:name="ItemClicked"
         app:argType="com.diana.bachelorthesis.model.Item" />
+        <action
+            android:id="@+id/action_nav_item_to_nav_owner_profile"
+            app:destination="@id/nav_owner_profile" />
     </fragment>
     <fragment
         android:id="@+id/nav_favorite_donations"
@@ -100,6 +103,17 @@
         android:name="com.diana.bachelorthesis.view.FavoriteExchangesFragment"
         tools:layout="@layout/fragment_favorite_exchanges" />
 
+    <fragment
+        android:id="@+id/nav_owner_profile"
+        android:name="com.diana.bachelorthesis.view.OwnerProfileFragment"
+        tools:layout="@layout/fragment_owner_profile" >
+        <argument
+            android:name="owner"
+            app:argType="com.diana.bachelorthesis.model.User" />
+        <action
+            android:id="@+id/action_nav_owner_profile_to_nav_item"
+            app:destination="@id/nav_item" />
+    </fragment>
 
 
 </navigation>

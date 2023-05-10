@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemExchange
+import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.repository.ItemRepository
 import com.diana.bachelorthesis.repository.PhotoRepository
 import com.diana.bachelorthesis.repository.UserRepository
@@ -13,6 +14,7 @@ import java.lang.Exception
 class ItemPageViewModel: ViewModel() {
     private val TAG: String = ItemPageViewModel::class.java.name
     lateinit var currentItem: Item
+    var owner: User? = null
     private val itemRepository = ItemRepository.getInstance()
     private val photoRepository = PhotoRepository.getInstance()
 

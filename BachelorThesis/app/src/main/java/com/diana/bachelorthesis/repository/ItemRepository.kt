@@ -161,7 +161,6 @@ class ItemRepository {
                 }
                 callback.onComplete(allItems)
             }
-        // TODO some sorting maybe?
     }
 
     suspend fun addItem(item: Item) {

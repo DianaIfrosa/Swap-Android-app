@@ -75,6 +75,10 @@
         <item name="cornerFamily">rounded</item>
     </style>
 
+    <style name="squareRoundedImageView">
+        <item name="cornerSize">10%</item>
+    </style>
+
     <style name="Theme.BachelorThesis.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.BachelorThesis.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

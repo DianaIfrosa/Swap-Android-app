@@ -4,23 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="item"
             type="com.diana.bachelorthesis.model.Item" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.ItemFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_page_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/layout_buttons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/layout_buttons">
+            app:layout_constraintTop_toTopOf="parent">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -31,19 +38,19 @@
                     android:id="@+id/photo_carousel"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
+                    android:layout_alignParentTop="true"
                     android:layout_marginBottom="10dp"
                     android:isScrollContainer="true"
-                    app:iss_error_image="@drawable/unavailable"
-                    android:layout_alignParentTop="true"/>
+                    app:iss_error_image="@drawable/unavailable" />
 
                 <LinearLayout
                     android:id="@+id/layout_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/photo_carousel"
                     android:orientation="horizontal"
                     android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:layout_below="@id/photo_carousel">
+                    android:paddingEnd="20dp">
 
                     <TextView
                         android:id="@+id/item_purpose"
@@ -69,8 +76,8 @@
 
                     <ImageButton
                         android:id="@+id/btn_favorite"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="45dp"
+                        android:layout_height="48dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_heart_animated" />
                 </LinearLayout>
@@ -79,6 +86,7 @@
                     android:id="@+id/layout_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/layout_name"
                     android:layout_marginStart="13dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="13dp"
@@ -87,8 +95,7 @@
                     android:paddingStart="7dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="7dp"
-                    android:paddingBottom="10dp"
-                    android:layout_below="@id/layout_name">
+                    android:paddingBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -115,6 +122,7 @@
                     android:id="@+id/layout_owner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/layout_description"
                     android:layout_marginStart="13dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="13dp"
@@ -123,8 +131,7 @@
                     android:paddingStart="7dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="7dp"
-                    android:paddingBottom="10dp"
-                    android:layout_below="@id/layout_description">
+                    android:paddingBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -144,14 +151,16 @@
                         android:paddingEnd="20dp"
                         android:textSize="14sp">
 
-                        <ImageButton
+                        <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/owner_picture"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_marginEnd="5dp"
-                            android:background="@drawable/shape_circle"
-                            android:clipToOutline="true"
-                            android:scaleType="centerCrop" />
+                            app:strokeColor="@color/grey"
+                            app:strokeWidth="1dp"
+                            app:shapeAppearanceOverlay="@style/circleImageView"
+                            android:scaleType="centerCrop"
+                            android:background="@drawable/circle_layout"/>
 
                         <TextView
                             android:id="@+id/item_owner_name"
@@ -191,6 +200,7 @@
                     android:id="@+id/layout_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/layout_owner"
                     android:layout_marginStart="13dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="13dp"
@@ -199,8 +209,7 @@
                     android:paddingStart="7dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="7dp"
-                    android:paddingBottom="10dp"
-                    android:layout_below="@id/layout_owner">
+                    android:paddingBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -256,11 +265,11 @@
                         android:id="@+id/item_manufacture_section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_below="@id/layout_location"
                         android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
                         android:paddingEnd="20dp"
-                        android:textSize="14sp"
-                        android:layout_below="@id/layout_location">
+                        android:textSize="14sp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -281,17 +290,35 @@
                             android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
-                <TextView
-                    android:id="@+id/report_post"
-                    android:layout_width="wrap_content"
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Report post"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:textStyle="italic"
-                    android:textColor="@color/red_light"
-                    android:layout_below="@id/layout_details"/>
+                    android:layout_below="@id/layout_details"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/report_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="13dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:text="@string/report_post"
+                        android:textColor="@color/red_light"
+                        android:textStyle="italic" />
+
+                    <ImageButton
+                        android:id="@+id/delete_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:src="@drawable/ic_delete"
+                        android:layout_marginEnd="20dp"
+                        android:layout_alignParentEnd="true"
+                        app:tint="@color/black" />
+                </RelativeLayout>
             </RelativeLayout>
         </ScrollView>
 
@@ -299,16 +326,16 @@
             android:id="@+id/layout_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="20dp"
             android:background="@android:color/transparent"
             android:orientation="horizontal"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:textSize="14sp">
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <Button
                 android:id="@+id/btn_action"
@@ -336,4 +363,22 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/item_deleted_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/item_deleted_successfully"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            android:visibility="gone"/>
+    </RelativeLayout>
 </layout>

@@ -134,11 +134,11 @@
 
     <!-- Intro screens -->
     <string name="intro1_title">Add items</string>
-    <string name="intro1_content">Some text about adding items and seeing them in dashboard.</string>
+    <string name="intro1_content">You can add as many items as you want using the dedicated page, so that other users can see and reach you if they want to exchange or receive donation.</string>
     <string name="intro2_title">Personal recommendations</string>
-    <string name="intro2_content">Some text about recommendations based on preferences.</string>
+    <string name="intro2_content">Based on your preferences set in the profile\'s page we will look for the best matches so you can enjoy them in the Recommendations section.</string>
     <string name="intro3_title">Items around you</string>
-    <string name="intro3_content">Some text about the live map.</string>
+    <string name="intro3_content">Use the live map to see what others have for exchange or donation.</string>
     <string name="pass_or_email_invalid">Email or password is wrong!</string>
     <string name="help">Help</string>
     <string name="authentication">Authentication</string>
@@ -180,5 +180,13 @@
     <string name="city_autocomplete">e.g. Bucuresti</string>
     <string name="words_autocomplete">e.g. table</string>
     <string name="edit_preferences_description">Based on your preferences you will see the corresponding items in your Recommendations page and receive notifications for them (if turned on).</string>
+    <string name="report_post">Report post</string>
+
+    <string name="item_deleted_successfully">Item deleted successfully!</string>
+    <string name="item_deleted_failed">Item could not be deleted. Please try again in a few minutes!</string>
+    <string name="delete_item_message_dialog">Are you sure you want to delete this post?</string>
+    <string name="delete_item_title_dialog">Delete item</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 
 </resources>

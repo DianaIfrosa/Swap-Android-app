@@ -5,6 +5,7 @@ import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemDonation
 import com.diana.bachelorthesis.model.ItemExchange
+import com.diana.bachelorthesis.utils.NoParamCallback
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
@@ -259,6 +260,27 @@ class ItemRepository {
                 Log.w(
                     TAG,
                     "Error while retrieving all donation items, see message below"
+                )
+                if (task.exception != null) {
+                    Log.w(TAG, task.exception!!.message.toString())
+                }
+                callback.onError(task.exception)
+            }
+        }
+    }
+
+    fun deleteItem(itemId: String, isExchange: Boolean, callback: NoParamCallback) {
+        val collRef = if (isExchange) db.collection(EXCHANGE_COLLECTION)
+        else db.collection(DONATION_COLLECTION)
+
+        collRef.document(itemId).delete().addOnCompleteListener {task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Deleted item with id $itemId.")
+                callback.onComplete()
+            } else {
+                Log.w(
+                    TAG,
+                    "Error while deleting item with id $itemId, see message below"
                 )
                 if (task.exception != null) {
                     Log.w(TAG, task.exception!!.message.toString())

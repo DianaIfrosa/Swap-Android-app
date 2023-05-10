@@ -1,5 +1,7 @@
 package com.diana.bachelorthesis.view
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,6 +16,7 @@ import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.LocationHelper
+import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.viewmodel.ItemPageViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
@@ -96,9 +99,42 @@ class ItemFragment : Fragment(), BasicFragment {
                 (requireActivity() as MainActivity).addFavoriteItem(itemViewModel.currentItem)
             }
         }
+
+        binding.deleteItem.setOnClickListener { view ->
+            val alertDialog = AlertDialog.Builder(requireActivity())
+                .setTitle(getString(R.string.delete_item_title_dialog))
+                .setMessage(getString(R.string.delete_item_message_dialog))
+                .setPositiveButton(getString(R.string.yes)) { dialog, p1 ->
+                    dialog.cancel()
+                    binding.itemPageLayout.visibility = View.GONE
+                    binding.progressBarDelete.visibility = View.VISIBLE
+                    itemViewModel.deleteItem(object : NoParamCallback {
+                        override fun onComplete() {
+                            binding.progressBarDelete.visibility = View.GONE
+                            binding.itemDeletedText.text =
+                                getString(R.string.item_deleted_successfully)
+                            binding.itemDeletedText.visibility = View.VISIBLE
+                        }
+
+                        override fun onError(e: Exception?) {
+                            binding.progressBarDelete.visibility = View.GONE
+                            binding.itemDeletedText.text = getString(R.string.item_deleted_failed)
+                            binding.itemDeletedText.visibility = View.VISIBLE
+                        }
+                    })
+                }
+                .setNegativeButton(getString(R.string.no), null)
+                .setIcon(R.drawable.ic_delete)
+
+            alertDialog.show()
+        }
     }
 
     private fun updateUIElements() {
+        binding.progressBarDelete.visibility = View.GONE
+        binding.itemDeletedText.visibility = View.GONE
+        binding.itemPageLayout.visibility = View.VISIBLE
+
         if (userViewModel.verifyUserLoggedIn()) {
             binding.btnFavorite.visibility = View.VISIBLE
             if ((requireActivity() as MainActivity).itemIsFavorite(itemViewModel.currentItem)) {
@@ -108,6 +144,12 @@ class ItemFragment : Fragment(), BasicFragment {
             }
         } else {
             binding.btnFavorite.visibility = View.INVISIBLE
+        }
+
+        if (itemViewModel.currentItem.owner == userViewModel.getCurrentUserEmail()) {
+            binding.deleteItem.visibility = View.VISIBLE
+        } else {
+            binding.deleteItem.visibility = View.GONE
         }
     }
 
@@ -153,8 +195,13 @@ class ItemFragment : Fragment(), BasicFragment {
                 val name = it.displayName
                 value += "$name, "
             }
-            value = value.substring(0, value.length - 2)
-            binding.itemExchangePreferences.text = value
+            if (value.isEmpty()) {
+                binding.itemExchangePreferencesSection.visibility = View.GONE
+            } else {
+                binding.itemExchangePreferencesSection.visibility = View.VISIBLE
+                value = value.substring(0, value.length - 2)
+                binding.itemExchangePreferences.text = value
+            }
             binding.root.setBackgroundColor(resources.getColor(R.color.purple_pale))
             binding.itemPurpose.setCompoundDrawablesWithIntrinsicBounds(resources.getDrawable(R.drawable.ic_exchange), null, null, null)
             binding.btnAction.text = resources.getString(R.string.make_exchange)
@@ -171,5 +218,4 @@ class ItemFragment : Fragment(), BasicFragment {
         Log.d(TAG, "ItemFragment is on onDestroyView")
         _binding = null
     }
-
 }

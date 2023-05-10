@@ -3,6 +3,7 @@ package com.diana.bachelorthesis.repository
 import android.net.Uri
 import android.util.Log
 import com.diana.bachelorthesis.model.User
+import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -113,7 +114,12 @@ class PhotoRepository {
         }
 
 
-    fun uploadProfilePhoto(userEmail: String, photoUri: Uri?, callback: OneParamCallback<String>, retry: Boolean = true) {
+    fun uploadProfilePhoto(
+        userEmail: String,
+        photoUri: Uri?,
+        callback: OneParamCallback<String>,
+        retry: Boolean = true
+    ) {
         // FIXME not working when uploading Google's user's photo after sign up
         val choseDefaultPhoto = (photoUri == null)
         val uploadPhoto = photoUri ?: defaultProfilePhotoUri
@@ -121,7 +127,7 @@ class PhotoRepository {
             .child(userEmail)
             .child("profile_photo.png")
 
-       imageReference
+        imageReference
             .putFile(uploadPhoto)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -159,5 +165,37 @@ class PhotoRepository {
                     }
                 }
             }
+    }
+
+    fun deleteItemPhotos(ownerEmail: String, itemId: String) {
+        val itemPhotosReference = storageReference.child(ownerEmail).child(itemId)
+        itemPhotosReference.listAll().addOnSuccessListener { listResult ->
+            listResult.items.forEach { item ->
+                item.delete().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "Deleted image for item id: $itemId")
+                    } else {
+                        Log.d(TAG, "Failed to delete image for item id: $itemId")
+                    }
+                }
+            }
+        }
+
+//            delete().addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    Log.d(TAG, "Deleted item's photos with id $itemId.")
+//                    callback.onComplete()
+//                } else {
+//                    Log.w(
+//                        TAG,
+//                        "Error while deleting item's photos with id $itemId, see message below"
+//                    )
+//                    if (task.exception != null) {
+//                        Log.w(TAG, task.exception!!.message.toString())
+//                    }
+//                    callback.onError(task.exception)
+//                }
+//            }
+//        }
     }
 }

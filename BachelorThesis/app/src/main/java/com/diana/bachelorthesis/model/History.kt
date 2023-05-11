@@ -11,39 +11,39 @@ import java.util.*
 
 data class History(
     @DocumentId
-    var operationId: String,
+    var eventId: String = "",
     var confirmation1: Boolean = false,
     var confirmation2: Boolean = false,
-    val date: Date?,
+    val date: Date? = null,
     var feedback1: String? = null,
     var feedback2: String? = null,
-    val item1: Item?,
-    val item2: Item? = null,
-    val donationReceiver: User? = null // used only when the history object refers to a donation
+    val item1: String = "",
+    val item2: String? = null,
+    val donationReceiverEmail: String? = null // used only when the history object refers to a donation
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        operationId = parcel.readString() ?: "",
+        eventId = parcel.readString() ?: "",
         confirmation1 = parcel.readByte() != 0.toByte(),
         confirmation2 = parcel.readByte() != 0.toByte(),
         date = Date(parcel.readLong()),
         feedback1 = parcel.readString(),
         feedback2 = parcel.readString(),
-        item1 = parcel.readParcelable(Item::class.java.classLoader),
-        item2 = parcel.readParcelable(Item::class.java.classLoader),
-        donationReceiver = parcel.readParcelable(User::class.java.classLoader)
+        item1 = parcel.readString() ?: "",
+        item2 = parcel.readString(),
+        donationReceiverEmail = parcel.readString()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(operationId)
+        parcel.writeString(eventId)
         parcel.writeByte(if (confirmation1) 1 else 0)
         parcel.writeByte(if (confirmation2) 1 else 0)
         parcel.writeLong(date!!.time)
         parcel.writeString(feedback1)
         parcel.writeString(feedback2)
-        parcel.writeParcelable(item1, flags)
-        parcel.writeParcelable(item2, flags)
-        parcel.writeParcelable(donationReceiver, flags)
+        parcel.writeString(item1)
+        parcel.writeString(item2)
+        parcel.writeString(donationReceiverEmail)
     }
 
     override fun describeContents(): Int {

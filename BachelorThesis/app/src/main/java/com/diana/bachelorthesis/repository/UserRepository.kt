@@ -70,7 +70,7 @@ class UserRepository {
             if (task.isSuccessful) {
                 callback.onComplete()
             } else {
-                Log.w(TAG, "Error while signing up with Google, see message below")
+                Log.w(TAG, "Error while signing up with Google")
                 if (task.exception != null) {
                     Log.w(TAG, task.exception!!.message.toString())
                 }
@@ -109,7 +109,7 @@ class UserRepository {
                         callback.onError(task.exception)
                     }
                 } else {
-                    Log.w(TAG, "Error while retrieving user $email data, see message below")
+                    Log.w(TAG, "Error while retrieving user $email data")
                     if (task.exception != null) {
                         Log.w(TAG, task.exception!!.message.toString())
                     }
@@ -123,15 +123,15 @@ class UserRepository {
             if (task.isSuccessful) {
                 Log.d(TAG, "Retrieved all users.")
                 val allUsersEmails = mutableListOf<String>()
-                task.result.forEach verifyUsers@{
+                task.result.forEach {
                     val user = it.toObject(User::class.java)
-                    names.forEach { text ->
+                    names.forEach verifyNames@{ text ->
                         val words = text.split(" ")
                         if (words.all { word ->
                                 user.name.contains(word, true)
                             }) {
                             allUsersEmails.add(user.email)
-                            return@verifyUsers
+                            return@verifyNames
                         }
                     }
                 }
@@ -139,7 +139,7 @@ class UserRepository {
             } else {
                 Log.w(
                     TAG,
-                    "Error while retrieving all users, see message below"
+                    "Error while retrieving all users"
                 )
                 if (task.exception != null) {
                     Log.w(TAG, task.exception!!.message.toString())
@@ -162,7 +162,7 @@ class UserRepository {
             } else {
                 Log.w(
                     TAG,
-                    "Error while retrieving all users, see message below"
+                    "Error while retrieving all users"
                 )
                 if (task.exception != null) {
                     Log.w(TAG, task.exception!!.message.toString())
@@ -182,7 +182,7 @@ class UserRepository {
                 } else {
                     Log.w(
                         TAG,
-                        "Error while updating user $userEmail notifications option, see message below"
+                        "Error while updating user $userEmail notifications option"
                     )
                     if (task.exception != null) {
                         Log.w(TAG, task.exception!!.message.toString())
@@ -214,7 +214,7 @@ class UserRepository {
                 } else {
                     Log.w(
                         TAG,
-                        "Error while updating user $userEmail preferences for recommendations, see message below"
+                        "Error while updating user $userEmail preferences for recommendations"
                     )
                     if (task.exception != null) {
                         Log.w(TAG, task.exception!!.message.toString())

@@ -13,7 +13,7 @@ class ItemDonation(
     city: String = "-",
     condition: ItemCondition = ItemCondition.UNKNOWN,
     description: String = "",
-    var donationInfo: History? = null, // null => is available
+    var donationInfo: String? = null, // null => is available
     location: GeoPoint = GeoPoint(0.0, 0.0),
     name: String = "",
     photos: ArrayList<String> = arrayListOf(),
@@ -28,7 +28,7 @@ class ItemDonation(
         city = parcel.readString() ?: "",
         condition = parcel.readParcelable(ItemCondition::class.java.classLoader) ?: ItemCondition.UNKNOWN,
         description = parcel.readString() ?: "",
-        parcel.readParcelable(History::class.java.classLoader),
+        donationInfo = parcel.readString(),
         location = GeoPoint(parcel.readDouble(), parcel.readDouble()),
         name = parcel.readString() ?: "",
         photos = parcel.createStringArrayList() as ArrayList<String>,

@@ -12,7 +12,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
+class ItemsViewModel : ViewModel() {
     private val TAG: String = ItemsViewModel::class.java.name
     private val itemRepository = ItemRepository.getInstance()
 
@@ -32,17 +32,6 @@ class ItemsViewModel(var locationHelper: LocationHelper) : ViewModel() {
     var categoriesFilter: List<ItemCategory> = arrayListOf()
 
     var lastScrollPosition = 0
-
-    class ViewModelFactory(private val arg: LocationHelper) : ViewModelProvider.Factory {
-        // TODO delete if useless
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(ItemsViewModel::class.java)) {
-                return ItemsViewModel(arg) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
-        }
-    }
 
      fun populateLiveData() {
         //_exchangeItems.value = repository.getItems(true)

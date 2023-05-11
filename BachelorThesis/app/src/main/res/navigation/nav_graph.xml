@@ -42,7 +42,11 @@
         android:id="@+id/nav_history"
         android:name="com.diana.bachelorthesis.view.HistoryFragment"
         android:label="@string/menu_history"
-        tools:layout= "@layout/fragment_history" />
+        tools:layout= "@layout/fragment_history" >
+        <action
+            android:id="@+id/action_nav_history_to_nav_item"
+            app:destination="@id/nav_item" />
+    </fragment>
     <fragment
         android:id="@+id/nav_chat"
         android:name="com.diana.bachelorthesis.view.ChatFragment"
@@ -97,15 +101,6 @@
             android:id="@+id/action_nav_item_to_nav_owner_profile"
             app:destination="@id/nav_owner_profile" />
     </fragment>
-    <fragment
-        android:id="@+id/nav_favorite_donations"
-        android:name="com.diana.bachelorthesis.view.FavoriteDonationsFragment"
-        tools:layout="@layout/fragment_favorite_donations" />
-
-    <fragment
-        android:id="@+id/nav_favorite_exchanges"
-        android:name="com.diana.bachelorthesis.view.FavoriteExchangesFragment"
-        tools:layout="@layout/fragment_favorite_exchanges" />
 
     <fragment
         android:id="@+id/nav_owner_profile"

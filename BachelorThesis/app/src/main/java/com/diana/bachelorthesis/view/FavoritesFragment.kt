@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.diana.bachelorthesis.R
-import com.diana.bachelorthesis.adapters.FragmentPageAdapter
+import com.diana.bachelorthesis.adapters.FavoritesPagesAdapter
 import com.diana.bachelorthesis.databinding.FragmentFavoritesBinding
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.viewmodel.FavoritesViewModel
@@ -24,7 +24,7 @@ class FavoritesFragment : Fragment(), BasicFragment {
     private var _binding: FragmentFavoritesBinding? = null
 
     private val binding get() = _binding!!
-    private lateinit var adapterFragment: FragmentPageAdapter
+    private lateinit var adapterFragment: FavoritesPagesAdapter
     private lateinit var favoritesViewModel: FavoritesViewModel
 
     private lateinit var smoothScroller: RecyclerView.SmoothScroller
@@ -60,7 +60,7 @@ class FavoritesFragment : Fragment(), BasicFragment {
     }
 
     private fun initTabLayoutAndViewPager() {
-        adapterFragment = FragmentPageAdapter(childFragmentManager, lifecycle)
+        adapterFragment = FavoritesPagesAdapter(childFragmentManager, lifecycle)
         binding.viewPager.adapter = adapterFragment
 
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText(resources.getString(R.string.exchanges)))
@@ -109,9 +109,5 @@ class FavoritesFragment : Fragment(), BasicFragment {
         favoritesViewModel.detachListeners()
     }
 
-    override fun initListeners() {
-
-    }
-
-
+    override fun initListeners() {}
 }

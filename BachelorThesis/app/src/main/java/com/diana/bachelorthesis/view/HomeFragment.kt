@@ -70,9 +70,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     }
 
     private fun getViewModels() {
-        val viewModelFactory =
-            ItemsViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
-        itemsViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[ItemsViewModel::class.java]
+        itemsViewModel = ViewModelProvider(requireActivity())[ItemsViewModel::class.java]
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
     }
 

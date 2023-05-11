@@ -124,9 +124,7 @@ class MainActivity : AppCompatActivity() {
     private fun getViewModels() {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        val viewModelFactory =
-            ItemsViewModel.ViewModelFactory(LocationHelper(this.applicationContext))
-        itemsViewModel = ViewModelProvider(this, viewModelFactory)[ItemsViewModel::class.java]
+        itemsViewModel = ViewModelProvider(this)[ItemsViewModel::class.java]
     }
 
     private fun updateMenuItemsVisibility() {

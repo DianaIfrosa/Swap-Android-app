@@ -13,7 +13,7 @@ class ItemExchange(
     condition: ItemCondition = ItemCondition.UNKNOWN,
     description: String = "",
     var exchangePreferences: ArrayList<ItemCategory> = arrayListOf(),
-    var exchangeInfo: History? = null, // null => is available
+    var exchangeInfo: String? = null, // null => is available
     location: GeoPoint = GeoPoint(0.0, 0.0),
     name: String = "",
     owner: String = "",
@@ -29,7 +29,7 @@ class ItemExchange(
         condition = parcel.readParcelable(ItemCondition::class.java.classLoader) ?: ItemCondition.UNKNOWN,
         description = parcel.readString() ?: "",
         parcel.readArrayList(ItemCategory::class.java.classLoader) as ArrayList<ItemCategory>,
-        parcel.readParcelable(History::class.java.classLoader),
+        exchangeInfo = parcel.readString(),
         location = GeoPoint(parcel.readDouble(), parcel.readDouble()),
         name = parcel.readString() ?: "",
         owner = parcel.readString() ?: "",
@@ -41,7 +41,6 @@ class ItemExchange(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         super.writeToParcel(parcel, flags)
-        parcel.writeParcelable(exchangeInfo, flags)
     }
 
     override fun describeContents(): Int {

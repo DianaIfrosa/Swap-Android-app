@@ -30,7 +30,6 @@
         android:layout_height="wrap_content"
         style="?android:attr/progressBarStyle"
         android:layout_centerInParent="true"/>
-<!--    </androidx.cardview.widget.CardView>-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map_fragment"
@@ -40,5 +39,15 @@
         android:layout_below="@id/place_autocomplete_fragment"
         android:layout_alignParentBottom="true">
     </androidx.fragment.app.FragmentContainerView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_items"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        tools:listitem="@layout/card_item_minimal"
+        android:layout_marginBottom="10dp"/>
 
 </RelativeLayout>

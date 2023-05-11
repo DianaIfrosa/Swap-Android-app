@@ -24,7 +24,11 @@
         android:id="@+id/nav_map"
         android:name="com.diana.bachelorthesis.view.MapFragment"
         android:label="@string/menu_map"
-        tools:layout= "@layout/fragment_map" />
+        tools:layout= "@layout/fragment_map" >
+        <action
+            android:id="@+id/action_nav_map_to_nav_item"
+            app:destination="@id/nav_item" />
+    </fragment>
     <fragment
         android:id="@+id/nav_recommendations"
         android:name="com.diana.bachelorthesis.view.RecommendationsFragment"

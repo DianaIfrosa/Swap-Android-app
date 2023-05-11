@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.diana.bachelorthesis.databinding.FragmentMapBinding
 import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.utils.LocationHelper
@@ -33,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.diana.bachelorthesis.R
+import com.diana.bachelorthesis.adapters.ItemsHorizontalRecyclerViewAdapter
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
@@ -78,9 +80,12 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.recyclerViewItems.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+
         binding.mapFragment.visibility = View.GONE
         binding.placeAutocompleteFragment.visibility = View.GONE
         binding.progressBar.visibility = View.VISIBLE
+        binding.recyclerViewItems.visibility = View.GONE
 
         return root
     }
@@ -242,21 +247,24 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
             googleMap.clear() // TODO make sure the current location marker is added again
             lastLocation?.let { markerCurrentLocation(it) }
             mapViewModel.allItems.forEach { item ->
-                val marker = LatLng(item.location.latitude, item.location.longitude)
+                val lanLng = LatLng(item.location.latitude, item.location.longitude)
                 if (item is ItemExchange) {
-                    googleMap.addMarker(
+                    val marker = googleMap.addMarker(
                         MarkerOptions()
-                            .position(marker)
+                            .position(lanLng)
                             .title(item.name)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
                     )
+                    mapViewModel.addItemMarkerPair(item, marker)
+
                 } else {
-                    googleMap.addMarker(
+                    val marker = googleMap.addMarker(
                         MarkerOptions()
-                            .position(marker)
+                            .position(lanLng)
                             .title(item.name)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
                     )
+                    mapViewModel.addItemMarkerPair(item, marker)
                 }
             }
         }
@@ -317,7 +325,29 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
 //        fusedLocationClient.removeLocationUpdates(locationCallback)
 //    }
 
-    override fun onMarkerClick(marker: Marker) = false
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val item = mapViewModel.getItemFromMarker(marker)
+        if (item != null) {
+            val adapter =
+                ItemsHorizontalRecyclerViewAdapter(
+                    arrayListOf(item),
+                    true,
+                    requireContext(),
+                    { onItemClosed() }
+                ) { clickedItem ->
+                    val action = MapFragmentDirections.actionNavMapToNavItem(clickedItem)
+                    requireView().findNavController().navigate(action)
+                }
+            binding.recyclerViewItems.adapter = adapter
+            binding.recyclerViewItems.visibility = View.VISIBLE
+        }
+
+        return false
+    }
+
+    private fun onItemClosed() {
+        binding.recyclerViewItems.visibility = View.GONE
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

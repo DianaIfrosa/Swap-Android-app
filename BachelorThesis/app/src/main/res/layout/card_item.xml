@@ -14,23 +14,19 @@
 
     </data>
 
-    <LinearLayout
-        android:layout_width="350dp"
-        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
             android:onClick="@{() -> itemClickListener.cardClicked(model)}">
 
             <RelativeLayout
+                android:id="@+id/layout_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:background="@color/blue_light">
-
+                app:cardPreventCornerOverlap="false">
 
                 <com.denzcoskun.imageslider.ImageSlider
                     android:id="@+id/photo_carousel"
@@ -118,5 +114,5 @@
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
-    </LinearLayout>
+
 </layout>

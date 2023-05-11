@@ -86,7 +86,7 @@ class OwnerProfileFragment : Fragment(), BasicFragment {
             binding.progressBar.visibility = View.GONE
             binding.noOtherPostsText.visibility = View.GONE
             val adapter =
-                ItemsHorizontalRecyclerViewAdapter(items, requireContext()) { item ->
+                ItemsHorizontalRecyclerViewAdapter(items, false, requireContext(), null) { item ->
                     val action = OwnerProfileFragmentDirections.actionNavOwnerProfileToNavItem(item)
                     requireView().findNavController().navigate(action)
                 }

@@ -76,9 +76,11 @@
             android:id="@+id/recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="start"
             android:layout_marginTop="10dp"
-            tools:listitem="@layout/card_item_minimal" />
+            android:layout_marginStart="10dp"
+            tools:listitem="@layout/card_item_minimal"
+            />
 
     </LinearLayout>
     </ScrollView>

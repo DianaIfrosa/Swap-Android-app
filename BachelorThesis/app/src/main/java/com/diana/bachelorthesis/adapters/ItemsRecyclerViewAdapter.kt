@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.constants.ScaleTypes
@@ -12,6 +13,7 @@ import com.diana.bachelorthesis.utils.CustomClickListener
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.CardItemBinding
 import com.diana.bachelorthesis.model.Item
+import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.repository.PhotoRepository
 import com.diana.bachelorthesis.repository.UserRepository
@@ -42,6 +44,13 @@ private val onItemClicked: (Item) -> Unit) :
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem: Item = itemsList[position]
+
+        if (currentItem is ItemExchange) {
+            holder.cardItemBinding.layoutCard.setBackgroundResource(R.color.purple_pale)
+        } else {
+            holder.cardItemBinding.layoutCard.setBackgroundResource(R.color.yellow_pale)
+        }
+
         userRepository.getUserData(currentItem.owner, object: OneParamCallback<User> {
             override fun onComplete(value: User?) {
                 if (value != null) {
@@ -71,6 +80,8 @@ private val onItemClicked: (Item) -> Unit) :
             onItemClicked(item)
         }
     }
+
+    override fun closeCardClicked() {}
 
     companion object {
         fun getPhotos(item: Item): List<SlideModel> {

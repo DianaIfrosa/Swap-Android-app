@@ -19,48 +19,60 @@
         android:id="@+id/nav_add_item"
         android:name="com.diana.bachelorthesis.view.AddItemFragment"
         android:label="@string/menu_add_item"
-        tools:layout= "@layout/fragment_add_item" />
+        tools:layout="@layout/fragment_add_item" />
     <fragment
         android:id="@+id/nav_map"
         android:name="com.diana.bachelorthesis.view.MapFragment"
         android:label="@string/menu_map"
-        tools:layout= "@layout/fragment_map" >
+        tools:layout="@layout/fragment_map" >
         <action
             android:id="@+id/action_nav_map_to_nav_item"
             app:destination="@id/nav_item" />
     </fragment>
+
     <fragment
         android:id="@+id/nav_recommendations"
         android:name="com.diana.bachelorthesis.view.RecommendationsFragment"
         android:label="@string/menu_recommendations"
-        tools:layout= "@layout/fragment_recommendations" >
+        tools:layout="@layout/fragment_recommendations" >
         <action
             android:id="@+id/action_nav_recommendations_to_nav_item"
             app:destination="@id/nav_item" />
     </fragment>
+
     <fragment
         android:id="@+id/nav_history"
         android:name="com.diana.bachelorthesis.view.HistoryFragment"
         android:label="@string/menu_history"
-        tools:layout= "@layout/fragment_history" >
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_nav_history_to_nav_history_exchange_fragment"
+            app:destination="@id/nav_history_exchange_fragment" />
         <action
             android:id="@+id/action_nav_history_to_nav_item"
             app:destination="@id/nav_item" />
+        <action
+            android:id="@+id/action_nav_history_to_nav_history_donation_fragment"
+            app:destination="@id/nav_history_donation_fragment" />
+        <action
+            android:id="@+id/action_nav_history_to_nav_history_receive_donation_fragment"
+            app:destination="@id/nav_history_receive_donation_fragment" />
     </fragment>
+
     <fragment
         android:id="@+id/nav_chat"
         android:name="com.diana.bachelorthesis.view.ChatFragment"
         android:label="@string/menu_chat"
-        tools:layout= "@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat" />
 
     <fragment
         android:id="@+id/nav_favorites"
         android:name="com.diana.bachelorthesis.view.FavoritesFragment"
         android:label="@string/menu_favorites"
-        tools:layout= "@layout/fragment_favorites">
-    <action
-        android:id="@+id/action_nav_favorites_to_nav_item"
-        app:destination="@id/nav_item" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_nav_favorites_to_nav_item"
+            app:destination="@id/nav_item" />
     </fragment>
 
     <fragment
@@ -83,20 +95,21 @@
         android:name="com.diana.bachelorthesis.view.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile" >
-<!--        <action-->
-<!--            android:id="@+id/action_nav_profile_to_nav_home"-->
-<!--            app:destination="@id/nav_home"-->
-<!--            app:popUpTo="@+id/nav_graph"-->
-<!--            app:popUpToInclusive="true"/>-->
+        <!--        <action-->
+        <!--            android:id="@+id/action_nav_profile_to_nav_home"-->
+        <!--            app:destination="@id/nav_home"-->
+        <!--            app:popUpTo="@+id/nav_graph"-->
+        <!--            app:popUpToInclusive="true"/>-->
     </fragment>
+
     <fragment
         android:id="@+id/nav_item"
         android:name="com.diana.bachelorthesis.view.ItemFragment"
         android:label="@string/item"
-        tools:layout="@layout/fragment_item">
-    <argument
-        android:name="ItemClicked"
-        app:argType="com.diana.bachelorthesis.model.Item" />
+        tools:layout="@layout/fragment_item" >
+        <argument
+            android:name="itemClicked"
+            app:argType="com.diana.bachelorthesis.model.Item" />
         <action
             android:id="@+id/action_nav_item_to_nav_owner_profile"
             app:destination="@id/nav_owner_profile" />
@@ -114,5 +127,55 @@
             app:destination="@id/nav_item" />
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_history_exchange_fragment"
+        android:name="com.diana.bachelorthesis.view.HistoryExchangeFragment"
+        android:label="History exchange"
+        tools:layout="@layout/fragment_history_exchange" >
+        <argument
+            android:name="item1"
+            app:argType="com.diana.bachelorthesis.model.Item" />
+        <argument
+            android:name="item2"
+            app:argType="com.diana.bachelorthesis.model.Item" />
+        <argument
+            android:name="history"
+            app:argType="com.diana.bachelorthesis.model.History" />
+        <action
+            android:id="@+id/action_nav_history_exchange_fragment_to_nav_owner_profile"
+            app:destination="@id/nav_owner_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_history_donation_fragment"
+        android:name="com.diana.bachelorthesis.view.HistoryDonationFragment"
+        android:label="fragment_history_donation"
+        tools:layout="@layout/fragment_history_donation" >
+        <argument
+            android:name="item"
+            app:argType="com.diana.bachelorthesis.model.Item" />
+        <argument
+            android:name="history"
+            app:argType="com.diana.bachelorthesis.model.History" />
+        <action
+            android:id="@+id/action_nav_history_donation_fragment_to_nav_owner_profile"
+            app:destination="@id/nav_owner_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_history_receive_donation_fragment"
+        android:name="com.diana.bachelorthesis.view.HistoryReceiveDonationFragment"
+        android:label="fragment_history_receive_donation"
+        tools:layout="@layout/fragment_history_receive_donation" >
+        <argument
+            android:name="item"
+            app:argType="com.diana.bachelorthesis.model.Item" />
+        <argument
+            android:name="history"
+            app:argType="com.diana.bachelorthesis.model.History" />
+        <action
+            android:id="@+id/action_nav_history_receive_donation_fragment_to_nav_owner_profile"
+            app:destination="@id/nav_owner_profile" />
+    </fragment>
 
 </navigation>

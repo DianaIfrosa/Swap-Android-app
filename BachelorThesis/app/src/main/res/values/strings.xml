@@ -22,6 +22,8 @@
 
     <string name="exchanges">Exchanges</string>
     <string name="donations">Donations</string>
+    <string name="donation_made">Donation made</string>
+    <string name="donation_received">Donation received</string>
     <string name="add_item_button_home">Add item button from home</string>
     <string name="filter">Filter</string>
     <string name="sort">Sort</string>

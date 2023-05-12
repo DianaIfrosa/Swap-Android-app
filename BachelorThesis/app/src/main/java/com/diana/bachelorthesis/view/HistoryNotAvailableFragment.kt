@@ -11,9 +11,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.CardsHistoryAdapter
-import com.diana.bachelorthesis.adapters.HistoryPagesAdapter
-import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
-import com.diana.bachelorthesis.databinding.FragmentHistoryAvailableBinding
 import com.diana.bachelorthesis.databinding.FragmentHistoryNotAvailableBinding
 import com.diana.bachelorthesis.model.History
 import com.diana.bachelorthesis.model.Item
@@ -91,9 +88,27 @@ class HistoryNotAvailableFragment : Fragment() {
             binding.progressBar.visibility = View.INVISIBLE
             binding.textNoItems.visibility = View.INVISIBLE
             binding.itemsAdapter =
-                CardsHistoryAdapter(items, historyList, requireContext()) { item1, item2, history->
-//                    val action = HistoryFragmentDirections.actionNavHistoryToNavItem(item)
-//                    requireView().findNavController().navigate(action)
+                CardsHistoryAdapter(items, historyList, requireContext()) { item1, item2, history ->
+                    if (item2 != null) {
+                        // exchange event
+                        val action =
+                            HistoryFragmentDirections.actionNavHistoryToNavHistoryExchangeFragment(
+                                item1,
+                                item2,
+                                history
+                            )
+                        requireView().findNavController().navigate(action)
+                    } else { // donation event
+                        if (history.donationReceiverEmail == historyViewModel.currentUser.email) {
+                            // current user was the donation receiver
+                            val action = HistoryFragmentDirections.actionNavHistoryToNavHistoryReceiveDonationFragment(item1, history)
+                            requireView().findNavController().navigate(action)
+                        } else {
+                            // current user did the donation
+                            val action = HistoryFragmentDirections.actionNavHistoryToNavHistoryDonationFragment(item1, history)
+                            requireView().findNavController().navigate(action)
+                        }
+                    }
                 }
             binding.textNumberCards.text = historyList.size.toString()
         } else {

@@ -16,7 +16,6 @@ import com.diana.bachelorthesis.adapters.HistoryPagesAdapter
 import com.diana.bachelorthesis.databinding.FragmentHistoryBinding
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.viewmodel.HistoryViewModel
-import com.diana.bachelorthesis.viewmodel.ItemsViewModel
 import com.google.android.material.tabs.TabLayout
 
 class HistoryFragment : Fragment(), BasicFragment {
@@ -28,7 +27,6 @@ class HistoryFragment : Fragment(), BasicFragment {
     private val binding get() = _binding!!
     private lateinit var smoothScroller: RecyclerView.SmoothScroller
     private lateinit var historyViewModel: HistoryViewModel
-    private lateinit var itemsViewModel: ItemsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -108,7 +106,6 @@ class HistoryFragment : Fragment(), BasicFragment {
 
     private fun getViewModels() {
         historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
-        itemsViewModel = ViewModelProvider(requireActivity())[ItemsViewModel::class.java]
     }
 
     override fun onDestroyView() {

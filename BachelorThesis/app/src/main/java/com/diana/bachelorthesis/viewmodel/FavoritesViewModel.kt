@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.model.Item
+import com.diana.bachelorthesis.model.ItemDonation
+import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.repository.ItemRepository
 import com.diana.bachelorthesis.utils.ListParamCallback
 
@@ -28,9 +30,20 @@ class FavoritesViewModel : ViewModel() {
         itemRepository.getFavoriteExchanges(favoriteExchangesIds, object : ListParamCallback<Pair<Int, Item>> {
             override fun onComplete(values: ArrayList<Pair<Int, Item>>) {
                 val valuesSorted = ArrayList(values.sortedByDescending { item -> item.first }).map { it.second}
-                if (valuesSorted != exchangeItems.value) {
+                val valuesSortedAndFiltered = ArrayList(valuesSorted.filter { item ->
+                    when (item) {
+                        is ItemExchange -> {
+                            (item.exchangeInfo == null)
+                        }
+                        is ItemDonation -> {
+                            (item.donationInfo == null)
+                        }
+                        else -> false
+                    }
+                })
+                if (valuesSortedAndFiltered != exchangeItems.value) {
                     // update the UI only when the selected items are updated
-                    _exchangeItems.value = valuesSorted
+                    _exchangeItems.value = valuesSortedAndFiltered
                     Log.d(TAG, "Updated favorite exchange items")
                 }
             }
@@ -46,9 +59,20 @@ class FavoritesViewModel : ViewModel() {
         itemRepository.getFavoriteDonations(favoriteDonationsIds, object : ListParamCallback<Pair<Int, Item>> {
             override fun onComplete(values: ArrayList<Pair<Int, Item>>) {
                 val valuesSorted = ArrayList(values.sortedByDescending { item -> item.first }).map { it.second}
-                if (valuesSorted != donationItems.value) {
+                val valuesSortedAndFiltered = ArrayList(valuesSorted.filter { item ->
+                    when (item) {
+                        is ItemExchange -> {
+                            (item.exchangeInfo == null)
+                        }
+                        is ItemDonation -> {
+                            (item.donationInfo == null)
+                        }
+                        else -> false
+                    }
+                })
+                if (valuesSortedAndFiltered != donationItems.value) {
                     // update the UI only when the selected items are updated
-                    _donationItems.value = valuesSorted
+                    _donationItems.value = valuesSortedAndFiltered
                     Log.d(TAG, "Updated favorite donation items")
                 }
             }

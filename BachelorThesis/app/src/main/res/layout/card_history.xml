@@ -18,7 +18,7 @@
 
 
         <variable
-            name="itemClickListener"
+            name="historyClickListener"
             type="com.diana.bachelorthesis.utils.HistoryCardClickListener" />
 
     </data>
@@ -28,7 +28,7 @@
         android:layout_width="350dp"
         android:layout_height="150dp"
         android:layout_margin="10dp"
-        android:onClick="@{() -> itemClickListener.cardClicked(item1, item2, history)}">
+        android:onClick="@{() -> historyClickListener.cardClicked(item1, item2, history)}">
 
         <LinearLayout
             android:id="@+id/layout_card"
@@ -55,7 +55,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:hint="namefffffffffff"
                     android:maxWidth="90sp"
                     android:maxLines="1"
                     android:text="@{item1.name}"
@@ -95,7 +94,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:hint="namefffffffffff"
                     android:maxWidth="90sp"
                     android:maxLines="1"
                     android:text="@{item2.name}"

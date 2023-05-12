@@ -6,6 +6,8 @@ import androidx.lifecycle.*
 import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
+import com.diana.bachelorthesis.model.ItemDonation
+import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.repository.ItemRepository
 import com.diana.bachelorthesis.utils.LocationHelper
 import java.util.*
@@ -21,7 +23,6 @@ class ItemsViewModel : ViewModel() {
 
     var exchangeItems: LiveData<List<Item>> = _exchangeItems
     val donationItems: LiveData<List<Item>> = _donationItems
-    // TODO take into consideration to have current items as live data and only observe in fragment
 
     var currentItems: ArrayList<Item> = arrayListOf()
     var displayExchangeItems: Boolean = true
@@ -40,11 +41,22 @@ class ItemsViewModel : ViewModel() {
         Log.d(TAG, "Populate live data in itemsViewModel")
         itemRepository.getExchangeItemsAndListen(object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
-                val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate })// new to old
+                val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate }) // new to old
+                val valuesSortedAndFiltered = ArrayList(valuesSorted.filter { item ->
+                    when (item) {
+                        is ItemExchange -> {
+                            (item.exchangeInfo == null)
+                        }
+                        is ItemDonation -> {
+                            (item.donationInfo == null)
+                        }
+                        else -> false
+                    }
+                })
                 if (displayExchangeItems) {
-                    updateCurrentItems(valuesSorted)
+                    updateCurrentItems(valuesSortedAndFiltered)
                 }
-                _exchangeItems.value = valuesSorted
+                _exchangeItems.value = valuesSortedAndFiltered
                 Log.d(TAG, "Updated exchange items")
 
 //                viewModelScope.launch {
@@ -59,11 +71,22 @@ class ItemsViewModel : ViewModel() {
 
         itemRepository.getDonationItemsAndListen(object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
-                val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate })// new to old
+                val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate }) // new to old
+                val valuesSortedAndFiltered = ArrayList(valuesSorted.filter { item ->
+                    when (item) {
+                        is ItemExchange -> {
+                            (item.exchangeInfo == null)
+                        }
+                        is ItemDonation -> {
+                            (item.donationInfo == null)
+                        }
+                        else -> false
+                    }
+                })
                 if (!displayExchangeItems) {
-                    updateCurrentItems(valuesSorted)
+                    updateCurrentItems(valuesSortedAndFiltered)
                 }
-                _donationItems.value = valuesSorted
+                _donationItems.value = valuesSortedAndFiltered
                 Log.d(TAG, "Updated donation items")
 //                viewModelScope.launch {
 //                    _donationItems.value = locationHelper.getItemsCities(values)

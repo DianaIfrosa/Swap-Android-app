@@ -1,7 +1,6 @@
 package com.diana.bachelorthesis.view
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,7 +15,6 @@ import com.diana.bachelorthesis.databinding.FragmentItemBinding
 import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.BasicFragment
-import com.diana.bachelorthesis.utils.LocationHelper
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.viewmodel.ItemPageViewModel
@@ -56,7 +54,7 @@ class ItemFragment : Fragment(), BasicFragment {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "ItemFragment is on onViewCreated")
 
-        itemPageViewModel.currentItem = ItemFragmentArgs.fromBundle(requireArguments()).ItemClicked
+        itemPageViewModel.currentItem = ItemFragmentArgs.fromBundle(requireArguments()).itemClicked
         updateUIElements()
 
         userViewModel.getUserData(itemPageViewModel.currentItem.owner, object : OneParamCallback<User> {
@@ -81,6 +79,13 @@ class ItemFragment : Fragment(), BasicFragment {
         Log.d(TAG, "ItemFragment is on onActivityCreated")
         initListeners()
         setSubPageAppbar(requireActivity(), itemPageViewModel.currentItem.name)
+
+        if ((requireActivity() as MainActivity).getCurrentUser()!!.email == itemPageViewModel.currentItem.owner) {
+            // its own item
+            binding.layoutButtons.visibility = View.GONE
+        } else {
+            binding.layoutButtons.visibility = View.VISIBLE
+        }
     }
 
     private fun getViewModels() {

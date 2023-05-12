@@ -1,6 +1,7 @@
 package com.diana.bachelorthesis.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,6 +72,7 @@ class CardsHistoryAdapter(
         holder.cardHistoryBinding.item1 = item1
         holder.cardHistoryBinding.item2 = item2
         holder.cardHistoryBinding.history = history
+        holder.cardHistoryBinding.historyClickListener = this
 
 
         // get donation receiver photo

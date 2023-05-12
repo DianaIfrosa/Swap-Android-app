@@ -2,6 +2,7 @@ package com.diana.bachelorthesis.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.parcelize.Parcelize
@@ -12,20 +13,16 @@ import java.util.*
 data class History(
     @DocumentId
     var eventId: String = "",
-    var confirmation1: Boolean = false,
-    var confirmation2: Boolean = false,
-    val date: Date? = null,
+    val date: Timestamp = Timestamp(0,0),
     var feedback1: String? = null,
     var feedback2: String? = null,
-    val item1: String = "",
-    val item2: String? = null,
+    var item1: String = "",
+    var item2: String? = null,
     val donationReceiverEmail: String? = null // used only when the history object refers to a donation
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         eventId = parcel.readString() ?: "",
-        confirmation1 = parcel.readByte() != 0.toByte(),
-        confirmation2 = parcel.readByte() != 0.toByte(),
-        date = Date(parcel.readLong()),
+        date =  parcel.readParcelable(Timestamp::class.java.classLoader) ?: Timestamp(0,0),
         feedback1 = parcel.readString(),
         feedback2 = parcel.readString(),
         item1 = parcel.readString() ?: "",
@@ -35,15 +32,7 @@ data class History(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(eventId)
-        parcel.writeByte(if (confirmation1) 1 else 0)
-        parcel.writeByte(if (confirmation2) 1 else 0)
-        parcel.writeLong(date!!.time)
-        parcel.writeString(feedback1)
-        parcel.writeString(feedback2)
-        parcel.writeString(item1)
-        parcel.writeString(item2)
-        parcel.writeString(donationReceiverEmail)
+        writeToParcel(parcel, flags)
     }
 
     override fun describeContents(): Int {
@@ -60,8 +49,4 @@ data class History(
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (other !is History) return false
-        return (this.confirmation1 == other.confirmation1 && this.confirmation2 == other.confirmation2)
-    }
 }

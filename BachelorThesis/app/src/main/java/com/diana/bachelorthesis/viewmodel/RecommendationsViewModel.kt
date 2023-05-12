@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.model.Item
+import com.diana.bachelorthesis.model.ItemDonation
 import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.repository.ItemRepository
@@ -28,7 +29,19 @@ class RecommendationsViewModel : ViewModel() {
         itemRepository.getDonationItems(object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
                 Log.d(TAG, "Retrieved recommended donation items")
-                callback.onComplete(values)
+                val valuesFiltered = ArrayList(values.filter { item ->
+                    when (item) {
+                        is ItemExchange -> {
+                            (item.exchangeInfo == null)
+                        }
+                        is ItemDonation -> {
+                            (item.donationInfo == null)
+                        }
+                        else -> false
+                    }
+                })
+
+                callback.onComplete(valuesFiltered)
             }
 
             override fun onError(e: Exception?) {
@@ -41,7 +54,18 @@ class RecommendationsViewModel : ViewModel() {
         itemRepository.getExchangeItems(object : ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
                 Log.d(TAG, "Retrieved recommended exchange items")
-                callback.onComplete(values)
+                val valuesFiltered = ArrayList(values.filter { item ->
+                    when (item) {
+                        is ItemExchange -> {
+                            (item.exchangeInfo == null)
+                        }
+                        is ItemDonation -> {
+                            (item.donationInfo == null)
+                        }
+                        else -> false
+                    }
+                })
+                callback.onComplete(valuesFiltered)
             }
 
             override fun onError(e: Exception?) {

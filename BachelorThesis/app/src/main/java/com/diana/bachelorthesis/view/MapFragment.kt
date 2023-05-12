@@ -117,6 +117,7 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
 
     private fun getViewModels() {
         itemsViewModel = ViewModelProvider(requireActivity())[ItemsViewModel::class.java]
+        mapViewModel = ViewModelProvider(this)[MapViewModel::class.java]
     }
 
     override fun onMapsSdkInitialized(renderer: Renderer) {

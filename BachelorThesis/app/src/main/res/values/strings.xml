@@ -196,5 +196,8 @@
     <string name="no_items_given">Nothing... Come back after you exchange or donate something.</string>
     <string name="no_items_available">Nothing... Seems like you did a good job in finding your items a new home.</string>
     <string name="events">events</string>
+    <string name="no_unavailable_items">None... Message other users and exchange or donate your items. Or maybe receive a donation?</string>
+    <string name="all_items_available">All items available</string>
+    <string name="none">None</string>
 
 </resources>

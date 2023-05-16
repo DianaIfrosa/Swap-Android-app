@@ -5,13 +5,9 @@ import android.location.Geocoder
 import com.diana.bachelorthesis.model.Item
 import com.google.firebase.firestore.GeoPoint
 
-class LocationHelper(var applicationContext : Context) {
+class LocationHelper(applicationContext : Context) {
 
-    lateinit var geocoder: Geocoder
-
-    init {
-        geocoder = Geocoder(applicationContext)
-    }
+    private var geocoder: Geocoder = Geocoder(applicationContext)
 
     fun getItemsCities(items: List<Item>): List<Item> {
         val result: MutableList<Item> = arrayListOf()

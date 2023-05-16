@@ -86,6 +86,12 @@ class RecommendationsFragment : Fragment(), BasicFragment {
             recommendationsViewModel.lastScrollPosition = 0
             initListeners()
             recommendationsViewModel.populateLiveDataItems()
+        } else if (mainViewModel.modifiedRecommendations) {
+            // the user modified the preferences from the profile
+            recommendationsViewModel.lastScrollPosition = 0
+            initListeners()
+            recommendationsViewModel.populateLiveDataItems()
+            mainViewModel.modifiedRecommendations = false
         } else {
             recommendationsViewModel.items.value?.let { updateRecyclerView(it) }
             scrollRecyclerView()
@@ -131,7 +137,7 @@ class RecommendationsFragment : Fragment(), BasicFragment {
         super.onStop()
         Log.d(TAG, "RecommendationsFragment is onStop")
         recommendationsViewModel.lastScrollPosition =
-            (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+            (binding.recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
     }
 
     override fun onDestroyView() {

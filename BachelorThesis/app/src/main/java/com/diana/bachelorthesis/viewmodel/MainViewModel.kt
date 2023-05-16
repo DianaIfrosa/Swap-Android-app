@@ -12,6 +12,7 @@ class MainViewModel : ViewModel() {
     var currentUser: User? = null
 
     var clickedOnRecommendations = false
+    var modifiedRecommendations = false
 
     fun addFavoriteItem(item: Item) {
         Log.d(TAG, "Added item ${item.name} to favorites.")

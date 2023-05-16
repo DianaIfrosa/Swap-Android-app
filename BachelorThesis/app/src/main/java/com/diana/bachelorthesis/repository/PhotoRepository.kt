@@ -3,6 +3,7 @@ package com.diana.bachelorthesis.repository
 import android.net.Uri
 import android.util.Log
 import com.diana.bachelorthesis.model.User
+import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.google.firebase.storage.FirebaseStorage
@@ -72,7 +73,55 @@ class PhotoRepository {
             }
         }
     }
+     fun uploadItemPhotos(
+        owner: String,
+        itemId: String,
+        imagesUri: List<Uri>,
+        currentImageNo: Int,
+        imagesUrl: ArrayList<String>,
+        callback: ListParamCallback<String>
+    ) {
+        // recursively add photos
+        val itemPhotosReference = storageReference.child(owner).child(itemId)
+        val currentImageUri = imagesUri[currentImageNo]
 
+        currentImageUri.let {
+            val imageName = UUID.randomUUID().toString()
+
+            itemPhotosReference.child(imageName).putFile(it).addOnCompleteListener { task ->
+
+                if (task.isSuccessful) {
+                    itemPhotosReference.child(imageName).downloadUrl.addOnSuccessListener { url ->
+                        val imageUrl = url.toString()
+                        Log.d(
+                            TAG,
+                            "Successfully uploaded image with url $imageUrl"
+                        )
+                        imagesUrl.add(imageUrl)
+                        if (currentImageNo == imagesUri.size - 1) {
+                            callback.onComplete(imagesUrl)
+                        } else {
+                            uploadItemPhotos(owner, itemId, imagesUri, currentImageNo + 1, imagesUrl, callback)
+                        }
+
+                    }.addOnFailureListener {
+                        Log.w(
+                            TAG,
+                            "\"Couldn't get url for photo with uri $currentImageUri"
+                        )
+                        callback.onError(task.exception)
+                    }
+
+                } else {
+                    Log.w(
+                        TAG,
+                        "Photo with uri $currentImageUri failed to upload!"
+                    )
+                    callback.onError(task.exception)
+                }
+            }
+        }
+    }
     suspend fun uploadPhotos(
         owner: String,
         itemId: String, imagesUri: List<Uri>

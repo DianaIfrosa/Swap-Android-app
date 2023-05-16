@@ -28,11 +28,10 @@ import com.apachat.loadingbutton.core.customViews.CircularProgressButton
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.PhotosRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentAddItemBinding
+import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.ItemCondition
-import com.diana.bachelorthesis.utils.BasicFragment
-import com.diana.bachelorthesis.utils.LocationDialogListener
-import com.diana.bachelorthesis.utils.LocationHelper
+import com.diana.bachelorthesis.utils.*
 import com.diana.bachelorthesis.viewmodel.AddItemViewModel
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.material.snackbar.Snackbar
@@ -62,6 +61,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         super.onCreate(savedInstanceState)
         Log.d(TAG, "AddItemFragment is onCreate")
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -94,7 +94,10 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "AddItemFragment is onActivityCreated")
-        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
+        setMainPageAppbar(
+            requireActivity(),
+            requireView().findNavController().currentDestination!!.label.toString()
+        )
     }
 
     override fun onStart() {
@@ -106,8 +109,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     }
 
     private fun getViewModels() {
-        val viewModelFactory = AddItemViewModel.ViewModelFactory(LocationHelper(requireActivity().applicationContext))
-        addItemViewModel = ViewModelProvider(this, viewModelFactory)[AddItemViewModel::class.java]
+        addItemViewModel = ViewModelProvider(this)[AddItemViewModel::class.java]
     }
 
     // TODO make a general function for spinner adapter that returns the adapter and receives the arrayList of elements
@@ -269,20 +271,36 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
             val fieldsOk: Boolean = verifyMandatoryFields()
 
             if (fieldsOk) {
-                // save into Firestore DB async, and after display the done sign
+                // save into Firestore DB sync, and after display the done sign
+                addItemViewModel.itemCity =
+                    LocationHelper(requireContext()).getItemCity(addItemViewModel.itemLocation!!)
 
-                lifecycleScope.launch {
-                    coroutineScope {
-                        addItemViewModel.itemCity = LocationHelper(requireContext()).getItemCity(addItemViewModel.itemLocation!!)
-                        addItemViewModel.addItem()
+                addItemViewModel.addItem(object : OneParamCallback<Item> {
+                    override fun onComplete(value: Item?) {
+                        it.doneLoadingAnimation(
+                            R.color.green_light,
+                            ContextCompat.getDrawable(
+                                requireActivity(),
+                                R.drawable.ic_done
+                            )!!.toBitmap()
+                        )
+
+                        if (value != null) {
+                            val action =
+                                AddItemFragmentDirections.actionNavAddItemToNavItem(value)
+                            requireView().findNavController().navigate(action)
+                        }
                     }
-                    
-                    it.doneLoadingAnimation(
-                        R.color.green_light,
-                        ContextCompat.getDrawable(requireActivity(),R.drawable.ic_done)!!.toBitmap()
-                    )
-                }
 
+                    override fun onError(e: Exception?) {
+                        it.revertAnimation()
+                        Toast.makeText(
+                            requireActivity(),
+                            getString(R.string.something_failed),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                })
             } else {
                 it.revertAnimation()
                 Toast.makeText(
@@ -296,14 +314,14 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
     private fun createSnackBar(text: String, view: View): Snackbar {
         val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_INDEFINITE)
-            .setAction("OK"){}.
-            setActionTextColor(resources.getColor(R.color.black)).
-            setTextColor(resources.getColor(R.color.black))
+            .setAction("OK") {}.setActionTextColor(resources.getColor(R.color.black))
+            .setTextColor(resources.getColor(R.color.black))
 
         val margin = 15
         val snackbarView: View = snackbar.view
         snackbarView.setBackgroundColor(resources.getColor(R.color.grey_light))
-        snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 15
+        snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines =
+            15
 
         val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         layoutParams.leftMargin = margin
@@ -332,7 +350,8 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
             getIntent.type = "image/*"
             val pickIntent =
                 Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            val chooserIntent = Intent.createChooser(getIntent, resources.getString(R.string.select_photo))
+            val chooserIntent =
+                Intent.createChooser(getIntent, resources.getString(R.string.select_photo))
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
 
             startActivityForResult(chooserIntent, PICK_IMAGE_CODE)
@@ -468,7 +487,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
             PICK_IMAGE_CODE -> {
                 if (resultCode == RESULT_OK) {
                     shouldCleanUI = false
-                    val imageUri: Uri? =  intent?.data
+                    val imageUri: Uri? = intent?.data
                     imageUri?.let {
                         binding.photosRecyclerView.visibility = View.VISIBLE
                         addItemViewModel.photosUri.add(it)
@@ -544,8 +563,9 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
     override fun saveLocation(location: Place?) {
 
-        addItemViewModel.itemLocation = location?.latLng?.let { GeoPoint(it.latitude, it.longitude) }
-        if (location!= null) {
+        addItemViewModel.itemLocation =
+            location?.latLng?.let { GeoPoint(it.latitude, it.longitude) }
+        if (location != null) {
             binding.locationChosen.apply {
                 visibility = View.VISIBLE
                 text = location.address

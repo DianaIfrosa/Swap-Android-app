@@ -83,6 +83,7 @@ class ItemFragment : Fragment(), BasicFragment {
         if ((requireActivity() as MainActivity).getCurrentUser()!!.email == itemPageViewModel.currentItem.owner) {
             // its own item
             binding.layoutButtons.visibility = View.GONE
+            binding.btnFavorite.visibility = View.GONE
         } else {
             binding.layoutButtons.visibility = View.VISIBLE
         }

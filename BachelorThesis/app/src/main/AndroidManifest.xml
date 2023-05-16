@@ -25,15 +25,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBty6htocQZVbjnN-Aga0WpR-UHwcmM_1Q" /> <!-- <uses-library android:name="org.apache.http.legacy" android:required="false" /> -->
-        <!-- <activity -->
-        <!-- android:name=".ItemPageActivity" -->
-        <!-- android:exported="false" -->
-        <!-- android:label="@string/title_activity_item_page" -->
-        <!-- android:theme="@style/Theme.BachelorThesis.NoActionBar"> -->
-        <!-- <meta-data -->
-        <!-- android:name="android.app.lib_name" -->
-        <!-- android:value="" /> -->
-        <!-- </activity> -->
+
         <activity
             android:name=".view.MainActivity"
             android:exported="true">

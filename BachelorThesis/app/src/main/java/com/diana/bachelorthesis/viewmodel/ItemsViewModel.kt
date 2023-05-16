@@ -9,10 +9,7 @@ import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.ItemDonation
 import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.repository.ItemRepository
-import com.diana.bachelorthesis.utils.LocationHelper
-import java.util.*
 import kotlin.collections.ArrayList
-
 
 class ItemsViewModel : ViewModel() {
     private val TAG: String = ItemsViewModel::class.java.name

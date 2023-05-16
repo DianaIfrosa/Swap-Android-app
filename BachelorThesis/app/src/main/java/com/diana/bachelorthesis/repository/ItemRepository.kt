@@ -40,7 +40,7 @@ class ItemRepository {
 
 
     fun getExchangeItem(itemId: String, callback: OneParamCallback<Item>) {
-        db.collection(EXCHANGE_COLLECTION).document(itemId).get().addOnCompleteListener {  task ->
+        db.collection(EXCHANGE_COLLECTION).document(itemId).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val item = task.result.toObject(ItemExchange::class.java)
                 callback.onComplete(item)
@@ -51,7 +51,7 @@ class ItemRepository {
     }
 
     fun getDonationItem(itemId: String, callback: OneParamCallback<Item>) {
-        db.collection(DONATION_COLLECTION).document(itemId).get().addOnCompleteListener {  task ->
+        db.collection(DONATION_COLLECTION).document(itemId).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val item = task.result.toObject(ItemDonation::class.java)
                 callback.onComplete(item)
@@ -62,108 +62,118 @@ class ItemRepository {
     }
 
     fun getExchangeItemsAndListen(callback: ListParamCallback<Item>) {
-        itemsExchangeListenerRegistration =  db.collection(EXCHANGE_COLLECTION).addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                Log.w(TAG, "Listen failed for exchange items", error)
-                return@addSnapshotListener
-            }
-            if (snapshot != null) {
-                val allItems = ArrayList<Item>()
-                val documents = snapshot.documents
-                documents.forEach {
-                    val item = it.toObject(ItemExchange::class.java)
-                    if (item != null) {
-                        Log.d(TAG, "Retrieved exchange item ${it.data}")
-                        allItems.add(item)
-                    }
+        itemsExchangeListenerRegistration =
+            db.collection(EXCHANGE_COLLECTION).addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    Log.w(TAG, "Listen failed for exchange items", error)
+                    return@addSnapshotListener
                 }
-                callback.onComplete(allItems)
-            } else {
-                Log.w(TAG, "No such snapshot")
+                if (snapshot != null) {
+                    val allItems = ArrayList<Item>()
+                    val documents = snapshot.documents
+                    documents.forEach {
+                        val item = it.toObject(ItemExchange::class.java)
+                        if (item != null) {
+                            Log.d(TAG, "Retrieved exchange item ${it.data}")
+                            allItems.add(item)
+                        }
+                    }
+                    callback.onComplete(allItems)
+                } else {
+                    Log.w(TAG, "No such snapshot")
+                }
             }
-        }
     }
 
     fun getDonationItemsAndListen(callback: ListParamCallback<Item>) {
-        itemsDonationsListenerRegistration = db.collection(DONATION_COLLECTION).addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                Log.w(TAG, "Listen failed for donation items", error)
-                return@addSnapshotListener
-            }
-            if (snapshot != null) {
-                val allItems = ArrayList<Item>()
-                val documents = snapshot.documents
-                documents.forEach {
-                    val item = it.toObject(ItemDonation::class.java)
-                    if (item != null) {
-                        Log.d(TAG, "Retrieved donation item ${it.data}")
-                        allItems.add(item)
-                    }
+        itemsDonationsListenerRegistration =
+            db.collection(DONATION_COLLECTION).addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    Log.w(TAG, "Listen failed for donation items", error)
+                    return@addSnapshotListener
                 }
-                callback.onComplete(allItems)
-            } else {
-                Log.w(TAG, "No such snapshot")
-            }
-        }
-    }
-
-    fun getFavoriteDonations(favoriteItemsIds: List<String>, callback: ListParamCallback<Pair<Int, Item>>) {
-        favDonationsListenerRegistration = db.collection(DONATION_COLLECTION).addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                Log.w(TAG, "Listen failed for favorite donations", error)
-                return@addSnapshotListener
-            }
-            if (snapshot != null) {
-
-                val favItems = ArrayList<Pair<Int, Item>>() // save the item and its position in
-                // order to recreate the order the used added the item to its favorites
-
-                val documents = snapshot.documents
-                documents.forEach {
-                    val item = it.toObject(ItemDonation::class.java)
-                    if (item != null) {
-                        val position = favoriteItemsIds.indexOfFirst {id -> item.itemId == id }
-                        if (position != -1) {
-                            Log.d(TAG, "Retrieved favorite donation item ${it.data}")
-                            favItems.add(Pair(position, item))
+                if (snapshot != null) {
+                    val allItems = ArrayList<Item>()
+                    val documents = snapshot.documents
+                    documents.forEach {
+                        val item = it.toObject(ItemDonation::class.java)
+                        if (item != null) {
+                            Log.d(TAG, "Retrieved donation item ${it.data}")
+                            allItems.add(item)
                         }
                     }
+                    callback.onComplete(allItems)
+                } else {
+                    Log.w(TAG, "No such snapshot")
                 }
-                callback.onComplete(favItems)
-            } else {
-                Log.w(TAG, "No such snapshot")
             }
-        }
     }
 
-    fun getFavoriteExchanges(favoriteItemsIds: List<String>, callback: ListParamCallback<Pair<Int, Item>>) {
-        favExchangesListenerRegistration = db.collection(EXCHANGE_COLLECTION).addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                Log.w(TAG, "Listen failed for favorite exchanges", error)
-                return@addSnapshotListener
-            }
-            if (snapshot != null) {
+    fun getFavoriteDonations(
+        favoriteItemsIds: List<String>,
+        callback: ListParamCallback<Pair<Int, Item>>
+    ) {
+        favDonationsListenerRegistration =
+            db.collection(DONATION_COLLECTION).addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    Log.w(TAG, "Listen failed for favorite donations", error)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null) {
 
-                val favItems = ArrayList<Pair<Int, Item>>() // save the item and its position in
-                // order to recreate the order the used added the item to its favorites
+                    val favItems = ArrayList<Pair<Int, Item>>() // save the item and its position in
+                    // order to recreate the order the used added the item to its favorites
 
-                val documents = snapshot.documents
-                documents.forEach {
-                    val item = it.toObject(ItemExchange::class.java)
-                    if (item != null) {
-                        val position = favoriteItemsIds.indexOfFirst {id -> item.itemId == id }
-                        if (position != -1) {
-                            Log.d(TAG, "Retrieved favorite  exchange item ${it.data}")
-                            favItems.add(Pair(position, item))
+                    val documents = snapshot.documents
+                    documents.forEach {
+                        val item = it.toObject(ItemDonation::class.java)
+                        if (item != null) {
+                            val position = favoriteItemsIds.indexOfFirst { id -> item.itemId == id }
+                            if (position != -1) {
+                                Log.d(TAG, "Retrieved favorite donation item ${it.data}")
+                                favItems.add(Pair(position, item))
+                            }
                         }
                     }
+                    callback.onComplete(favItems)
+                } else {
+                    Log.w(TAG, "No such snapshot")
                 }
-                callback.onComplete(favItems)
-            } else {
-                Log.w(TAG, "No such snapshot")
-                callback.onError(null)
             }
-        }
+    }
+
+    fun getFavoriteExchanges(
+        favoriteItemsIds: List<String>,
+        callback: ListParamCallback<Pair<Int, Item>>
+    ) {
+        favExchangesListenerRegistration =
+            db.collection(EXCHANGE_COLLECTION).addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    Log.w(TAG, "Listen failed for favorite exchanges", error)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null) {
+
+                    val favItems = ArrayList<Pair<Int, Item>>() // save the item and its position in
+                    // order to recreate the order the used added the item to its favorites
+
+                    val documents = snapshot.documents
+                    documents.forEach {
+                        val item = it.toObject(ItemExchange::class.java)
+                        if (item != null) {
+                            val position = favoriteItemsIds.indexOfFirst { id -> item.itemId == id }
+                            if (position != -1) {
+                                Log.d(TAG, "Retrieved favorite  exchange item ${it.data}")
+                                favItems.add(Pair(position, item))
+                            }
+                        }
+                    }
+                    callback.onComplete(favItems)
+                } else {
+                    Log.w(TAG, "No such snapshot")
+                    callback.onError(null)
+                }
+            }
     }
 
     fun getItemsFromOwner(owner: String, forExchange: Boolean, callback: ListParamCallback<Item>) {
@@ -174,30 +184,32 @@ class ItemRepository {
         }
 
         collRef.whereEqualTo("owner", owner).get().addOnSuccessListener { documents ->
-                val allItems = ArrayList<Item>()
-                documents.forEach {
-                    val item =
-                        if (forExchange) it.toObject(ItemExchange::class.java) else it.toObject(
-                            ItemDonation::class.java
-                        )
-                    Log.d(TAG, "Retrieved item ${it.data}")
-                    allItems.add(item)
-                }
-                callback.onComplete(allItems)
+            val allItems = ArrayList<Item>()
+            documents.forEach {
+                val item =
+                    if (forExchange) it.toObject(ItemExchange::class.java) else it.toObject(
+                        ItemDonation::class.java
+                    )
+                Log.d(TAG, "Retrieved item ${it.data}")
+                allItems.add(item)
             }
+            callback.onComplete(allItems)
+        }
     }
 
-    suspend fun addItem(item: Item) {
-        coroutineScope {
-            val reference = if (item is ItemExchange) db.collection(EXCHANGE_COLLECTION)
-            else db.collection(DONATION_COLLECTION)
+    fun addItem(item: Item, callback: NoParamCallback) {
+        val reference = if (item is ItemExchange) db.collection(EXCHANGE_COLLECTION)
+        else db.collection(DONATION_COLLECTION)
 
-            async(Dispatchers.Default) {
-                reference.document(item.itemId).set(item)
-                    .addOnSuccessListener { Log.d(TAG, "Item successfully added!") }
-                    .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
-            }.await()
-        }
+        reference.document(item.itemId).set(item)
+            .addOnSuccessListener {
+                Log.d(TAG, "Item successfully added!")
+                callback.onComplete()
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error writing document", e)
+                callback.onError(e)
+            }
     }
 
     fun getExchangeItemsCities(callback: ListParamCallback<String>) {
@@ -296,7 +308,7 @@ class ItemRepository {
         val collRef = if (isExchange) db.collection(EXCHANGE_COLLECTION)
         else db.collection(DONATION_COLLECTION)
 
-        collRef.document(itemId).delete().addOnCompleteListener {task ->
+        collRef.document(itemId).delete().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "Deleted item with id $itemId.")
                 callback.onComplete()

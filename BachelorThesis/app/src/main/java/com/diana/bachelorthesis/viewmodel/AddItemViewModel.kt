@@ -2,22 +2,18 @@ package com.diana.bachelorthesis.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.diana.bachelorthesis.model.ItemCategory
-import com.diana.bachelorthesis.model.ItemCondition
-import com.diana.bachelorthesis.model.ItemDonation
-import com.diana.bachelorthesis.model.ItemExchange
+import com.diana.bachelorthesis.model.*
 import com.diana.bachelorthesis.repository.ItemRepository
 import com.diana.bachelorthesis.repository.PhotoRepository
-import com.diana.bachelorthesis.repository.UserRepository
-import com.diana.bachelorthesis.utils.LocationHelper
+import com.diana.bachelorthesis.utils.ListParamCallback
+import com.diana.bachelorthesis.utils.NoParamCallback
+import com.diana.bachelorthesis.utils.OneParamCallback
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
-import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
+class AddItemViewModel : ViewModel() {
     private val TAG: String = AddItemViewModel::class.java.name
     private val itemRepository = ItemRepository.getInstance()
     private val photoRepository = PhotoRepository.getInstance()
@@ -36,17 +32,7 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
     var itemLocation: GeoPoint? = null
     var itemOwner: String = ""
 
-    class ViewModelFactory(private val arg: LocationHelper) : ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(AddItemViewModel::class.java)) {
-                return AddItemViewModel(arg) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
-        }
-    }
-
-    suspend fun addItem(){
+     fun addItem(callback: OneParamCallback<Item>){
         val item = if (itemForExchange) ItemExchange()
         else ItemDonation()
 
@@ -65,26 +51,31 @@ class AddItemViewModel(var locationHelper: LocationHelper) : ViewModel() {
         if (itemForExchange)
             (item as ItemExchange).exchangePreferences = itemExchangePreferences
 
-        coroutineScope {
-            launch (context = Dispatchers.Default) {
-                coroutineScope {
-                    launch {
-                        val photos = async {photoRepository.uploadPhotos(
+        photoRepository.uploadItemPhotos(
                             itemOwner,
                             item.itemId,
                             photosUri,
-                        )}
-                        item.photos = photos.await() as ArrayList<String>
-                    }
+            0,
+            arrayListOf(),
+            object: ListParamCallback<String> {
+                override fun onComplete(values: ArrayList<String>) {
+                    item.photos = values
+                    itemRepository.addItem(item, object: NoParamCallback {
+                        override fun onComplete() {
+                            callback.onComplete(item)
+                        }
 
-                    launch {
-                        val itemCity = async { locationHelper.getItemCity(itemLocation!!) }
-                        item.city = itemCity.await()
-                    }
+                        override fun onError(e: Exception?) {
+                          callback.onError(e)
+                        }
+
+                    })
                 }
-                itemRepository.addItem(item)
-            }
-        }
+
+                override fun onError(e: Exception?) {
+                   callback.onError(e)
+                }
+            })
     }
 
     fun restoreDefaultValues() {

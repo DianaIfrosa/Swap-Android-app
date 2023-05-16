@@ -22,7 +22,6 @@ import com.diana.bachelorthesis.databinding.ActivityMainBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.User
-import com.diana.bachelorthesis.utils.LocationHelper
 import com.diana.bachelorthesis.utils.SharedPreferencesUtils
 import com.diana.bachelorthesis.viewmodel.ItemsViewModel
 import com.diana.bachelorthesis.viewmodel.MainViewModel
@@ -285,6 +284,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         mainViewModel.updateUserPreferences(words, owners, cities, categories, exchangePreferences)
         updateCurrentUserSharedPreferences()
+        mainViewModel.modifiedRecommendations = true
     }
 
     fun itemIsFavorite(item: Item): Boolean = mainViewModel.itemIsFavorite(item)

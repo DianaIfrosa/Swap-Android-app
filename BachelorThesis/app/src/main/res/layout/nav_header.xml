@@ -22,7 +22,6 @@
         app:shapeAppearanceOverlay="@style/circleImageView"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
-        android:contentDescription="@string/nav_header_profile"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:visibility="invisible"/>

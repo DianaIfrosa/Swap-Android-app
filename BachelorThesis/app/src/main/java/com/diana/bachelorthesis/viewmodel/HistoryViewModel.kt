@@ -1,5 +1,6 @@
 package com.diana.bachelorthesis.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,11 +23,11 @@ class HistoryViewModel : ViewModel() {
     var currentUserItems: ArrayList<Item> = arrayListOf()
     var historyList: ArrayList<History> = arrayListOf()
 
-    var _availableItems = MutableLiveData<List<Item>>()
-    var _notAvailableItems = MutableLiveData<List<Pair<Item, Item?>>>()
+    private var _availableItems = MutableLiveData<List<Item>>()
+    private var _notAvailableItemsHistory = MutableLiveData<List<History>>()
 
     var availableItems: LiveData<List<Item>> = _availableItems
-    val notAvailableItems: LiveData<List<Pair<Item, Item?>>> = _notAvailableItems
+    val notAvailableItemsHistory: LiveData<List<History>> = _notAvailableItemsHistory
 
     lateinit var currentUser: User
 
@@ -100,11 +101,13 @@ class HistoryViewModel : ViewModel() {
     }
 
     private fun getCurrentUserItems() {
+        val result = arrayListOf<Item>()
         allItems.forEach { item ->
             if (item.owner == currentUser.email) {
-                currentUserItems.add(item)
+                result.add(item)
             }
         }
+        currentUserItems = result
     }
 
     private fun getAvailableItems() {
@@ -143,18 +146,42 @@ class HistoryViewModel : ViewModel() {
             }
         }
 
+        Log.d(TAG, "Not available items of user:")
+        notAvailableItemsUser.forEach {
+            Log.d(TAG, it.name)
+        }
+
+        Log.d(TAG, "The history ids for them")
+        historyIdsUser.forEach {
+            Log.d(TAG, it)
+        }
+
         historyRepository.getHistoryObjectsForUser(
             historyIdsUser,
             currentUser.email,
             object : ListParamCallback<History> {
                 override fun onComplete(values: ArrayList<History>) {
-                    historyList = values
-                    val correspondingItems = getCorrespondingItems(notAvailableItemsUser, values)
-                    _notAvailableItems.value = notAvailableItemsUser.zip(correspondingItems)
+//                    historyList = values
+//                    Log.d(TAG, "History objects retrieved from db (donations received + others)")
+//                    historyList.forEach {
+//                        Log.d(TAG, it.eventId)
+//                        Log.d(TAG, it.item1)
+//                        Log.d(TAG, it.item2 ?: "null")
+//                        Log.d(TAG, "---------------------")
+//                    }
+//                    val correspondingItems = getCorrespondingItems(notAvailableItemsUser, values)
+//                    Log.d(TAG, "Not available items first")
+//                    notAvailableItemsUser.
+//                    Log.d(TAG, "Corresponding items")
+//                    correspondingItems.forEach {
+//                        Log.d(TAG, it.name)
+//                    }
+//                    _notAvailableItems.value = notAvailableItemsUser.zip(correspondingItems)
+                    _notAvailableItemsHistory.value = values
                 }
 
                 override fun onError(e: Exception?) {
-                    _notAvailableItems.value = arrayListOf()
+                    _notAvailableItemsHistory.value = arrayListOf()
                 }
 
             })

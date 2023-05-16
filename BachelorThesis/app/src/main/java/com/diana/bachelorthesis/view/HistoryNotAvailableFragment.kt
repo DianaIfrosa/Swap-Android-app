@@ -41,7 +41,7 @@ class HistoryNotAvailableFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "HistoryAvailableFragment is onViewCreated")
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.itemsAdapter = CardsHistoryAdapter(listOf(), listOf(), requireContext()) {_, _, _ ->}
+        binding.itemsAdapter = CardsHistoryAdapter(null, listOf(), requireContext()) {_, _, _ ->}
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -52,15 +52,15 @@ class HistoryNotAvailableFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "HistoryNotAvailableFragment is onStart")
-        updateRecyclerView(listOf(), listOf(), true)
+        updateRecyclerView(listOf(), true)
         historyViewModel.populateItemsNotAvailable()
     }
 
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "HistoryNotAvailableFragment is onResume")
-        historyViewModel.notAvailableItems.observe(viewLifecycleOwner) {
-            updateRecyclerView(it, historyViewModel.historyList)
+        historyViewModel.notAvailableItemsHistory.observe(viewLifecycleOwner) {
+            updateRecyclerView(it)
             (parentFragment as HistoryFragment).scrollRecyclerView(binding.recyclerView)
         }
     }
@@ -77,18 +77,18 @@ class HistoryNotAvailableFragment : Fragment() {
             (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
     }
 
-    private fun updateRecyclerView(items: List<Pair<Item, Item?>>, historyList: List<History>, progressBarAppears: Boolean = false) {
+    private fun updateRecyclerView(historyList: List<History>, progressBarAppears: Boolean = false) {
         if (progressBarAppears) {
             binding.progressBar.visibility = View.VISIBLE
             binding.recyclerView.visibility = View.INVISIBLE
             binding.textNoItems.visibility = View.INVISIBLE
             binding.textNumberCards.text = resources.getString(R.string.loading)
-        } else if (items.isNotEmpty()) {
+        } else if (historyList.isNotEmpty()) {
             binding.recyclerView.visibility = View.VISIBLE
             binding.progressBar.visibility = View.INVISIBLE
             binding.textNoItems.visibility = View.INVISIBLE
             binding.itemsAdapter =
-                CardsHistoryAdapter(items, historyList, requireContext()) { item1, item2, history ->
+                CardsHistoryAdapter((requireActivity() as MainActivity).getCurrentUser(), historyList, requireContext()) { item1, item2, history ->
                     if (item2 != null) {
                         // exchange event
                         val action =

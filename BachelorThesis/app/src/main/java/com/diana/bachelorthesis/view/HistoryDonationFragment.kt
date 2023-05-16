@@ -56,8 +56,8 @@ class HistoryDonationFragment : Fragment(), BasicFragment {
 
                 updateUIElements()
 
-                binding.donationReceiverName.text = historyEventViewModel.otherOwner.name
-                Picasso.get().load(historyEventViewModel.otherOwner.profilePhoto).into(binding.donationReceiverPicture)
+                binding.donationReceiverName.text = historyEventViewModel.donationReceiver.name
+                Picasso.get().load(historyEventViewModel.donationReceiver.profilePhoto).into(binding.donationReceiverPicture)
 
                 initListeners()
             }

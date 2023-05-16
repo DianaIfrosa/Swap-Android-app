@@ -3,6 +3,7 @@ package com.diana.bachelorthesis.view
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -51,7 +52,8 @@ class IntroAuthFragment : Fragment(), BasicFragment {
         _binding = FragmentIntroAuthBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        layouts = arrayListOf(R.layout.intro_slide_1, R.layout.intro_slide_2, R.layout.intro_slide_3)
+        layouts =
+            arrayListOf(R.layout.intro_slide_1, R.layout.intro_slide_2, R.layout.intro_slide_3)
 
         val introScreensAdapter = IntroScreensAdapter()
         binding.viewPager.adapter = introScreensAdapter
@@ -67,7 +69,10 @@ class IntroAuthFragment : Fragment(), BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "IntroAuthFragment is onActivityCreated")
-        setAuthAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
+        setAuthAppbar(
+            requireActivity(),
+            requireView().findNavController().currentDestination!!.label.toString()
+        )
     }
 
     override fun initListeners() {
@@ -100,15 +105,17 @@ class IntroAuthFragment : Fragment(), BasicFragment {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        when(requestCode) {
+        when (requestCode) {
             200 -> {
                 Log.d(TAG, "onActivityResult from RegisterFragment")
-                val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+                val task: Task<GoogleSignInAccount> =
+                    GoogleSignIn.getSignedInAccountFromIntent(data)
                 try {
                     val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
-                    val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
+                    val credential: AuthCredential =
+                        GoogleAuthProvider.getCredential(account.idToken, null)
                     performGoogleAuth(credential)
-                } catch(e: ApiException) {
+                } catch (e: ApiException) {
                     e.printStackTrace()
                     displayErrorToast()
                 }
@@ -118,42 +125,28 @@ class IntroAuthFragment : Fragment(), BasicFragment {
 
     private fun performGoogleAuth(credential: AuthCredential) {
         Log.d(TAG, "Performing Google auth")
-        userViewModel.signUpWithGoogle(credential, object: NoParamCallback {
+        userViewModel.signUpWithGoogle(credential, object : NoParamCallback {
             override fun onComplete() {
                 Log.d(TAG, "Sign up with Google completed")
                 val email = userViewModel.getCurrentUserEmail()
                 val name = userViewModel.getCurrentUserName()
                 val photoUri = userViewModel.getCurrentUserPhoto()
 
-                userViewModel.addUser(email, name, photoUri, object: NoParamCallback {
-                    override fun onComplete() {
-                        Log.d(TAG, "Added user after Google login completed.")
-
-                        userViewModel.getUserData(email, object: OneParamCallback<User> {
-                            override fun onComplete(value: User?) {
-                                if (value != null) {
-                                    (requireActivity() as MainActivity).addCurrentUserToSharedPreferences(value)
-                                    (requireActivity() as MainActivity).updateAuthUIElements()
-                                    requireView().findNavController()
-                                        .navigate(
-                                            R.id.nav_home,
-                                            null,
-                                            NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
-                                        )
-                                } else {
-                                    userViewModel.signOut()
-                                    displayErrorToast()
-                                }
+                userViewModel.verifyUserExists(email, object : OneParamCallback<Boolean> {
+                    override fun onComplete(value: Boolean?) {
+                        if (value != null) {
+                            if (value) {
+                                // user already exists in database
+                                updateCurrentUser(email)
+                            } else {
+                                // user signs up now
+                                addUser(email, name, photoUri)
                             }
-
-                            override fun onError(e: Exception?) {
-                                displayErrorToast()
-                            }
-
-                        })
+                        }
                     }
 
                     override fun onError(e: Exception?) {
+                        userViewModel.signOut()
                         displayErrorToast()
                     }
                 })
@@ -162,6 +155,46 @@ class IntroAuthFragment : Fragment(), BasicFragment {
             override fun onError(e: Exception?) {
                 displayErrorToast()
             }
+        })
+    }
+
+    private fun addUser(email: String, name: String, photoUri: Uri?) {
+        userViewModel.addUser(email, name, photoUri, object : NoParamCallback {
+            override fun onComplete() {
+                Log.d(TAG, "Added user after Google login completed.")
+                updateCurrentUser(email)
+            }
+
+            override fun onError(e: Exception?) {
+                userViewModel.signOut()
+                displayErrorToast()
+            }
+        })
+    }
+
+    private fun updateCurrentUser(email: String) {
+        userViewModel.getUserData(email, object : OneParamCallback<User> {
+            override fun onComplete(value: User?) {
+                if (value != null) {
+                    (requireActivity() as MainActivity).addCurrentUserToSharedPreferences(value)
+                    (requireActivity() as MainActivity).updateAuthUIElements()
+                    requireView().findNavController()
+                        .navigate(
+                            R.id.nav_home,
+                            null,
+                            NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
+                        )
+                } else {
+                    userViewModel.signOut()
+                    displayErrorToast()
+                }
+            }
+
+            override fun onError(e: Exception?) {
+                userViewModel.signOut()
+                displayErrorToast()
+            }
+
         })
     }
 
@@ -174,9 +207,10 @@ class IntroAuthFragment : Fragment(), BasicFragment {
     }
 
     // make adapter as inner class because I need activity context
-    inner class IntroScreensAdapter: PagerAdapter() {
+    inner class IntroScreensAdapter : PagerAdapter() {
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            val layoutInflater = requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val layoutInflater =
+                requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val view = layoutInflater.inflate(layouts[position], container, false)
             container.addView(view)
             return view

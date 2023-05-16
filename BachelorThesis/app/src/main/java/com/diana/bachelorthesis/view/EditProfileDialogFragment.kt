@@ -119,21 +119,33 @@ class EditProfileDialogFragment : DialogFragment() {
             val listener: ProfileOptionsListener = fragmentParent
             val validPasswords = validatePasswords()
             if (validPasswords) {
-                profileViewModel.verifyOldPass(binding.oldPassEdittext.text.toString(), object: NoParamCallback {
-                    override fun onComplete() {
-                        listener.saveProfileChanges(
-                            profileViewModel.newprofilePhoto,
-                            binding.newPassEdittext.text.toString()
-                        )
-                        dialog!!.dismiss()
-                    }
-                    override fun onError(e: Exception?) {
-                       binding.oldPassInputLayout.apply {
-                           isHelperTextEnabled = true
-                           helperText = getString(R.string.old_pass_invalid)
-                       }
-                    }
-                })
+                if (!binding.newPassEdittext.text.isNullOrEmpty() && !binding.oldPassEdittext.text.isNullOrEmpty()) {
+                    profileViewModel.verifyOldPass(
+                        binding.oldPassEdittext.text.toString(),
+                        object : NoParamCallback {
+                            override fun onComplete() {
+                                listener.saveProfileChanges(
+                                    profileViewModel.newprofilePhoto,
+                                    binding.newPassEdittext.text.toString()
+                                )
+                                dialog!!.dismiss()
+                            }
+
+                            override fun onError(e: Exception?) {
+                                binding.oldPassInputLayout.apply {
+                                    isHelperTextEnabled = true
+                                    helperText = getString(R.string.old_pass_invalid)
+                                }
+                            }
+                        })
+                } else {
+                    // the user didn't want to change the password
+                    listener.saveProfileChanges(
+                        profileViewModel.newprofilePhoto,
+                        null
+                    )
+                    dialog!!.dismiss()
+                }
             }
             true
         }

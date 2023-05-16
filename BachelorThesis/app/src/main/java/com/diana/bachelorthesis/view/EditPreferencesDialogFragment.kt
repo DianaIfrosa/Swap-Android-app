@@ -15,7 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.diana.bachelorthesis.R
-import com.diana.bachelorthesis.adapters.ListAdapter
+import com.diana.bachelorthesis.adapters.ListAdapterPreferences
 import com.diana.bachelorthesis.databinding.FragmentEditPreferencesDialogBinding
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.utils.HelperListAdapter
@@ -33,9 +33,9 @@ class EditPreferencesDialogFragment : DialogFragment() {
     private lateinit var toolbar: Toolbar
     private lateinit var profileViewModel: ProfileViewModel
 
-    private lateinit var adapterOwners: ListAdapter
-    private lateinit var adapterCities: ListAdapter
-    private lateinit var adapterWords: ListAdapter
+    private lateinit var adapterOwners: ListAdapterPreferences
+    private lateinit var adapterCities: ListAdapterPreferences
+    private lateinit var adapterWords: ListAdapterPreferences
 
     var checkboxesCategories: Map<ItemCategory, CheckBox> = mapOf()
     var checkboxesExchangePreferences: Map<ItemCategory, CheckBox> = mapOf()
@@ -109,7 +109,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
             if (city.isNotEmpty()) {
                 profileViewModel.preferredCities = adapterCities.getItems()
                 profileViewModel.preferredCities.add(city)
-                adapterCities = ListAdapter(
+                adapterCities = ListAdapterPreferences(
                     requireContext(),
                     ArrayList(profileViewModel.preferredCities)
                 )
@@ -127,7 +127,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
             if (owner.isNotEmpty()) {
                 profileViewModel.preferredOwners = adapterOwners.getItems()
                 profileViewModel.preferredOwners.add(owner)
-                adapterOwners = ListAdapter(
+                adapterOwners = ListAdapterPreferences(
                     requireContext(),
                     ArrayList(profileViewModel.preferredOwners)
                 )
@@ -145,7 +145,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
             if (word.isNotEmpty()) {
                 profileViewModel.preferredWords = adapterWords.getItems()
                 profileViewModel.preferredWords.add(word)
-                adapterWords = ListAdapter(
+                adapterWords = ListAdapterPreferences(
                     requireContext(),
                     ArrayList(profileViewModel.preferredWords)
                 )
@@ -212,7 +212,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
         }
 
         // owners
-        adapterOwners = ListAdapter(
+        adapterOwners = ListAdapterPreferences(
             requireContext(),
             ArrayList(profileViewModel.preferredOwners)
         )
@@ -220,7 +220,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
         HelperListAdapter.adjustListViewSize(binding.ownersList)
 
         // cities
-        adapterCities = ListAdapter(
+        adapterCities = ListAdapterPreferences(
             requireContext(),
             ArrayList(profileViewModel.preferredCities)
         )
@@ -228,7 +228,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
         HelperListAdapter.adjustListViewSize(binding.citiesList)
 
         // words
-        adapterWords = ListAdapter(
+        adapterWords = ListAdapterPreferences(
             requireContext(),
             ArrayList(profileViewModel.preferredWords)
         )

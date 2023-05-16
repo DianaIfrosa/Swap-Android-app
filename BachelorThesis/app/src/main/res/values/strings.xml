@@ -101,7 +101,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 
-    <string name="addItemPageTitle">Add item</string>
+    <string name="add_item">Add item</string>
     <string name="mapPageTitle">Map</string>
     <string name="titleLocationPermission">Location permission needed</string>
     <string name="messageLocationPermission">"The location permission is required so that you can see items around you in real time! "</string>
@@ -199,5 +199,7 @@
     <string name="no_unavailable_items">None... Message other users and exchange or donate your items. Or maybe receive a donation?</string>
     <string name="all_items_available">All items available</string>
     <string name="none">None</string>
+    <string name="sent_proposal">sent you a proposal</string>
+    <string name="sent_photo">sent you a photo</string>
 
 </resources>

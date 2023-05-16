@@ -136,4 +136,8 @@ class UserViewModel : ViewModel() {
     fun updatePassword(newPass: String, callback: NoParamCallback) {
         userRepository.updatePassword(newPass, callback)
     }
+
+    fun verifyUserExists(email: String, callback: OneParamCallback<Boolean>) {
+       userRepository.verifyUserExists(email, callback)
+    }
 }

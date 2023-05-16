@@ -36,10 +36,7 @@ class ChatFragment : Fragment(), BasicFragment {
         _binding = FragmentChatBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textChat
-        chatViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        setMainPageAppbar(requireActivity(), getString(R.string.menu_chat))
 
         return root
     }
@@ -52,6 +49,7 @@ class ChatFragment : Fragment(), BasicFragment {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d(TAG, "ChatFragment is onDestroyView")
         _binding = null
     }
 

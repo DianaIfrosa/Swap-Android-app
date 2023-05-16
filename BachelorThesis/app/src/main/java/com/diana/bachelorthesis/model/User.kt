@@ -14,5 +14,6 @@ data class User(
     var favoriteDonations: ArrayList<String> = ArrayList(),
     var favoriteExchanges: ArrayList<String> = ArrayList(),
     var profilePhoto: String? = null,
-    var notifications: NotificationsPreferences = NotificationsPreferences()
+    var notifications: NotificationsPreferences = NotificationsPreferences(),
+    val chatIds: ArrayList<Map<String, Boolean>> = ArrayList()
 ) : Parcelable

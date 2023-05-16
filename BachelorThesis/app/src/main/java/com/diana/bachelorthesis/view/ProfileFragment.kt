@@ -127,7 +127,7 @@ class ProfileFragment : Fragment(), BasicFragment, ProfileOptionsListener {
         userViewModel.changeUserNotificationsOption(userViewModel.getCurrentUserEmail(), option)
     }
 
-    override fun saveProfileChanges(photoUri: Uri?, newPass: String) {
+    override fun saveProfileChanges(photoUri: Uri?, newPass: String?) {
         if (photoUri != null) {
             profileViewModel.saveNewProfilePhoto((requireActivity() as MainActivity).getCurrentUser()!!.email,
                 photoUri, object : OneParamCallback<String> {
@@ -138,18 +138,28 @@ class ProfileFragment : Fragment(), BasicFragment, ProfileOptionsListener {
                     }
 
                     override fun onError(e: Exception?) {
-                        Toast.makeText(requireActivity(), "Photo couldn't be uploaded. Please try again!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireActivity(),
+                            "Photo couldn't be uploaded. Please try again!",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 })
         }
 
-        userViewModel.updatePassword(newPass, object: NoParamCallback {
-            override fun onComplete() {}
+        if (newPass != null) {
+            userViewModel.updatePassword(newPass, object : NoParamCallback {
+                override fun onComplete() {}
 
-            override fun onError(e: Exception?) {
-               Toast.makeText(requireActivity(), "Password could not be updated. Please try again!", Toast.LENGTH_LONG).show()
-            }
-        })
+                override fun onError(e: Exception?) {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Password could not be updated. Please try again!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+        }
     }
 
     override fun savePreferencesForRecommendations(

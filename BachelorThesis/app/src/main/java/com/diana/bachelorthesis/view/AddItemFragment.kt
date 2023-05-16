@@ -21,6 +21,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apachat.loadingbutton.core.customViews.CircularProgressButton
@@ -93,7 +94,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "AddItemFragment is onActivityCreated")
-//        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
+        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
     }
 
     override fun onStart() {

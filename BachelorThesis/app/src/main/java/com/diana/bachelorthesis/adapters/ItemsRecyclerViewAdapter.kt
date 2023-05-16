@@ -24,7 +24,7 @@ import java.lang.Exception
 class ItemsRecyclerViewAdapter(private var itemsList: List<Item>, var context: Context,
 private val onItemClicked: (Item) -> Unit) :
     RecyclerView.Adapter<ItemsRecyclerViewAdapter.ItemViewHolder>(),
-    CustomClickListener {
+    CustomClickListener<Item> {
 
     private val TAG: String = ItemsRecyclerViewAdapter::class.java.name
     private val userRepository = UserRepository.getInstance()
@@ -75,9 +75,9 @@ private val onItemClicked: (Item) -> Unit) :
         return itemsList.size
     }
 
-    override fun cardClicked(item: Item?) {
-        if (item != null) {
-            onItemClicked(item)
+    override fun cardClicked(value: Item?) {
+        if (value != null) {
+            onItemClicked(value)
         }
     }
 

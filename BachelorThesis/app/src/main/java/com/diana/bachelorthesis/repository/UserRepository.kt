@@ -14,6 +14,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import java.lang.Exception
 
 class UserRepository {
 
@@ -70,7 +71,7 @@ class UserRepository {
             if (task.isSuccessful) {
                 callback.onComplete()
             } else {
-                Log.w(TAG, "Error while signing up with Google")
+                Log.w(TAG, "Error while signing in with Google")
                 if (task.exception != null) {
                     Log.w(TAG, task.exception!!.message.toString())
                 }
@@ -230,6 +231,33 @@ class UserRepository {
                 callback.onComplete()
             } else {
                 Log.d(TAG, "Password couldn't be updated")
+                callback.onError(task.exception)
+            }
+        }
+    }
+
+    fun verifyUserExists(email: String, callback: OneParamCallback<Boolean>) {
+        db.collection(COLLECTION_NAME).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                var answer = false
+                Log.d(TAG, "Retrieved all users to verify if some user exists already")
+                task.result.forEach verifyUserEmails@{
+                    val user = it.toObject(User::class.java)
+                   if (user.email == email) {
+                       answer = true
+                       return@verifyUserEmails
+                   }
+                }
+                callback.onComplete(answer)
+
+            } else {
+                Log.w(
+                    TAG,
+                    "Error while retrieving all users to verify if some user exists already"
+                )
+                if (task.exception != null) {
+                    Log.w(TAG, task.exception!!.message.toString())
+                }
                 callback.onError(task.exception)
             }
         }

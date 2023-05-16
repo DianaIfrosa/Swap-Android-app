@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHistoryReceiveDonationBinding
@@ -79,7 +80,7 @@ class HistoryReceiveDonationFragment : Fragment(), BasicFragment {
     private fun updateUIElements() {
 
         binding.itemTitle.text = historyEventViewModel.item1.name
-        binding.photoCarousel.setImageList(ItemsRecyclerViewAdapter.getPhotos(historyEventViewModel.item1))
+        binding.photoCarousel.setImageList(ItemsRecyclerViewAdapter.getPhotos(historyEventViewModel.item1), ScaleTypes.CENTER_CROP)
 
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         binding.donationDate.text = dateFormatter.format(

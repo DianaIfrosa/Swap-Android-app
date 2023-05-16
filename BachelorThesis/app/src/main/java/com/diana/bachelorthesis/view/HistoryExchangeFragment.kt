@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHistoryExchangeBinding
@@ -82,9 +83,9 @@ class HistoryExchangeFragment : Fragment(), BasicFragment {
             historyEventViewModel.swapItems()
         }
         binding.item1Title.text = historyEventViewModel.item1.name
-        binding.photoCarousel1.setImageList(ItemsRecyclerViewAdapter.getPhotos(historyEventViewModel.item1))
+        binding.photoCarousel1.setImageList(ItemsRecyclerViewAdapter.getPhotos(historyEventViewModel.item1), ScaleTypes.CENTER_CROP)
         binding.item2Title.text = historyEventViewModel.item2!!.name
-        binding.photoCarousel2.setImageList(ItemsRecyclerViewAdapter.getPhotos(historyEventViewModel.item2!!))
+        binding.photoCarousel2.setImageList(ItemsRecyclerViewAdapter.getPhotos(historyEventViewModel.item2!!), ScaleTypes.CENTER_CROP)
 
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         binding.exchangeDate.text = dateFormatter.format(

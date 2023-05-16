@@ -41,6 +41,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginBottom="10dp"
                     android:isScrollContainer="true"
+                    app:iss_placeholder="@drawable/ic_hourglass"
                     app:iss_error_image="@drawable/unavailable" />
 
                 <LinearLayout

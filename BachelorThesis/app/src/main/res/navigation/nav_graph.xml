@@ -86,6 +86,16 @@
         android:name="com.diana.bachelorthesis.view.IntroAuthFragment"
         android:label="@string/authentication"
         tools:layout="@layout/fragment_intro_auth" />
+
+    <fragment
+        android:id="@+id/nav_photos"
+        android:name="com.diana.bachelorthesis.view.PhotosFragment"
+        tools:layout="@layout/fragment_photos" >
+        <argument
+            android:name="item"
+            app:argType="com.diana.bachelorthesis.model.Item" />
+    </fragment>
+
     <fragment
         android:id="@+id/nav_login"
         android:name="com.diana.bachelorthesis.view.LoginFragment"
@@ -119,6 +129,9 @@
         <action
             android:id="@+id/action_nav_item_to_nav_owner_profile"
             app:destination="@id/nav_owner_profile" />
+        <action
+            android:id="@+id/action_nav_item_to_nav_photos"
+            app:destination="@id/nav_photos" />
     </fragment>
 
     <fragment

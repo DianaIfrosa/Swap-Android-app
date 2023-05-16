@@ -44,7 +44,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "EditPreferencesDialogFragment is onCreate")
-        setStyle(STYLE_NORMAL,  R.style.FullScreenDialog)
+        setStyle(STYLE_NORMAL, R.style.FullScreenDialog)
     }
 
     override fun onCreateView(
@@ -82,20 +82,28 @@ class EditPreferencesDialogFragment : DialogFragment() {
             ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, owners)
         binding.autocompleteCities.setAdapter(adapterOwnersAutocomplete)
 
-        fragmentParent.getAllCities(object: ListParamCallback<String> {
+        fragmentParent.getAllCities(object : ListParamCallback<String> {
             override fun onComplete(values: ArrayList<String>) {
                 adapterCitiesAutocomplete =
-                    ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, values)
+                    ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_dropdown_item_1line,
+                        values
+                    )
                 binding.autocompleteCities.setAdapter(adapterCitiesAutocomplete)
             }
 
             override fun onError(e: Exception?) {}
         })
 
-        fragmentParent.getAllOwners(object: ListParamCallback<String> {
+        fragmentParent.getAllOwners(object : ListParamCallback<String> {
             override fun onComplete(values: ArrayList<String>) {
                 adapterOwnersAutocomplete =
-                    ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, values)
+                    ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_dropdown_item_1line,
+                        values
+                    )
                 binding.autocompleteOwners.setAdapter(adapterOwnersAutocomplete)
             }
 
@@ -161,9 +169,9 @@ class EditPreferencesDialogFragment : DialogFragment() {
 
     private fun closeKeyboard() {
         val view = requireActivity().currentFocus
-        if (view != null)
-        {
-            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        if (view != null) {
+            val imm =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
@@ -174,8 +182,8 @@ class EditPreferencesDialogFragment : DialogFragment() {
             ItemCategory.CLOTHESSHOES to binding.categories.categClothesshoes,
             ItemCategory.DEVICES to binding.categories.categDevices,
             ItemCategory.EDUCATION to binding.categories.categEducation,
-            ItemCategory.FOODDRINK to  binding.categories.categFooddrink ,
-            ItemCategory.FURNITURE to  binding.categories.categFurniture,
+            ItemCategory.FOODDRINK to binding.categories.categFooddrink,
+            ItemCategory.FURNITURE to binding.categories.categFurniture,
             ItemCategory.GAMES to binding.categories.categGames,
             ItemCategory.GARDEN to binding.categories.categGarden,
             ItemCategory.MEDICAL to binding.categories.categMedical
@@ -186,8 +194,8 @@ class EditPreferencesDialogFragment : DialogFragment() {
             ItemCategory.CLOTHESSHOES to binding.exchangePreferences.categClothesshoes,
             ItemCategory.DEVICES to binding.exchangePreferences.categDevices,
             ItemCategory.EDUCATION to binding.exchangePreferences.categEducation,
-            ItemCategory.FOODDRINK to  binding.exchangePreferences.categFooddrink ,
-            ItemCategory.FURNITURE to  binding.exchangePreferences.categFurniture,
+            ItemCategory.FOODDRINK to binding.exchangePreferences.categFooddrink,
+            ItemCategory.FURNITURE to binding.exchangePreferences.categFurniture,
             ItemCategory.GAMES to binding.exchangePreferences.categGames,
             ItemCategory.GARDEN to binding.exchangePreferences.categGarden,
             ItemCategory.MEDICAL to binding.exchangePreferences.categMedical
@@ -195,18 +203,17 @@ class EditPreferencesDialogFragment : DialogFragment() {
     }
 
 
-
     private fun updateUI() {
         // categories
         if (profileViewModel.preferredCategories.isNotEmpty()) {
-            profileViewModel.preferredCategories.forEach { category->
+            profileViewModel.preferredCategories.forEach { category ->
                 checkboxesCategories[category]?.isChecked = true
             }
         }
 
         // exchange preferences
         if (profileViewModel.preferredExchangePreferences.isNotEmpty()) {
-            profileViewModel.preferredExchangePreferences.forEach { category->
+            profileViewModel.preferredExchangePreferences.forEach { category ->
                 checkboxesExchangePreferences[category]?.isChecked = true
             }
         }
@@ -269,7 +276,13 @@ class EditPreferencesDialogFragment : DialogFragment() {
             profileViewModel.preferredOwners = adapterOwners.getItems()
             profileViewModel.preferredCities = adapterCities.getItems()
 
-            listener.savePreferencesForRecommendations(profileViewModel.preferredWords, profileViewModel.preferredOwners, profileViewModel.preferredCities, profileViewModel.preferredCategories, profileViewModel.preferredExchangePreferences)
+            listener.savePreferencesForRecommendations(
+                profileViewModel.preferredWords,
+                profileViewModel.preferredOwners,
+                profileViewModel.preferredCities,
+                profileViewModel.preferredCategories,
+                profileViewModel.preferredExchangePreferences
+            )
             dialog!!.dismiss()
             true
         }

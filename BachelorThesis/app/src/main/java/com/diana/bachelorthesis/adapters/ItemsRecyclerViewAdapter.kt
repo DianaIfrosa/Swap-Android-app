@@ -68,7 +68,7 @@ private val onItemClicked: (Item) -> Unit) :
         })
         holder.cardItemBinding.model = currentItem
         holder.cardItemBinding.itemClickListener = this
-        holder.cardItemBinding.photoCarousel.setImageList(getPhotos(currentItem))
+        holder.cardItemBinding.photoCarousel.setImageList(getPhotos(currentItem), ScaleTypes.CENTER_CROP)
     }
 
     override fun getItemCount(): Int {
@@ -87,12 +87,12 @@ private val onItemClicked: (Item) -> Unit) :
         fun getPhotos(item: Item): List<SlideModel> {
             val photosList = ArrayList<SlideModel>()
             for (photo in item.photos) {
-                photosList.add(SlideModel(photo, scaleType = ScaleTypes.CENTER_CROP))
+                photosList.add(SlideModel(photo))
             }
 
             if (photosList.isEmpty()) {
                 val url = PhotoRepository.getInstance().unavailablePhotoUrl
-                photosList.add(SlideModel(url, scaleType = ScaleTypes.CENTER_CROP))
+                photosList.add(SlideModel(url))
             }
 
             return photosList

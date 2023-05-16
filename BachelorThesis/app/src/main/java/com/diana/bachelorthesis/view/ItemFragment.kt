@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.denzcoskun.imageslider.interfaces.ItemClickListener
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentItemBinding
@@ -95,7 +97,7 @@ class ItemFragment : Fragment(), BasicFragment {
     }
 
     override fun initListeners() {
-        binding.btnFavorite.setOnClickListener { view ->
+        binding.btnFavorite.setOnClickListener {
             val drawable = binding.btnFavorite.drawable
             if (drawable.constantState!! == resources.getDrawable(R.drawable.ic_heart_filled).constantState) {
                 // remove from favorites
@@ -108,7 +110,7 @@ class ItemFragment : Fragment(), BasicFragment {
             }
         }
 
-        binding.deleteItem.setOnClickListener { view ->
+        binding.deleteItem.setOnClickListener {
             val alertDialog = AlertDialog.Builder(requireActivity())
                 .setTitle(getString(R.string.delete_item_title_dialog))
                 .setMessage(getString(R.string.delete_item_message_dialog))
@@ -143,6 +145,14 @@ class ItemFragment : Fragment(), BasicFragment {
                 requireView().findNavController().navigate(action)
             }
         }
+
+        binding.photoCarousel.setItemClickListener(object : ItemClickListener {
+            override fun onItemSelected(position: Int) {
+                Log.d(TAG, "Clicked on photos!")
+                val action = ItemFragmentDirections.actionNavItemToNavPhotos(itemPageViewModel.currentItem)
+                requireView().findNavController().navigate(action)
+            }
+        })
     }
 
     private fun updateUIElements() {
@@ -183,7 +193,7 @@ class ItemFragment : Fragment(), BasicFragment {
         binding.item = itemPageViewModel.currentItem
 
         // photos
-        binding.photoCarousel.setImageList(ItemsRecyclerViewAdapter.getPhotos(itemPageViewModel.currentItem))
+        binding.photoCarousel.setImageList(ItemsRecyclerViewAdapter.getPhotos(itemPageViewModel.currentItem), ScaleTypes.CENTER_CROP)
 
         // location
         binding.itemAddress.text = itemPageViewModel.currentItem.address

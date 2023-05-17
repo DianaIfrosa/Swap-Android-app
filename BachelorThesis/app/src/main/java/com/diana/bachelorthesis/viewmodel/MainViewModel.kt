@@ -27,6 +27,10 @@ class MainViewModel : ViewModel() {
         currentUser!!.notifications.notificationsOption = option
     }
 
+    fun updateChatList(newChatList: ArrayList<Map<String, String>>) {
+        currentUser!!.chatIds = newChatList
+    }
+
     fun itemIsFavorite(item: Item): Boolean {
         return if (item is ItemDonation) {
             (currentUser!!.favoriteDonations.find {

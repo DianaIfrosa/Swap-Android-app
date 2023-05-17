@@ -1,16 +1,15 @@
 package com.diana.bachelorthesis.repository
 
 import android.util.Log
-import com.diana.bachelorthesis.model.ItemCategory
-import com.diana.bachelorthesis.model.ItemExchange
+import com.diana.bachelorthesis.model.*
 import com.diana.bachelorthesis.utils.OneParamCallback
-import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -23,8 +22,8 @@ class UserRepository {
     val auth = Firebase.auth
 
     var googleClient: GoogleSignInClient? = null
-
     private val COLLECTION_NAME = "Users"
+    var currentUserListener: ListenerRegistration? = null
 
     companion object {
         @Volatile
@@ -261,6 +260,43 @@ class UserRepository {
                 callback.onError(task.exception)
             }
         }
+    }
+
+    fun getUsersByEmail(emails: List<String>, currentPosition: Int, result: ArrayList<User?>, callback:ListParamCallback<User?>){
+        db.collection(COLLECTION_NAME).document(emails[currentPosition]).get().addOnCompleteListener {task->
+            if (task.isSuccessful) {
+                val user = task.result.toObject(User::class.java)
+                result.add(user)
+                if (currentPosition == emails.size - 1) {
+                    callback.onComplete(result)
+                } else {
+                    getUsersByEmail(emails, currentPosition + 1,  result, callback)
+                }
+            } else {
+                Log.w(TAG, "Error retrieving users recursively")
+                callback.onError(task.exception)
+            }
+        }
+    }
+
+    fun listenToCurrentUserChanges(email:String, callback: OneParamCallback<User>) {
+        currentUserListener = db.collection(COLLECTION_NAME).document(email).addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                Log.w(TAG, "Listen failed for current user", error)
+                callback.onError(error)
+                return@addSnapshotListener
+            }
+            if (snapshot != null) {
+                val user = snapshot.toObject(User::class.java)
+                callback.onComplete(user)
+            } else {
+                Log.w(TAG, "No such snapshot")
+            }
+        }
+    }
+
+    fun detachCurrentUserListener() {
+        currentUserListener?.remove()
     }
 
 }

@@ -3,13 +3,11 @@ package com.diana.bachelorthesis.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.CardChatBinding
 import com.diana.bachelorthesis.model.Chat
-import com.diana.bachelorthesis.model.Message
 import com.diana.bachelorthesis.utils.CustomClickListener
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
@@ -45,9 +43,9 @@ class ChatsRecyclerViewAdapter(private val listChats: ArrayList<Chat>, private v
         holder.cardChatBinding.chatClickListener = this
         holder.cardChatBinding.chat = currentChat
 
-        Picasso.get().load(currentChat.user.profilePhoto).into(holder.cardChatBinding.userPicture)
+        Picasso.get().load(currentChat.otherUser!!.profilePhoto).into(holder.cardChatBinding.userPicture)
 
-        val lastMessage = getLastMessage(currentChat.listMessages)
+        val lastMessage = currentChat.messagesSorted[0]
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         holder.cardChatBinding.chatLastDate.text  = dateFormatter.format(
             lastMessage.date.toDate()
@@ -60,10 +58,6 @@ class ChatsRecyclerViewAdapter(private val listChats: ArrayList<Chat>, private v
         } else if (lastMessage.photoUri != null) {
             holder.cardChatBinding.chatLastMessage.text = context.getString(R.string.sent_photo)
         }
-    }
-
-    private fun getLastMessage(listMessages: List<Message>): Message {
-        return listMessages.maxBy { it.date.toDate() }
     }
 
     override fun getItemCount(): Int {

@@ -22,7 +22,9 @@ import com.diana.bachelorthesis.databinding.ActivityMainBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.User
+import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.utils.SharedPreferencesUtils
+import com.diana.bachelorthesis.viewmodel.ChatViewModel
 import com.diana.bachelorthesis.viewmodel.ItemsViewModel
 import com.diana.bachelorthesis.viewmodel.MainViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
@@ -46,9 +48,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var userViewModel: UserViewModel
     lateinit var mainViewModel: MainViewModel
     lateinit var itemsViewModel: ItemsViewModel
+    lateinit var chatViewModel: ChatViewModel
 
     lateinit var sharedPref: SharedPreferences
-    var returnedHomeFromItemPage: Boolean = false //TODO delete if no longer used
+    var returnedHomeFromItemPage: Boolean = false // TODO delete if no longer used
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
         getViewModels()
+//        userViewModel.signOut() // TODO delete
 
         drawerLayout = binding.drawerLayout
         navView = binding.navView
@@ -101,7 +105,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
         sharedPref = getPreferences(Context.MODE_PRIVATE)
-        restoreCurrentUserData()
+
+        if (userViewModel.verifyUserLoggedIn()) {
+            restoreCurrentUserData()
+            chatViewModel.currentUser = getCurrentUser()!!
+            chatViewModel.listenToUserChatChanges(object: OneParamCallback<User> {
+                override fun onComplete(value: User?) {
+                    updateCurrentUserChatList(value!!.chatIds)
+                }
+
+                override fun onError(e: java.lang.Exception?) {}
+
+            })
+            chatViewModel.getUserChats()
+        }
         updateAuthUIElements()
         setDefaultSharedPreferencesHomeOptions()
     }
@@ -124,6 +141,7 @@ class MainActivity : AppCompatActivity() {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         itemsViewModel = ViewModelProvider(this)[ItemsViewModel::class.java]
+        chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
     }
 
     private fun updateMenuItemsVisibility() {
@@ -242,6 +260,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addCurrentUserToSharedPreferences(user: User) {
+        // just logged in
         mainViewModel.currentUser = user
         with(sharedPref.edit()) {
             val gson = Gson()
@@ -249,6 +268,19 @@ class MainActivity : AppCompatActivity() {
             putString(SharedPreferencesUtils.sharedPrefCurrentUser, json)
             commit() // synchronously
         }
+
+        chatViewModel.currentUser = user
+        chatViewModel.listenToUserChatChanges(object: OneParamCallback<User> {
+            override fun onComplete(value: User?) {
+                updateCurrentUserChatList(value!!.chatIds)
+            }
+
+            override fun onError(e: java.lang.Exception?) {}
+
+        })
+        chatViewModel.getUserChats()
+
+
     }
 
     fun addFavoriteItem(item: Item) {
@@ -295,6 +327,11 @@ class MainActivity : AppCompatActivity() {
         updateCurrentUserSharedPreferences()
     }
 
+    fun updateCurrentUserChatList(newChatList: ArrayList<Map<String, String>>) {
+        mainViewModel.updateChatList(newChatList)
+        updateCurrentUserSharedPreferences()
+    }
+
     fun getCurrentUser() = mainViewModel.currentUser
 
     private fun updateCurrentUserSharedPreferences() {
@@ -323,6 +360,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "MainActivity is onDestroy")
+        chatViewModel.detachListeners()
         _binding = null
     }
 }

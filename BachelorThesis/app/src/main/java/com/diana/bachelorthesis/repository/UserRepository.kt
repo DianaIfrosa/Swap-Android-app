@@ -9,6 +9,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -292,6 +293,23 @@ class UserRepository {
             } else {
                 Log.w(TAG, "No such snapshot")
             }
+        }
+    }
+
+    fun addChatIdToUserList(chatId: String, userEmail: String) {
+        val chatNew = hashMapOf(
+            "chatId" to chatId,
+            "seen" to "false"
+        )
+        db.collection(COLLECTION_NAME).document(userEmail).update(
+          "chatIds", FieldValue.arrayUnion(chatNew)
+        ).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Successfully added new chat id $chatId to user $userEmail")
+            } else {
+                Log.w(TAG, "Error occurred while adding new chat id $chatId to user $userEmail")
+            }
+
         }
     }
 

@@ -136,6 +136,9 @@
         <action
             android:id="@+id/action_nav_item_to_nav_photos"
             app:destination="@id/nav_photos" />
+        <action
+            android:id="@+id/action_nav_item_to_nav_chat_page_fragment"
+            app:destination="@id/nav_chat_page_fragment" />
     </fragment>
 
     <fragment

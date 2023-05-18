@@ -51,7 +51,7 @@ class ChatViewModel : ViewModel() {
                     // here the chats are retrieved at every change in db
                     Log.d(TAG, "Retrieved all chats!")
 
-                    if (chats.value == null || (chats.value != null && chats != values)) {
+                    if (chats.value == null || (chats.value != null && chatsDiffer(chats.value!!, values))) {
                         // first time data fetch or modification in db
                         val chatsRetrieved = values
                         val otherUsersEmails = getOtherUsersEmails(chatsRetrieved)
@@ -70,7 +70,6 @@ class ChatViewModel : ViewModel() {
                                                     chat.id,
                                                     values[index],
                                                     chat.messages,
-                                                    arrayListOf(),
                                                     chat.seen
                                                 )
                                             )
@@ -100,6 +99,19 @@ class ChatViewModel : ViewModel() {
         }
     }
 
+    private fun chatsDiffer(list1: ArrayList<Chat>, list2: ArrayList<Chat>): Boolean {
+        val sortedList1 = sortChatsByDate(list1)
+        val sortedList2 = sortChatsByDate(list2)
+        if (sortedList1.size != sortedList2.size)
+            return true
+
+        sortedList1.forEachIndexed { index, chat ->
+            if (chat.messages.size != sortedList2[index].messages.size)
+                return true
+        }
+        return false
+    }
+
     private fun getOtherUsersEmails(userChatsSorted: ArrayList<Chat>): List<String> {
         val result = arrayListOf<String>()
         userChatsSorted.forEach { chat ->
@@ -117,20 +129,21 @@ class ChatViewModel : ViewModel() {
         // sort messages from each chat from new to old
         val result = userChatsSorted
         result.forEach { chat ->
-            val messagesSorted = chat.messages.values.sortedByDescending { message ->
+            val messagesSorted = chat.messages.sortedByDescending { message ->
                 message.date
             }
 
-            chat.messagesSorted = ArrayList(messagesSorted)
+            chat.messages = ArrayList(messagesSorted)
         }
 
         // sort chats based on last message (newest first)
         return ArrayList(result.sortedByDescending { chat ->
-            chat.messagesSorted[0].date
+            chat.messages[0].date
         })
     }
 
     fun detachListeners() {
         chatRepository.detachChatListeners()
+        userRepository.detachCurrentUserListener()
     }
 }

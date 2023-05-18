@@ -7,9 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.findNavController
-import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentChatBinding
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.viewmodel.ChatViewModel

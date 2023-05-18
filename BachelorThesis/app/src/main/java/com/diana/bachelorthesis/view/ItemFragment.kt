@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.denzcoskun.imageslider.constants.ScaleTypes
@@ -14,11 +15,13 @@ import com.denzcoskun.imageslider.interfaces.ItemClickListener
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentItemBinding
+import com.diana.bachelorthesis.model.Chat
 import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
+import com.diana.bachelorthesis.viewmodel.ChatViewModel
 import com.diana.bachelorthesis.viewmodel.ItemPageViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.squareup.picasso.Picasso
@@ -59,20 +62,22 @@ class ItemFragment : Fragment(), BasicFragment {
         itemPageViewModel.currentItem = ItemFragmentArgs.fromBundle(requireArguments()).itemClicked
         updateUIElements()
 
-        userViewModel.getUserData(itemPageViewModel.currentItem.owner, object : OneParamCallback<User> {
-            override fun onComplete(value: User?) {
-                if (value != null)
-                    showItemOwnerDetails(value)
-                itemPageViewModel.owner = value
-            }
+        userViewModel.getUserData(
+            itemPageViewModel.currentItem.owner,
+            object : OneParamCallback<User> {
+                override fun onComplete(value: User?) {
+                    if (value != null)
+                        showItemOwnerDetails(value)
+                    itemPageViewModel.owner = value
+                }
 
-            override fun onError(e: Exception?) {
-                Log.w(
-                    TAG,
-                    "Item's owner with email ${itemPageViewModel.currentItem.owner} could not been retrieved!"
-                )
-            }
-        })
+                override fun onError(e: Exception?) {
+                    Log.w(
+                        TAG,
+                        "Item's owner with email ${itemPageViewModel.currentItem.owner} could not been retrieved!"
+                    )
+                }
+            })
         showItemDetails()
     }
 
@@ -94,6 +99,18 @@ class ItemFragment : Fragment(), BasicFragment {
     private fun getViewModels() {
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         itemPageViewModel = ViewModelProvider(this)[ItemPageViewModel::class.java]
+    }
+
+    private fun chatExists(otherUserEmail: String): Boolean {
+        val currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
+
+        currentUser.chatIds.forEach {
+            if (it["chatId"] == (currentUser.email + " " + otherUserEmail) ||
+                it["chatId"] == (otherUserEmail + " " + currentUser.email)
+            )
+                return true
+        }
+        return false
     }
 
     override fun initListeners() {
@@ -141,7 +158,8 @@ class ItemFragment : Fragment(), BasicFragment {
 
         binding.ownerPicture.setOnClickListener {
             if (itemPageViewModel.owner != null) {
-                val action = ItemFragmentDirections.actionNavItemToNavOwnerProfile(itemPageViewModel.owner!!)
+                val action =
+                    ItemFragmentDirections.actionNavItemToNavOwnerProfile(itemPageViewModel.owner!!)
                 requireView().findNavController().navigate(action)
             }
         }
@@ -149,10 +167,51 @@ class ItemFragment : Fragment(), BasicFragment {
         binding.photoCarousel.setItemClickListener(object : ItemClickListener {
             override fun onItemSelected(position: Int) {
                 Log.d(TAG, "Clicked on photos!")
-                val action = ItemFragmentDirections.actionNavItemToNavPhotos(itemPageViewModel.currentItem)
+                val action =
+                    ItemFragmentDirections.actionNavItemToNavPhotos(itemPageViewModel.currentItem)
                 requireView().findNavController().navigate(action)
             }
         })
+
+        binding.btnMessage.setOnClickListener {
+            val chat: Chat?
+            val currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
+            if (chatExists(itemPageViewModel.currentItem.owner)) {
+                chat =
+                    findChatInExistingList(itemPageViewModel.currentItem.owner, currentUser.email)
+                if (chat == null) {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.something_failed),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(chat)
+                    requireView().findNavController().navigate(action)
+
+                }
+            } else {
+                chat = Chat(
+                    id = currentUser.email + " " + itemPageViewModel.owner!!.email,
+                    otherUser = itemPageViewModel.owner
+                )
+                val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(chat)
+                requireView().findNavController().navigate(action)
+            }
+        }
+    }
+
+    private fun findChatInExistingList(email1: String, email2: String): Chat? {
+        val chatViewModel: ChatViewModel =
+            ViewModelProvider(requireActivity())[ChatViewModel::class.java]
+        if (chatViewModel.chats.value == null)
+            return null
+        chatViewModel.chats.value!!.forEach {
+            if (it.id == "$email1 $email2" || it.id == "$email2 $email1") {
+                return it
+            }
+        }
+        return null
     }
 
     private fun updateUIElements() {
@@ -193,7 +252,10 @@ class ItemFragment : Fragment(), BasicFragment {
         binding.item = itemPageViewModel.currentItem
 
         // photos
-        binding.photoCarousel.setImageList(ItemsRecyclerViewAdapter.getPhotos(itemPageViewModel.currentItem), ScaleTypes.CENTER_CROP)
+        binding.photoCarousel.setImageList(
+            ItemsRecyclerViewAdapter.getPhotos(itemPageViewModel.currentItem),
+            ScaleTypes.CENTER_CROP
+        )
 
         // location
         binding.itemAddress.text = itemPageViewModel.currentItem.address
@@ -228,12 +290,22 @@ class ItemFragment : Fragment(), BasicFragment {
                 binding.itemExchangePreferences.text = value
             }
             binding.root.setBackgroundColor(resources.getColor(R.color.purple_pale))
-            binding.itemPurpose.setCompoundDrawablesWithIntrinsicBounds(resources.getDrawable(R.drawable.ic_exchange), null, null, null)
+            binding.itemPurpose.setCompoundDrawablesWithIntrinsicBounds(
+                resources.getDrawable(R.drawable.ic_exchange),
+                null,
+                null,
+                null
+            )
             binding.btnAction.text = resources.getString(R.string.make_exchange)
         } else {
             binding.itemExchangePreferencesSection.visibility = View.GONE
             binding.root.setBackgroundColor(resources.getColor(R.color.yellow_pale))
-            binding.itemPurpose.setCompoundDrawablesWithIntrinsicBounds(resources.getDrawable(R.drawable.ic_donate), null, null, null)
+            binding.itemPurpose.setCompoundDrawablesWithIntrinsicBounds(
+                resources.getDrawable(R.drawable.ic_donate),
+                null,
+                null,
+                null
+            )
             binding.btnAction.text = resources.getString(R.string.get_donation)
         }
     }

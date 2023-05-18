@@ -45,7 +45,7 @@ class ChatsRecyclerViewAdapter(private val listChats: ArrayList<Chat>, private v
 
         Picasso.get().load(currentChat.otherUser!!.profilePhoto).into(holder.cardChatBinding.userPicture)
 
-        val lastMessage = currentChat.messagesSorted[0]
+        val lastMessage = currentChat.messages[0]
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         holder.cardChatBinding.chatLastDate.text  = dateFormatter.format(
             lastMessage.date.toDate()

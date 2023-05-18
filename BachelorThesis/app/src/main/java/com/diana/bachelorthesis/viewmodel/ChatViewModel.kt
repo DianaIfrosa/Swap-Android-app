@@ -127,8 +127,7 @@ class ChatViewModel : ViewModel() {
 
     private fun sortChatsByDate(userChatsSorted: ArrayList<Chat>): ArrayList<Chat> {
         // sort messages from each chat from new to old
-        val result = userChatsSorted
-        result.forEach { chat ->
+        userChatsSorted.forEach { chat ->
             val messagesSorted = chat.messages.sortedByDescending { message ->
                 message.date
             }
@@ -137,7 +136,7 @@ class ChatViewModel : ViewModel() {
         }
 
         // sort chats based on last message (newest first)
-        return ArrayList(result.sortedByDescending { chat ->
+        return ArrayList(userChatsSorted.sortedByDescending { chat ->
             chat.messages[0].date
         })
     }

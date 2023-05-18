@@ -213,4 +213,16 @@
             app:argType="com.diana.bachelorthesis.model.Chat" />
     </fragment>
 
+    <dialog
+        android:id="@+id/nav_proposal_item_choice_dialog_fragment"
+        android:name="com.diana.bachelorthesis.view.ProposalItemChoiceDialogFragment"
+        android:label="fragment_proposal_item_choice_dialog"
+        tools:layout="@layout/fragment_proposal_item_choice_dialog" >
+        <action
+            android:id="@+id/action_proposalItemChoiceDialogFragment_to_nav_chat_page_fragment"
+            app:destination="@id/nav_chat_page_fragment"
+            app:popUpTo="@id/nav_proposal_item_choice_dialog_fragment"
+            app:popUpToInclusive="true" />
+    </dialog>
+
 </navigation>

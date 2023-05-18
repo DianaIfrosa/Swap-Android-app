@@ -188,5 +188,8 @@
     <string name="none">None</string>
     <string name="sent_proposal">sent you a proposal</string>
     <string name="sent_photo">sent you a photo</string>
+    <string name="choose_item" translatable="false">Choose an item</string>
+    <string name="must_choose_item" translatable="false">You must choose an item to continue!</string>
+    <string name="no_items_for_proposal">No items to exchange with.</string>
 
 </resources>

@@ -199,6 +199,16 @@ class ItemFragment : Fragment(), BasicFragment {
                 requireView().findNavController().navigate(action)
             }
         }
+
+        binding.btnAction.setOnClickListener {
+            if (itemPageViewModel.currentItem is ItemExchange) {
+                val proposalItemChoiceDialogFragment = ProposalItemChoiceDialogFragment()
+                proposalItemChoiceDialogFragment.isCancelable = true
+                proposalItemChoiceDialogFragment.show(childFragmentManager, "ProposalItemChoiceDialogFragment")
+            } else {
+                //todo
+            }
+        }
     }
 
     private fun findChatInExistingList(email1: String, email2: String): Chat? {
@@ -235,10 +245,6 @@ class ItemFragment : Fragment(), BasicFragment {
         } else {
             binding.deleteItem.visibility = View.GONE
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 
     private fun showItemOwnerDetails(owner: User) {

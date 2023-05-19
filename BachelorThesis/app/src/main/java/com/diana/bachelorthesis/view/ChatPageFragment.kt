@@ -5,16 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.diana.bachelorthesis.adapters.MessagesRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentChatPageBinding
 import com.diana.bachelorthesis.model.Chat
 import com.diana.bachelorthesis.model.Item
-import com.diana.bachelorthesis.model.Message
 import com.diana.bachelorthesis.model.Proposal
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.viewmodel.ChatPageViewModel
@@ -98,15 +97,11 @@ class ChatPageFragment : Fragment(), BasicFragment {
     private fun updateRecyclerView(chat: Chat) {
         adapter = MessagesRecyclerViewAdapter(chatPageViewModel.currentUser, chat.messages, requireContext(), ::onMessageClicked)
         binding.messagesAdapter = adapter
-//        {
-//            Toast.makeText(context, "Clicked on message!", Toast.LENGTH_SHORT).show()
-//        }
-//        binding.messagesAdapter = adapter
-////        binding.recyclerView.smoothScrollToPosition(binding.messagesAdapter.itemCount - 1)
     }
 
-    fun onMessageClicked(item1: Item, item2: Item?, proposal: Proposal) {
-
+    private fun onMessageClicked(item1: Item, item2: Item?, proposal: Proposal) {
+        val action = ChatPageFragmentDirections.actionNavChatPageFragmentToProposalPageFragment(item1, item2, proposal)
+        requireView().findNavController().navigate(action)
     }
 
     override fun initListeners() {

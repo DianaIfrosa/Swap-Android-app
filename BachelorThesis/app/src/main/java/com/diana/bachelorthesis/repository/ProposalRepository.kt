@@ -27,7 +27,7 @@ class ProposalRepository {
         db.collection(COLLECTION_NAME).document(id).get().addOnCompleteListener { task->
             if (task.isSuccessful) {
                 val proposal = task.result.toObject(Proposal::class.java)
-                Log.w(TAG, "Successfully retrieved proposal with id $id")
+                Log.d(TAG, "Successfully retrieved proposal with id $id")
                 callback.onComplete(proposal)
             } else {
                 Log.w(TAG, "Error while retrieving proposal with id $id")
@@ -61,7 +61,24 @@ class ProposalRepository {
                 }
                 callback.onComplete(result)
             } else {
-                Log.d(TAG, "Error occurred while retrieving all proposals.")
+                Log.w(TAG, "Error occurred while retrieving all proposals.")
+                callback.onError(task.exception)
+            }
+        }
+    }
+
+    fun confirmProposal(proposalId: String, callback: NoParamCallback) {
+        db.collection(COLLECTION_NAME).document(proposalId).update(
+            mapOf(
+                "confirmation1" to true,
+                "confirmation2" to true,
+            )
+        ).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Successfully confirmed proposal $proposalId")
+                callback.onComplete()
+            } else {
+                Log.w(TAG, "Error occurred while confirming proposal $proposalId")
                 callback.onError(task.exception)
             }
         }

@@ -3,6 +3,7 @@ package com.diana.bachelorthesis.repository
 import android.util.Log
 import com.diana.bachelorthesis.model.History
 import com.diana.bachelorthesis.utils.ListParamCallback
+import com.diana.bachelorthesis.utils.NoParamCallback
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import javax.inject.Singleton
@@ -42,6 +43,18 @@ class HistoryRepository {
                 if (task.exception != null) {
                     Log.w(TAG, task.exception!!.message.toString())
                 }
+            }
+        }
+    }
+
+    fun addHistory(history: History, callback: NoParamCallback) {
+        db.collection(COLLECTION_NAME).document(history.eventId).set(history).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.w(TAG, "Successfully added history with id ${history.eventId}.")
+                callback.onComplete()
+            } else {
+                Log.w(TAG, "Error occurred while adding history with id ${history.eventId}.")
+                callback.onError(task.exception)
             }
         }
     }

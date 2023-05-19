@@ -193,5 +193,16 @@
     <string name="no_items_for_proposal">No items to exchange with.</string>
     <string name="you_sent_a_proposal">you sent a proposal</string>
     <string name="you_sent_photo">you sent a photo</string>
+    <string name="proposal">"Proposal"</string>
+    <string name="on">on</string>
+
+    <string name="accept_proposal">Accept proposal</string>
+    <string name="proposal_accepted">Proposal accepted</string>
+    <string name="wants_to_exchange">wants to exchange</string>
+    <string name="wants_to_receive_donation">wants to receive</string>
+    <string name="go_to_item_page">Go to item page</string>
+    <string name="alert_accept_proposal">You should accept a proposal in the app <u>only</u> after you have done the exchange/donation in real life. Please note that if you press OK, the exchange/donation will be considered done in the app and the item(s) will no longer be visible to other users.</string>
+    <string name="items_not_available">One of the items is no longer available!</string>
+
 
 </resources>

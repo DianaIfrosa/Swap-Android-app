@@ -325,6 +325,30 @@ class ItemRepository {
         }
     }
 
+    fun markExchangeItemAsGiven(historyId: String, itemId: String, callback: NoParamCallback) {
+        db.collection(EXCHANGE_COLLECTION).document(itemId).update("exchangeInfo", historyId).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.w(TAG, "Successfully marked item $itemId as given.")
+                callback.onComplete()
+            } else {
+                Log.w(TAG, "Error occurred while marking item $itemId as given.")
+                callback.onError(task.exception)
+            }
+        }
+    }
+
+    fun markDonationItemAsGiven(historyId: String, itemId: String, callback: NoParamCallback) {
+        db.collection(DONATION_COLLECTION).document(itemId).update("donationInfo", historyId).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.w(TAG, "Successfully marked item $itemId as given.")
+                callback.onComplete()
+            } else {
+                Log.w(TAG, "Error occurred while marking item $itemId as given.")
+                callback.onError(task.exception)
+            }
+        }
+    }
+
     fun detachHomeListeners() {
         itemsDonationsListenerRegistration?.remove()
         itemsExchangeListenerRegistration?.remove()

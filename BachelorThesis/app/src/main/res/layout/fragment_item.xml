@@ -79,8 +79,7 @@
                         android:id="@+id/btn_favorite"
                         android:layout_width="45dp"
                         android:layout_height="48dp"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_heart_animated" />
+                        android:background="@android:color/transparent" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -182,7 +181,7 @@
                             android:layout_marginStart="7dp"
                             android:layout_marginEnd="7dp"
                             android:gravity="start"
-                            android:text="on"
+                            android:text="@string/on"
                             android:textSize="14sp" />
 
                         <TextView
@@ -218,7 +217,7 @@
                         android:layout_gravity="start"
                         android:layout_marginEnd="10dp"
                         android:gravity="start"
-                        android:text="Location"
+                        android:text="@string/location"
                         android:textSize="13sp" />
 
                     <TextView
@@ -227,13 +226,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
-                        android:drawableStart="@drawable/ic_map_point"
                         android:gravity="center"
                         android:paddingStart="10dp"
                         android:text="-"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic"
+                        app:drawableStartCompat="@drawable/ic_map_point" />
 
                     <LinearLayout
                         android:id="@+id/item_exchange_preferences_section"
@@ -248,7 +247,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:text="Exchange preferences"
+                            android:text="@string/exchange_preferences"
                             android:textSize="13sp" />
 
                         <TextView
@@ -266,7 +265,6 @@
                         android:id="@+id/item_manufacture_section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/layout_location"
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal"
                         android:paddingEnd="20dp"
@@ -276,10 +274,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:drawableStart="@drawable/ic_calendar"
                             android:gravity="center"
-                            android:text=" Manufacture year:"
-                            android:textSize="13sp" />
+                            android:text="@string/manufacture_year"
+                            android:textSize="13sp"
+                            app:drawableStartCompat="@drawable/ic_calendar" />
 
                         <TextView
                             android:id="@+id/item_manufacture_year"
@@ -333,6 +331,8 @@
             android:orientation="horizontal"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

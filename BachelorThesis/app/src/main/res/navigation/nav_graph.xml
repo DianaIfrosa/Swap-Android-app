@@ -218,6 +218,9 @@
             android:name="proposal"
             app:argType="com.diana.bachelorthesis.model.Proposal"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_nav_chat_page_fragment_to_proposalPageFragment"
+            app:destination="@id/proposalPageFragment" />
     </fragment>
 
     <dialog
@@ -237,5 +240,24 @@
             android:name="itemUser"
             app:argType="com.diana.bachelorthesis.model.User" />
     </dialog>
+    <fragment
+        android:id="@+id/proposalPageFragment"
+        android:name="com.diana.bachelorthesis.view.ProposalPageFragment"
+        android:label="fragment_proposal_page"
+        tools:layout="@layout/fragment_proposal_page" >
+        <argument
+            android:name="item1"
+            app:argType="com.diana.bachelorthesis.model.Item" />
+        <argument
+            android:name="item2"
+            app:argType="com.diana.bachelorthesis.model.Item"
+            app:nullable="true" />
+        <argument
+            android:name="proposal"
+            app:argType="com.diana.bachelorthesis.model.Proposal" />
+        <action
+            android:id="@+id/action_proposalPageFragment_to_nav_photos"
+            app:destination="@id/nav_photos" />
+    </fragment>
 
 </navigation>

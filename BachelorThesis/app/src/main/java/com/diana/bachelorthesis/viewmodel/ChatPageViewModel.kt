@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.model.Chat
 import com.diana.bachelorthesis.model.Message
+import com.diana.bachelorthesis.model.Proposal
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.repository.ChatRepository
 import com.diana.bachelorthesis.repository.UserRepository
@@ -23,6 +24,8 @@ class ChatPageViewModel : ViewModel() {
 
     private val _currentChat = MutableLiveData<Chat>()
     val currentChat: LiveData<Chat> = _currentChat
+
+    var proposal: Proposal? = null
 
     fun listenToChatChanges() {
         chatRepository.listenToChatChanges(currentChat.value!!.id, object : OneParamCallback<Chat> {
@@ -47,6 +50,12 @@ class ChatPageViewModel : ViewModel() {
         })
     }
 
+    fun sendProposalIfExisting() {
+        if (proposal != null) {
+            addMessageToChat(proposalId = proposal!!.proposalId)
+        }
+    }
+
     fun setCurrentChat(chat: Chat) {
         chat.messages = sortMessages(chat)
         _currentChat.value = chat
@@ -63,9 +72,9 @@ class ChatPageViewModel : ViewModel() {
         chatRepository.detachCurrentChatListeners()
     }
 
-    fun addMessageToChat(textMessage: String) {
+    fun addMessageToChat(textMessage: String? = null, proposalId: String? = null) {
         val newChat: Chat = currentChat.value!!
-        val newMessage = Message(date = Timestamp.now(), senderEmail = currentUser.email, text = textMessage)
+        val newMessage = Message(date = Timestamp.now(), senderEmail = currentUser.email, text = textMessage, proposalId = proposalId)
         newChat.messages.add(newMessage)
 
         _currentChat.value = newChat
@@ -85,7 +94,6 @@ class ChatPageViewModel : ViewModel() {
             chatRepository.addNewMessageToChat(currentChat.value!!, object : NoParamCallback {
                 override fun onComplete() {}
                 override fun onError(e: Exception?) {}
-
             })
         }
     }

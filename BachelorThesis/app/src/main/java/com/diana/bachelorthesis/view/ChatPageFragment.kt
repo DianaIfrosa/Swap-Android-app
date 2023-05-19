@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.diana.bachelorthesis.adapters.MessagesRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentChatPageBinding
 import com.diana.bachelorthesis.model.Chat
+import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.Message
+import com.diana.bachelorthesis.model.Proposal
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.viewmodel.ChatPageViewModel
 
@@ -80,12 +82,18 @@ class ChatPageFragment : Fragment(), BasicFragment {
 
         chatPageViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
         chatPageViewModel.setCurrentChat(ChatPageFragmentArgs.fromBundle(requireArguments()).chat)
+
+        chatPageViewModel.proposal = ChatPageFragmentArgs.fromBundle(requireArguments()).proposal
         initAdapterAndLayoutManager()
 
         setSubPageAppbar(requireActivity(), chatPageViewModel.currentChat.value!!.otherUser!!.name)
         chatPageViewModel.listenToChatChanges()
         initListeners()
+
+        chatPageViewModel.sendProposalIfExisting()
     }
+
+
 
     private fun updateRecyclerView(chat: Chat) {
         adapter = MessagesRecyclerViewAdapter(chatPageViewModel.currentUser, chat.messages, requireContext(), ::onMessageClicked)
@@ -97,7 +105,7 @@ class ChatPageFragment : Fragment(), BasicFragment {
 ////        binding.recyclerView.smoothScrollToPosition(binding.messagesAdapter.itemCount - 1)
     }
 
-    fun onMessageClicked(message: Message) {
+    fun onMessageClicked(item1: Item, item2: Item?, proposal: Proposal) {
 
     }
 
@@ -108,7 +116,7 @@ class ChatPageFragment : Fragment(), BasicFragment {
 
         binding.btnSendText.setOnClickListener {
             if (binding.textBox.text.toString().isNotEmpty()) {
-                chatPageViewModel.addMessageToChat(binding.textBox.text.toString())
+                chatPageViewModel.addMessageToChat(textMessage =  binding.textBox.text.toString())
                 binding.textBox.setText("")
             }
         }

@@ -72,7 +72,6 @@ class RecommendationsFragment : Fragment(), BasicFragment {
     private fun getViewModels() {
         recommendationsViewModel = ViewModelProvider(requireActivity())[RecommendationsViewModel::class.java]
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-
         recommendationsViewModel.currentUser = mainViewModel.currentUser!!
     }
 

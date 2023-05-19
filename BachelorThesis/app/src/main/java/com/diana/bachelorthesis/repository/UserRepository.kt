@@ -15,7 +15,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import java.lang.Exception
+import javax.inject.Singleton
 
+@Singleton
 class UserRepository {
 
     val TAG: String = UserRepository::class.java.name

@@ -139,6 +139,9 @@
         <action
             android:id="@+id/action_nav_item_to_nav_chat_page_fragment"
             app:destination="@id/nav_chat_page_fragment" />
+        <action
+            android:id="@+id/action_nav_item_to_nav_proposal_item_choice_dialog_fragment"
+            app:destination="@id/nav_proposal_item_choice_dialog_fragment" />
     </fragment>
 
     <fragment
@@ -211,6 +214,10 @@
         <argument
             android:name="chat"
             app:argType="com.diana.bachelorthesis.model.Chat" />
+        <argument
+            android:name="proposal"
+            app:argType="com.diana.bachelorthesis.model.Proposal"
+            app:nullable="true" />
     </fragment>
 
     <dialog
@@ -223,6 +230,12 @@
             app:destination="@id/nav_chat_page_fragment"
             app:popUpTo="@id/nav_proposal_item_choice_dialog_fragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="currentItem"
+            app:argType="com.diana.bachelorthesis.model.Item" />
+        <argument
+            android:name="itemUser"
+            app:argType="com.diana.bachelorthesis.model.User" />
     </dialog>
 
 </navigation>

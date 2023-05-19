@@ -32,10 +32,10 @@ class RecommendationsViewModel : ViewModel() {
                 val valuesFiltered = ArrayList(values.filter { item ->
                     when (item) {
                         is ItemExchange -> {
-                            (item.exchangeInfo == null)
+                            (item.exchangeInfo == null) && (currentUser.email != item.owner)
                         }
                         is ItemDonation -> {
-                            (item.donationInfo == null)
+                            (item.donationInfo == null) && (currentUser.email != item.owner)
                         }
                         else -> false
                     }

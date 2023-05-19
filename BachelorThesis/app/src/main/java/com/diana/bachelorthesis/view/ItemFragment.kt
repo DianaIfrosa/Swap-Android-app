@@ -87,12 +87,18 @@ class ItemFragment : Fragment(), BasicFragment {
         initListeners()
         setSubPageAppbar(requireActivity(), itemPageViewModel.currentItem.name)
 
-        if ((requireActivity() as MainActivity).getCurrentUser()!!.email == itemPageViewModel.currentItem.owner) {
-            // its own item
+        if (userViewModel.verifyUserLoggedIn()) {
+            itemPageViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
+            if (itemPageViewModel.currentUser.email == itemPageViewModel.currentItem.owner) {
+                // its own item
+                binding.layoutButtons.visibility = View.GONE
+                binding.btnFavorite.visibility = View.GONE
+            } else {
+                binding.layoutButtons.visibility = View.VISIBLE
+            }
+        } else {
             binding.layoutButtons.visibility = View.GONE
             binding.btnFavorite.visibility = View.GONE
-        } else {
-            binding.layoutButtons.visibility = View.VISIBLE
         }
     }
 
@@ -186,27 +192,45 @@ class ItemFragment : Fragment(), BasicFragment {
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(chat)
+                    val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(chat, null)
                     requireView().findNavController().navigate(action)
-
                 }
             } else {
                 chat = Chat(
                     id = currentUser.email + " " + itemPageViewModel.owner!!.email,
                     otherUser = itemPageViewModel.owner
                 )
-                val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(chat)
+                val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(chat, null)
                 requireView().findNavController().navigate(action)
             }
         }
 
         binding.btnAction.setOnClickListener {
             if (itemPageViewModel.currentItem is ItemExchange) {
-                val proposalItemChoiceDialogFragment = ProposalItemChoiceDialogFragment()
-                proposalItemChoiceDialogFragment.isCancelable = true
-                proposalItemChoiceDialogFragment.show(childFragmentManager, "ProposalItemChoiceDialogFragment")
-            } else {
-                //todo
+                if (itemPageViewModel.owner != null) {
+                    val action =
+                        ItemFragmentDirections.actionNavItemToNavProposalItemChoiceDialogFragment(
+                            itemPageViewModel.currentItem,
+                            itemPageViewModel.owner!!
+                        )
+                    requireView().findNavController().navigate(action)
+                }
+                } else {
+
+                itemPageViewModel.createDonationProposalAndRetrieveChat(object: OneParamCallback<Chat> {
+                    override fun onComplete(value: Chat?) {
+                        val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(value!!, itemPageViewModel.proposal)
+                        requireView().findNavController().navigate(action)
+                    }
+
+                    override fun onError(e: Exception?) {
+                        Toast.makeText(
+                            context,
+                            getString(R.string.something_failed),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
             }
         }
     }

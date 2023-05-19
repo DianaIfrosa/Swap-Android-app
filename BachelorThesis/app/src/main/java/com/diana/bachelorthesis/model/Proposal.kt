@@ -13,6 +13,8 @@ data class Proposal(
     val itemId2: String? = null,
     val userId1: String = "",
     val userId2: String = ""
+// exchange = all fields completed, with the first user being the one receiving the proposal
+// donation = the above rules except item2 is null
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",

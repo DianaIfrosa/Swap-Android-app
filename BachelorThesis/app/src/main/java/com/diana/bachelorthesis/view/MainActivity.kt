@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity() {
         if (userViewModel.verifyUserLoggedIn()) {
             restoreCurrentUserData()
             chatViewModel.currentUser = getCurrentUser()!!
+            itemsViewModel.currentUser = getCurrentUser()!!
             chatViewModel.listenToUserChatChanges(object: OneParamCallback<User> {
                 override fun onComplete(value: User?) {
                     updateCurrentUserChatList(value!!.chatIds)

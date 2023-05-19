@@ -6,12 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentPhotosBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.utils.BasicFragment
-import com.diana.bachelorthesis.viewmodel.ItemPageViewModel
 
 class PhotosFragment : Fragment(), BasicFragment {
     private val TAG: String = PhotosFragment::class.java.name

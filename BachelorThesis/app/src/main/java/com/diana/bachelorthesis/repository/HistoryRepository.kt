@@ -5,7 +5,9 @@ import com.diana.bachelorthesis.model.History
 import com.diana.bachelorthesis.utils.ListParamCallback
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import javax.inject.Singleton
 
+@Singleton
 class HistoryRepository {
     private val TAG: String = HistoryRepository::class.java.name
     val db = Firebase.firestore

@@ -11,10 +11,11 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.*
 import java.lang.Exception
 import java.util.*
+import javax.inject.Singleton
 
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-
+@Singleton
 class PhotoRepository {
     private val TAG: String = PhotoRepository::class.java.name
 

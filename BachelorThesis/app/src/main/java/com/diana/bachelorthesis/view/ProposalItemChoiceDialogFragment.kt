@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +12,15 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemChoiceAdapter
-import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
-import com.diana.bachelorthesis.databinding.FragmentEditProfileDialogBinding
 import com.diana.bachelorthesis.databinding.FragmentProposalItemChoiceDialogBinding
+import com.diana.bachelorthesis.model.Chat
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.utils.ListParamCallback
-import com.diana.bachelorthesis.utils.NoParamCallback
-import com.diana.bachelorthesis.utils.ProfileOptionsListener
+import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.viewmodel.ItemChoiceViewModel
 import java.lang.Exception
 
@@ -31,7 +29,6 @@ class ProposalItemChoiceDialogFragment : DialogFragment() {
 
     private var _binding: FragmentProposalItemChoiceDialogBinding? = null
     private val binding get() = _binding!!
-    private lateinit var fragmentParent: ItemFragment
     private lateinit var toolbar: Toolbar
     private lateinit var itemChoiceViewModel: ItemChoiceViewModel
     private var adapter: ItemChoiceAdapter? = null
@@ -54,7 +51,6 @@ class ProposalItemChoiceDialogFragment : DialogFragment() {
         toolbar = root.findViewById(R.id.toolbar_dialog_choose_proposal)
         customizeToolbar()
 
-        fragmentParent = parentFragment as ItemFragment
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
 
         return root
@@ -70,8 +66,15 @@ class ProposalItemChoiceDialogFragment : DialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "ProposalItemChoiceDialogFragment is onActivityCreated")
+        doViewModelInit()
+    }
 
+    private fun doViewModelInit() {
         itemChoiceViewModel = ViewModelProvider(this)[ItemChoiceViewModel::class.java]
+
+        itemChoiceViewModel.currentItem = ProposalItemChoiceDialogFragmentArgs.fromBundle(requireArguments()).currentItem
+        itemChoiceViewModel.otherUser = ProposalItemChoiceDialogFragmentArgs.fromBundle(requireArguments()).itemUser
+
         itemChoiceViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
         itemChoiceViewModel.getCurrentUserObjects(object: ListParamCallback<Item> {
             override fun onComplete(values: ArrayList<Item>) {
@@ -82,7 +85,6 @@ class ProposalItemChoiceDialogFragment : DialogFragment() {
                 Toast.makeText(context, getString(R.string.something_failed), Toast.LENGTH_LONG).show()
             }
         })
-
     }
 
     fun updateRecyclerView(items: List<Item>, progressBarAppears: Boolean = false) {
@@ -114,10 +116,22 @@ class ProposalItemChoiceDialogFragment : DialogFragment() {
         toolbar.setOnMenuItemClickListener {
             if (adapter != null) {
                 if (adapter!!.selectedPosition >= 0) {
-                    val itemToPropose = itemChoiceViewModel.items[adapter!!.selectedPosition]
-                    Log.d(TAG, "Item to propose: ${itemToPropose.name}")
-                    // todo chat proposal and open chat
-//                ProposalItemChoiceDialogFragmentDirections.actionProposalItemChoiceDialogFragmentToNavChatPageFragment()
+
+                    binding.progressBar.visibility = View.VISIBLE
+                    itemChoiceViewModel.itemToPropose =  itemChoiceViewModel.items[adapter!!.selectedPosition]
+                    Log.d(TAG, "Item to propose: ${itemChoiceViewModel.itemToPropose.name}")
+
+                    itemChoiceViewModel.createProposalAndRetrieveChat(object: OneParamCallback<Chat> {
+                        override fun onComplete(value: Chat?) {
+                           val action =  ProposalItemChoiceDialogFragmentDirections.actionProposalItemChoiceDialogFragmentToNavChatPageFragment(value!!, itemChoiceViewModel.proposal)
+                           findNavController().navigate(action)
+                        }
+
+                        override fun onError(e: Exception?) {
+                            Toast.makeText(context, R.string.something_failed, Toast.LENGTH_SHORT).show()
+                        }
+                    })
+
                 } else  {
                     // no selected item even though there are options
                     Toast.makeText(context, getString(R.string.must_choose_item), Toast.LENGTH_LONG).show()

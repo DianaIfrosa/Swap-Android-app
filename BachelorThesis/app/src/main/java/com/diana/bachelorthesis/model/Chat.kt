@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class Chat(
     @DocumentId
     val id: String = "",
-    val otherUser: User? = null,
+    var otherUser: User? = null,
     var messages: ArrayList<Message> = arrayListOf(),
     var seen: Boolean = false
 ) : Parcelable

@@ -10,7 +10,9 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import javax.inject.Singleton
 
+@Singleton
 class ChatRepository {
     private val TAG: String = ChatRepository::class.java.name
     val db = Firebase.firestore
@@ -42,7 +44,7 @@ class ChatRepository {
             }
     }
 
-    private fun getChats(
+    fun getChats(
         currentPosition: Int,
         chatsIds: List<Pair<String, String>>,
         result: ArrayList<Chat>,

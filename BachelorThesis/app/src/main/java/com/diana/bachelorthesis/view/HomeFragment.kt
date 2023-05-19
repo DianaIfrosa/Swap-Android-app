@@ -101,6 +101,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 //        binding.searchSwitchLayout.searchView.setQuery("text", false)
 
         initListeners()
+        itemsViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()
         itemsViewModel.populateLiveData()
 
         setHomeAppbar(requireActivity())
@@ -269,11 +270,9 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
             if (checked) {
                 switchExchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
                 switchDonation.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-                // TODO change background color accordingly
             } else {
                 switchExchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
                 switchDonation.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
-                // TODO change background color accordingly
             }
         }
     }
@@ -292,7 +291,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
                     val action = HomeFragmentDirections.actionNavHomeToNavItem(item)
                     requireView().findNavController().navigate(action)
                 }
-            binding.textNumberItems.text = items.size.toString()
+            binding.textNumberItems.text = items.size.toString() + " " + resources.getString(R.string.items)
         }
     }
 

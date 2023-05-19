@@ -39,15 +39,8 @@ class ItemsViewModel : ViewModel() {
             override fun onComplete(values: ArrayList<Item>) {
                 val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate }) // new to old
                 val valuesSortedAndFiltered = ArrayList(valuesSorted.filter { item ->
-                    when (item) {
-                        is ItemExchange -> {
-                            (item.exchangeInfo == null) && (currentUser?.email != item.owner)
-                        }
-                        is ItemDonation -> {
-                            (item.donationInfo == null) && (currentUser?.email != item.owner)
-                        }
-                        else -> false
-                    }
+                    item as ItemExchange
+                    (item.exchangeInfo == null) && (currentUser?.email != item.owner)
                 })
                 if (displayExchangeItems) {
                     updateCurrentItems(valuesSortedAndFiltered)
@@ -69,15 +62,8 @@ class ItemsViewModel : ViewModel() {
             override fun onComplete(values: ArrayList<Item>) {
                 val valuesSorted = ArrayList(values.sortedByDescending { item -> item.postDate }) // new to old
                 val valuesSortedAndFiltered = ArrayList(valuesSorted.filter { item ->
-                    when (item) {
-                        is ItemExchange -> {
-                            (item.exchangeInfo == null)
-                        }
-                        is ItemDonation -> {
-                            (item.donationInfo == null)
-                        }
-                        else -> false
-                    }
+                    item as ItemDonation
+                    (item.donationInfo == null) && (currentUser?.email != item.owner)
                 })
                 if (!displayExchangeItems) {
                     updateCurrentItems(valuesSortedAndFiltered)

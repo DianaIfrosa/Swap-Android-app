@@ -104,7 +104,7 @@
     <string name="item">Obiect</string>
     <string name="choose_location">Alege locația</string>
     <string name="send_message">Trimite mesaj</string>
-    <string name="loading">Se încarcă</string>
+    <string name="loading">Se încarcă...</string>
     <string name="notifications">Notificări</string>
     <string name="preferences_for_recommendations">Preferințe pentru recomandări</string>
     <string name="edit_profile">Modifică profilul</string>

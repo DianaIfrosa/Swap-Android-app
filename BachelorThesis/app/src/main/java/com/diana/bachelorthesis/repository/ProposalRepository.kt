@@ -2,6 +2,7 @@ package com.diana.bachelorthesis.repository
 
 import android.util.Log
 import com.diana.bachelorthesis.model.Proposal
+import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.google.firebase.firestore.ListenerRegistration
@@ -42,6 +43,25 @@ class ProposalRepository {
                 callback.onComplete()
             } else {
                 Log.w(TAG, "Failed to add proposal with id ${proposal.proposalId}")
+                callback.onError(task.exception)
+            }
+        }
+    }
+
+    fun getProposals(callback: ListParamCallback<Proposal>) {
+        db.collection(COLLECTION_NAME).get().addOnCompleteListener { task->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Successfully retrieved all proposals.")
+                val result = arrayListOf<Proposal>()
+                task.result.documents.forEach {
+                    val proposal = it.toObject(Proposal::class.java)
+                    if (proposal != null) {
+                        result.add(proposal)
+                    }
+                }
+                callback.onComplete(result)
+            } else {
+                Log.d(TAG, "Error occurred while retrieving all proposals.")
                 callback.onError(task.exception)
             }
         }

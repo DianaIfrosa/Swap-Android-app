@@ -23,7 +23,7 @@ class ItemChoiceViewModel : ViewModel() {
     lateinit var items: ArrayList<Item>
     lateinit var itemToPropose: Item
     lateinit var currentItem: Item
-    lateinit var proposal: Proposal
+    var proposal: Proposal? = null
 
     fun getCurrentUserObjects(callback: ListParamCallback<Item>) {
         itemRepository.getItemsFromOwner(currentUser.email, true, object : ListParamCallback<Item> {
@@ -44,50 +44,81 @@ class ItemChoiceViewModel : ViewModel() {
     }
 
     fun createProposalAndRetrieveChat(callback: OneParamCallback<Chat>) {
-        proposal = Proposal(
-            proposalId = UUID.randomUUID().toString(),
-            confirmation1 = false,
-            confirmation2 = true,
-            itemId1 = currentItem.itemId,
-            itemId2 = itemToPropose.itemId,
-            userId1 = currentItem.owner,
-            userId2 = itemToPropose.owner
-        )
+        // Verify if proposal already exists in db
+        proposalRepository.getProposals(object : ListParamCallback<Proposal> {
+            override fun onComplete(values: ArrayList<Proposal>) {
+                values.forEach { p ->
+                    if ((p.itemId1 == currentItem.itemId && p.itemId2 == itemToPropose.itemId) ||
+                        ((p.itemId2 == currentItem.itemId && p.itemId1 == itemToPropose.itemId))
+                    ) {
+                        proposal = p
+                        return@forEach
+                    }
+                }
 
-        proposalRepository.createProposal(proposal, object: NoParamCallback {
-            override fun onComplete() {
-                val chatId = chatExists(currentItem.owner)
-                if (chatId != null) {
-                    // get the chat
-                    chatRepository.getChats(0, arrayListOf(Pair(chatId,"false")),  arrayListOf(), object: ListParamCallback<Chat> {
-                        override fun onComplete(values: ArrayList<Chat>) {
-                            if (values.size == 1) {
-                                val newChat = values[0]
-                                newChat.otherUser = otherUser
-                                callback.onComplete(values[0])
-                            }
+                if (proposal == null) {
+                    // first time proposal
+                    proposal = Proposal(
+                        proposalId = UUID.randomUUID().toString(),
+                        confirmation1 = false,
+                        confirmation2 = true,
+                        itemId1 = currentItem.itemId,
+                        itemId2 = itemToPropose.itemId,
+                        userId1 = currentItem.owner,
+                        userId2 = itemToPropose.owner
+                    )
+                    proposalRepository.createProposal(proposal!!, object : NoParamCallback {
+                        override fun onComplete() {
+                            retrieveChat(callback)
                         }
 
-                        override fun onError(e: Exception?) {
-                           callback.onError(e)
+                        override fun onError(e: java.lang.Exception?) {
+                            callback.onError(e)
                         }
-
                     })
 
                 } else {
-                    // create a new chat
-                    val newChat = Chat(
-                        id = currentUser.email + " " + itemToPropose.owner,
-                        otherUser = otherUser
-                    )
-                    callback.onComplete(newChat)
+                    // proposal already existed
+                    retrieveChat(callback)
                 }
             }
 
-            override fun onError(e: java.lang.Exception?) {
+            override fun onError(e: Exception?) {
                 callback.onError(e)
             }
         })
+    }
+
+    private fun retrieveChat(callback: OneParamCallback<Chat>) {
+        val chatId = chatExists(currentItem.owner)
+        if (chatId != null) {
+            // get the chat
+            chatRepository.getChats(
+                0,
+                arrayListOf(Pair(chatId, "false")),
+                arrayListOf(),
+                object : ListParamCallback<Chat> {
+                    override fun onComplete(values: ArrayList<Chat>) {
+                        if (values.size == 1) {
+                            val newChat = values[0]
+                            newChat.otherUser = otherUser
+                            callback.onComplete(values[0])
+                        }
+                    }
+
+                    override fun onError(e: Exception?) {
+                        callback.onError(e)
+                    }
+                })
+
+        } else {
+            // create a new chat
+            val newChat = Chat(
+                id = currentUser.email + " " + currentItem.owner,
+                otherUser = otherUser
+            )
+            callback.onComplete(newChat)
+        }
     }
 
     private fun chatExists(otherUserEmail: String): String? {
@@ -96,7 +127,7 @@ class ItemChoiceViewModel : ViewModel() {
             if (it["chatId"] == (currentUser.email + " " + otherUserEmail))
                 return (currentUser.email + " " + otherUserEmail)
             else if (it["chatId"] == (otherUserEmail + " " + currentUser.email))
-                return  (otherUserEmail + " " + currentUser.email)
+                return (otherUserEmail + " " + currentUser.email)
         }
         return null
     }

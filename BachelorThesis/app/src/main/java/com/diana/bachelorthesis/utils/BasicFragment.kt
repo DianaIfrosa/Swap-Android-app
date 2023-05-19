@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.findNavController
 import com.diana.bachelorthesis.R
 
 interface BasicFragment {
@@ -57,7 +56,7 @@ interface BasicFragment {
         }
     }
 
-    fun setAuthAppbar(activity: Activity, title: String) {
+    fun setAuthOrProfileAppbar(activity: Activity, title: String) {
         activity.findViewById<TextView>(R.id.titleAppBarMainPage)?.apply {
             visibility = View.VISIBLE
             text = title

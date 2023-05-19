@@ -2,7 +2,6 @@ package com.diana.bachelorthesis.view
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,8 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
@@ -23,7 +20,6 @@ import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
-import com.diana.bachelorthesis.utils.SharedPreferencesUtils
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -32,7 +28,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.gson.Gson
 import java.lang.Exception
 
 class IntroAuthFragment : Fragment(), BasicFragment {
@@ -69,7 +64,7 @@ class IntroAuthFragment : Fragment(), BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "IntroAuthFragment is onActivityCreated")
-        setAuthAppbar(
+        setAuthOrProfileAppbar(
             requireActivity(),
             requireView().findNavController().currentDestination!!.label.toString()
         )

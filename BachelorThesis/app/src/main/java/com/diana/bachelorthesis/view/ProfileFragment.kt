@@ -49,7 +49,7 @@ class ProfileFragment : Fragment(), BasicFragment, ProfileOptionsListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "ProfileFragment is onActivityCreated")
-        setMainPageAppbar(
+        setAuthOrProfileAppbar(
             requireActivity(),
             requireView().findNavController().currentDestination!!.label.toString()
         )

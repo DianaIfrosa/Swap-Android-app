@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.CardChatBinding
 import com.diana.bachelorthesis.model.Chat
+import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.CustomClickListener
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatsRecyclerViewAdapter(private val listChats: ArrayList<Chat>, private val context: Context,
+class ChatsRecyclerViewAdapter(private val currentUser: User, private val listChats: ArrayList<Chat>, private val context: Context,
                                private val onChatClicked: (Chat) -> Unit) :
     RecyclerView.Adapter<ChatsRecyclerViewAdapter.ChatViewHolder>(),
     CustomClickListener<Chat> {
@@ -54,9 +55,19 @@ class ChatsRecyclerViewAdapter(private val listChats: ArrayList<Chat>, private v
         if (lastMessage.text != null) {
             holder.cardChatBinding.chatLastMessage.text = lastMessage.text
         } else if (lastMessage.proposalId != null) {
-            holder.cardChatBinding.chatLastMessage.text = context.getString(R.string.sent_proposal)
+            if (lastMessage.senderEmail == currentUser.email) {
+                 holder.cardChatBinding.chatLastMessage.text =
+                     context.getString(R.string.you_sent_a_proposal)
+            } else {
+                holder.cardChatBinding.chatLastMessage.text =
+                    context.getString(R.string.sent_proposal)
+            }
         } else if (lastMessage.photoUri != null) {
-            holder.cardChatBinding.chatLastMessage.text = context.getString(R.string.sent_photo)
+            if (lastMessage.senderEmail == currentUser.email) {
+                holder.cardChatBinding.chatLastMessage.text = context.getString(R.string.you_sent_photo)
+            } else {
+                holder.cardChatBinding.chatLastMessage.text = context.getString(R.string.sent_photo)
+            }
         }
     }
 

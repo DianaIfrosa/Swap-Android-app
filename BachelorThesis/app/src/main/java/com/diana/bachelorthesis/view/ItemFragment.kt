@@ -60,7 +60,6 @@ class ItemFragment : Fragment(), BasicFragment {
         Log.d(TAG, "ItemFragment is on onViewCreated")
 
         itemPageViewModel.currentItem = ItemFragmentArgs.fromBundle(requireArguments()).itemClicked
-        updateUIElements()
 
         userViewModel.getUserData(
             itemPageViewModel.currentItem.owner,
@@ -84,22 +83,11 @@ class ItemFragment : Fragment(), BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "ItemFragment is on onActivityCreated")
-        initListeners()
         setSubPageAppbar(requireActivity(), itemPageViewModel.currentItem.name)
 
-        if (userViewModel.verifyUserLoggedIn()) {
-            itemPageViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
-            if (itemPageViewModel.currentUser.email == itemPageViewModel.currentItem.owner) {
-                // its own item
-                binding.layoutButtons.visibility = View.GONE
-                binding.btnFavorite.visibility = View.GONE
-            } else {
-                binding.layoutButtons.visibility = View.VISIBLE
-            }
-        } else {
-            binding.layoutButtons.visibility = View.GONE
-            binding.btnFavorite.visibility = View.GONE
-        }
+        updateUIElements()
+
+        initListeners()
     }
 
     private fun getViewModels() {
@@ -254,7 +242,19 @@ class ItemFragment : Fragment(), BasicFragment {
         binding.itemPageLayout.visibility = View.VISIBLE
 
         if (userViewModel.verifyUserLoggedIn()) {
+            itemPageViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
             binding.btnFavorite.visibility = View.VISIBLE
+
+            if (itemPageViewModel.currentUser.email == itemPageViewModel.currentItem.owner) {
+                // its own item
+                binding.layoutButtons.visibility = View.GONE
+                binding.btnFavorite.visibility = View.GONE
+                binding.deleteItem.visibility = View.VISIBLE
+            } else {
+                binding.layoutButtons.visibility = View.VISIBLE
+                binding.deleteItem.visibility = View.GONE
+            }
+
             if ((requireActivity() as MainActivity).itemIsFavorite(itemPageViewModel.currentItem)) {
                 binding.btnFavorite.setImageDrawable(resources.getDrawable(R.drawable.ic_heart_filled))
             } else {
@@ -262,12 +262,8 @@ class ItemFragment : Fragment(), BasicFragment {
             }
         } else {
             binding.btnFavorite.visibility = View.INVISIBLE
-        }
-
-        if (itemPageViewModel.currentItem.owner == userViewModel.getCurrentUserEmail()) {
-            binding.deleteItem.visibility = View.VISIBLE
-        } else {
             binding.deleteItem.visibility = View.GONE
+            binding.layoutButtons.visibility = View.GONE
         }
     }
 

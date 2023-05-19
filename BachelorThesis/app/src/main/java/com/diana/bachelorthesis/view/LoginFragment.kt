@@ -46,7 +46,7 @@ class LoginFragment : Fragment(), BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "LoginFragment is onActivityCreated")
-        setAuthAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
+        setAuthOrProfileAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
     }
 
     override fun initListeners() {

@@ -19,7 +19,7 @@
             android:onClick="@{() -> itemClickListener.cardClicked(model)}"
             app:cardPreventCornerOverlap="false"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="2dp"
+            app:cardElevation="0dp"
             android:layout_marginEnd="10dp">
 
             <LinearLayout

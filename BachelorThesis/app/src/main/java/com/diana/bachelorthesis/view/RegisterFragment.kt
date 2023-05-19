@@ -7,11 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -60,7 +57,7 @@ class RegisterFragment : Fragment(), BasicFragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "RegisterFragment is onActivityCreated")
-        setAuthAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
+        setAuthOrProfileAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
         initListeners()
     }
 

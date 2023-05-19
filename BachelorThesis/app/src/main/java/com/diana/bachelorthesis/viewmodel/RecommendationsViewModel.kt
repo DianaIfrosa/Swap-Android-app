@@ -30,15 +30,8 @@ class RecommendationsViewModel : ViewModel() {
             override fun onComplete(values: ArrayList<Item>) {
                 Log.d(TAG, "Retrieved recommended donation items")
                 val valuesFiltered = ArrayList(values.filter { item ->
-                    when (item) {
-                        is ItemExchange -> {
-                            (item.exchangeInfo == null) && (currentUser.email != item.owner)
-                        }
-                        is ItemDonation -> {
-                            (item.donationInfo == null) && (currentUser.email != item.owner)
-                        }
-                        else -> false
-                    }
+                    item as ItemDonation
+                    (item.donationInfo == null) && (currentUser.email != item.owner)
                 })
 
                 callback.onComplete(valuesFiltered)
@@ -55,15 +48,8 @@ class RecommendationsViewModel : ViewModel() {
             override fun onComplete(values: ArrayList<Item>) {
                 Log.d(TAG, "Retrieved recommended exchange items")
                 val valuesFiltered = ArrayList(values.filter { item ->
-                    when (item) {
-                        is ItemExchange -> {
-                            (item.exchangeInfo == null)
-                        }
-                        is ItemDonation -> {
-                            (item.donationInfo == null)
-                        }
-                        else -> false
-                    }
+                    item as ItemExchange
+                    (item.exchangeInfo == null) && (currentUser.email != item.owner)
                 })
                 callback.onComplete(valuesFiltered)
             }

@@ -62,7 +62,7 @@ class ChatFragment : Fragment(), BasicFragment {
             binding.textNoChats.visibility = View.GONE
             binding.recyclerView.visibility = View.VISIBLE
             binding.chatsAdapter =
-                ChatsRecyclerViewAdapter(chats, requireContext()) { chat ->
+                ChatsRecyclerViewAdapter( (requireActivity() as MainActivity).getCurrentUser()!!, chats, requireContext()) { chat ->
                     val action = ChatFragmentDirections.actionNavChatToChatPageFragment(chat, null)
                     requireView().findNavController().navigate(action)
                 }

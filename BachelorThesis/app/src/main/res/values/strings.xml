@@ -205,6 +205,10 @@
     <string name="items_not_available">One of the items is no longer available!</string>
     <string name="from">from</string>
     <string name="you_received">You received:</string>
+    <string name="explanation">Explanation</string>
+    <string name="report_description">Tell us why you think this post represents a problem.</string>
+    <string name="submit_report">Submit report</string>
+    <string name="explanation_required">Explanation must be completed</string>
 
 
 </resources>

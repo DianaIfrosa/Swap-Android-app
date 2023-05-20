@@ -142,6 +142,9 @@
         <action
             android:id="@+id/action_nav_item_to_nav_proposal_item_choice_dialog_fragment"
             app:destination="@id/nav_proposal_item_choice_dialog_fragment" />
+        <action
+            android:id="@+id/action_nav_item_to_reportPostFragment"
+            app:destination="@id/reportPostFragment" />
     </fragment>
 
     <fragment
@@ -258,6 +261,15 @@
         <action
             android:id="@+id/action_proposalPageFragment_to_nav_photos"
             app:destination="@id/nav_photos" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportPostFragment"
+        android:name="com.diana.bachelorthesis.view.ReportPostFragment"
+        android:label="fragment_report_post"
+        tools:layout="@layout/fragment_report_post" >
+        <argument
+            android:name="item"
+            app:argType="com.diana.bachelorthesis.model.Item" />
     </fragment>
 
 </navigation>

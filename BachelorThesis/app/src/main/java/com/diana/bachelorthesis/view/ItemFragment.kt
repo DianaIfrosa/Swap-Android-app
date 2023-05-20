@@ -173,7 +173,8 @@ class ItemFragment : Fragment(), BasicFragment {
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(chat, null)
+                    val action =
+                        ItemFragmentDirections.actionNavItemToNavChatPageFragment(chat, null)
                     requireView().findNavController().navigate(action)
                 }
             } else {
@@ -196,11 +197,15 @@ class ItemFragment : Fragment(), BasicFragment {
                         )
                     requireView().findNavController().navigate(action)
                 }
-                } else {
+            } else {
 
-                itemPageViewModel.createDonationProposalAndRetrieveChat(object: OneParamCallback<Chat> {
+                itemPageViewModel.createDonationProposalAndRetrieveChat(object :
+                    OneParamCallback<Chat> {
                     override fun onComplete(value: Chat?) {
-                        val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(value!!, itemPageViewModel.proposal)
+                        val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(
+                            value!!,
+                            itemPageViewModel.proposal
+                        )
                         requireView().findNavController().navigate(action)
                     }
 
@@ -213,6 +218,12 @@ class ItemFragment : Fragment(), BasicFragment {
                     }
                 })
             }
+        }
+
+        binding.reportPost.setOnClickListener {
+            val action =
+                ItemFragmentDirections.actionNavItemToReportPostFragment(itemPageViewModel.currentItem)
+            requireView().findNavController().navigate(action)
         }
     }
 
@@ -243,9 +254,11 @@ class ItemFragment : Fragment(), BasicFragment {
                 binding.layoutButtons.visibility = View.GONE
                 binding.btnFavorite.visibility = View.GONE
                 binding.deleteItem.visibility = View.VISIBLE
+                binding.reportPost.visibility = View.INVISIBLE
             } else {
                 binding.layoutButtons.visibility = View.VISIBLE
                 binding.deleteItem.visibility = View.GONE
+                binding.reportPost.visibility = View.VISIBLE
             }
 
             if ((requireActivity() as MainActivity).itemIsFavorite(itemPageViewModel.currentItem)) {
@@ -257,6 +270,7 @@ class ItemFragment : Fragment(), BasicFragment {
             binding.btnFavorite.visibility = View.INVISIBLE
             binding.deleteItem.visibility = View.GONE
             binding.layoutButtons.visibility = View.GONE
+            binding.reportPost.visibility = View.INVISIBLE
         }
     }
 

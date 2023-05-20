@@ -64,6 +64,10 @@ interface BasicFragment {
         activity.findViewById<ImageView>(R.id.logoApp)?.apply {
             visibility = View.GONE
         }
+
+        activity.findViewById<TextView>(R.id.titleAppBarSubpage)?.apply {
+            visibility = View.GONE
+        }
         activity.findViewById<ImageButton>(R.id.iconAppBar)?.apply {
             visibility = View.INVISIBLE
         }

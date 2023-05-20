@@ -53,23 +53,31 @@ class ChatFragment : Fragment(), BasicFragment {
     }
 
     private fun updateRecyclerView(chats: ArrayList<Chat>, progressBarAppears: Boolean = false) {
-        if (progressBarAppears) {
-            binding.recyclerView.visibility = View.GONE
-            binding.textNoChats.visibility = View.GONE
-            binding.progressBar.visibility = View.VISIBLE
-        } else if (chats.isNotEmpty()) {
-            binding.progressBar.visibility = View.GONE
-            binding.textNoChats.visibility = View.GONE
-            binding.recyclerView.visibility = View.VISIBLE
-            binding.chatsAdapter =
-                ChatsRecyclerViewAdapter( (requireActivity() as MainActivity).getCurrentUser()!!, chats, requireContext()) { chat ->
-                    val action = ChatFragmentDirections.actionNavChatToChatPageFragment(chat, null)
-                    requireView().findNavController().navigate(action)
-                }
-        } else {
-            binding.progressBar.visibility = View.GONE
-            binding.recyclerView.visibility = View.GONE
-            binding.textNoChats.visibility = View.VISIBLE
+        if (binding != null) {
+
+            if (progressBarAppears) {
+                binding.recyclerView.visibility = View.GONE
+                binding.textNoChats.visibility = View.GONE
+                binding.progressBar.visibility = View.VISIBLE
+            } else if (chats.isNotEmpty()) {
+                binding.progressBar.visibility = View.GONE
+                binding.textNoChats.visibility = View.GONE
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.chatsAdapter =
+                    ChatsRecyclerViewAdapter(
+                        (requireActivity() as MainActivity).getCurrentUser()!!,
+                        chats,
+                        requireContext()
+                    ) { chat ->
+                        val action =
+                            ChatFragmentDirections.actionNavChatToChatPageFragment(chat, null)
+                        requireView().findNavController().navigate(action)
+                    }
+            } else {
+                binding.progressBar.visibility = View.GONE
+                binding.recyclerView.visibility = View.GONE
+                binding.textNoChats.visibility = View.VISIBLE
+            }
         }
     }
 

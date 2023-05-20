@@ -34,6 +34,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="5dp"
+            android:textColor="@color/black"
             android:text="@string/name"
             android:textStyle="bold"
             android:textSize="20sp" />
@@ -47,6 +48,7 @@
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:padding="5dp"
+            android:textColor="@color/black"
             android:text="@string/email"
             android:textSize="15sp" />
 
@@ -57,6 +59,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:gravity="start"
+            android:textColor="@color/black"
             android:padding="10dp"
             android:text="@string/edit_profile"
             android:textStyle="bold"
@@ -70,6 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
+            android:textColor="@color/black"
             android:gravity="start"
             android:padding="10dp"
             android:text="@string/preferences_for_recommendations"
@@ -86,6 +90,7 @@
             android:layout_marginTop="15dp"
             android:gravity="start"
             android:padding="10dp"
+            android:textColor="@color/black"
             android:text="@string/notifications"
             android:textStyle="bold"
             android:textSize="15sp"

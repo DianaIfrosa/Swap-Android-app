@@ -77,24 +77,34 @@ class OwnerProfileFragment : Fragment(), BasicFragment {
     }
 
     fun updateRecyclerView(items: List<Item>, progressBarAppears: Boolean = false) {
-        if (progressBarAppears) {
-            binding.progressBar.visibility = View.VISIBLE
-            binding.recyclerView.visibility = View.GONE
-            binding.noOtherPostsText.visibility = View.GONE
-        } else if (items.isNotEmpty()){
-            binding.recyclerView.visibility = View.VISIBLE
-            binding.progressBar.visibility = View.GONE
-            binding.noOtherPostsText.visibility = View.GONE
-            val adapter =
-                ItemsHorizontalRecyclerViewAdapter(items, false, requireContext(), null) { item ->
-                    val action = OwnerProfileFragmentDirections.actionNavOwnerProfileToNavItem(item)
-                    requireView().findNavController().navigate(action)
-                }
-            binding.recyclerView.adapter = adapter
-        } else {
-            binding.recyclerView.visibility = View.GONE
-            binding.progressBar.visibility = View.GONE
-            binding.noOtherPostsText.visibility = View.VISIBLE
+
+        if (binding != null) {
+            if (progressBarAppears) {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.GONE
+                binding.noOtherPostsText.visibility = View.GONE
+            } else if (items.isNotEmpty()) {
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.GONE
+                binding.noOtherPostsText.visibility = View.GONE
+                val adapter =
+                    ItemsHorizontalRecyclerViewAdapter(
+                        items,
+                        false,
+                        requireContext(),
+                        null
+                    ) { item ->
+                        val action =
+                            OwnerProfileFragmentDirections.actionNavOwnerProfileToNavItem(item)
+                        requireView().findNavController().navigate(action)
+                    }
+                binding.recyclerView.adapter = adapter
+            } else {
+                binding.recyclerView.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
+
+                binding.noOtherPostsText.visibility = View.VISIBLE
+            }
         }
     }
 

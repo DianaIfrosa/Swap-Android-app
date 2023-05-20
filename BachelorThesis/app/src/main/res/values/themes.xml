@@ -2,17 +2,14 @@
     <!-- Base application theme. -->
     <style name="Theme.BachelorThesis" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
 
-<!--        <item name="fontFamily">@font/lora_family</item>-->
-<!--        <item name="android:fontFamily">@font/lora_family</item>-->
-
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_light</item>
+        <item name="colorPrimary">@color/purple_light</item> <!-- Bara de sus, butoanele basic, shade ul de la selectare din meniu si de final de pagina-->
         <item name="colorPrimaryVariant">@color/purple_light</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item> <!-- scrisul de pe butoane default-->
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/yellow_medium</item>
-        <item name="colorSecondaryVariant">@color/yellow_medium</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/purple_dark</item> <!-- floating button add, bifa check box/radio box  si cursor si accente input text -->
+        <item name="colorSecondaryVariant">@color/purple_medium</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
@@ -56,8 +53,8 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:fontFamily">@font/lora</item>
-        <item name="android:actionMenuTextColor">@color/purple_dark</item>
-        <item name="actionMenuTextColor">@color/purple_dark</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="actionMenuTextColor">@color/white</item>
     </style>
 
     <style name="AppBarPage">
@@ -83,3 +80,13 @@
 
     <style name="Theme.BachelorThesis.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
+
+<!--<item name="colorPrimary">@color/purple_light</item>-->
+<!--<item name="colorPrimaryVariant">@color/purple_light</item>-->
+<!--<item name="colorOnPrimary">@color/white</item>-->
+<!--    &lt;!&ndash; Secondary brand color. &ndash;&gt;-->
+<!--<item name="colorSecondary">@color/yellow_medium</item>-->
+<!--<item name="colorSecondaryVariant">@color/yellow_medium</item>-->
+<!--<item name="colorOnSecondary">@color/black</item>-->
+<!--    &lt;!&ndash; Status bar color. &ndash;&gt;-->
+<!--<item name="android:statusBarColor">?attr/colorPrimaryVariant</item>-->

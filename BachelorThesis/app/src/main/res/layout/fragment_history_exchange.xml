@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:textStyle="italic" />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <com.denzcoskun.imageslider.ImageSlider
@@ -99,6 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:textStyle="italic"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -109,20 +110,20 @@
                     android:layout_marginEnd="8dp"
                     android:text="'s item:"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/item2_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="italic" />
-
+                    android:textSize="16sp" />
 
             </LinearLayout>
+            <TextView
+                android:id="@+id/item2_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold" />
 
             <com.denzcoskun.imageslider.ImageSlider
                 android:id="@+id/photo_carousel2"

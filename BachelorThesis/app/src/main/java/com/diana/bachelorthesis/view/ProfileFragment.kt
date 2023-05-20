@@ -36,24 +36,25 @@ class ProfileFragment : Fragment(), BasicFragment, ProfileOptionsListener {
         Log.d(TAG, "ProfileFragment is onCreateView")
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "ProfileFragment is onViewCreated")
+        setAuthOrProfileAppbar(
+            requireActivity(),
+            requireView().findNavController().currentDestination!!.label.toString()
+        )
         getViewModels()
         initListeners()
-        return root
+        updateUI()
     }
 
     private fun getViewModels() {
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "ProfileFragment is onActivityCreated")
-        setAuthOrProfileAppbar(
-            requireActivity(),
-            requireView().findNavController().currentDestination!!.label.toString()
-        )
-        updateUI()
     }
 
     override fun initListeners() {

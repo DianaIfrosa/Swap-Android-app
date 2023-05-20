@@ -33,21 +33,17 @@ class ChatFragment : Fragment(), BasicFragment {
         _binding = FragmentChatBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        updateRecyclerView(arrayListOf(), true)
+
+
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "ChatFragment is onViewCreated")
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        updateRecyclerView(arrayListOf(), true)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "ChatFragment is onActivityCreated")
         setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
-
         chatViewModel = ViewModelProvider(requireActivity())[ChatViewModel::class.java]
         initListeners()
     }

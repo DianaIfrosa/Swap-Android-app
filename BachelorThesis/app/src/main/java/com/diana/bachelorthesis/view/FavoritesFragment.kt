@@ -39,24 +39,20 @@ class FavoritesFragment : Fragment(), BasicFragment {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         val root: View = binding.root
         initTabLayoutAndViewPager()
+
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "FavoritesFragment is onViewCreated")
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "FavoritesFragment is onActivityCreated")
+        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
         smoothScroller = object : LinearSmoothScroller(context) {
             override fun getVerticalSnapPreference(): Int {
                 return SNAP_TO_START
             }
         }
         favoritesViewModel = ViewModelProvider(this)[FavoritesViewModel::class.java]
-        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
     }
 
     private fun initTabLayoutAndViewPager() {

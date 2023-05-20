@@ -1,6 +1,7 @@
 package com.diana.bachelorthesis.repository
 
 import android.util.Log
+import com.diana.bachelorthesis.model.History
 import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemDonation
@@ -11,9 +12,6 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import javax.inject.Singleton
 
 @Singleton
@@ -344,6 +342,63 @@ class ItemRepository {
                 callback.onComplete()
             } else {
                 Log.w(TAG, "Error occurred while marking item $itemId as given.")
+                callback.onError(task.exception)
+            }
+        }
+    }
+
+    fun getHistoryItems(currentPosition: Int, historyObjects: ArrayList<History>, result: ArrayList<Pair<Item, Item?>>, callback: ListParamCallback<Pair<Item, Item?>>) {
+        val currentHistory = historyObjects[currentPosition]
+        val forExchange = currentHistory.item2 != null
+
+        var docRef: CollectionReference
+        if (forExchange)
+            docRef = db.collection(EXCHANGE_COLLECTION)
+        else
+            docRef = db.collection(DONATION_COLLECTION)
+
+        docRef.document(currentHistory.item1).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val item1 = if (forExchange) task.result.toObject(ItemExchange::class.java) else task.result.toObject(ItemDonation::class.java)
+                if (item1 != null) {
+                    if (!forExchange) { // donation event
+                        result.add(Pair(item1, null))
+                        if (currentPosition == historyObjects.size - 1) {
+                            callback.onComplete(result)
+                        } else {
+                            getHistoryItems(currentPosition + 1, historyObjects, result, callback)
+                        }
+                    } else { //exchange event
+
+                        docRef.document(currentHistory.item2!!).get().addOnCompleteListener { task2 ->
+
+                            if (task2.isSuccessful) {
+                                val item2 = task.result.toObject(ItemExchange::class.java)
+                                if (item2 != null) {
+                                    result.add(Pair(item1, item2))
+                                    if (currentPosition == historyObjects.size - 1) {
+                                        callback.onComplete(result)
+                                    } else {
+                                        getHistoryItems(currentPosition + 1, historyObjects, result, callback)
+                                    }
+                                } else {
+                                    Log.w(TAG, "Error while retrieving item with id ${currentHistory.item2!!}")
+                                    callback.onError(task.exception)
+                                }
+
+                            } else {
+                                Log.w(TAG, "Error while retrieving item with id ${currentHistory.item2!!}")
+                                callback.onError(task.exception)
+                            }
+                        }
+                    }
+                } else {
+                    Log.w(TAG, "Error while retrieving item with id ${currentHistory.item1}")
+                    callback.onError(task.exception)
+                }
+
+            } else {
+                Log.w(TAG, "Error while retrieving item with id ${currentHistory.item1}")
                 callback.onError(task.exception)
             }
         }

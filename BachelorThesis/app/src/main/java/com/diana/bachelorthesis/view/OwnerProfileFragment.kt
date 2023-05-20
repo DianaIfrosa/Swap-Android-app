@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.diana.bachelorthesis.adapters.ItemsHorizontalRecyclerViewAdapter
-import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentOwnerProfileBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.utils.BasicFragment
@@ -38,7 +37,6 @@ class OwnerProfileFragment : Fragment(), BasicFragment {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         updateRecyclerView(arrayListOf(), true)
-
         return root
     }
 
@@ -50,14 +48,10 @@ class OwnerProfileFragment : Fragment(), BasicFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "OwnerProfileFragment is onViewCreated")
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "OwnerProfileFragment is onActivityCreated")
         getViewModels()
         ownerProfileViewModel.owner = OwnerProfileFragmentArgs.fromBundle(requireArguments()).owner
         setSubPageAppbar(requireActivity(), ownerProfileViewModel.owner.name)
+
         updateUIElements()
 
         ownerProfileViewModel.getItemsFromOwner(object: NoParamCallback {

@@ -70,29 +70,21 @@ class ChatPageFragment : Fragment(), BasicFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "ChatPageFragment is onViewCreated")
-
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "ChatPageFragment is onActivityCreated")
-
         chatPageViewModel = ViewModelProvider(requireActivity())[ChatPageViewModel::class.java]
 
         chatPageViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
         chatPageViewModel.setCurrentChat(ChatPageFragmentArgs.fromBundle(requireArguments()).chat)
+        setSubPageAppbar(requireActivity(), chatPageViewModel.currentChat.value!!.otherUser!!.name)
 
         chatPageViewModel.proposal = ChatPageFragmentArgs.fromBundle(requireArguments()).proposal
         initAdapterAndLayoutManager()
 
-        setSubPageAppbar(requireActivity(), chatPageViewModel.currentChat.value!!.otherUser!!.name)
         chatPageViewModel.listenToChatChanges()
         initListeners()
 
         chatPageViewModel.sendProposalIfExisting()
+
     }
-
-
 
     private fun updateRecyclerView(chat: Chat) {
         adapter = MessagesRecyclerViewAdapter(chatPageViewModel.currentUser, chat.messages, requireContext(), ::onMessageClicked)

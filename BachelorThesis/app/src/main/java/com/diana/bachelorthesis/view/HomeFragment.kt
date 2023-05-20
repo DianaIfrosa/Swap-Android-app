@@ -6,11 +6,9 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -32,18 +30,12 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     private val TAG: String = HomeFragment::class.java.name
 
     private var _binding: FragmentHomeBinding? = null
-    private var firstVisiblePosition = 0
     lateinit var itemsViewModel: ItemsViewModel
     lateinit var userViewModel: UserViewModel
     lateinit var sharedPref: SharedPreferences
 
     private val binding get() = _binding!!
     private lateinit var smoothScroller: RecyclerView.SmoothScroller
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "HomeFragment is onCreate")
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,9 +47,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 //        binding.searchSwitchLayout.switchDonationExchange.isChecked = false
         val root: View = binding.root
-
         updateRecyclerViewSpan()
-
         return root
     }
 
@@ -74,10 +64,10 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "HomeFragment is onActivityCreated")
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "HomeFragment is onViewCreated")
+        setHomeAppbar(requireActivity())
         smoothScroller = object : LinearSmoothScroller(context) {
             override fun getVerticalSnapPreference(): Int {
                 return SNAP_TO_START
@@ -104,7 +94,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         itemsViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()
         itemsViewModel.populateLiveData()
 
-        setHomeAppbar(requireActivity())
     }
 
     private fun setSearchBarUI() {

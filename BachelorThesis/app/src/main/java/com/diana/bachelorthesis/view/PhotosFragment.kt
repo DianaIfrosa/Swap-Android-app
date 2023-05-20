@@ -38,13 +38,7 @@ class PhotosFragment : Fragment(), BasicFragment {
         Log.d(TAG, "PhotosFragment is onViewCreated")
         item = PhotosFragmentArgs.fromBundle(requireArguments()).item
         binding.photoCarousel.setImageList(ItemsRecyclerViewAdapter.getPhotos(item))
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "PhotosFragment is on onActivityCreated")
         setSubPageAppbar(requireActivity(), item.name)
-
     }
 
     override fun initListeners() {}

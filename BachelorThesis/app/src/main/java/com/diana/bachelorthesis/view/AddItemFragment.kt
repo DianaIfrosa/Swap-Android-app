@@ -20,7 +20,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,8 +35,6 @@ import com.diana.bachelorthesis.viewmodel.AddItemViewModel
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.GeoPoint
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -51,8 +48,8 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     private val PICK_IMAGE_CODE = 10
     private var shouldCleanUI = true
 
-    lateinit var addItemViewModel: AddItemViewModel
-    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var addItemViewModel: AddItemViewModel
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private var _binding: FragmentAddItemBinding? = null
 
     private val binding get() = _binding!!
@@ -72,10 +69,9 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         _binding = FragmentAddItemBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val recyclerView: RecyclerView = binding.photosRecyclerView
         val horizontalLayoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.layoutManager = horizontalLayoutManager
+        binding.photosRecyclerView.layoutManager = horizontalLayoutManager
         updatePhotosRecyclerView(arrayListOf())
         getViewModels()
 
@@ -89,11 +85,6 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "AddItemFragment is onViewCreated")
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "AddItemFragment is onActivityCreated")
         setMainPageAppbar(
             requireActivity(),
             requireView().findNavController().currentDestination!!.label.toString()
@@ -145,7 +136,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
                 val view = super.getDropDownView(position, convertView, parent) as TextView
                 // make first option grey, as a hint
                 if (position == 0)
-                    view.setTextColor(resources.getColor(R.color.grey))
+                    view.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey))
                 return view
             }
         }
@@ -186,7 +177,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
                 val view = super.getDropDownView(position, convertView, parent) as TextView
                 // make first option grey, as a hint
                 if (position == 0)
-                    view.setTextColor(resources.getColor(R.color.grey))
+                    view.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey))
                 return view
             }
         }
@@ -314,12 +305,12 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
     private fun createSnackBar(text: String, view: View): Snackbar {
         val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_INDEFINITE)
-            .setAction("OK") {}.setActionTextColor(resources.getColor(R.color.black))
-            .setTextColor(resources.getColor(R.color.black))
+            .setAction("OK") {}.setActionTextColor(ContextCompat.getColor(requireContext(),R.color.black))
+            .setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
 
         val margin = 15
         val snackbarView: View = snackbar.view
-        snackbarView.setBackgroundColor(resources.getColor(R.color.grey_light))
+        snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.grey_light))
         snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines =
             15
 
@@ -365,7 +356,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
             // make first option grey, as a hint
             if (value == getString(R.string.select)) {
                 if (view != null)
-                    (view as TextView).setTextColor(resources.getColor(R.color.grey))
+                    (view as TextView).setTextColor(ContextCompat.getColor(requireContext(),R.color.grey))
             }
 
             when (parent.id) {

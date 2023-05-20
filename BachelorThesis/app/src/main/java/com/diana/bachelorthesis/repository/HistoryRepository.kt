@@ -37,6 +37,7 @@ class HistoryRepository {
                         resultList.add(history)
                     }
                 }
+                Log.d(TAG, "Successfully retrieved history objects for user $userEmail")
                 callback.onComplete(resultList)
             } else {
                 Log.w(TAG, "Error while retrieving history objects")

@@ -9,9 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.diana.bachelorthesis.R
@@ -52,20 +52,14 @@ class ProposalItemChoiceDialogFragment : DialogFragment() {
         customizeToolbar()
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        updateRecyclerView(arrayListOf(), true)
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "ProposalItemChoiceDialogFragment is onViewCreated")
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        updateRecyclerView(arrayListOf(), true)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "ProposalItemChoiceDialogFragment is onActivityCreated")
         doViewModelInit()
     }
 
@@ -108,7 +102,7 @@ class ProposalItemChoiceDialogFragment : DialogFragment() {
 
     private fun customizeToolbar() {
         toolbar.title = getString(R.string.choose_item)
-        toolbar.setTitleTextColor(resources.getColor(R.color.purple_dark))
+        toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), R.color.purple_dark))
         toolbar.setNavigationOnClickListener {
             dialog!!.dismiss()
         }

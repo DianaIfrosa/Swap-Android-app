@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="You received:"
+                    android:text="@string/you_received"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -65,12 +65,12 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="18dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:text="from"
+                android:text="@string/from"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -101,8 +101,6 @@
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-
-
             </LinearLayout>
 
 
@@ -119,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="on"
+                    android:text="@string/on"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 

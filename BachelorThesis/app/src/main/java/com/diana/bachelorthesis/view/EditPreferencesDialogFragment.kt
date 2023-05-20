@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.diana.bachelorthesis.R
@@ -60,15 +61,21 @@ class EditPreferencesDialogFragment : DialogFragment() {
         customizeToolbar()
 
         fragmentParent = parentFragment as ProfileFragment
-        profileViewModel = ViewModelProvider(fragmentParent)[ProfileViewModel::class.java]
+
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
 
-        initCheckboxes()
-        updateUI()
         setAdaptersAutocomplete()
-        initListeners()
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "EditPreferencesDialogFragment is onViewCreated")
+        profileViewModel = ViewModelProvider(fragmentParent)[ProfileViewModel::class.java]
+        initCheckboxes()
+        updateUI()
+        initListeners()
     }
 
     private fun setAdaptersAutocomplete() {
@@ -263,7 +270,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
 
     private fun customizeToolbar() {
         toolbar.title = getString(R.string.edit_preferences)
-        toolbar.setTitleTextColor(resources.getColor(R.color.purple_dark))
+        toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), R.color.purple_dark))
         toolbar.setNavigationOnClickListener {
             dialog!!.dismiss()
         }

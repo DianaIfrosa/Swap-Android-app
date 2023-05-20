@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso
 
 class ItemsHorizontalRecyclerViewAdapter(
     private var itemsList: List<Item>,
-    var canCloseCard: Boolean,
+    private var canCloseCard: Boolean,
     var context: Context,
     private val onItemClosed: (() -> Unit)?,
     private val onItemClicked: (Item) -> Unit

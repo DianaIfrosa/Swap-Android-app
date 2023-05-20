@@ -62,14 +62,18 @@ class EditProfileDialogFragment : DialogFragment() {
         customizeToolbar()
 
         fragmentParent = parentFragment as ProfileFragment
-        getViewModels()
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
 
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "EditProfileDialogFragment is onViewCreated")
+        getViewModels()
         restoreValues()
         updateUI()
         initListeners()
-
-        return root
     }
 
     private fun getViewModels() {
@@ -110,7 +114,7 @@ class EditProfileDialogFragment : DialogFragment() {
 
     private fun customizeToolbar() {
         toolbar.title = getString(R.string.edit_profile)
-        toolbar.setTitleTextColor(resources.getColor(R.color.purple_dark))
+        toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), R.color.purple_dark))
         toolbar.setNavigationOnClickListener {
             dialog!!.dismiss()
         }

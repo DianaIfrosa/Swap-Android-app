@@ -7,10 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
@@ -46,14 +42,33 @@ class RecommendationsFragment : Fragment(), BasicFragment {
                 return SNAP_TO_START
             }
         }
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
+
+        updateRecyclerView(listOf(), true)
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "RecommendationsFragment is onViewCreated")
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
+        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
+        getViewModels()
+
+        if (mainViewModel.clickedOnRecommendations) {
+            recommendationsViewModel.lastScrollPosition = 0
+            initListeners()
+            recommendationsViewModel.populateLiveDataItems()
+        } else if (mainViewModel.modifiedRecommendations) {
+            // the user modified the preferences from the profile
+            recommendationsViewModel.lastScrollPosition = 0
+            initListeners()
+            recommendationsViewModel.populateLiveDataItems()
+            mainViewModel.modifiedRecommendations = false
+        } else {
+            recommendationsViewModel.items.value?.let { updateRecyclerView(it) }
+            scrollRecyclerView()
+        }
     }
 
     private fun scrollRecyclerView() {
@@ -73,28 +88,6 @@ class RecommendationsFragment : Fragment(), BasicFragment {
         recommendationsViewModel = ViewModelProvider(requireActivity())[RecommendationsViewModel::class.java]
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         recommendationsViewModel.currentUser = mainViewModel.currentUser!!
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "RecommendationsFragment is onActivityCreated")
-        getViewModels()
-        updateRecyclerView(listOf(), true)
-        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
-        if (mainViewModel.clickedOnRecommendations) {
-            recommendationsViewModel.lastScrollPosition = 0
-            initListeners()
-            recommendationsViewModel.populateLiveDataItems()
-        } else if (mainViewModel.modifiedRecommendations) {
-            // the user modified the preferences from the profile
-            recommendationsViewModel.lastScrollPosition = 0
-            initListeners()
-            recommendationsViewModel.populateLiveDataItems()
-            mainViewModel.modifiedRecommendations = false
-        } else {
-            recommendationsViewModel.items.value?.let { updateRecyclerView(it) }
-            scrollRecyclerView()
-        }
     }
 
     override fun onResume() {

@@ -25,7 +25,6 @@ import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.viewmodel.ProposalPageViewModel
 import com.squareup.picasso.Picasso
 import java.lang.Exception
-import java.util.*
 
 class ProposalPageFragment : Fragment(), BasicFragment {
     private val TAG: String = ProposalPageFragment::class.java.name
@@ -53,6 +52,8 @@ class ProposalPageFragment : Fragment(), BasicFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "ProposalPageFragment is onViewCreated")
+        setSubPageAppbar(requireActivity(), getString(R.string.proposal))
+        initViewModel()
     }
 
     private fun initViewModel() {
@@ -79,15 +80,6 @@ class ProposalPageFragment : Fragment(), BasicFragment {
 
         })
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "ProposalPageFragment is onActivityCreated")
-        initViewModel()
-
-        setSubPageAppbar(requireActivity(), getString(R.string.proposal))
-    }
-
 
     private fun updateUI() {
         // button text
@@ -116,7 +108,7 @@ class ProposalPageFragment : Fragment(), BasicFragment {
     }
 
     private fun updateUIForDonation() {
-        binding.root.setBackgroundColor(resources.getColor(R.color.yellow_pale))
+        binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.yellow_pale))
         binding.item2Layout.visibility = View.GONE
 
         binding.item1 = proposalPageViewModel.item1
@@ -140,7 +132,7 @@ class ProposalPageFragment : Fragment(), BasicFragment {
     }
 
     private fun updateUIForExchange() {
-        binding.root.setBackgroundColor(resources.getColor(R.color.purple_pale))
+        binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.purple_pale))
         binding.item1Layout.visibility = View.VISIBLE
 
         binding.item1 = proposalPageViewModel.item1
@@ -232,7 +224,7 @@ class ProposalPageFragment : Fragment(), BasicFragment {
                 val alertDialog = AlertDialog.Builder(requireActivity())
                     .setTitle(getString(R.string.accept_proposal))
                     .setMessage(getString(R.string.alert_accept_proposal))
-                    .setPositiveButton(getString(R.string.yes)) { dialog, p1 ->
+                    .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
                         dialog.cancel()
                         (it as CircularProgressButton).startAnimation()
 

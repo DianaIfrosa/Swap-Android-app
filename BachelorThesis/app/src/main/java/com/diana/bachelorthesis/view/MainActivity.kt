@@ -15,9 +15,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.ActivityMainBinding
@@ -47,12 +45,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var navView: NavigationView
     private lateinit var headerLayout: View
 
-    lateinit var userViewModel: UserViewModel
-    lateinit var mainViewModel: MainViewModel
-    lateinit var itemsViewModel: ItemsViewModel
-    lateinit var chatViewModel: ChatViewModel
+    private lateinit var userViewModel: UserViewModel
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var itemsViewModel: ItemsViewModel
+    private lateinit var chatViewModel: ChatViewModel
 
-    lateinit var sharedPref: SharedPreferences
+    private lateinit var sharedPref: SharedPreferences
     var returnedHomeFromItemPage: Boolean = false // TODO delete if no longer used
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,7 +130,7 @@ class MainActivity : AppCompatActivity() {
         initListeners()
     }
 
-    fun restoreCurrentUserData() {
+    private fun restoreCurrentUserData() {
         val gson = Gson()
         val json: String? = sharedPref.getString(SharedPreferencesUtils.sharedPrefCurrentUser, "")
         if (!json.isNullOrEmpty()) {
@@ -195,29 +193,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initListeners() {
-        binding.appBarMain.iconAppBar.setOnClickListener { view ->
+        binding.appBarMain.iconAppBar.setOnClickListener {
             if (userViewModel.verifyUserLoggedIn()) {
                 navController.navigate(R.id.nav_profile)
             } else {
                 navController.navigate(R.id.nav_intro_auth)
             }
         }
-        headerLayout.findViewById<Button>(R.id.btnAuthNavHeader)?.setOnClickListener { view ->
+        headerLayout.findViewById<Button>(R.id.btnAuthNavHeader)?.setOnClickListener {
             if (!userViewModel.verifyUserLoggedIn()) {
                 drawerLayout.closeDrawer(GravityCompat.START)
                 navController.navigate(R.id.nav_intro_auth)
             }
         }
 
-        headerLayout.findViewById<ImageView>(R.id.photoNavHeader)?.setOnClickListener { view ->
+        headerLayout.findViewById<ImageView>(R.id.photoNavHeader)?.setOnClickListener {
             goToProfileFromMenu()
         }
 
-        headerLayout.findViewById<TextView>(R.id.nameNavHeader)?.setOnClickListener { view ->
+        headerLayout.findViewById<TextView>(R.id.nameNavHeader)?.setOnClickListener {
             goToProfileFromMenu()
         }
 
-        headerLayout.findViewById<TextView>(R.id.emailNavHeader)?.setOnClickListener { view ->
+        headerLayout.findViewById<TextView>(R.id.emailNavHeader)?.setOnClickListener {
             goToProfileFromMenu()
         }
     }

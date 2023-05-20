@@ -53,21 +53,20 @@ class IntroAuthFragment : Fragment(), BasicFragment {
         val introScreensAdapter = IntroScreensAdapter()
         binding.viewPager.adapter = introScreensAdapter
         binding.springDotsIndicator.attachTo(binding.viewPager)
-        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-
-        initListeners()
 
         return root
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "IntroAuthFragment is onActivityCreated")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "IntroAuthFragment is onViewCreated")
         setAuthOrProfileAppbar(
             requireActivity(),
             requireView().findNavController().currentDestination!!.label.toString()
         )
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
+
+        initListeners()
     }
 
     override fun initListeners() {

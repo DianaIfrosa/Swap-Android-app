@@ -80,13 +80,13 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
         binding.placeAutocompleteFragment.visibility = View.GONE
         binding.progressBar.visibility = View.VISIBLE
         binding.recyclerViewItems.visibility = View.GONE
-
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "MapFragment is onViewCreated")
+        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
         MapsInitializer.initialize(requireActivity().applicationContext, Renderer.LATEST, this)
 
         if (!Places.isInitialized()) {
@@ -95,14 +95,6 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
 
         getViewModels()
         initListeners()
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "MapFragment is onActivityCreated")
-        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
-
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 

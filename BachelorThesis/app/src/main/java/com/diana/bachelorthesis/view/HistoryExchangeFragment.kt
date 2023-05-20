@@ -37,16 +37,15 @@ class HistoryExchangeFragment : Fragment(), BasicFragment {
         Log.d(TAG, "HistoryExchangeFragment is onCreateView")
         _binding = FragmentHistoryExchangeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        binding.progressBar.visibility = View.VISIBLE
+        binding.mainLayout.visibility = View.GONE
         return root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "HistoryExchangeFragment is onActivityCreated")
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "HistoryExchangeFragment is onViewCreated")
         setSubPageAppbar(requireActivity(), getString(R.string.exchange))
-
         historyEventViewModel = ViewModelProvider(this)[HistoryEventViewModel::class.java]
         getNavigationArguments()
         historyEventViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
@@ -68,14 +67,7 @@ class HistoryExchangeFragment : Fragment(), BasicFragment {
                 Toast.makeText(requireContext(), getString( R.string.something_failed), Toast.LENGTH_LONG).show()
             }
         })
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "HistoryExchangeFragment is onViewCreated")
-
-        binding.progressBar.visibility = View.VISIBLE
-        binding.mainLayout.visibility = View.GONE
     }
 
     private fun updateUIElements() {

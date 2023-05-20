@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
@@ -43,11 +42,6 @@ class FavoriteExchangesFragment : Fragment() {
         Log.d(TAG, "FavoriteExchangesFragment is onViewCreated")
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "FavoriteExchangesFragment is onActivityCreated")
         favoritesViewModel = ViewModelProvider(requireParentFragment())[FavoritesViewModel::class.java]
     }
 
@@ -65,7 +59,7 @@ class FavoriteExchangesFragment : Fragment() {
         favoritesViewModel.exchangeItems.observe(viewLifecycleOwner) { items->
             Log.d(TAG, "update exchanges with items nr ${items.size}")
             updateRecyclerView(items)
-            (parentFragment as FavoritesFragment).scrollRecyclerView(binding.recyclerView)
+//            (parentFragment as FavoritesFragment).scrollRecyclerView(binding.recyclerView)
         }
     }
 

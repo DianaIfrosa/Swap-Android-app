@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.model.*
 import com.diana.bachelorthesis.repository.HistoryRepository
 import com.diana.bachelorthesis.repository.ItemRepository
-import com.diana.bachelorthesis.repository.UserRepository
 import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.utils.NoParamCallback
 
@@ -21,7 +20,6 @@ class HistoryViewModel : ViewModel() {
 
     var allItems: ArrayList<Item> = arrayListOf()
     var currentUserItems: ArrayList<Item> = arrayListOf()
-    var historyList: ArrayList<History> = arrayListOf()
 
     private var _availableItems = MutableLiveData<List<Item>>()
     private var _notAvailableItemsHistory = MutableLiveData<List<History>>()
@@ -161,22 +159,6 @@ class HistoryViewModel : ViewModel() {
             currentUser.email,
             object : ListParamCallback<History> {
                 override fun onComplete(values: ArrayList<History>) {
-//                    historyList = values
-//                    Log.d(TAG, "History objects retrieved from db (donations received + others)")
-//                    historyList.forEach {
-//                        Log.d(TAG, it.eventId)
-//                        Log.d(TAG, it.item1)
-//                        Log.d(TAG, it.item2 ?: "null")
-//                        Log.d(TAG, "---------------------")
-//                    }
-//                    val correspondingItems = getCorrespondingItems(notAvailableItemsUser, values)
-//                    Log.d(TAG, "Not available items first")
-//                    notAvailableItemsUser.
-//                    Log.d(TAG, "Corresponding items")
-//                    correspondingItems.forEach {
-//                        Log.d(TAG, it.name)
-//                    }
-//                    _notAvailableItems.value = notAvailableItemsUser.zip(correspondingItems)
                     _notAvailableItemsHistory.value = values
                 }
 
@@ -185,32 +167,6 @@ class HistoryViewModel : ViewModel() {
                 }
 
             })
-    }
-
-    private fun getCorrespondingItems(itemsIds: ArrayList<Item>, historyList: ArrayList<History>): ArrayList<Item?> {
-        val resultList = arrayListOf<Item?>()
-
-        historyList.zip(itemsIds).forEach { (history, item) ->
-            if (history.item2 == null) { // donation
-                resultList.add(null)
-            } else { // exchange
-
-                if (history.item1 == item.itemId) {
-                    // search for the second item
-                    val secondItem = allItems.find {currentItem ->
-                        currentItem.itemId == history.item2
-                    }
-                    resultList.add(secondItem)
-                } else { // search for the first item
-                    val secondItem = allItems.find {currentItem ->
-                        currentItem.itemId == history.item1
-                    }
-                    resultList.add(secondItem)
-                }
-            }
-        }
-
-        return resultList
     }
 
 }

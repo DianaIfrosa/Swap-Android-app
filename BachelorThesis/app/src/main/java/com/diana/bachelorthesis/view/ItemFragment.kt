@@ -34,7 +34,7 @@ class ItemFragment : Fragment(), BasicFragment {
     private val TAG: String = ItemFragment::class.java.name
     private var _binding: FragmentItemBinding? = null
     private val binding get() = _binding!!
-    lateinit var userViewModel: UserViewModel
+    private lateinit var userViewModel: UserViewModel
     lateinit var itemPageViewModel: ItemPageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +50,6 @@ class ItemFragment : Fragment(), BasicFragment {
         Log.d(TAG, "ItemFragment is on onCreateView")
         _binding = FragmentItemBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        getViewModels()
 
         return root
     }
@@ -58,8 +57,9 @@ class ItemFragment : Fragment(), BasicFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "ItemFragment is on onViewCreated")
-
+        getViewModels()
         itemPageViewModel.currentItem = ItemFragmentArgs.fromBundle(requireArguments()).itemClicked
+        setSubPageAppbar(requireActivity(), itemPageViewModel.currentItem.name)
 
         userViewModel.getUserData(
             itemPageViewModel.currentItem.owner,
@@ -77,16 +77,9 @@ class ItemFragment : Fragment(), BasicFragment {
                     )
                 }
             })
+
         showItemDetails()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "ItemFragment is on onActivityCreated")
-        setSubPageAppbar(requireActivity(), itemPageViewModel.currentItem.name)
-
         updateUIElements()
-
         initListeners()
     }
 
@@ -125,7 +118,7 @@ class ItemFragment : Fragment(), BasicFragment {
             val alertDialog = AlertDialog.Builder(requireActivity())
                 .setTitle(getString(R.string.delete_item_title_dialog))
                 .setMessage(getString(R.string.delete_item_message_dialog))
-                .setPositiveButton(getString(R.string.yes)) { dialog, p1 ->
+                .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
                     dialog.cancel()
                     binding.itemPageLayout.visibility = View.GONE
                     binding.progressBarDelete.visibility = View.VISIBLE

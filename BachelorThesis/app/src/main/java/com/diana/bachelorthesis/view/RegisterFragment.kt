@@ -48,16 +48,14 @@ class RegisterFragment : Fragment(), BasicFragment {
         Log.d(TAG, "RegisterFragment is onCreateView")
         _binding = FragmentRegisterBinding.inflate(layoutInflater)
         val root: View = binding.root
-        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
-
         return root
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "RegisterFragment is onActivityCreated")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "RegisterFragment is onViewCreated")
         setAuthOrProfileAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         initListeners()
     }
 
@@ -232,7 +230,7 @@ class RegisterFragment : Fragment(), BasicFragment {
                 DrawableCompat.wrap(
                     AppCompatResources.getDrawable(requireActivity(), R.drawable.ic_check)!!
                 )
-            statusImageButton.setBackgroundDrawable(icon)
+            statusImageButton.background = icon
             fieldInputLayout.apply {
                 isHelperTextEnabled = false
                 helperText = ""
@@ -243,8 +241,8 @@ class RegisterFragment : Fragment(), BasicFragment {
                 DrawableCompat.wrap(
                     AppCompatResources.getDrawable(requireActivity(), R.drawable.ic_cancel)!!
                 )
-            DrawableCompat.setTint(icon, resources.getColor(R.color.red_light))
-            statusImageButton.setBackgroundDrawable(icon)
+            DrawableCompat.setTint(icon, ContextCompat.getColor(requireContext(), R.color.red_light))
+            statusImageButton.background = icon
             fieldInputLayout.apply {
                 isHelperTextEnabled = true
 

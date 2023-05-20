@@ -156,5 +156,4 @@ class FilterDialogFragment : DialogFragment() {
         Log.d(TAG, "FilterDialogFragment is onDestroyView")
     }
 
-    // TODO filtrare dupa categorie, dupa owner (cautare dupa nume), oras, tara?
 }

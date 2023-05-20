@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.diana.bachelorthesis.R
@@ -45,16 +46,20 @@ class EditNotificationsDialogFragment : DialogFragment() {
         customizeToolbar()
 
         fragmentParent = parentFragment as ProfileFragment
-        profileViewModel = ViewModelProvider(fragmentParent)[ProfileViewModel::class.java]
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-        restoreOption()
 
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        profileViewModel = ViewModelProvider(fragmentParent)[ProfileViewModel::class.java]
+        restoreOption()
+    }
+
     private fun customizeToolbar() {
         toolbar.title = getString(R.string.edit_notifications)
-        toolbar.setTitleTextColor(resources.getColor(R.color.purple_dark))
+        toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), R.color.purple_dark))
         toolbar.setNavigationOnClickListener {
             dialog!!.dismiss()
         }
@@ -68,11 +73,6 @@ class EditNotificationsDialogFragment : DialogFragment() {
             dialog!!.dismiss()
             true
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "EditNotificationsDialogFragment is onActivityCreated")
     }
 
     private fun restoreOption() {

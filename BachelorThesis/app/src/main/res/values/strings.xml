@@ -203,6 +203,8 @@
     <string name="go_to_item_page">Go to item page</string>
     <string name="alert_accept_proposal">You should accept a proposal in the app <u>only</u> after you have done the exchange/donation in real life. Please note that if you press OK, the exchange/donation will be considered done in the app and the item(s) will no longer be visible to other users.</string>
     <string name="items_not_available">One of the items is no longer available!</string>
+    <string name="from">from</string>
+    <string name="you_received">You received:</string>
 
 
 </resources>

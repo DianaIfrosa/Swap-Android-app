@@ -6,21 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHistoryAvailableBinding
-import com.diana.bachelorthesis.databinding.FragmentHistoryBinding
 import com.diana.bachelorthesis.model.Item
+import com.diana.bachelorthesis.utils.NoParamCallback
+import com.diana.bachelorthesis.viewmodel.HistoryAvailableViewModel
 import com.diana.bachelorthesis.viewmodel.HistoryViewModel
+import java.lang.Exception
 
 class HistoryAvailableFragment : Fragment() {
     private val TAG: String = HistoryAvailableFragment::class.java.name
     private var _binding: FragmentHistoryAvailableBinding? = null
-    private lateinit var historyViewModel: HistoryViewModel
+    private lateinit var historyViewModel: HistoryAvailableViewModel
 
     private val binding get() = _binding!!
 
@@ -30,42 +32,52 @@ class HistoryAvailableFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.d(TAG, "HistoryAvailableFragment is onCreateView")
-        historyViewModel =
-            ViewModelProvider(requireParentFragment())[HistoryViewModel::class.java]
-
         _binding = FragmentHistoryAvailableBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "HistoryAvailableFragment is onViewCreated")
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "HistoryAvailableFragment is onActivityCreated")
-
+        historyViewModel =
+            ViewModelProvider(this)[HistoryAvailableViewModel::class.java]
+        historyViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
+//        historyViewModel.availableItems.observe(viewLifecycleOwner) {
+//            updateRecyclerView(it)
+////            (parentFragment as HistoryFragment).scrollRecyclerView(binding.recyclerView)
+//        }
     }
 
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "HistoryAvailableFragment is onStart")
-        updateRecyclerView(listOf(), true)
-        historyViewModel.populateItemsAvailable()
+
     }
 
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "HistoryAvailableFragment is onResume")
-        historyViewModel.availableItems.observe(viewLifecycleOwner) {
-            updateRecyclerView(it)
-            (parentFragment as HistoryFragment).scrollRecyclerView(binding.recyclerView)
+
+        if (historyViewModel.availableItems.size != 0) {
+            // already loaded the items in previous visits to tab
+            updateRecyclerView(historyViewModel.availableItems)
+        } else {
+            updateRecyclerView(arrayListOf(), true)
         }
+
+        historyViewModel.populateItemsAvailable(object: NoParamCallback {
+            override fun onComplete() {
+                updateRecyclerView(historyViewModel.availableItems)
+            }
+
+            override fun onError(e: Exception?) {
+                Toast.makeText(context, getString(R.string.something_failed), Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     override fun onPause() {
@@ -76,8 +88,8 @@ class HistoryAvailableFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "HistoryAvailableFragment is onStop")
-        historyViewModel.lastScrollPosition =
-            (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+//        historyViewModel.lastScrollPosition =
+//            (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
     }
 
     private fun updateRecyclerView(items: List<Item>, progressBarAppears: Boolean = false) {

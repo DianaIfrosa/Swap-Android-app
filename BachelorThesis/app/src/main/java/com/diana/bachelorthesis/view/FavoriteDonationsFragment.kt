@@ -42,11 +42,6 @@ class FavoriteDonationsFragment : Fragment() {
         Log.d(TAG, "FavoriteDonationsFragment is onViewCreated")
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "FavoriteDonationsFragment is onActivityCreated")
         favoritesViewModel = ViewModelProvider(requireParentFragment())[FavoritesViewModel::class.java]
     }
 
@@ -63,7 +58,7 @@ class FavoriteDonationsFragment : Fragment() {
         Log.d(TAG, "FavoriteDonationsFragment is onResume")
         favoritesViewModel.donationItems.observe(viewLifecycleOwner) {
             updateRecyclerView(it)
-            (parentFragment as FavoritesFragment).scrollRecyclerView(binding.recyclerView)
+//            (parentFragment as FavoritesFragment).scrollRecyclerView(binding.recyclerView)
         }
     }
 

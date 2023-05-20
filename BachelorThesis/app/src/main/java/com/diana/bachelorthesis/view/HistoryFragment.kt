@@ -58,7 +58,7 @@ class HistoryFragment : Fragment(), BasicFragment {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab != null) {
                     binding.viewPager.currentItem = tab.position
-                    historyViewModel.lastScrollPosition = 0
+//                    historyViewModel.lastScrollPosition = 0
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -90,18 +90,18 @@ class HistoryFragment : Fragment(), BasicFragment {
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "HistoryFragment is onActivityCreated")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "HistoryFragment is onViewCreated")
+        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
         smoothScroller = object : LinearSmoothScroller(context) {
             override fun getVerticalSnapPreference(): Int {
                 return SNAP_TO_START
             }
         }
 
-        getViewModels()
-        historyViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
-        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
+//        getViewModels()
+//        historyViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
     }
 
     private fun getViewModels() {

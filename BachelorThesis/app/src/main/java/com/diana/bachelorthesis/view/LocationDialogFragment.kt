@@ -54,19 +54,13 @@ class LocationDialogFragment : DialogFragment(), OnMapReadyCallback,
         _binding = FragmentLocationDialogBinding.inflate(inflater, container, false)
         val root: View = binding.root
         fragmentParent = parentFragment as AddItemFragment
-//        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         toolbar = root.findViewById(R.id.toolbar_dialog_location)
         binding.mapFragment.visibility = View.GONE
         binding.placeAutocompleteFragment.visibility = View.GONE
         binding.progressBar.visibility = View.VISIBLE
         return root
     }
-
-
-//    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-//        return super.onCreateDialog(savedInstanceState)
-//    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,8 +77,8 @@ class LocationDialogFragment : DialogFragment(), OnMapReadyCallback,
             dialog!!.dismiss()
             true
         }
+
         initMaps()
-//        initListeners()
     }
 
     private fun initMaps() {
@@ -97,11 +91,6 @@ class LocationDialogFragment : DialogFragment(), OnMapReadyCallback,
         if (!Places.isInitialized()) {
             Places.initialize(requireActivity().applicationContext, getString(R.string.api_key))
         }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
 
@@ -114,18 +103,6 @@ class LocationDialogFragment : DialogFragment(), OnMapReadyCallback,
             val width = ViewGroup.LayoutParams.MATCH_PARENT
             val height = ViewGroup.LayoutParams.MATCH_PARENT
             dialog!!.window?.setLayout(width, height)
-        }
-    }
-
-    private fun initListeners() {
-//        binding.toolbarDialogLocation.setOnClickListener {
-//            val listener: LocationDialogListener = fragmentParent
-//            listener.saveLocation(locationChosen)
-//            dialog!!.dismiss()
-//        }
-
-        binding.toolbarDialogLocation.setOnClickListener {
-            dialog!!.dismiss()
         }
     }
 

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentFavoriteDonationsBinding
 import com.diana.bachelorthesis.model.Item
+import com.diana.bachelorthesis.viewmodel.FavoriteDonationsViewModel
 import com.diana.bachelorthesis.viewmodel.FavoritesViewModel
 
 class FavoriteDonationsFragment : Fragment() {
@@ -20,7 +22,7 @@ class FavoriteDonationsFragment : Fragment() {
     private var _binding: FragmentFavoriteDonationsBinding? = null
 
     private val binding get() = _binding!!
-    private lateinit var favoritesViewModel: FavoritesViewModel
+    private lateinit var favoritesViewModel: FavoriteDonationsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,32 +36,37 @@ class FavoriteDonationsFragment : Fragment() {
         Log.d(TAG, "FavoriteDonationsFragment is onCreateView")
         _binding = FragmentFavoriteDonationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
+        updateRecyclerView(listOf(), true)
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "FavoriteDonationsFragment is onViewCreated")
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
-        favoritesViewModel = ViewModelProvider(requireParentFragment())[FavoritesViewModel::class.java]
+        favoritesViewModel = ViewModelProvider(this)[FavoriteDonationsViewModel::class.java]
+        favoritesViewModel.favoriteDonationsIds = (requireActivity() as MainActivity).getCurrentUser()!!.favoriteDonations
+        favoritesViewModel.populateLiveDataDonations()
+        favoritesViewModel.donationItems.observe(viewLifecycleOwner) {items ->
+//            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+            Log.d(TAG, "Observer called")
+                updateRecyclerView(items)
+//            (parentFragment as FavoritesFragment).scrollRecyclerView(binding.recyclerView)
+//            }
+        }
     }
 
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "FavoriteDonationsFragment is onStart")
-        updateRecyclerView(listOf(), true)
-        favoritesViewModel.favoriteDonationsIds = (requireActivity() as MainActivity).getCurrentUser()!!.favoriteDonations
-        favoritesViewModel.populateLiveDataDonations()
+
     }
 
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "FavoriteDonationsFragment is onResume")
-        favoritesViewModel.donationItems.observe(viewLifecycleOwner) {
-            updateRecyclerView(it)
-//            (parentFragment as FavoritesFragment).scrollRecyclerView(binding.recyclerView)
-        }
+
     }
 
     override fun onPause() {
@@ -70,8 +77,8 @@ class FavoriteDonationsFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "FavoriteDonationsFragment is onStop")
-        favoritesViewModel.lastScrollPosition =
-            (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+//        favoritesViewModel.lastScrollPosition =
+//            (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
     }
 
      private fun updateRecyclerView(items: List<Item>, progressBarAppears: Boolean = false) {
@@ -101,5 +108,6 @@ class FavoriteDonationsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d(TAG, "FavoriteDonationsFragment is onDestroyView")
+        _binding = null
     }
 }

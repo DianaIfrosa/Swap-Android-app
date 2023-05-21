@@ -408,12 +408,13 @@ class ItemRepository {
         itemsDonationsListenerRegistration?.remove()
         itemsExchangeListenerRegistration?.remove()
     }
-
-    fun detachFavoritesListener() {
+    fun detachFavDonationsListener() {
         favDonationsListenerRegistration?.remove()
-        favExchangesListenerRegistration?.remove()
     }
 
+    fun detachFavExchangesListener() {
+        favExchangesListenerRegistration?.remove()
+    }
 
 // TODO write the rest of the CRUD operations and use picasso for images;
 // also store images in cloud firebase

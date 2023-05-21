@@ -66,7 +66,7 @@ class FavoritesFragment : Fragment(), BasicFragment {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab != null) {
                     binding.viewPager.currentItem = tab.position
-                    favoritesViewModel.lastScrollPosition = 0
+                    //favoritesViewModel.lastScrollPosition = 0
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -102,7 +102,6 @@ class FavoritesFragment : Fragment(), BasicFragment {
         super.onDestroyView()
         Log.d(TAG, "FavoritesFragment is onDestroyView")
         _binding = null
-        favoritesViewModel.detachListeners()
     }
 
     override fun initListeners() {}

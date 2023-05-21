@@ -13,6 +13,7 @@ import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentFavoriteExchangesBinding
 import com.diana.bachelorthesis.model.Item
+import com.diana.bachelorthesis.viewmodel.FavoriteExchangesViewModel
 import com.diana.bachelorthesis.viewmodel.FavoritesViewModel
 
 class FavoriteExchangesFragment : Fragment() {
@@ -20,7 +21,7 @@ class FavoriteExchangesFragment : Fragment() {
     private var _binding: FragmentFavoriteExchangesBinding? = null
 
     private val binding get() = _binding!!
-    private lateinit var favoritesViewModel: FavoritesViewModel
+    private lateinit var favoritesViewModel: FavoriteExchangesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,33 +35,35 @@ class FavoriteExchangesFragment : Fragment() {
         Log.d(TAG, "FavoriteExchangesFragment is onCreateView")
         _binding = FragmentFavoriteExchangesBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
+        updateRecyclerView(listOf(), true)
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "FavoriteExchangesFragment is onViewCreated")
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
-        favoritesViewModel = ViewModelProvider(requireParentFragment())[FavoritesViewModel::class.java]
+
+        favoritesViewModel = ViewModelProvider(this)[FavoriteExchangesViewModel::class.java]
+        favoritesViewModel.favoriteExchangesIds = (requireActivity() as MainActivity).getCurrentUser()!!.favoriteExchanges
+        favoritesViewModel.populateLiveDataExchanges()
+
+        favoritesViewModel.exchangeItems.observe(viewLifecycleOwner) { items->
+            Log.d(TAG, "Observer called")
+            updateRecyclerView(items)
+//            (parentFragment as FavoritesFragment).scrollRecyclerView(binding.recyclerView)
+        }
     }
 
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "FavoriteExchangesFragment is onStart")
-        updateRecyclerView(listOf(), true)
-        favoritesViewModel.favoriteExchangesIds = (requireActivity() as MainActivity).getCurrentUser()!!.favoriteExchanges
-        favoritesViewModel.populateLiveDataExchanges()
     }
 
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "FavoriteExchangesFragment is onResume")
-        favoritesViewModel.exchangeItems.observe(viewLifecycleOwner) { items->
-            Log.d(TAG, "update exchanges with items nr ${items.size}")
-            updateRecyclerView(items)
-//            (parentFragment as FavoritesFragment).scrollRecyclerView(binding.recyclerView)
-        }
     }
 
     override fun onPause() {
@@ -95,12 +98,13 @@ class FavoriteExchangesFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "FavoriteExchangesFragment is onStop")
-        favoritesViewModel.lastScrollPosition =
-            (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+//        favoritesViewModel.lastScrollPosition =
+//            (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d(TAG, "FavoriteExchangesFragment is onDestroyView")
+        _binding = null
     }
 }

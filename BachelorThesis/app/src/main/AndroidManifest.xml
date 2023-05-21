@@ -22,7 +22,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-<!--        android:theme="@style/Theme.AppSplash"-->
+        <!--        android:theme="@style/Theme.AppSplash"-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBty6htocQZVbjnN-Aga0WpR-UHwcmM_1Q" /> <!-- <uses-library android:name="org.apache.http.legacy" android:required="false" /> -->
@@ -40,6 +40,21 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="http"
+                    android:host="swap-app.com"
+                    android:pathPattern="/mainpage" />
+
+                <data
+                    android:scheme="http"
+                    android:host="swap-app.com/mainpage" />
+            </intent-filter>
         </activity>
 
         <meta-data

@@ -5,8 +5,10 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.model.ItemCategory
+import com.diana.bachelorthesis.model.Mail
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.model.User
+import com.diana.bachelorthesis.repository.MailRepository
 import com.diana.bachelorthesis.repository.PhotoRepository
 import com.diana.bachelorthesis.repository.UserRepository
 import com.diana.bachelorthesis.utils.ListParamCallback
@@ -21,13 +23,23 @@ class UserViewModel : ViewModel() {
     private val TAG: String = UserViewModel::class.java.name
     private val userRepository = UserRepository.getInstance()
     private val photosRepository = PhotoRepository.getInstance()
+    private val mailRepository = MailRepository.getInstance()
 
     fun verifyUserLoggedIn(): Boolean {
         return (userRepository.auth.currentUser != null)
     }
 
+    fun deleteUser() {
+        userRepository.deleteUser()
+    }
+
     fun registerUser(email: String, pass: String, callback: OneParamCallback<FirebaseUser>) {
         userRepository.registerUser(email, pass, callback)
+    }
+
+    fun sendWelcomeEmail(mail: Mail) {
+        Log.d(TAG, "Sending welcome email")
+        mailRepository.addMailEntry(mail)
     }
 
     fun addUser(email: String, name: String, photoUri: Uri?, callback: NoParamCallback? = null) {

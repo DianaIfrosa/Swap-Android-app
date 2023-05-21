@@ -19,7 +19,9 @@ import com.apachat.loadingbutton.core.customViews.CircularProgressButton
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentRegisterBinding
+import com.diana.bachelorthesis.model.Mail
 import com.diana.bachelorthesis.utils.BasicFragment
+import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -120,15 +122,39 @@ class RegisterFragment : Fragment(), BasicFragment {
                     pass,
                     object : OneParamCallback<FirebaseUser> {
                         override fun onComplete(value: FirebaseUser?) {
-                            it.doneLoadingAnimation(
-                                R.color.green_light,
-                                ContextCompat.getDrawable(
-                                    requireActivity(),
-                                    R.drawable.ic_done
-                                )!!.toBitmap()
-                            )
-                            userViewModel.addUser(email, name, null)
-                            userViewModel.signOut() // Firebase register automatically signs in
+                            userViewModel.addUser(email, name, null, object: NoParamCallback {
+                                override fun onComplete() {
+                                    it.doneLoadingAnimation(
+                                        R.color.green_light,
+                                        ContextCompat.getDrawable(
+                                            requireActivity(),
+                                            R.drawable.ic_done
+                                        )!!.toBitmap()
+                                    )
+
+                                    val mail = Mail(
+                                        to = email,
+                                        message = mapOf(
+                                            "subject" to "Swap sign up",
+                                            "html" to getString(R.string.email_welcome_body)
+                                        )
+                                    )
+                                    userViewModel.sendWelcomeEmail(mail)
+
+                                    userViewModel.signOut() // Firebase register automatically signs in
+                                }
+
+                                override fun onError(e: Exception?) {
+                                    it.revertAnimation()
+                                    userViewModel.deleteUser()
+                                    userViewModel.signOut()
+                                    Toast.makeText(
+                                        requireActivity(),
+                                        R.string.something_failed,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            })
                         }
 
                         override fun onError(e: Exception?) {

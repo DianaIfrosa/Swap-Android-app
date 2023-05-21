@@ -31,6 +31,8 @@ import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
+import android.content.Intent
+import android.net.Uri
 
 class MainActivity : AppCompatActivity() {
     private val TAG: String = MainActivity::class.java.name
@@ -123,6 +125,12 @@ class MainActivity : AppCompatActivity() {
         }
         updateAuthUIElements()
         setDefaultSharedPreferencesHomeOptions()
+
+        // ATTENTION: This was auto-generated to handle app links.
+        val appLinkIntent: Intent = intent
+        val appLinkAction: String? = appLinkIntent.action
+        val appLinkData: Uri? = appLinkIntent.data
+        // todo modify?
     }
 
     override fun onStart() {

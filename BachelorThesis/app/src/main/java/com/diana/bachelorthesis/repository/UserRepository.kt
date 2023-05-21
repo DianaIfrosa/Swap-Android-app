@@ -38,6 +38,10 @@ class UserRepository {
             }
     }
 
+    fun deleteUser() {
+        auth.currentUser?.delete()
+    }
+
     fun addOrUpdateUser(userToAdd: User, callback: NoParamCallback? = null) {
         db.collection(COLLECTION_NAME)
             .document(userToAdd.email)

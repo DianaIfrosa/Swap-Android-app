@@ -14,6 +14,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentAuthBinding
+import com.diana.bachelorthesis.model.Mail
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.NoParamCallback
@@ -149,6 +150,14 @@ class AuthFragment : Fragment(), BasicFragment {
             override fun onComplete() {
                 Log.d(TAG, "Added user after Google login completed.")
                 updateCurrentUser(email)
+                val mail = Mail(
+                    to = email,
+                    message = mapOf(
+                        "subject" to "Swap sign up",
+                        "html" to getString(R.string.email_welcome_body)
+                    )
+                )
+                userViewModel.sendWelcomeEmail(mail)
             }
 
             override fun onError(e: Exception?) {
@@ -170,6 +179,7 @@ class AuthFragment : Fragment(), BasicFragment {
                             null,
                             NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
                         )
+
                 } else {
                     userViewModel.signOut()
                     displayErrorToast()

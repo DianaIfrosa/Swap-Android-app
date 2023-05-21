@@ -1,6 +1,8 @@
 package com.diana.bachelorthesis.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.model.*
 import com.diana.bachelorthesis.repository.*
@@ -13,14 +15,17 @@ import kotlin.collections.ArrayList
 class ItemPageViewModel : ViewModel() {
     private val TAG: String = ItemPageViewModel::class.java.name
     lateinit var currentItem: Item
-    var owner: User? = null
+
     private val itemRepository = ItemRepository.getInstance()
     private val photoRepository = PhotoRepository.getInstance()
     private val proposalRepository = ProposalRepository.getInstance()
     private val chatRepository = ChatRepository.getInstance()
+    private val userRepository = UserRepository.getInstance()
 
     var proposal: Proposal? = null
     lateinit var currentUser: User
+    private val _currentOwner = MutableLiveData<User?>()
+    val currentOwner: LiveData<User?> = _currentOwner
 
     fun deleteItem(callback: NoParamCallback) {
         Log.d(TAG, "Deleting item from owner  ${currentItem.owner} and id ${currentItem.itemId}")
@@ -108,7 +113,7 @@ class ItemPageViewModel : ViewModel() {
                     override fun onComplete(values: ArrayList<Chat>) {
                         if (values.size == 1) {
                             val newChat = values[0]
-                            newChat.otherUser = owner
+                            newChat.otherUser = currentOwner.value
                             callback.onComplete(values[0])
                         }
                     }
@@ -121,9 +126,21 @@ class ItemPageViewModel : ViewModel() {
             // create a new chat
             val newChat = Chat(
                 id = currentUser.email + " " + currentItem.owner,
-                otherUser = owner
+                otherUser = currentOwner.value
             )
             callback.onComplete(newChat)
         }
+    }
+
+    fun getUserData() {
+        userRepository.getUserData(currentItem.owner, object: OneParamCallback<User> {
+            override fun onComplete(value: User?) {
+                   _currentOwner.value = value
+            }
+
+            override fun onError(e: java.lang.Exception?) {
+                _currentOwner.value = null
+            }
+        })
     }
 }

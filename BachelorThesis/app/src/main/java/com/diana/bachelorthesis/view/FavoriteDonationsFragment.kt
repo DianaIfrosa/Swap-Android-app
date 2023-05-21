@@ -36,8 +36,8 @@ class FavoriteDonationsFragment : Fragment() {
         Log.d(TAG, "FavoriteDonationsFragment is onCreateView")
         _binding = FragmentFavoriteDonationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireActivity()) {}
         updateRecyclerView(listOf(), true)
         return root
     }
@@ -92,7 +92,7 @@ class FavoriteDonationsFragment : Fragment() {
              binding.progressBar.visibility = View.INVISIBLE
              binding.textNoItems.visibility = View.INVISIBLE
              binding.itemsAdapter =
-                 ItemsRecyclerViewAdapter(items, requireContext()) { item ->
+                 ItemsRecyclerViewAdapter(items, requireActivity()) { item ->
                      val action = FavoritesFragmentDirections.actionNavFavoritesToNavItem(item)
                      requireView().findNavController().navigate(action)
                  }
@@ -108,6 +108,7 @@ class FavoriteDonationsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d(TAG, "FavoriteDonationsFragment is onDestroyView")
+        favoritesViewModel.detachListener()
         _binding = null
     }
 }

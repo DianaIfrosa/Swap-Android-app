@@ -241,7 +241,7 @@ class RegisterFragment : Fragment(), BasicFragment {
                 DrawableCompat.wrap(
                     AppCompatResources.getDrawable(requireActivity(), R.drawable.ic_cancel)!!
                 )
-            DrawableCompat.setTint(icon, ContextCompat.getColor(requireContext(), R.color.red_light))
+            DrawableCompat.setTint(icon, ContextCompat.getColor(requireActivity(), R.color.red_light))
             statusImageButton.background = icon
             fieldInputLayout.apply {
                 isHelperTextEnabled = true

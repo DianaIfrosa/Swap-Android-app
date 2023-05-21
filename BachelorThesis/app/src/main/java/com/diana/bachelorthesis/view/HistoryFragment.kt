@@ -94,11 +94,11 @@ class HistoryFragment : Fragment(), BasicFragment {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "HistoryFragment is onViewCreated")
         setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
-        smoothScroller = object : LinearSmoothScroller(context) {
-            override fun getVerticalSnapPreference(): Int {
-                return SNAP_TO_START
-            }
-        }
+//        smoothScroller = object : LinearSmoothScroller(requireActivity()) {
+//            override fun getVerticalSnapPreference(): Int {
+//                return SNAP_TO_START
+//            }
+//        }
 
 //        getViewModels()
 //        historyViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!

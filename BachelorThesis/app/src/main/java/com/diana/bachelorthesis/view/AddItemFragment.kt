@@ -120,7 +120,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         }
 
         val categoriesAdapter = object : ArrayAdapter<String>(
-            requireContext(),
+            requireActivity(),
             android.R.layout.simple_spinner_item,
             categories
         ) {
@@ -136,7 +136,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
                 val view = super.getDropDownView(position, convertView, parent) as TextView
                 // make first option grey, as a hint
                 if (position == 0)
-                    view.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey))
+                    view.setTextColor(ContextCompat.getColor(requireActivity(), R.color.grey))
                 return view
             }
         }
@@ -161,7 +161,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         }
 
         val conditionAdapter = object : ArrayAdapter<String>(
-            requireContext(),
+            requireActivity(),
             android.R.layout.simple_spinner_item,
             conditionArray
         ) {
@@ -177,7 +177,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
                 val view = super.getDropDownView(position, convertView, parent) as TextView
                 // make first option grey, as a hint
                 if (position == 0)
-                    view.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey))
+                    view.setTextColor(ContextCompat.getColor(requireActivity(), R.color.grey))
                 return view
             }
         }
@@ -264,7 +264,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
             if (fieldsOk) {
                 // save into Firestore DB sync, and after display the done sign
                 addItemViewModel.itemCity =
-                    LocationHelper(requireContext()).getItemCity(addItemViewModel.itemLocation!!)
+                    LocationHelper(requireActivity()).getItemCity(addItemViewModel.itemLocation!!)
 
                 addItemViewModel.addItem(object : OneParamCallback<Item> {
                     override fun onComplete(value: Item?) {
@@ -305,12 +305,12 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
     private fun createSnackBar(text: String, view: View): Snackbar {
         val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_INDEFINITE)
-            .setAction("OK") {}.setActionTextColor(ContextCompat.getColor(requireContext(),R.color.black))
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            .setAction("OK") {}.setActionTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
+            .setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
 
         val margin = 15
         val snackbarView: View = snackbar.view
-        snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.grey_light))
+        snackbarView.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.grey_light))
         snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines =
             15
 

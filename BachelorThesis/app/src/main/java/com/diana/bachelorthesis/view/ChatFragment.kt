@@ -50,7 +50,6 @@ class ChatFragment : Fragment(), BasicFragment {
 
     private fun updateRecyclerView(chats: ArrayList<Chat>, progressBarAppears: Boolean = false) {
         if (binding != null) {
-
             if (progressBarAppears) {
                 binding.recyclerView.visibility = View.GONE
                 binding.textNoChats.visibility = View.GONE

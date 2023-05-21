@@ -48,4 +48,8 @@ class FavoriteDonationsViewModel: ViewModel() {
             }
         })
     }
+
+    fun detachListener() {
+        itemRepository.detachFavDonationsListener()
+    }
 }

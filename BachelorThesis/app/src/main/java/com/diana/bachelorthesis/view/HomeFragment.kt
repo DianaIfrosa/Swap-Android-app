@@ -68,7 +68,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "HomeFragment is onViewCreated")
         setHomeAppbar(requireActivity())
-        smoothScroller = object : LinearSmoothScroller(context) {
+        smoothScroller = object : LinearSmoothScroller(requireActivity()) {
             override fun getVerticalSnapPreference(): Int {
                 return SNAP_TO_START
             }
@@ -257,11 +257,11 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
             scrollRecyclerView()
 
             if (checked) {
-                switchExchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
-                switchDonation.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                switchExchange.setTextColor(ContextCompat.getColor(requireActivity(), R.color.grey))
+                switchDonation.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
             } else {
-                switchExchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-                switchDonation.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
+                switchExchange.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
+                switchDonation.setTextColor(ContextCompat.getColor(requireActivity(), R.color.grey))
             }
         }
     }

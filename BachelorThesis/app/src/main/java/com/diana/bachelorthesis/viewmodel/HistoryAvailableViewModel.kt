@@ -1,5 +1,7 @@
 package com.diana.bachelorthesis.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemDonation
@@ -17,19 +19,19 @@ class HistoryAvailableViewModel: ViewModel() {
     lateinit var currentUser: User
     var allItems: ArrayList<Item> = arrayListOf()
     var currentUserItems: ArrayList<Item> = arrayListOf()
-    var availableItems: ArrayList<Item> = arrayListOf()
+    private var _availableItems =  MutableLiveData<ArrayList<Item>?>()
+    var availableItems: LiveData<ArrayList<Item>?> = _availableItems
 
-    fun populateItemsAvailable(callback: NoParamCallback) {
+    fun populateItemsAvailable() {
         getAllItems(object: NoParamCallback {
             override fun onComplete() {
                 // retrieved all items
                 getCurrentUserItems()
-                getAvailableItems()
-                callback.onComplete()
+                _availableItems.value = getAvailableItems()
             }
 
             override fun onError(e: java.lang.Exception?) {
-                    callback.onError(e)
+                _availableItems.value = null
             }
         })
     }
@@ -44,7 +46,7 @@ class HistoryAvailableViewModel: ViewModel() {
         currentUserItems = result
     }
 
-    private fun getAvailableItems() {
+    private fun getAvailableItems(): ArrayList<Item> {
         val availableItemsUser = arrayListOf<Item>()
 
         currentUserItems.forEach { item ->
@@ -59,7 +61,7 @@ class HistoryAvailableViewModel: ViewModel() {
             }
         }
 
-        availableItems = availableItemsUser
+        return availableItemsUser
     }
 
     private fun getAllItems(callback: NoParamCallback) {

@@ -1,5 +1,7 @@
 package com.diana.bachelorthesis.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemDonation
@@ -13,9 +15,10 @@ class OwnerProfileViewModel : ViewModel() {
 
     lateinit var owner: User
     private val itemRepository = ItemRepository.getInstance()
-    var allItems: ArrayList<Item> = arrayListOf()
+    private val _allItems = MutableLiveData<ArrayList<Item>?>()
+    var allItems: LiveData<ArrayList<Item>?> = _allItems
 
-    fun getItemsFromOwner(callback: NoParamCallback) {
+    fun getItemsFromOwner() {
         val items = arrayListOf<Item>()
         // get exchange items
         itemRepository.getItemsFromOwner(owner.email, true, object: ListParamCallback<Item> {
@@ -52,14 +55,12 @@ class OwnerProfileViewModel : ViewModel() {
                             items.add(it)
                         }
                         items.shuffle()
-                        allItems = items
-                        callback.onComplete()
+                        _allItems.value = items
                     }
 
                     override fun onError(e: Exception?) {
                         items.shuffle()
-                        allItems = items
-                        callback.onComplete()
+                        _allItems.value = items
                     }
                 })
             }
@@ -83,14 +84,12 @@ class OwnerProfileViewModel : ViewModel() {
                             items.add(it)
                         }
                         items.shuffle()
-                        allItems = items
-                        callback.onComplete()
+                        _allItems.value = items
                     }
 
                     override fun onError(e: Exception?) {
                         items.shuffle()
-                        allItems = items
-                        callback.onComplete()
+                        _allItems.value = null
                     }
                 })
             }

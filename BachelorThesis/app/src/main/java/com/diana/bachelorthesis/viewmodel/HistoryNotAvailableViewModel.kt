@@ -1,6 +1,8 @@
 package com.diana.bachelorthesis.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.model.*
 import com.diana.bachelorthesis.repository.HistoryRepository
@@ -18,10 +20,12 @@ class HistoryNotAvailableViewModel: ViewModel() {
 
     var allItems: ArrayList<Item> = arrayListOf()
     var currentUserItems: ArrayList<Item> = arrayListOf()
-    var notAvailableItemsHistory: ArrayList<History> = arrayListOf()
-    var itemsPairs: ArrayList<Pair<Item, Item?>> = arrayListOf()
+    var itemsPairs: ArrayList<Pair<Item, Item?>>? = arrayListOf()
 
-    fun populateItemsNotAvailable(callback: NoParamCallback) {
+    private val _notAvailableItemsHistory = MutableLiveData<ArrayList<History>?>()
+    val notAvailableItemsHistory: LiveData<ArrayList<History>?> = _notAvailableItemsHistory
+
+    fun populateItemsNotAvailable() {
         getAllItems(object: NoParamCallback {
             override fun onComplete() {
                 // retrieved all items
@@ -30,39 +34,42 @@ class HistoryNotAvailableViewModel: ViewModel() {
                     override fun onComplete(values: ArrayList<History>) {
                         Log.d(TAG, "Retrieved history events")
                         val histories = values
-                        if (values.size != notAvailableItemsHistory.size || (values.size == 0 && notAvailableItemsHistory.size == 0)) {
+                        if ((values.size != (notAvailableItemsHistory.value?.size
+                                ?: 0)) || (values.size == 0 && ((notAvailableItemsHistory.value?.size ?: 0) == 0))
+                        ) {
                             if (histories.isNotEmpty()) {
                                 itemsRepository.getHistoryItems(0, histories, arrayListOf(), object: ListParamCallback<Pair<Item, Item?>> {
                                     override fun onComplete(values: ArrayList<Pair<Item, Item?>>) {
                                         itemsPairs = values
-                                        notAvailableItemsHistory = histories
+                                        _notAvailableItemsHistory.value = histories
                                         Log.d(TAG, "oncomplete, should update recycler view")
-                                        callback.onComplete()
                                     }
 
                                     override fun onError(e: Exception?) {
-                                       callback.onError(e)
+                                        itemsPairs = null
+                                        _notAvailableItemsHistory.value = null
                                     }
 
                                 })
                             } else {
                                 Log.d(TAG, "No history events, should update recycler view")
-                                notAvailableItemsHistory = arrayListOf()
                                 itemsPairs = arrayListOf()
-                                callback.onComplete()
+                                _notAvailableItemsHistory.value = arrayListOf()
                             }
                         } else
                             Log.d(TAG, "History events retrieved are not different from the ones already existing.")
                     }
 
                     override fun onError(e: Exception?) {
-                            callback.onError(e)
+                        itemsPairs = null
+                        _notAvailableItemsHistory.value = null
                     }
                 })
             }
 
             override fun onError(e: Exception?) {
-                callback.onError(e)
+                itemsPairs = arrayListOf()
+                _notAvailableItemsHistory.value = arrayListOf()
             }
         })
     }

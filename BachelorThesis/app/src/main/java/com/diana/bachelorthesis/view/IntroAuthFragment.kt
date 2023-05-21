@@ -82,7 +82,7 @@ class IntroAuthFragment : Fragment(), BasicFragment {
         (binding.layoutDots as LinearLayout).removeAllViews()
 
         for (i in 0 until layouts.size) {
-            val newDot = ImageView(requireContext())
+            val newDot = ImageView(requireActivity())
             newDot.apply{
                 setImageDrawable(resources.getDrawable(R.drawable.ic_circle_unfilled))
             }

@@ -61,22 +61,17 @@ class ItemFragment : Fragment(), BasicFragment {
         itemPageViewModel.currentItem = ItemFragmentArgs.fromBundle(requireArguments()).itemClicked
         setSubPageAppbar(requireActivity(), itemPageViewModel.currentItem.name)
 
-        userViewModel.getUserData(
-            itemPageViewModel.currentItem.owner,
-            object : OneParamCallback<User> {
-                override fun onComplete(value: User?) {
-                    if (value != null)
-                        showItemOwnerDetails(value)
-                    itemPageViewModel.owner = value
-                }
-
-                override fun onError(e: Exception?) {
-                    Log.w(
-                        TAG,
-                        "Item's owner with email ${itemPageViewModel.currentItem.owner} could not been retrieved!"
-                    )
-                }
-            })
+        itemPageViewModel.getUserData()
+        itemPageViewModel.currentOwner.observe(viewLifecycleOwner) {
+            if (it != null) {
+                showItemOwnerDetails(it)
+            } else {
+                Log.w(
+                    TAG,
+                    "Item's owner with email ${itemPageViewModel.currentItem.owner} could not been retrieved!"
+                )
+            }
+        }
 
         showItemDetails()
         updateUIElements()
@@ -144,9 +139,9 @@ class ItemFragment : Fragment(), BasicFragment {
         }
 
         binding.ownerPicture.setOnClickListener {
-            if (itemPageViewModel.owner != null) {
+            if (itemPageViewModel.currentOwner.value != null) {
                 val action =
-                    ItemFragmentDirections.actionNavItemToNavOwnerProfile(itemPageViewModel.owner!!)
+                    ItemFragmentDirections.actionNavItemToNavOwnerProfile(itemPageViewModel.currentOwner.value!!)
                 requireView().findNavController().navigate(action)
             }
         }
@@ -168,7 +163,7 @@ class ItemFragment : Fragment(), BasicFragment {
                     findChatInExistingList(itemPageViewModel.currentItem.owner, currentUser.email)
                 if (chat == null) {
                     Toast.makeText(
-                        context,
+                        requireActivity(),
                         getString(R.string.something_failed),
                         Toast.LENGTH_SHORT
                     ).show()
@@ -179,8 +174,8 @@ class ItemFragment : Fragment(), BasicFragment {
                 }
             } else {
                 chat = Chat(
-                    id = currentUser.email + " " + itemPageViewModel.owner!!.email,
-                    otherUser = itemPageViewModel.owner
+                    id = currentUser.email + " " + itemPageViewModel.currentOwner.value!!.email,
+                    otherUser = itemPageViewModel.currentOwner.value
                 )
                 val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(chat, null)
                 requireView().findNavController().navigate(action)
@@ -189,11 +184,11 @@ class ItemFragment : Fragment(), BasicFragment {
 
         binding.btnAction.setOnClickListener {
             if (itemPageViewModel.currentItem is ItemExchange) {
-                if (itemPageViewModel.owner != null) {
+                if (itemPageViewModel.currentOwner.value != null) {
                     val action =
                         ItemFragmentDirections.actionNavItemToNavProposalItemChoiceDialogFragment(
                             itemPageViewModel.currentItem,
-                            itemPageViewModel.owner!!
+                            itemPageViewModel.currentOwner.value!!
                         )
                     requireView().findNavController().navigate(action)
                 }
@@ -211,7 +206,7 @@ class ItemFragment : Fragment(), BasicFragment {
 
                     override fun onError(e: Exception?) {
                         Toast.makeText(
-                            context,
+                            requireActivity(),
                             getString(R.string.something_failed),
                             Toast.LENGTH_SHORT
                         ).show()

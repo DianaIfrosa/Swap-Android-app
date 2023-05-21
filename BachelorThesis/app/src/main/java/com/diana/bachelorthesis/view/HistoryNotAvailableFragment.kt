@@ -35,8 +35,9 @@ class HistoryNotAvailableFragment : Fragment() {
 
         _binding = FragmentHistoryNotAvailableBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.itemsAdapter = CardsHistoryAdapter(null, listOf(), listOf(),  requireContext()) { _, _, _ ->}
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        binding.itemsAdapter = CardsHistoryAdapter(null, listOf(), listOf(),  requireActivity()) { _, _, _ ->}
+        updateRecyclerView(arrayListOf(), arrayListOf(),true)
         return root
     }
 
@@ -47,6 +48,14 @@ class HistoryNotAvailableFragment : Fragment() {
         historyViewModel =
             ViewModelProvider(this)[HistoryNotAvailableViewModel::class.java]
         historyViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
+        historyViewModel.populateItemsNotAvailable()
+        historyViewModel.notAvailableItemsHistory.observe(viewLifecycleOwner) {
+            if (it != null && historyViewModel.itemsPairs != null) {
+                updateRecyclerView(it, historyViewModel.itemsPairs!!)
+            } else {
+                Toast.makeText(requireActivity(), getString(R.string.something_failed), Toast.LENGTH_LONG).show()
+            }
+        }
 
 //        historyViewModel.notAvailableItemsHistory.observe(viewLifecycleOwner) {
 //            updateRecyclerView(it)
@@ -64,24 +73,6 @@ class HistoryNotAvailableFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "HistoryNotAvailableFragment is onResume")
-
-        if (historyViewModel.notAvailableItemsHistory.size != 0 && historyViewModel.notAvailableItemsHistory.size == historyViewModel.itemsPairs.size) {
-            // already loaded the items in previous visits to tab
-            Log.d(TAG, "Load items already existing")
-            updateRecyclerView(historyViewModel.notAvailableItemsHistory, historyViewModel.itemsPairs)
-        } else {
-            updateRecyclerView(arrayListOf(), arrayListOf(),true)
-        }
-
-        historyViewModel.populateItemsNotAvailable(object: NoParamCallback {
-            override fun onComplete() {
-                updateRecyclerView(historyViewModel.notAvailableItemsHistory, historyViewModel.itemsPairs)
-            }
-
-            override fun onError(e: Exception?) {
-                Toast.makeText(context, getString(R.string.something_failed), Toast.LENGTH_LONG).show()
-            }
-        })
 
     }
 
@@ -108,7 +99,7 @@ class HistoryNotAvailableFragment : Fragment() {
             binding.progressBar.visibility = View.INVISIBLE
             binding.textNoItems.visibility = View.INVISIBLE
             binding.itemsAdapter =
-                CardsHistoryAdapter(historyViewModel.currentUser, historyList, itemsList, requireContext()) { item1, item2, history ->
+                CardsHistoryAdapter(historyViewModel.currentUser, historyList, itemsList, requireActivity()) { item1, item2, history ->
                     if (item2 != null) {
                         // exchange event
                         val action =

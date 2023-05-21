@@ -60,7 +60,7 @@ class ReportPostFragment : Fragment(), BasicFragment {
 
             val text = binding.editTextReport.text.toString()
             if (text.isEmpty()) {
-                Toast.makeText(context, getString(R.string.explanation_required), Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), getString(R.string.explanation_required), Toast.LENGTH_SHORT).show()
             } else {
                 it.startAnimation()
                 val report = PostReport(
@@ -86,7 +86,7 @@ class ReportPostFragment : Fragment(), BasicFragment {
                     override fun onError(e: Exception?) {
                         it.revertAnimation()
                         Toast.makeText(
-                            context,
+                            requireActivity(),
                             getString(R.string.something_failed),
                             Toast.LENGTH_SHORT
                         ).show()

@@ -81,19 +81,19 @@ class EditPreferencesDialogFragment : DialogFragment() {
     private fun setAdaptersAutocomplete() {
         val cities = listOf<String>()
         var adapterCitiesAutocomplete =
-            ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, cities)
+            ArrayAdapter(requireActivity(), android.R.layout.simple_dropdown_item_1line, cities)
         binding.autocompleteCities.setAdapter(adapterCitiesAutocomplete)
 
         val owners = listOf<String>()
         var adapterOwnersAutocomplete =
-            ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, owners)
+            ArrayAdapter(requireActivity(), android.R.layout.simple_dropdown_item_1line, owners)
         binding.autocompleteCities.setAdapter(adapterOwnersAutocomplete)
 
         fragmentParent.getAllCities(object : ListParamCallback<String> {
             override fun onComplete(values: ArrayList<String>) {
                 adapterCitiesAutocomplete =
                     ArrayAdapter(
-                        requireContext(),
+                        requireActivity(),
                         android.R.layout.simple_dropdown_item_1line,
                         values
                     )
@@ -107,7 +107,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
             override fun onComplete(values: ArrayList<String>) {
                 adapterOwnersAutocomplete =
                     ArrayAdapter(
-                        requireContext(),
+                        requireActivity(),
                         android.R.layout.simple_dropdown_item_1line,
                         values
                     )
@@ -125,7 +125,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
                 profileViewModel.preferredCities = adapterCities.getItems()
                 profileViewModel.preferredCities.add(city)
                 adapterCities = ListAdapterPreferences(
-                    requireContext(),
+                    requireActivity(),
                     ArrayList(profileViewModel.preferredCities)
                 )
                 binding.citiesList.adapter = adapterCities
@@ -143,7 +143,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
                 profileViewModel.preferredOwners = adapterOwners.getItems()
                 profileViewModel.preferredOwners.add(owner)
                 adapterOwners = ListAdapterPreferences(
-                    requireContext(),
+                    requireActivity(),
                     ArrayList(profileViewModel.preferredOwners)
                 )
                 binding.ownersList.adapter = adapterOwners
@@ -161,7 +161,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
                 profileViewModel.preferredWords = adapterWords.getItems()
                 profileViewModel.preferredWords.add(word)
                 adapterWords = ListAdapterPreferences(
-                    requireContext(),
+                    requireActivity(),
                     ArrayList(profileViewModel.preferredWords)
                 )
                 binding.wordsList.adapter = adapterWords
@@ -227,7 +227,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
 
         // owners
         adapterOwners = ListAdapterPreferences(
-            requireContext(),
+            requireActivity(),
             ArrayList(profileViewModel.preferredOwners)
         )
         binding.ownersList.adapter = adapterOwners
@@ -235,7 +235,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
 
         // cities
         adapterCities = ListAdapterPreferences(
-            requireContext(),
+            requireActivity(),
             ArrayList(profileViewModel.preferredCities)
         )
         binding.citiesList.adapter = adapterCities
@@ -243,7 +243,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
 
         // words
         adapterWords = ListAdapterPreferences(
-            requireContext(),
+            requireActivity(),
             ArrayList(profileViewModel.preferredWords)
         )
         binding.wordsList.adapter = adapterWords
@@ -270,7 +270,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
 
     private fun customizeToolbar() {
         toolbar.title = getString(R.string.edit_preferences)
-        toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), R.color.purple_dark))
+        toolbar.setTitleTextColor(ContextCompat.getColor(requireActivity(), R.color.purple_dark))
         toolbar.setNavigationOnClickListener {
             dialog!!.dismiss()
         }

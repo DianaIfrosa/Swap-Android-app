@@ -14,10 +14,8 @@ import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHistoryDonationBinding
 import com.diana.bachelorthesis.utils.BasicFragment
-import com.diana.bachelorthesis.utils.NoParamCallback
-import com.diana.bachelorthesis.viewmodel.HistoryEventViewModel
+import com.diana.bachelorthesis.viewmodel.DonationEventViewModel
 import com.squareup.picasso.Picasso
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,7 +24,7 @@ class HistoryDonationFragment : Fragment(), BasicFragment {
     private var _binding: FragmentHistoryDonationBinding? = null
 
     private val binding get() = _binding!!
-    private lateinit var historyEventViewModel: HistoryEventViewModel
+    private lateinit var donationEventViewModel: DonationEventViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,54 +44,60 @@ class HistoryDonationFragment : Fragment(), BasicFragment {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "HistoryDonationFragment is onViewCreated")
         setSubPageAppbar(requireActivity(), getString(R.string.donation_made))
-        historyEventViewModel = ViewModelProvider(this)[HistoryEventViewModel::class.java]
+        donationEventViewModel = ViewModelProvider(this)[DonationEventViewModel::class.java]
         getNavigationArguments()
-        historyEventViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
+        donationEventViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
 
-        historyEventViewModel.getDonationReceiverData(object: NoParamCallback {
-            override fun onComplete() {
+        donationEventViewModel.getDonationReceiverData()
+        donationEventViewModel.donationReceiver.observe(viewLifecycleOwner) {
+            if (it != null) {
                 binding.progressBar.visibility = View.GONE
                 binding.mainLayout.visibility = View.VISIBLE
 
                 updateUIElements()
 
-                binding.donationReceiverName.text = historyEventViewModel.donationReceiver.name
-                Picasso.get().load(historyEventViewModel.donationReceiver.profilePhoto).into(binding.donationReceiverPicture)
+                binding.donationReceiverName.text = donationEventViewModel.donationReceiver.value!!.name
+                Picasso.get().load(donationEventViewModel.donationReceiver.value!!.profilePhoto).into(binding.donationReceiverPicture)
 
                 initListeners()
+            } else {
+                Toast.makeText(requireActivity(), getString( R.string.something_failed), Toast.LENGTH_LONG).show()
             }
-
-            override fun onError(e: Exception?) {
-                Toast.makeText(requireContext(), getString( R.string.something_failed), Toast.LENGTH_LONG).show()
-            }
-        })
+        }
     }
 
     private fun updateUIElements() {
 
-        binding.itemTitle.text = historyEventViewModel.item1.name
-        binding.photoCarousel.setImageList(ItemsRecyclerViewAdapter.getPhotos(historyEventViewModel.item1), ScaleTypes.CENTER_CROP)
+        binding.itemTitle.text = donationEventViewModel.item1.name
+        binding.photoCarousel.setImageList(ItemsRecyclerViewAdapter.getPhotos(donationEventViewModel.item1), ScaleTypes.CENTER_CROP)
 
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         binding.donationDate.text = dateFormatter.format(
-            historyEventViewModel.history.date.toDate()
+            donationEventViewModel.history.date.toDate()
         ).toString()
     }
 
     private fun getNavigationArguments() {
-        historyEventViewModel.item1 = HistoryDonationFragmentArgs.fromBundle(requireArguments()).item
-        historyEventViewModel.history = HistoryDonationFragmentArgs.fromBundle(requireArguments()).history
+        donationEventViewModel.item1 = HistoryDonationFragmentArgs.fromBundle(requireArguments()).item
+        donationEventViewModel.history = HistoryDonationFragmentArgs.fromBundle(requireArguments()).history
     }
 
     override fun initListeners() {
         binding.donationReceiverPicture.setOnClickListener {
-            val action = HistoryDonationFragmentDirections.actionNavHistoryDonationFragmentToNavOwnerProfile(historyEventViewModel.donationReceiver)
-            requireView().findNavController().navigate(action)
+            if (donationEventViewModel.donationReceiver.value != null) {
+                val action = HistoryDonationFragmentDirections.actionNavHistoryDonationFragmentToNavOwnerProfile(donationEventViewModel.donationReceiver.value!!)
+                requireView().findNavController().navigate(action)
+            }
         }
 
         binding.donationReceiverName.setOnClickListener {
-            val action = HistoryDonationFragmentDirections.actionNavHistoryDonationFragmentToNavOwnerProfile(historyEventViewModel.donationReceiver)
-            requireView().findNavController().navigate(action)
+            if (donationEventViewModel.donationReceiver.value != null) {
+                val action =
+                    HistoryDonationFragmentDirections.actionNavHistoryDonationFragmentToNavOwnerProfile(
+                        donationEventViewModel.donationReceiver.value!!
+                    )
+                requireView().findNavController().navigate(action)
+            }
         }
     }
 

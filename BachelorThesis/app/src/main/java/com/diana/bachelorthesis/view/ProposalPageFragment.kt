@@ -74,7 +74,7 @@ class ProposalPageFragment : Fragment(), BasicFragment {
             }
 
             override fun onError(e: Exception?) {
-                Toast.makeText(context, getString(R.string.something_failed), Toast.LENGTH_LONG)
+                Toast.makeText(requireActivity(), getString(R.string.something_failed), Toast.LENGTH_LONG)
                     .show()
             }
 
@@ -261,7 +261,7 @@ class ProposalPageFragment : Fragment(), BasicFragment {
 
                             override fun onError(e: Exception?) {
                                 it.revertAnimation()
-                                Toast.makeText(context, getString(R.string.something_failed), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireActivity(), getString(R.string.something_failed), Toast.LENGTH_SHORT).show()
                             }
                         })
                     }

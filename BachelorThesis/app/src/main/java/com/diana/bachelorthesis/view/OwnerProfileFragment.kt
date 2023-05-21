@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsHorizontalRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentOwnerProfileBinding
 import com.diana.bachelorthesis.model.Item
@@ -53,16 +55,15 @@ class OwnerProfileFragment : Fragment(), BasicFragment {
         setSubPageAppbar(requireActivity(), ownerProfileViewModel.owner.name)
 
         updateUIElements()
-
-        ownerProfileViewModel.getItemsFromOwner(object: NoParamCallback {
-            override fun onComplete() {
-                updateRecyclerView(ownerProfileViewModel.allItems)
+        ownerProfileViewModel.getItemsFromOwner()
+        ownerProfileViewModel.allItems.observe(viewLifecycleOwner) {
+            if (it != null) {
+                updateRecyclerView(it)
+            } else {
+                Toast.makeText(requireActivity(), getString(R.string.something_failed), Toast.LENGTH_LONG).show()
             }
+        }
 
-            override fun onError(e: Exception?) {
-                updateRecyclerView(ownerProfileViewModel.allItems)
-            }
-        })
     }
 
     private fun updateUIElements() {

@@ -46,10 +46,15 @@ class HistoryAvailableFragment : Fragment() {
         historyViewModel =
             ViewModelProvider(this)[HistoryAvailableViewModel::class.java]
         historyViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
-//        historyViewModel.availableItems.observe(viewLifecycleOwner) {
-//            updateRecyclerView(it)
-////            (parentFragment as HistoryFragment).scrollRecyclerView(binding.recyclerView)
-//        }
+        historyViewModel.populateItemsAvailable()
+        historyViewModel.availableItems.observe(viewLifecycleOwner) {
+            if (it != null) {
+                updateRecyclerView(it)
+            } else {
+                Toast.makeText(requireActivity(), getString(R.string.something_failed), Toast.LENGTH_LONG).show()
+            }
+        }
+
     }
 
     override fun onStart() {
@@ -61,23 +66,6 @@ class HistoryAvailableFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "HistoryAvailableFragment is onResume")
-
-        if (historyViewModel.availableItems.size != 0) {
-            // already loaded the items in previous visits to tab
-            updateRecyclerView(historyViewModel.availableItems)
-        } else {
-            updateRecyclerView(arrayListOf(), true)
-        }
-
-        historyViewModel.populateItemsAvailable(object: NoParamCallback {
-            override fun onComplete() {
-                updateRecyclerView(historyViewModel.availableItems)
-            }
-
-            override fun onError(e: Exception?) {
-                Toast.makeText(context, getString(R.string.something_failed), Toast.LENGTH_LONG).show()
-            }
-        })
     }
 
     override fun onPause() {

@@ -37,13 +37,13 @@ class RecommendationsFragment : Fragment(), BasicFragment {
     ): View {
         _binding = FragmentRecommendationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        smoothScroller = object : LinearSmoothScroller(context) {
+        smoothScroller = object : LinearSmoothScroller(requireActivity()) {
             override fun getVerticalSnapPreference(): Int {
                 return SNAP_TO_START
             }
         }
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireActivity()) {}
 
         updateRecyclerView(listOf(), true)
         return root
@@ -112,7 +112,7 @@ class RecommendationsFragment : Fragment(), BasicFragment {
             binding.progressBar.visibility = View.INVISIBLE
             binding.textNoItems.visibility = View.INVISIBLE
             binding.itemsAdapter =
-                ItemsRecyclerViewAdapter(items, requireContext()) { item ->
+                ItemsRecyclerViewAdapter(items, requireActivity()) { item ->
                     val action = RecommendationsFragmentDirections.actionNavRecommendationsToNavItem(item)
                     requireView().findNavController().navigate(action)
                 }

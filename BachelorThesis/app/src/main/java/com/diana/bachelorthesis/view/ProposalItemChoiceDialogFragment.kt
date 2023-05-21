@@ -76,7 +76,7 @@ class ProposalItemChoiceDialogFragment : DialogFragment() {
             }
 
             override fun onError(e: Exception?) {
-                Toast.makeText(context, getString(R.string.something_failed), Toast.LENGTH_LONG).show()
+                Toast.makeText(requireActivity(), getString(R.string.something_failed), Toast.LENGTH_LONG).show()
             }
         })
     }
@@ -122,13 +122,13 @@ class ProposalItemChoiceDialogFragment : DialogFragment() {
                         }
 
                         override fun onError(e: Exception?) {
-                            Toast.makeText(context, R.string.something_failed, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireActivity(), R.string.something_failed, Toast.LENGTH_SHORT).show()
                         }
                     })
 
                 } else  {
                     // no selected item even though there are options
-                    Toast.makeText(context, getString(R.string.must_choose_item), Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireActivity(), getString(R.string.must_choose_item), Toast.LENGTH_LONG).show()
                 }
             } else {
                 // no selected item and there are no options

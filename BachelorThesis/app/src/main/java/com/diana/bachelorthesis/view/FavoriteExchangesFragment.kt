@@ -105,6 +105,7 @@ class FavoriteExchangesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d(TAG, "FavoriteExchangesFragment is onDestroyView")
+        favoritesViewModel.detachListener()
         _binding = null
     }
 }

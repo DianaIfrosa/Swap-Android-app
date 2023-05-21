@@ -87,10 +87,10 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "MapFragment is onViewCreated")
         setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
-        MapsInitializer.initialize(requireActivity().applicationContext, Renderer.LATEST, this)
+        MapsInitializer.initialize(requireActivity(), Renderer.LATEST, this)
 
         if (!Places.isInitialized()) {
-            Places.initialize(requireActivity().applicationContext, getString(R.string.api_key))
+            Places.initialize(requireActivity(), getString(R.string.api_key))
         }
 
         getViewModels()
@@ -317,7 +317,7 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
                 ItemsHorizontalRecyclerViewAdapter(
                     arrayListOf(item),
                     true,
-                    requireContext(),
+                    requireActivity(),
                     { onItemClosed() }
                 ) { clickedItem ->
                     val action = MapFragmentDirections.actionNavMapToNavItem(clickedItem)

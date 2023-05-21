@@ -14,10 +14,8 @@ import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHistoryExchangeBinding
 import com.diana.bachelorthesis.utils.BasicFragment
-import com.diana.bachelorthesis.utils.NoParamCallback
-import com.diana.bachelorthesis.viewmodel.HistoryEventViewModel
+import com.diana.bachelorthesis.viewmodel.ExchangeEventViewModel
 import com.squareup.picasso.Picasso
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,7 +25,7 @@ class HistoryExchangeFragment : Fragment(), BasicFragment {
     private var _binding: FragmentHistoryExchangeBinding? = null
 
     private val binding get() = _binding!!
-    private lateinit var historyEventViewModel: HistoryEventViewModel
+    private lateinit var historyEventViewModel: ExchangeEventViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,27 +44,26 @@ class HistoryExchangeFragment : Fragment(), BasicFragment {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "HistoryExchangeFragment is onViewCreated")
         setSubPageAppbar(requireActivity(), getString(R.string.exchange))
-        historyEventViewModel = ViewModelProvider(this)[HistoryEventViewModel::class.java]
+        historyEventViewModel = ViewModelProvider(this)[ExchangeEventViewModel::class.java]
         getNavigationArguments()
         historyEventViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
 
-        historyEventViewModel.getOtherOwnerData(object: NoParamCallback {
-            override fun onComplete() {
+        historyEventViewModel.getOtherOwnerData()
+        historyEventViewModel.otherOwner.observe(viewLifecycleOwner) {
+            if (it != null) {
                 binding.progressBar.visibility = View.GONE
                 binding.mainLayout.visibility = View.VISIBLE
 
                 updateUIElements()
 
-                binding.ownerName.text = historyEventViewModel.otherOwner.name
-                Picasso.get().load(historyEventViewModel.otherOwner.profilePhoto).into(binding.ownerPicture)
+                binding.ownerName.text = historyEventViewModel.otherOwner.value!!.name
+                Picasso.get().load(historyEventViewModel.otherOwner.value!!.profilePhoto).into(binding.ownerPicture)
 
                 initListeners()
+            } else {
+                Toast.makeText(requireActivity(), getString( R.string.something_failed), Toast.LENGTH_LONG).show()
             }
-
-            override fun onError(e: Exception?) {
-                Toast.makeText(requireContext(), getString( R.string.something_failed), Toast.LENGTH_LONG).show()
-            }
-        })
+        }
 
     }
 
@@ -93,13 +90,23 @@ class HistoryExchangeFragment : Fragment(), BasicFragment {
 
     override fun initListeners() {
        binding.ownerName.setOnClickListener {
-           val action = HistoryExchangeFragmentDirections.actionNavHistoryExchangeFragmentToNavOwnerProfile(historyEventViewModel.otherOwner)
-           requireView().findNavController().navigate(action)
+           if (historyEventViewModel.otherOwner.value != null) {
+               val action =
+                   HistoryExchangeFragmentDirections.actionNavHistoryExchangeFragmentToNavOwnerProfile(
+                       historyEventViewModel.otherOwner.value!!
+                   )
+               requireView().findNavController().navigate(action)
+           }
        }
 
         binding.ownerPicture.setOnClickListener {
-            val action = HistoryExchangeFragmentDirections.actionNavHistoryExchangeFragmentToNavOwnerProfile(historyEventViewModel.otherOwner)
-            requireView().findNavController().navigate(action)
+            if (historyEventViewModel.otherOwner.value != null) {
+                val action =
+                    HistoryExchangeFragmentDirections.actionNavHistoryExchangeFragmentToNavOwnerProfile(
+                        historyEventViewModel.otherOwner.value!!
+                    )
+                requireView().findNavController().navigate(action)
+            }
         }
     }
 

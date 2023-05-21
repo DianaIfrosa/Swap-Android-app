@@ -48,4 +48,8 @@ class FavoriteExchangesViewModel: ViewModel() {
             }
         })
     }
+
+    fun detachListener() {
+        itemRepository.detachFavExchangesListener()
+    }
 }

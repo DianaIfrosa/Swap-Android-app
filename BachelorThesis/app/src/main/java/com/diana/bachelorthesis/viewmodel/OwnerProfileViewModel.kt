@@ -9,7 +9,6 @@ import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.repository.ItemRepository
 import com.diana.bachelorthesis.utils.ListParamCallback
-import com.diana.bachelorthesis.utils.NoParamCallback
 
 class OwnerProfileViewModel : ViewModel() {
 

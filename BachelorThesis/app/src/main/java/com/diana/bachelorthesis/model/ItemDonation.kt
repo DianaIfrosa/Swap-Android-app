@@ -11,13 +11,13 @@ class ItemDonation(
     address: String = "",
     category: ItemCategory = ItemCategory.UNKNOWN,
     city: String = "-",
-    condition: ItemCondition = ItemCondition.UNKNOWN,
+    condition: ItemCondition? = ItemCondition.UNKNOWN,
     description: String = "",
     var donationInfo: String? = null, // null => is available
     location: GeoPoint = GeoPoint(0.0, 0.0),
     name: String = "",
     photos: ArrayList<String> = arrayListOf(),
-    postDate: Timestamp = Timestamp(0,0),
+    postDate: Timestamp? = Timestamp(0,0),
     year: Int? = null
 ) : Item(itemId, address, category, city, condition, description, location, name, photos, owner, postDate, year), Parcelable {
     constructor(parcel: Parcel) : this(
@@ -72,4 +72,6 @@ class ItemDonation(
                 this.donationInfo == other.donationInfo
                 )
     }
+
+    fun clone() = ItemDonation(itemId, owner, address, category, city, condition, description, donationInfo, location, name, ArrayList(photos.map{it}) , postDate, year)
 }

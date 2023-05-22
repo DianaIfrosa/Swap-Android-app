@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +14,6 @@ import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentFavoriteDonationsBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.viewmodel.FavoriteDonationsViewModel
-import com.diana.bachelorthesis.viewmodel.FavoritesViewModel
 
 class FavoriteDonationsFragment : Fragment() {
     private val TAG: String = FavoriteDonationsFragment::class.java.name

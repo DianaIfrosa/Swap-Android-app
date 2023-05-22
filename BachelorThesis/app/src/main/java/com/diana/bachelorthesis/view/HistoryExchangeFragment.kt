@@ -91,9 +91,10 @@ class HistoryExchangeFragment : Fragment(), BasicFragment {
     override fun initListeners() {
        binding.ownerName.setOnClickListener {
            if (historyEventViewModel.otherOwner.value != null) {
+               val newUser = historyEventViewModel.otherOwner.value!!.clone()
                val action =
                    HistoryExchangeFragmentDirections.actionNavHistoryExchangeFragmentToNavOwnerProfile(
-                       historyEventViewModel.otherOwner.value!!
+                       newUser
                    )
                requireView().findNavController().navigate(action)
            }
@@ -101,9 +102,10 @@ class HistoryExchangeFragment : Fragment(), BasicFragment {
 
         binding.ownerPicture.setOnClickListener {
             if (historyEventViewModel.otherOwner.value != null) {
+                val newUser = (historyEventViewModel.otherOwner.value)!!.clone()
                 val action =
                     HistoryExchangeFragmentDirections.actionNavHistoryExchangeFragmentToNavOwnerProfile(
-                        historyEventViewModel.otherOwner.value!!
+                       newUser
                     )
                 requireView().findNavController().navigate(action)
             }

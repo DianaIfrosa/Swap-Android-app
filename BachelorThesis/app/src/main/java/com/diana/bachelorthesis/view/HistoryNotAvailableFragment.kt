@@ -15,10 +15,7 @@ import com.diana.bachelorthesis.adapters.CardsHistoryAdapter
 import com.diana.bachelorthesis.databinding.FragmentHistoryNotAvailableBinding
 import com.diana.bachelorthesis.model.History
 import com.diana.bachelorthesis.model.Item
-import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.viewmodel.HistoryNotAvailableViewModel
-import com.diana.bachelorthesis.viewmodel.HistoryViewModel
-import java.lang.Exception
 
 class HistoryNotAvailableFragment : Fragment() {
     private val TAG: String = HistoryNotAvailableFragment::class.java.name
@@ -100,23 +97,25 @@ class HistoryNotAvailableFragment : Fragment() {
             binding.textNoItems.visibility = View.INVISIBLE
             binding.itemsAdapter =
                 CardsHistoryAdapter(historyViewModel.currentUser, historyList, itemsList, requireActivity()) { item1, item2, history ->
+                    val newHistory = history.copy()
+
                     if (item2 != null) {
                         // exchange event
                         val action =
                             HistoryFragmentDirections.actionNavHistoryToNavHistoryExchangeFragment(
                                 item1,
                                 item2,
-                                history
+                                newHistory
                             )
                         requireView().findNavController().navigate(action)
                     } else { // donation event
                         if (history.donationReceiverEmail == historyViewModel.currentUser.email) {
                             // current user was the donation receiver
-                            val action = HistoryFragmentDirections.actionNavHistoryToNavHistoryReceiveDonationFragment(item1, history)
+                            val action = HistoryFragmentDirections.actionNavHistoryToNavHistoryReceiveDonationFragment(item1, newHistory)
                             requireView().findNavController().navigate(action)
                         } else {
                             // current user did the donation
-                            val action = HistoryFragmentDirections.actionNavHistoryToNavHistoryDonationFragment(item1, history)
+                            val action = HistoryFragmentDirections.actionNavHistoryToNavHistoryDonationFragment(item1, newHistory)
                             requireView().findNavController().navigate(action)
                         }
                     }

@@ -117,8 +117,15 @@ class ProposalItemChoiceDialogFragment : DialogFragment() {
 
                     itemChoiceViewModel.createProposalAndRetrieveChat(object: OneParamCallback<Chat> {
                         override fun onComplete(value: Chat?) {
-                           val action =  ProposalItemChoiceDialogFragmentDirections.actionProposalItemChoiceDialogFragmentToNavChatPageFragment(value!!, itemChoiceViewModel.proposal)
-                           findNavController().navigate(action)
+                            if (value != null) {
+                                val newChat = value.clone()
+                                val newProposal = if (itemChoiceViewModel.proposal != null) itemChoiceViewModel.proposal!!.copy() else null
+                                val action = ProposalItemChoiceDialogFragmentDirections.actionProposalItemChoiceDialogFragmentToNavChatPageFragment(newChat, newProposal)
+                                findNavController().navigate(action)
+                            } else {
+                                Toast.makeText(requireActivity(), R.string.something_failed, Toast.LENGTH_SHORT).show()
+                            }
+
                         }
 
                         override fun onError(e: Exception?) {

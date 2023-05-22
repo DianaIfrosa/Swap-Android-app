@@ -72,7 +72,7 @@ class CardsHistoryAdapter(
 
         holder.cardHistoryBinding.item1 = item1
         holder.cardHistoryBinding.item2 = item2
-        holder.cardHistoryBinding.history = history
+        holder.cardHistoryBinding.history = history.copy()
         holder.cardHistoryBinding.historyClickListener = this@CardsHistoryAdapter
 
         // get donation receiver photo

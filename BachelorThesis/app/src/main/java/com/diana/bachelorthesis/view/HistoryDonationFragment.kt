@@ -85,17 +85,17 @@ class HistoryDonationFragment : Fragment(), BasicFragment {
     override fun initListeners() {
         binding.donationReceiverPicture.setOnClickListener {
             if (donationEventViewModel.donationReceiver.value != null) {
-                val action = HistoryDonationFragmentDirections.actionNavHistoryDonationFragmentToNavOwnerProfile(donationEventViewModel.donationReceiver.value!!)
+                val newParam = donationEventViewModel.donationReceiver.value!!.clone()
+                val action = HistoryDonationFragmentDirections.actionNavHistoryDonationFragmentToNavOwnerProfile(newParam)
                 requireView().findNavController().navigate(action)
             }
         }
 
         binding.donationReceiverName.setOnClickListener {
             if (donationEventViewModel.donationReceiver.value != null) {
+                val newParam = donationEventViewModel.donationReceiver.value!!.clone()
                 val action =
-                    HistoryDonationFragmentDirections.actionNavHistoryDonationFragmentToNavOwnerProfile(
-                        donationEventViewModel.donationReceiver.value!!
-                    )
+                    HistoryDonationFragmentDirections.actionNavHistoryDonationFragmentToNavOwnerProfile(newParam)
                 requireView().findNavController().navigate(action)
             }
         }

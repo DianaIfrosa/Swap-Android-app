@@ -11,4 +11,6 @@ data class Chat(
     var otherUser: User? = null,
     var messages: ArrayList<Message> = arrayListOf(),
     var seen: Boolean = false
-) : Parcelable
+) : Parcelable {
+    fun clone() = this.copy(otherUser = if (this.otherUser != null) this.otherUser!!.clone() else null, messages = ArrayList(this.messages.map { it.copy() }))
+}

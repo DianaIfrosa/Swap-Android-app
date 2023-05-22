@@ -1,9 +1,7 @@
 package com.diana.bachelorthesis.model
 
-import android.net.Uri
 import android.os.Parcelable
 import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.DocumentReference
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -16,4 +14,14 @@ data class User(
     var profilePhoto: String? = null,
     var notifications: NotificationsPreferences = NotificationsPreferences(),
     var chatIds: ArrayList<Map<String, String>> = arrayListOf()
-) : Parcelable
+) : Parcelable {
+    fun clone() = User(
+        email,
+        name,
+        ArrayList(favoriteDonations.map{it}),
+        ArrayList(favoriteExchanges.map{it}),
+        profilePhoto,
+        notifications.clone(),
+        ArrayList(chatIds.map{it})
+    )
+}

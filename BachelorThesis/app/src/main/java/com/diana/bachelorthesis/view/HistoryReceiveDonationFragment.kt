@@ -95,9 +95,10 @@ class HistoryReceiveDonationFragment : Fragment(), BasicFragment {
     override fun initListeners() {
         binding.donationMakerPicture.setOnClickListener {
             if (historyEventViewModel.donationMaker.value != null) {
+                val newUser = (historyEventViewModel.donationMaker.value)!!.clone()
                 val action =
                     HistoryReceiveDonationFragmentDirections.actionNavHistoryReceiveDonationFragmentToNavOwnerProfile(
-                        historyEventViewModel.donationMaker.value!!
+                        newUser
                     )
                 requireView().findNavController().navigate(action)
             }
@@ -105,9 +106,10 @@ class HistoryReceiveDonationFragment : Fragment(), BasicFragment {
 
         binding.donationMakerName.setOnClickListener {
             if (historyEventViewModel.donationMaker.value != null) {
+                val newUser = (historyEventViewModel.donationMaker.value)!!.clone()
                 val action =
                     HistoryReceiveDonationFragmentDirections.actionNavHistoryReceiveDonationFragmentToNavOwnerProfile(
-                        historyEventViewModel.donationMaker.value!!
+                       newUser
                     )
                 requireView().findNavController().navigate(action)
             }

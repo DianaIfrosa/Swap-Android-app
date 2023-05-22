@@ -28,7 +28,7 @@ class ChatViewModel : ViewModel() {
                 override fun onComplete(value: User?) {
                     if (value != null && value.chatIds.size != currentUser.chatIds.size) {
                         // some other user started a conversation for the first time with the current user
-                        currentUser = value
+                        currentUser = value.clone()
                         getUserChats()
                         callback.onComplete(currentUser)
                     }
@@ -127,7 +127,9 @@ class ChatViewModel : ViewModel() {
 
     private fun sortChatsByDate(userChatsSorted: ArrayList<Chat>): ArrayList<Chat> {
         // sort messages from each chat from new to old
-        userChatsSorted.forEach { chat ->
+        val newUserChats = ArrayList(userChatsSorted.map {it.clone()})
+
+        newUserChats.forEach { chat ->
             val messagesSorted = chat.messages.sortedByDescending { message ->
                 message.date
             }
@@ -136,7 +138,7 @@ class ChatViewModel : ViewModel() {
         }
 
         // sort chats based on last message (newest first)
-        return ArrayList(userChatsSorted.sortedByDescending { chat ->
+        return ArrayList(newUserChats.sortedByDescending { chat ->
             chat.messages[0].date
         })
     }

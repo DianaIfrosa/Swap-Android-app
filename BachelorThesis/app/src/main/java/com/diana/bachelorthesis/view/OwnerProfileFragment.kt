@@ -15,11 +15,9 @@ import com.diana.bachelorthesis.adapters.ItemsHorizontalRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentOwnerProfileBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.utils.BasicFragment
-import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.viewmodel.OwnerProfileViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.squareup.picasso.Picasso
-import java.lang.Exception
 
 class OwnerProfileFragment : Fragment(), BasicFragment {
     private val TAG: String = OwnerProfileFragment::class.java.name

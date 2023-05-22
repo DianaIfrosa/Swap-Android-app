@@ -142,6 +142,40 @@ class PhotoRepository {
         return result.filterNotNull()
     }
 
+    fun uploadMessagePhoto(chatId: String, photo:Uri, callback: OneParamCallback<String>) {
+        val imageReference = storageReference
+            .child(chatId)
+            .child(UUID.randomUUID().toString())
+
+       imageReference
+            .putFile(photo)
+            .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                imageReference.downloadUrl.addOnSuccessListener { url ->
+                    val imageUrl = url.toString()
+                    Log.d(
+                        TAG,
+                        "Successfully uploaded photo for for chat $chatId"
+                    )
+                    callback.onComplete(imageUrl)
+
+                }.addOnFailureListener {
+                    Log.w(
+                        TAG,
+                        "\"Couldn't get url for photo in chat $chatId"
+                    )
+                    callback.onError(task.exception)
+                }
+            } else {
+                Log.w(
+                    TAG,
+                    "Photo for chat $chatId failed to upload!"
+                )
+                callback.onError(task.exception)
+            }
+        }
+    }
+
     private suspend fun uploadPhotoAndWait(owner: String, itemId: String, imageUri: Uri): String? =
         suspendCoroutine { cont ->
             uploadItemPhoto(

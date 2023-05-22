@@ -64,8 +64,9 @@ class ChatFragment : Fragment(), BasicFragment {
                         chats,
                         requireContext()
                     ) { chat ->
+                        val newChat = chat.clone()
                         val action =
-                            ChatFragmentDirections.actionNavChatToChatPageFragment(chat, null)
+                            ChatFragmentDirections.actionNavChatToChatPageFragment(newChat, null)
                         requireView().findNavController().navigate(action)
                     }
             } else {
@@ -81,6 +82,11 @@ class ChatFragment : Fragment(), BasicFragment {
             Log.d(TAG, "Observed chats modification!")
             updateRecyclerView(it)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "ChatFragment is onStart")
     }
 
     override fun onDestroyView() {

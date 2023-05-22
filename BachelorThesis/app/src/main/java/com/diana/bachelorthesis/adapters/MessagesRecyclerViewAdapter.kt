@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.LinearLayout.LayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.diana.bachelorthesis.R
@@ -47,6 +48,26 @@ class MessagesRecyclerViewAdapter(
         return MessageViewHolder(binding)
     }
 
+    fun getPhotoLayoutParams(currentMessage: Message): LayoutParams {
+        var params: LayoutParams
+        if (currentMessage.senderEmail == currentUser.email) {
+                params = LayoutParams(
+                    context.resources.getDimension(R.dimen.photo_chat_size).toInt(),
+                    context.resources.getDimension(R.dimen.photo_chat_size).toInt(),
+                ).apply {
+                    gravity = Gravity.END
+                }
+        } else {
+            params = LayoutParams(
+                context.resources.getDimension(R.dimen.photo_chat_size).toInt(),
+                context.resources.getDimension(R.dimen.photo_chat_size).toInt(),
+            ).apply {
+                gravity = Gravity.START
+            }
+        }
+        return params
+    }
+
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val currentMessage = messages[position]
         var itemProposal1: Item
@@ -57,28 +78,24 @@ class MessagesRecyclerViewAdapter(
         holder.cardMessageBinding.message = currentMessage
 
         // set position of message
-
-        val params: LinearLayout.LayoutParams
+        val params: LayoutParams
         if (currentMessage.senderEmail == currentUser.email) {
-            params = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                gravity = Gravity.END
-            }
+                params =LayoutParams(
+                    LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT
+                ).apply {
+                    gravity = Gravity.END
+                }
         } else {
-            params = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+            params = LayoutParams(
+               LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
             ).apply {
                 gravity = Gravity.START
             }
         }
 
-        holder.cardMessageBinding.messageText.layoutParams = params
         holder.cardMessageBinding.date.layoutParams = params
-        holder.cardMessageBinding.messagePicture.layoutParams = params
-        holder.cardMessageBinding.proposalCardLayout.layoutParams = params
 
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault())
         holder.cardMessageBinding.date.text = dateFormatter.format(
@@ -86,17 +103,22 @@ class MessagesRecyclerViewAdapter(
         ).toString()
 
         if (currentMessage.text != null) {
+            holder.cardMessageBinding.messageText.text = currentMessage.text
             holder.cardMessageBinding.messagePicture.visibility = View.GONE
             holder.cardMessageBinding.proposalCardLayout.visibility = View.GONE
             holder.cardMessageBinding.messageText.visibility = View.VISIBLE
-            holder.cardMessageBinding.messageText.text = currentMessage.text
+            holder.cardMessageBinding.messageText.layoutParams = params
+
         } else if (currentMessage.photoUri != null) {
+            holder.cardMessageBinding.messagePicture.layoutParams = getPhotoLayoutParams(currentMessage)
             holder.cardMessageBinding.messageText.visibility = View.GONE
             holder.cardMessageBinding.proposalCardLayout.visibility = View.GONE
             holder.cardMessageBinding.messagePicture.visibility = View.VISIBLE
+
             Picasso.get().load(currentMessage.photoUri)
                 .into(holder.cardMessageBinding.messagePicture)
         } else if (currentMessage.proposalId != null) {
+            holder.cardMessageBinding.proposalCardLayout.layoutParams = params
             holder.cardMessageBinding.messageText.visibility = View.GONE
             holder.cardMessageBinding.messagePicture.visibility = View.GONE
             holder.cardMessageBinding.proposalCardLayout.visibility = View.VISIBLE

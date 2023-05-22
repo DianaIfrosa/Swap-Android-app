@@ -33,14 +33,16 @@ class HistoryNotAvailableViewModel: ViewModel() {
                 getNotAvailableItemPairs(object: ListParamCallback<History> {
                     override fun onComplete(values: ArrayList<History>) {
                         Log.d(TAG, "Retrieved history events")
-                        val histories = values
+                        val histories = ArrayList(values.map { it.copy() })
                         if ((values.size != (notAvailableItemsHistory.value?.size
                                 ?: 0)) || (values.size == 0 && ((notAvailableItemsHistory.value?.size ?: 0) == 0))
                         ) {
                             if (histories.isNotEmpty()) {
                                 itemsRepository.getHistoryItems(0, histories, arrayListOf(), object: ListParamCallback<Pair<Item, Item?>> {
                                     override fun onComplete(values: ArrayList<Pair<Item, Item?>>) {
-                                        itemsPairs = values
+                                        itemsPairs = ArrayList(values.map {
+                                            Pair(it.first, it.second)
+                                        })
                                         _notAvailableItemsHistory.value = histories
                                         Log.d(TAG, "oncomplete, should update recycler view")
                                     }
@@ -109,7 +111,9 @@ class HistoryNotAvailableViewModel: ViewModel() {
             object : ListParamCallback<History> {
                 override fun onComplete(values: ArrayList<History>) {
                     Log.d(TAG, "Retrieved ${values.size} history objects from DB.")
-                    callback.onComplete(values)
+                    callback.onComplete(ArrayList(values.map {
+                        it.copy()
+                    }))
                 }
 
                 override fun onError(e: Exception?) {

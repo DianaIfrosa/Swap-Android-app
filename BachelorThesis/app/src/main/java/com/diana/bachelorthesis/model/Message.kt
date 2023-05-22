@@ -2,7 +2,6 @@ package com.diana.bachelorthesis.model
 
 import android.os.Parcelable
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.DocumentId
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

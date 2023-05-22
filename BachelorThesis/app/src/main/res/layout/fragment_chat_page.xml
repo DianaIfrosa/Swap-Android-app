@@ -50,6 +50,14 @@
             android:orientation="horizontal"
             android:backgroundTint="@color/yellow_medium">
 
+            <ImageButton
+                android:id="@+id/btn_send_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_photo"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"/>
             <EditText
                 android:id="@+id/text_box"
                 android:layout_width="0dp"
@@ -63,7 +71,7 @@
             <ImageButton
                 android:id="@+id/btn_send_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_send"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"/>

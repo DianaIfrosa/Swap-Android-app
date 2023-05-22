@@ -10,7 +10,7 @@ class ItemExchange(
     address: String = "",
     category: ItemCategory = ItemCategory.UNKNOWN,
     city: String = "-",
-    condition: ItemCondition = ItemCondition.UNKNOWN,
+    condition: ItemCondition? = ItemCondition.UNKNOWN,
     description: String = "",
     var exchangePreferences: ArrayList<ItemCategory> = arrayListOf(),
     var exchangeInfo: String? = null, // null => is available
@@ -18,7 +18,7 @@ class ItemExchange(
     name: String = "",
     owner: String = "",
     photos: ArrayList<String> = arrayListOf(),
-    postDate: Timestamp = Timestamp(0,0),
+    postDate: Timestamp? = Timestamp(0,0),
     year: Int? = null
 ): Item (itemId, address, category, city, condition, description, location, name, photos, owner, postDate, year), Parcelable {
     constructor(parcel: Parcel) : this(
@@ -36,8 +36,8 @@ class ItemExchange(
         photos = parcel.createStringArrayList() as ArrayList<String>,
         postDate = parcel.readParcelable(Timestamp::class.java.classLoader) ?: Timestamp(0,0),
         year = parcel.readValue(Int::class.java.classLoader) as? Int
-    ) {
-    }
+    )
+    fun clone() = ItemExchange(itemId, address, category, city, condition, description, ArrayList(exchangePreferences.map{it}), exchangeInfo, location, name, owner, ArrayList(photos.map{it}), postDate, year)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         super.writeToParcel(parcel, flags)

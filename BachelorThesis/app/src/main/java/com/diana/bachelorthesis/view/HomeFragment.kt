@@ -22,6 +22,8 @@ import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHomeBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemCategory
+import com.diana.bachelorthesis.model.ItemDonation
+import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.utils.*
 import com.diana.bachelorthesis.viewmodel.ItemsViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
@@ -276,9 +278,17 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
             binding.progressBarHome.visibility = View.INVISIBLE
             binding.itemsAdapter =
                 ItemsRecyclerViewAdapter(items, requireContext()) { item ->
-                    (requireActivity() as MainActivity).returnedHomeFromItemPage = true
-                    val action = HomeFragmentDirections.actionNavHomeToNavItem(item)
-                    requireView().findNavController().navigate(action)
+                    if (item is ItemExchange) {
+                        val newItem = item.clone()
+                        val action =
+                            HomeFragmentDirections.actionNavHomeToNavItem(newItem)
+                        requireView().findNavController().navigate(action)
+                    } else if (item is ItemDonation) {
+                        val newItem = item.clone()
+                        val action =
+                            HomeFragmentDirections.actionNavHomeToNavItem(newItem)
+                        requireView().findNavController().navigate(action)
+                    }
                 }
             binding.textNumberItems.text = items.size.toString() + " " + resources.getString(R.string.items)
         }

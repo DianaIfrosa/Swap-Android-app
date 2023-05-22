@@ -14,7 +14,6 @@ import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentFavoriteExchangesBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.viewmodel.FavoriteExchangesViewModel
-import com.diana.bachelorthesis.viewmodel.FavoritesViewModel
 
 class FavoriteExchangesFragment : Fragment() {
     private val TAG: String = FavoriteExchangesFragment::class.java.name

@@ -23,7 +23,7 @@ class ProfileViewModel : ViewModel() {
     var newprofilePhoto: Uri? = null
 
     var notificationsOptionSelected: Int =
-        1 // default = option regarding the preferred items
+        2 // default = option regarding the preferred items
 
     var preferredOwners: MutableList<String> = mutableListOf()
     var preferredCities: MutableList<String> = mutableListOf()

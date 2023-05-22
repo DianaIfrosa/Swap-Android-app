@@ -100,8 +100,8 @@ class HistoryFragment : Fragment(), BasicFragment {
 //            }
 //        }
 
-//        getViewModels()
-//        historyViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
+        getViewModels()
+        historyViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
     }
 
     private fun getViewModels() {

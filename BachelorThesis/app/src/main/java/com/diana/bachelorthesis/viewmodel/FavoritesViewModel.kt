@@ -12,16 +12,6 @@ import com.diana.bachelorthesis.utils.ListParamCallback
 
 class FavoritesViewModel : ViewModel() {
     private val TAG: String = FavoritesViewModel::class.java.name
-    private val itemRepository = ItemRepository.getInstance()
-
-    private val _exchangeItems = MutableLiveData<List<Item>>()
-    private val _donationItems = MutableLiveData<List<Item>>()
-
-    var favoriteDonationsIds: List<String> = listOf()
-    var favoriteExchangesIds: List<String> = listOf()
-
-    var exchangeItems: LiveData<List<Item>> = _exchangeItems
-    val donationItems: LiveData<List<Item>> = _donationItems
 
     var lastScrollPosition = 0
 }

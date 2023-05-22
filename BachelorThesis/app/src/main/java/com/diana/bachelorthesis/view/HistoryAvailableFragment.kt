@@ -14,10 +14,7 @@ import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHistoryAvailableBinding
 import com.diana.bachelorthesis.model.Item
-import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.viewmodel.HistoryAvailableViewModel
-import com.diana.bachelorthesis.viewmodel.HistoryViewModel
-import java.lang.Exception
 
 class HistoryAvailableFragment : Fragment() {
     private val TAG: String = HistoryAvailableFragment::class.java.name

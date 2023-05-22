@@ -15,10 +15,7 @@ import com.denzcoskun.imageslider.interfaces.ItemClickListener
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentItemBinding
-import com.diana.bachelorthesis.model.Chat
-import com.diana.bachelorthesis.model.ItemCategory
-import com.diana.bachelorthesis.model.ItemExchange
-import com.diana.bachelorthesis.model.User
+import com.diana.bachelorthesis.model.*
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
@@ -141,8 +138,9 @@ class ItemFragment : Fragment(), BasicFragment {
 
         binding.ownerPicture.setOnClickListener {
             if (itemPageViewModel.currentOwner.value != null) {
+                val newUser = (itemPageViewModel.currentOwner.value)!!.clone()
                 val action =
-                    ItemFragmentDirections.actionNavItemToNavOwnerProfile(itemPageViewModel.currentOwner.value!!)
+                    ItemFragmentDirections.actionNavItemToNavOwnerProfile(newUser)
                 requireView().findNavController().navigate(action)
             }
         }
@@ -150,9 +148,19 @@ class ItemFragment : Fragment(), BasicFragment {
         binding.photoCarousel.setItemClickListener(object : ItemClickListener {
             override fun onItemSelected(position: Int) {
                 Log.d(TAG, "Clicked on photos!")
-                val action =
-                    ItemFragmentDirections.actionNavItemToNavPhotos(itemPageViewModel.currentItem)
-                requireView().findNavController().navigate(action)
+                val item = itemPageViewModel.currentItem
+                if (item is ItemExchange) {
+                    val newItem = item.clone()
+                    val action =
+                        ItemFragmentDirections.actionNavItemToNavPhotos(newItem)
+                    requireView().findNavController().navigate(action)
+                } else if (item is ItemDonation) {
+                    val newItem = item.clone()
+                    val action =
+                        ItemFragmentDirections.actionNavItemToNavPhotos(newItem)
+                    requireView().findNavController().navigate(action)
+                }
+
             }
         })
 
@@ -176,7 +184,7 @@ class ItemFragment : Fragment(), BasicFragment {
             } else {
                 chat = Chat(
                     id = currentUser.email + " " + itemPageViewModel.currentOwner.value!!.email,
-                    otherUser = itemPageViewModel.currentOwner.value
+                    otherUser = (itemPageViewModel.currentOwner.value)!!.clone()
                 )
                 val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(chat, null)
                 requireView().findNavController().navigate(action)
@@ -186,10 +194,12 @@ class ItemFragment : Fragment(), BasicFragment {
         binding.btnAction.setOnClickListener {
             if (itemPageViewModel.currentItem is ItemExchange) {
                 if (itemPageViewModel.currentOwner.value != null) {
+
+                    val newUser = itemPageViewModel.currentOwner.value!!.clone()
                     val action =
                         ItemFragmentDirections.actionNavItemToNavProposalItemChoiceDialogFragment(
                             itemPageViewModel.currentItem,
-                            itemPageViewModel.currentOwner.value!!
+                           newUser
                         )
                     requireView().findNavController().navigate(action)
                 }
@@ -198,11 +208,15 @@ class ItemFragment : Fragment(), BasicFragment {
                 itemPageViewModel.createDonationProposalAndRetrieveChat(object :
                     OneParamCallback<Chat> {
                     override fun onComplete(value: Chat?) {
-                        val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(
-                            value!!,
-                            itemPageViewModel.proposal
-                        )
-                        requireView().findNavController().navigate(action)
+                        if (value != null) {
+                            val newChat = value.clone()
+                            val newProposal = if (itemPageViewModel.proposal != null) itemPageViewModel.proposal!!.copy() else null
+                            val action = ItemFragmentDirections.actionNavItemToNavChatPageFragment(
+                                newChat,
+                                newProposal
+                            )
+                            requireView().findNavController().navigate(action)
+                        }
                     }
 
                     override fun onError(e: Exception?) {
@@ -230,7 +244,7 @@ class ItemFragment : Fragment(), BasicFragment {
             return null
         chatViewModel.chats.value!!.forEach {
             if (it.id == "$email1 $email2" || it.id == "$email2 $email1") {
-                return it
+                return it.clone()
             }
         }
         return null

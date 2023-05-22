@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.GeoPoint
+import com.google.gson.Gson
 import kotlin.collections.ArrayList
 
 open class Item(

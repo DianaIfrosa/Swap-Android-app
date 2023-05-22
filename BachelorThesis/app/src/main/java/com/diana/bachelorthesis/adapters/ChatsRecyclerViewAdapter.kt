@@ -1,6 +1,7 @@
 package com.diana.bachelorthesis.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -51,6 +52,8 @@ class ChatsRecyclerViewAdapter(private val currentUser: User, private val listCh
         holder.cardChatBinding.chatLastDate.text  = dateFormatter.format(
             lastMessage.date.toDate()
         ).toString()
+
+        Log.d(TAG, "Date last message ${lastMessage.date.toDate()}")
 
         if (lastMessage.text != null) {
             holder.cardChatBinding.chatLastMessage.text = lastMessage.text

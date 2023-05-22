@@ -103,7 +103,7 @@
                         android:layout_gravity="start"
                         android:layout_marginEnd="10dp"
                         android:gravity="start"
-                        android:text="Description"
+                        android:text="@string/description"
                         android:textSize="13sp" />
 
                     <TextView

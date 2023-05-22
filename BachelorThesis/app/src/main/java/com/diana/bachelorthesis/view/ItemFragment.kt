@@ -16,6 +16,7 @@ import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentItemBinding
 import com.diana.bachelorthesis.model.Chat
+import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.BasicFragment
@@ -307,7 +308,7 @@ class ItemFragment : Fragment(), BasicFragment {
             binding.itemExchangePreferencesSection.visibility = View.VISIBLE
             var value = ""
             (itemPageViewModel.currentItem as ItemExchange).exchangePreferences.forEach {
-                val name = it.displayName
+                val name = ItemCategory.getTranslatedName(requireActivity(), it)
                 value += "$name, "
             }
             if (value.isEmpty()) {

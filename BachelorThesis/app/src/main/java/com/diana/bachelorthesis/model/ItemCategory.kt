@@ -1,24 +1,25 @@
 package com.diana.bachelorthesis.model
 
+import android.content.Context
 import android.os.Parcelable
+import com.diana.bachelorthesis.R
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 enum class ItemCategory(
-    val displayName: String, // TODO modify this as it is not useful for translation to Romanian or other languages
     private var availableItems: ArrayList<Item> = ArrayList(),
     private var totalItems: Int = 0
 ) : Parcelable {
-    APPLIANCES("Appliances"),
-    CLOTHESSHOES("Clothes & Shoes"),
-    DEVICES("Devices"),
-    EDUCATION("Education"),
-    FOODDRINK("Food & Drink"),
-    FURNITURE("Furniture"),
-    GAMES("Games"),
-    GARDEN("Garden"),
-    MEDICAL("Medical"),
-    UNKNOWN("Unknown");
+    APPLIANCES,
+    CLOTHESSHOES,
+    DEVICES,
+    EDUCATION,
+    FOODDRINK,
+    FURNITURE,
+    GAMES,
+    GARDEN,
+    MEDICAL,
+    UNKNOWN;
 
     fun addItemToCategory(item: Item) {
         availableItems.add(item)
@@ -34,12 +35,34 @@ enum class ItemCategory(
     }
 
     companion object {
-        fun stringToItemCategory(name: String): ItemCategory {
-            for (categ in values())
-                if (categ.displayName.equals(name, true))
-                    return categ
+        fun stringToItemCategory(context: Context, name: String): ItemCategory {
+            return when (name) {
+                context.getString(R.string.categ_appliances) -> APPLIANCES
+                context.getString(R.string.categ_clothesshoes) -> CLOTHESSHOES
+                context.getString(R.string.categ_devices) -> DEVICES
+                context.getString(R.string.categ_education) -> EDUCATION
+                context.getString(R.string.categ_fooddrink) -> FOODDRINK
+                context.getString(R.string.categ_furniture) -> FURNITURE
+                context.getString(R.string.categ_garden) -> GARDEN
+                context.getString(R.string.categ_games) -> GAMES
+                context.getString(R.string.categ_medical) -> MEDICAL
+                else -> UNKNOWN
+            }
+        }
 
-            return UNKNOWN
+        fun getTranslatedName(context: Context, item: ItemCategory): String {
+            return when (item) {
+                APPLIANCES -> context.getString(R.string.categ_appliances)
+                CLOTHESSHOES -> context.getString(R.string.categ_clothesshoes)
+                DEVICES -> context.getString(R.string.categ_devices)
+                EDUCATION -> context.getString(R.string.categ_education)
+                FOODDRINK -> context.getString(R.string.categ_fooddrink)
+                FURNITURE -> context.getString(R.string.categ_furniture)
+                GARDEN -> context.getString(R.string.categ_garden)
+                GAMES -> context.getString(R.string.categ_games)
+                MEDICAL -> context.getString(R.string.categ_medical)
+                UNKNOWN -> context.getString(R.string.unknown)
+            }
         }
     }
 }

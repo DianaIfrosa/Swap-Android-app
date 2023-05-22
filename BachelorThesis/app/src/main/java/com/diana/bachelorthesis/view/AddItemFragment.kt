@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.apachat.loadingbutton.core.customViews.CircularProgressButton
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.PhotosRecyclerViewAdapter
@@ -108,12 +107,12 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         val spinnerCategories = binding.spinnerCategories
         spinnerCategories.onItemSelectedListener = this
         spinnerCategories.setSelection(0)
-        val categories = ItemCategory.values().map { it.displayName } as MutableList
+        val categories = ItemCategory.values().map { ItemCategory.getTranslatedName(requireActivity(), it) } as MutableList
         categories.add(0, getString(R.string.select)) // hint
 
         try {
             val lastItem = categories.removeLast()
-            if (lastItem != ItemCategory.UNKNOWN.displayName)
+            if (lastItem != ItemCategory.getTranslatedName(requireActivity(), ItemCategory.UNKNOWN))
                 throw NotFoundException("UNKNOWN category is not last")
         } catch (ex: Exception) {
             Log.w(TAG, ex.stackTraceToString())
@@ -149,12 +148,12 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         val spinnerCondition = binding.spinnerCondition
         spinnerCondition.onItemSelectedListener = this
         spinnerCondition.setSelection(0)
-        val conditionArray = ItemCondition.values().map { it.displayName } as MutableList
+        val conditionArray = ItemCondition.values().map { ItemCondition.getTranslatedName(requireActivity(), it)} as MutableList
         conditionArray.add(0, getString(R.string.select)) // hint
 
         try {
             val lastItem = conditionArray.removeLast()
-            if (lastItem != ItemCondition.UNKNOWN.displayName)
+            if (lastItem != ItemCondition.getTranslatedName(requireActivity(), ItemCondition.UNKNOWN))
                 throw NotFoundException("UNKNOWN condition is not last")
         } catch (ex: Exception) {
             Log.w(TAG, ex.stackTraceToString())
@@ -305,7 +304,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
     private fun createSnackBar(text: String, view: View): Snackbar {
         val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_INDEFINITE)
-            .setAction("OK") {}.setActionTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
+            .setAction(getString(R.string.ok)) {}.setActionTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
             .setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
 
         val margin = 15
@@ -366,12 +365,12 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
                             true
                         )
                     ) ItemCategory.UNKNOWN
-                    else ItemCategory.stringToItemCategory(value)
+                    else ItemCategory.stringToItemCategory(requireActivity(), value)
 
 
                 R.id.spinner_condition -> addItemViewModel.conditionChosen =
                     if (value.equals(resources.getString(R.string.select), true)) null
-                    else ItemCondition.stringToItemCondition(value)
+                    else ItemCondition.stringToItemCondition(requireActivity(), value)
             }
         }
     }

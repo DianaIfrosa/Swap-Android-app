@@ -93,7 +93,7 @@ class FilterDialogFragment : DialogFragment() {
             val listener: SortFilterDialogListener = fragmentParent
             chosenCity = binding.filterCityAutoComplete.text.toString()
             chosenCategories = getSelectedCheckboxes()
-            listener.saveFilterOptions(chosenCity, chosenCategories)
+            listener.saveFilterOptions(requireActivity(), chosenCity, chosenCategories)
             // todo call for filter categ
             dialog!!.dismiss()
         }

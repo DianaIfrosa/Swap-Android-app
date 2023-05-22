@@ -64,8 +64,8 @@
             android:text="@string/edit_profile"
             android:textStyle="bold"
             android:textSize="15sp"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            android:background="@drawable/btn_small"/>
+            android:background="@drawable/btn_small"
+            app:drawableEndCompat="@drawable/ic_arrow_right" />
 
         <TextView
             android:id="@+id/edit_preferences"
@@ -79,8 +79,8 @@
             android:text="@string/preferences_for_recommendations"
             android:textStyle="bold"
             android:textSize="15sp"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            android:background="@drawable/btn_small"/>
+            android:background="@drawable/btn_small"
+            app:drawableEndCompat="@drawable/ic_arrow_right" />
 
         <TextView
             android:id="@+id/edit_notifications"
@@ -94,8 +94,8 @@
             android:text="@string/notifications"
             android:textStyle="bold"
             android:textSize="15sp"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            android:background="@drawable/btn_small"/>
+            android:background="@drawable/btn_small"
+            app:drawableEndCompat="@drawable/ic_arrow_right" />
 
         <Button
             android:id="@+id/btn_sign_out"

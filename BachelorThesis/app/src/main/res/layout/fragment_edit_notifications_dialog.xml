@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginBottom="10dp"
-                android:text="Receive notifications when:"
+                android:text="@string/receive_notifications_when"
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:textStyle="bold" />
@@ -57,7 +57,7 @@
                     android:id="@+id/radio_option_0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Any user posts an item."
+                    android:text="@string/any_user_posts_an_item"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -65,7 +65,7 @@
                     android:id="@+id/radio_option_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="An item corresponding to your preferences is posted."
+                    android:text="@string/description_notification_recc"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -73,7 +73,7 @@
                     android:id="@+id/radio_option_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Never."
+                    android:text="@string/never"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 

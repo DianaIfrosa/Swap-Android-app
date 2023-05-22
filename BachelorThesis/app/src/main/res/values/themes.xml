@@ -58,7 +58,7 @@
     </style>
 
     <style name="AppBarPage">
-        <item name="android:fontFamily">@font/rosemate_script</item>
+        <item name="android:fontFamily">@font/amita</item>
         <item name="android:textSize">15sp</item>
     </style>
 

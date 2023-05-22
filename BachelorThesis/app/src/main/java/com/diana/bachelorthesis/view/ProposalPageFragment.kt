@@ -18,6 +18,7 @@ import com.denzcoskun.imageslider.interfaces.ItemClickListener
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentProposalPageBinding
+import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.ItemExchange
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.NoParamCallback
@@ -167,7 +168,7 @@ class ProposalPageFragment : Fragment(), BasicFragment {
         // exchange preferences
         var value = ""
         (proposalPageViewModel.item1 as ItemExchange).exchangePreferences.forEach {
-            val name = it.displayName
+            val name = ItemCategory.getTranslatedName(requireActivity(), it)
             value += "$name, "
         }
         if (value.isEmpty()) {
@@ -180,7 +181,7 @@ class ProposalPageFragment : Fragment(), BasicFragment {
 
         value = ""
         (proposalPageViewModel.item2 as ItemExchange).exchangePreferences.forEach {
-            val name = it.displayName
+            val name = ItemCategory.getTranslatedName(requireActivity(), it)
             value += "$name, "
         }
         if (value.isEmpty()) {

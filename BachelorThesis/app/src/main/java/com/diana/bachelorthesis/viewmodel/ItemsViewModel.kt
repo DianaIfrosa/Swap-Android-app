@@ -1,5 +1,6 @@
 package com.diana.bachelorthesis.viewmodel
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.*
@@ -30,7 +31,7 @@ class ItemsViewModel : ViewModel() {
 
     var lastScrollPosition = 0
 
-     fun populateLiveData() {
+     fun populateLiveData(context: Context) {
         //_exchangeItems.value = repository.getItems(true)
         //_donationItems.value = repository.getItems(false)
 
@@ -43,7 +44,7 @@ class ItemsViewModel : ViewModel() {
                     (item.exchangeInfo == null) && (currentUser?.email != item.owner)
                 })
                 if (displayExchangeItems) {
-                    updateCurrentItems(valuesSortedAndFiltered)
+                    updateCurrentItems(context, valuesSortedAndFiltered)
                 }
                 _exchangeItems.value = valuesSortedAndFiltered
                 Log.d(TAG, "Updated exchange items")
@@ -66,7 +67,7 @@ class ItemsViewModel : ViewModel() {
                     (item.donationInfo == null) && (currentUser?.email != item.owner)
                 })
                 if (!displayExchangeItems) {
-                    updateCurrentItems(valuesSortedAndFiltered)
+                    updateCurrentItems(context, valuesSortedAndFiltered)
                 }
                 _donationItems.value = valuesSortedAndFiltered
                 Log.d(TAG, "Updated donation items")
@@ -81,7 +82,7 @@ class ItemsViewModel : ViewModel() {
         })
     }
 
-    fun updateCurrentItems(items: ArrayList<Item>) {
+    fun updateCurrentItems(context: Context, items: ArrayList<Item>) {
         // called when there is a change in DB and the data must be updated
         // and the user's search, sort, filter preferences should be restored
 
@@ -91,7 +92,7 @@ class ItemsViewModel : ViewModel() {
         }
 
         applySort(sortOption)
-        applyFilter(cityFilter, categoriesFilter, currentItems)
+        applyFilter(context, cityFilter, categoriesFilter, currentItems)
     }
 
     private fun restoreDefaultOptions() {
@@ -137,14 +138,14 @@ class ItemsViewModel : ViewModel() {
         else _donationItems.value as ArrayList
     }
 
-    fun restoreDefaultCurrentItems() {
+    fun restoreDefaultCurrentItems(context: Context) {
         // restore default sort option and remove filter options selected
         Log.d(TAG, "Restored default current items.")
 //        restoreDefaultOptions()
 
         currentItems = if (displayExchangeItems) _exchangeItems.value as ArrayList
         else _donationItems.value as ArrayList
-        updateCurrentItems(currentItems)
+        updateCurrentItems(context, currentItems)
     }
 
     fun applySort(option: Int) {
@@ -167,10 +168,10 @@ class ItemsViewModel : ViewModel() {
         return ArrayList(itemsTemp)
     }
 
-    fun applyFilter(city: String, categories: List<ItemCategory>, data: ArrayList<Item>? = null) {
+    fun applyFilter(context: Context, city: String, categories: List<ItemCategory>, data: ArrayList<Item>? = null) {
         Log.d(
             TAG,
-            "Filter by city $city and categories ${categories.joinToString { it.displayName }}"
+            "Filter by city $city and categories ${categories.joinToString { ItemCategory.getTranslatedName(context, it)}}"
         )
         cityFilter = city
         categoriesFilter = categories

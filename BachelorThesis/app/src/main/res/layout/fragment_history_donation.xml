@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="Your item:"
+                    android:text="@string/your_item"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -70,7 +70,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:text="was donated to"
+                android:text="@string/was_donated_to"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -119,7 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="on"
+                    android:text="@string/on"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 

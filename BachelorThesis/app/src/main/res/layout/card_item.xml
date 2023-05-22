@@ -59,7 +59,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:hint="name"
                         android:maxWidth="230sp"
                         android:maxLines="1"
                         android:text="@{model.name}"
@@ -74,11 +73,8 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="15dp"
                         android:gravity="center"
-                        android:hint="city"
-
                         android:maxWidth="130sp"
                         android:text="@{model.city}"
-
                         android:textColor="@color/black"
                         android:textSize="12sp"
                         android:textStyle="italic"

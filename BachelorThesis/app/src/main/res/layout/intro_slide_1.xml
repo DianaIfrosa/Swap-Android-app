@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="@drawable/gradient_intro1">
 
-
         <ImageView
             android:layout_width="200dp"
             android:layout_height="200dp"

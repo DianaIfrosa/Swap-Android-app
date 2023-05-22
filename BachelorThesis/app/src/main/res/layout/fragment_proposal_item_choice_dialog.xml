@@ -76,6 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:textColor="@color/black"
                     android:text="@string/no_items_for_proposal"
                     android:textStyle="italic"/>
 

@@ -250,7 +250,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:textColor="@color/black"
-                        android:text="with"
+                        android:text="@string/with"
                         android:layout_marginTop="10dp"
                         android:layout_gravity="center"/>
 

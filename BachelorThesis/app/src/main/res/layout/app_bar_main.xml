@@ -30,12 +30,12 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:contentDescription="Current page"
+                    android:fontFamily="@font/amita"
                     android:gravity="center"
                     android:paddingEnd="15dp"
                     android:textColor="@color/branding"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/rosemate_script"
-                    android:visibility="gone"/>
+                    android:textSize="21sp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/titleAppBarSubpage"

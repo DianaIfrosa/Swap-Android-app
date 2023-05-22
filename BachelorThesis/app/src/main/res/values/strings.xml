@@ -31,7 +31,7 @@
     <string name="cancel">Cancel</string>
     <string name="select">Select</string>
 
-    <string name="categories" translatable="false"><u>Categories</u></string>
+    <string name="categories"><u>Categories</u></string>
     <string name="categories_no_underline">Categories</string>
 
     <string name="categ_appliances">Appliances</string>
@@ -72,26 +72,24 @@
     <string name="select_from_gallery">Select from gallery</string>
     <string name="item_title">Item title</string>
     <string name="select_photo">Select photo from:</string>
-    <string name="infoPhotos" translatable="false">We recommend that you upload at least 2 different photos so others can
-        see the particularities of your item. Also, make sure that those pictures are made in good lighting
-        and capture the relevant details of the product (including defects).</string>
-    <string name="infoLocation" translatable="false">The location you choose will be displayed in the item\'s page
+    <string name="infoPhotos">We recommend that you upload at least 2 different photos so others can see the particularities of your item. Also, make sure that those pictures are made in good lighting and capture the relevant details of the product (including defects).</string>
+    <string name="infoLocation">The location you choose will be displayed in the item\'s page
         and in the map page. This helps other users acknowledge the item\'s location for pick-up/exchange
         meetings. Note that you should not give the exact location, but an approximate one, for security reasons.</string>
 
-    <string-array name="condition_array">
-        <item name="new">New/Like new</item>
-        <item name="used">Used</item>
-        <item name="not_working">For parts or not working</item>
-    </string-array>
+    <string name="new_like_new">New/Like new</string>
+    <string name="used">Used</string>
+    <string name="not_working">For parts or not working</string>
+    <string name="unknown">Unknown</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="add_item" translatable="false">Add item</string>
+    <string name="add_item">Add item</string>
     <string name="mapPageTitle">Map</string>
     <string name="titleLocationPermission">Location permission needed</string>
-    <string name="messageLocationPermission" translatable="false">"The location permission is required so that you can see items around you in real time! "</string>
+    <string name="messageLocationPermission">"The location permission is required so that you can see items around you in real time! "</string>
 
     <!-- Authentication -->
     <string name="login">Log in</string>
@@ -102,7 +100,6 @@
     <string name="confirm_password">Confirm password</string>
     <string name="name_register">Full name</string>
     <string name="or">or</string>
-    <string name="sign_up_with_facebook" translatable="false">Sign up with Facebook</string>
     <string name="sign_up_with_google">Sign up with Google</string>
     <string name="sign_up">Sign up</string>
     <string name="account_exists_already">Email already used for another account!</string>
@@ -115,7 +112,7 @@
     <string name="name_invalid">First name and last name are required</string>
 
     <string name="pass_required">Password is required</string>
-    <string name="pass_invalid" translatable="false">Should have minimum 8 characters, at least 1 uppercase letter,
+    <string name="pass_invalid">Should have minimum 8 characters, at least 1 uppercase letter,
         1 lowercase letter and 1 number</string>
 
     <string name="pass_confirmed_required">Password confirmation is required</string>
@@ -123,16 +120,14 @@
 
     <!-- Intro screens -->
     <string name="intro1_title">Add items</string>
-    <string name="intro1_content" translatable="false">You can add as many items as you want, so that other users can see and reach you if they want to exchange or receive donation.</string>
+    <string name="intro1_content">You can add as many items as you want, so that other users can see and reach you if they want to exchange or receive donation.</string>
     <string name="intro2_title">Personal recommendations</string>
-    <string name="intro2_content" translatable="false">Based on your preferences we will look for the best matches so you can enjoy them in the Recommendations section.</string>
+    <string name="intro2_content">Based on your preferences we will look for the best matches so you can enjoy them in the Recommendations section.</string>
     <string name="intro3_title">Items around you</string>
     <string name="intro3_content">Use the live map to see what others have for exchange or donation.</string>
     <string name="pass_or_email_invalid">Email or password is wrong!</string>
     <string name="help">Help</string>
     <string name="authentication">Authentication</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="profile">Profile</string>
     <string name="log_in_register">Log in / Register</string>
     <string name="you">You</string>
@@ -143,7 +138,7 @@
     <string name="item">Item</string>
     <string name="choose_location">Choose location</string>
     <string name="send_message">Send message</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading</string>
     <string name="notifications">Notifications</string>
     <string name="preferences_for_recommendations">Preferences for recommendations</string>
     <string name="edit_profile">Edit profile</string>
@@ -156,11 +151,11 @@
     <string name="owners_preferences_description">Items that are posted by one of these owners.</string>
     <string name="categories_preferences_description">Items that fall under one of these categories.</string>
     <string name="cities_preferences_description">Items that are located in one of these cities.</string>
-    <string name="exchange_preferences_description" translatable="false">Items for which the owner wants to exchange with an object from one of these categories</string>
-    <string name="no_items_favorites" translatable="false">Nothing... \n Tap ♡ in an item\'s page and you will have it saved here.</string>
-    <string name="no_items_recommendations" translatable="false">Nothing... \n Customize yout preferences in the dedicated page from profile section.</string>
+    <string name="exchange_preferences_description">Items for which the owner wants to exchange with an object from one of these categories</string>
+    <string name="no_items_favorites">Nothing... \n Tap ♡ in an item\'s page and you will have it saved here.</string>
+    <string name="no_items_recommendations">Nothing... \n Customize your preferences in the dedicated page from profile section.</string>
     <string name="old_password">Old password</string>
-    <string name="select_from_gallery_2_rows" translatable="false">Select from \n gallery</string>
+    <string name="select_from_gallery_2_rows">Select from \n gallery</string>
     <string name="profile_photo">Profile photo</string>
     <string name="new_password">New password</string>
     <string name="old_pass_invalid">Invalid password!</string>
@@ -168,7 +163,7 @@
     <string name="owners_autocomplete">Search for a name</string>
     <string name="city_autocomplete">e.g. Bucuresti</string>
     <string name="words_autocomplete">e.g. table</string>
-    <string name="edit_preferences_description" translatable="false">Based on your preferences you will see the corresponding items in your Recommendations page and receive notifications for them (if turned on).</string>
+    <string name="edit_preferences_description">Based on your preferences you will see the corresponding items in your Recommendations page and receive notifications for them (if turned on).</string>
     <string name="report_post">Report post</string>
 
     <string name="item_deleted_successfully">Item deleted successfully!</string>
@@ -181,15 +176,15 @@
     <string name="available">Available</string>
     <string name="not_available">Not available</string>
     <string name="no_items_given">Nothing... Come back after you exchange or donate something.</string>
-    <string name="no_items_available" translatable="false">Nothing... Seems like you did a good job in finding your items a new home.</string>
+    <string name="no_items_available">Nothing... Seems like you did a good job in finding your items a new home.</string>
     <string name="events">events</string>
-    <string name="no_unavailable_items" translatable="false">None... Message other users and exchange or donate your items. Or maybe receive a donation?</string>
+    <string name="no_unavailable_items">None... Message other users to exchange your items or receive a donation. Or maybe make a donation?</string>
     <string name="all_items_available">All items available</string>
     <string name="none">None</string>
     <string name="sent_proposal">sent you a proposal</string>
     <string name="sent_photo">sent you a photo</string>
-    <string name="choose_item" translatable="false">Choose an item</string>
-    <string name="must_choose_item" translatable="false">You must choose an item to continue!</string>
+    <string name="choose_item">Choose an item</string>
+    <string name="must_choose_item">You must choose an item to continue!</string>
     <string name="no_items_for_proposal">No items to exchange with.</string>
     <string name="you_sent_a_proposal">you sent a proposal</string>
     <string name="you_sent_photo">you sent a photo</string>
@@ -278,6 +273,20 @@
             </html>
         ]]>
 </string>
+    <string name="receive_notifications_when">Receive notifications when:</string>
+    <string name="any_user_posts_an_item">Any user posts an item.</string>
+    <string name="description_notification_recc">An item corresponding to your preferences is posted.</string>
+    <string name="never">Never.</string>
+    <string name="cities">Cities</string>
+    <string name="cannot_change_pass_google">Sorry! You cannot change your password because you logged in with Google.</string>
+    <string name="type_here">type here</string>
+    <string name="city">City:</string>
+    <string name="your_item">Your item:</string>
+    <string name="was_donated_to">was donated to</string>
+    <string name="was_exchanged_with">was exchanged with</string>
+    <string name="s_item">\'s item:</string>
+    <string name="skip">Skip</string>
+    <string name="with">with</string>
 
 
 </resources>

@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="Your item:"
+                    android:text="@string/your_item"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -71,7 +71,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:text="was exchanged with"
+                android:text="@string/was_exchanged_with"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="8dp"
-                    android:text="'s item:"
+                    android:text="@string/s_item"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 

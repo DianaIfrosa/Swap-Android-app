@@ -92,7 +92,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 
         initListeners()
         itemsViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()
-        itemsViewModel.populateLiveData()
+        itemsViewModel.populateLiveData(requireActivity())
 
     }
 
@@ -125,7 +125,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         val categoriesList: MutableList<ItemCategory> = mutableListOf()
         if (categoriesString.isNotEmpty()) {
             categoriesString.split(",").forEach { categoryName ->
-                categoriesList.add(ItemCategory.stringToItemCategory(categoryName))
+                categoriesList.add(ItemCategory.stringToItemCategory(requireActivity(), categoryName))
             }
         }
 
@@ -252,7 +252,7 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
             itemsViewModel.displayExchangeItems = !checked
             itemsViewModel.lastScrollPosition = 0
 
-            itemsViewModel.restoreDefaultCurrentItems()
+            itemsViewModel.restoreDefaultCurrentItems(requireActivity())
             updateRecyclerView(itemsViewModel.currentItems)
             scrollRecyclerView()
 
@@ -302,8 +302,8 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         updateRecyclerView(itemsViewModel.currentItems)
     }
 
-    override fun saveFilterOptions(city: String, categories: List<ItemCategory>) {
-        itemsViewModel.applyFilter(city, categories)
+    override fun saveFilterOptions(context: Context, city: String, categories: List<ItemCategory>) {
+        itemsViewModel.applyFilter(context, city, categories)
         updateRecyclerView(itemsViewModel.currentItems)
     }
 

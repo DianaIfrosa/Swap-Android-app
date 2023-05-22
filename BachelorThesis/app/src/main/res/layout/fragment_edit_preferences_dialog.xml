@@ -95,8 +95,8 @@
                             android:id="@+id/btn_add_word"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:drawableStart="@drawable/ic_add"
-                            android:textAllCaps="false" />
+                            android:textAllCaps="false"
+                            app:drawableStartCompat="@drawable/ic_add" />
 
                     </LinearLayout>
 
@@ -156,8 +156,8 @@
                             android:id="@+id/btn_add_owner"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:drawableStart="@drawable/ic_add"
-                            android:textAllCaps="false" />
+                            android:textAllCaps="false"
+                            app:drawableStartCompat="@drawable/ic_add" />
 
                     </LinearLayout>
 
@@ -220,7 +220,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"
-                        android:text="Cities"
+                        android:text="@string/cities"
                         android:textColor="@color/black"
                         android:textSize="17sp"
                         android:textStyle="bold" />

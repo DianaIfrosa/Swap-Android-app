@@ -25,7 +25,6 @@ class HistoryAvailableFragment : Fragment() {
     private lateinit var historyViewModel: HistoryAvailableViewModel
 
     private val binding get() = _binding!!
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,6 +35,7 @@ class HistoryAvailableFragment : Fragment() {
         val root: View = binding.root
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.itemsAdapter = ItemsRecyclerViewAdapter(listOf(), requireContext()) {}
+        updateRecyclerView(arrayListOf(),true)
         return root
     }
 

@@ -59,6 +59,20 @@ class UserRepository {
             }
     }
 
+    fun sendResetPassEmail(email: String, callback: NoParamCallback) {
+        auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Successfully sent reset pass email to $email")
+                callback.onComplete()
+            }
+            else {
+                Log.w(TAG, "Error while sending reset pass email to $email")
+                Log.w(TAG, task.exception)
+                callback.onError(task.exception)
+            }
+        }
+    }
+
     fun registerUser(email: String, pass: String, callback: OneParamCallback<FirebaseUser>) {
         auth.createUserWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->

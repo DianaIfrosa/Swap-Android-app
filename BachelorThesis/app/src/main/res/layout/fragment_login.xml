@@ -17,7 +17,7 @@
         <ImageView
             android:id="@+id/login_picture"
             android:layout_width="wrap_content"
-            android:layout_height="330dp"
+            android:layout_height="320dp"
             android:layout_alignParentTop="true"
             android:src="@drawable/photo_login" />
 
@@ -59,13 +59,23 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/forgot_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pass_input_layout"
+            android:layout_alignParentEnd="true"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingBottom="10dp"
+            android:textSize="14sp"
+            android:text="@string/forgot_password"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/pass_input_layout"
-
-            android:layout_marginTop="15dp"
+            android:layout_below="@+id/forgot_pass"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="20dp"
             android:orientation="vertical">
 

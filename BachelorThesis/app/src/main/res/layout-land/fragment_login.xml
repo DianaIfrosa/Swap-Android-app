@@ -62,11 +62,22 @@
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/forgot_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingBottom="10dp"
+            android:textSize="14sp"
+            android:text="@string/forgot_password"/>
+
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/shape_rounded"
         android:layout_gravity="center"
         android:gravity="center"

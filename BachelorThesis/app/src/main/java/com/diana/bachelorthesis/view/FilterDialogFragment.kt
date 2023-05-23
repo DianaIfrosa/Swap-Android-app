@@ -4,9 +4,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import androidx.core.view.isVisible
@@ -52,6 +50,7 @@ class FilterDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "FilterDialogFragment is onViewCreated")
 
+        customizeDialog()
         val adapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, cities)
         binding.filterCityAutoComplete.setAdapter(adapter)
@@ -100,6 +99,18 @@ class FilterDialogFragment : DialogFragment() {
 
         binding.filterCancel.setOnClickListener {
             dialog!!.dismiss()
+        }
+    }
+
+    private fun customizeDialog() {
+        val window: Window? = dialog!!.window
+        if (window != null) {
+            val lp = WindowManager.LayoutParams()
+            lp.copyFrom(window.attributes)
+            lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            window.attributes = lp
         }
     }
 
@@ -152,8 +163,8 @@ class FilterDialogFragment : DialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         Log.d(TAG, "FilterDialogFragment is onDestroyView")
+        _binding = null
     }
 
 }

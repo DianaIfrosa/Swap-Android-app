@@ -287,6 +287,10 @@
     <string name="s_item">\'s item:</string>
     <string name="skip">Skip</string>
     <string name="with">with</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="send">Send</string>
+    <string name="send_email_for_resetting_password">Send email for resetting password</string>
+    <string name="email_not_in_db">Email not associated with an account!</string>
 
 
 </resources>

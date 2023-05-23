@@ -126,6 +126,12 @@ class LoginFragment : Fragment(), BasicFragment {
                     })
             }
         }
+
+        binding.forgotPass.setOnClickListener {
+            val forgotPassDialogFragment = ForgotPassDialogFragment()
+            forgotPassDialogFragment.isCancelable = true
+            forgotPassDialogFragment.show(childFragmentManager, "ForgotPassDialogFragment")
+        }
     }
 
     private fun getFieldStatus() {

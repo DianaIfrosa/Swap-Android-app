@@ -33,7 +33,7 @@
     <string name="menu_chat">Conversații</string>
     <string name="menu_favorites">Favorite</string>
     <string name="menu_language">Schimbă limba</string>
-    <string name="menu_report_problem">Am o problemă</string>
+    <string name="menu_contact_us">Contactează-ne</string>
     <string name="exchanges">Schimburi</string>
     <string name="donations">Donații</string>
     <string name="donation_made">Donație facută</string>
@@ -198,4 +198,8 @@
     <string name="send">Trimite</string>
     <string name="send_email_for_resetting_password">Trimite email pentru resetarea parolei</string>
     <string name="email_not_in_db">Email-ul nu este asociat cu un cont!</string>
+    <string name="send_feedback">Trimite</string>
+    <string name="feedback_description">Spune-ne dacă ai o problemă sau dacă e ceva ce putem îmbunătăți.</string>
+    <string name="feedback_sent">Mulțumim! \n Vom analiza părerea ta și te vom contacta prin email daca avem nevoie de mai multe informații.</string>
+    <string name="report_sent">Mulțumim! \n Vom analiza problema ta și te vom ține la curent cu statusul pe email.</string>
 </resources>

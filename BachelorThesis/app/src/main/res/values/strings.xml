@@ -12,7 +12,7 @@
     <string name="menu_chat">Chat</string>
     <string name="menu_favorites">Favorites</string>
     <string name="menu_language">Change language</string>
-    <string name="menu_report_problem">I have a problem</string>
+    <string name="menu_contact_us">Contact us</string>
 
     <string name="exchanges">Exchanges</string>
     <string name="donations">Donations</string>
@@ -291,6 +291,11 @@
     <string name="send">Send</string>
     <string name="send_email_for_resetting_password">Send email for resetting password</string>
     <string name="email_not_in_db">Email not associated with an account!</string>
+
+    <string name="send_feedback">Send feedback</string>
+    <string name="feedback_description">Tell us if you have a problem or there is something we could have done better.</string>
+    <string name="feedback_sent">Thank you! \n We will analyze your feedback and contact you via email if we need additional information.</string>
+    <string name="report_sent">Thank you! \n We will analyze your report and keep you updated via email.</string>
 
 
 </resources>

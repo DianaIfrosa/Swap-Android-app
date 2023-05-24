@@ -62,8 +62,8 @@ class IntroAuthFragment : Fragment(), BasicFragment {
     }
 
     override fun initListeners() {
-        binding.btnSkip!!.setOnClickListener{ launchAuthScreen() }
-        binding.btnNext!!.setOnClickListener {
+        binding.btnSkip.setOnClickListener{ launchAuthScreen() }
+        binding.btnNext.setOnClickListener {
             // checking for last page if true launch MainActivity
             val current = getItem()
             if (current < layouts.size) {
@@ -98,7 +98,8 @@ class IntroAuthFragment : Fragment(), BasicFragment {
     }
 
     private fun launchAuthScreen() {
-        requireView().findNavController().navigate(R.id.nav_auth)
+        val action = IntroAuthFragmentDirections.actionNavIntroAuthToNavAuth()
+        requireView().findNavController().navigate(action)
     }
 
     //  viewpager change listener

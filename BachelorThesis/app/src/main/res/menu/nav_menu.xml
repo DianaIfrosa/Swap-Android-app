@@ -39,9 +39,8 @@
         android:id="@+id/group_help"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_report_problem"
+            android:id="@+id/nav_contact_us"
             android:icon="@drawable/ic_menu_report_problem"
-            android:title="@string/menu_report_problem" />
-
+            android:title="@string/menu_contact_us" />
     </group>
 </menu>

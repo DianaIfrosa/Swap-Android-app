@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.nav_home, R.id.nav_add_item, R.id.nav_recommendations,
                 R.id.nav_chat, R.id.nav_favorites, R.id.nav_map,
-                R.id.nav_history // TODO add here the rest of the ids
+                R.id.nav_history, R.id.nav_contact_us // TODO add here the rest of the ids
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -92,8 +92,6 @@ class MainActivity : AppCompatActivity() {
                 true
 
             } else {
-                // Treat other normal cases
-
                 if (item.itemId == R.id.nav_recommendations) {
                     mainViewModel.clickedOnRecommendations = true
                 }
@@ -160,6 +158,7 @@ class MainActivity : AppCompatActivity() {
         navView.menu.findItem(R.id.nav_favorites).isVisible = userLogged
         navView.menu.findItem(R.id.nav_chat).isVisible = userLogged
         navView.menu.findItem(R.id.nav_history).isVisible = userLogged
+        navView.menu.findItem(R.id.nav_contact_us).isVisible = userLogged
     }
 
     private fun updateIconAppBar() {

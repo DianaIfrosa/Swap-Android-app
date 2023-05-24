@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
-    tools:context=".view.ReportPostFragment">
+    tools:context=".view.ContactUsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,20 +23,20 @@
             />
 
         <EditText
-            android:id="@+id/edit_text_report"
+            android:id="@+id/edit_text_feedback"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_marginTop="20dp"
             android:padding="10dp"
             android:inputType="textMultiLine"
-            android:hint="@string/report_description"
+            android:hint="@string/feedback_description"
             android:textColor="@color/black"
             android:gravity="top"
             android:background="@drawable/background_chat_editext"/>
 
 
         <com.apachat.loadingbutton.core.customViews.CircularProgressButton
-            android:id="@+id/send_report"
+            android:id="@+id/send_feedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_small"
@@ -44,20 +44,21 @@
             android:padding="20dp"
             android:layout_marginBottom="25dp"
             android:layout_gravity="center"
-            android:text="@string/submit_report"
+            android:text="@string/send_feedback"
             />
 
         <TextView
-            android:id="@+id/report_sent_text"
+            android:id="@+id/feedback_sent_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:textSize="14sp"
             android:textStyle="italic"
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@string/report_sent"
-            android:layout_marginBottom="20dp"/>
+            android:text="@string/feedback_sent" />
+
     </LinearLayout>
 
 </ScrollView>

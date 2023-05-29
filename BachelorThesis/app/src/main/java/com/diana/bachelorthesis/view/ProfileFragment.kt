@@ -11,13 +11,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import com.bumptech.glide.Glide
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentProfileBinding
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.utils.*
 import com.diana.bachelorthesis.viewmodel.ProfileViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
-import com.squareup.picasso.Picasso
 import java.lang.Exception
 
 class ProfileFragment : Fragment(), BasicFragment, ProfileOptionsListener {
@@ -119,7 +119,7 @@ class ProfileFragment : Fragment(), BasicFragment, ProfileOptionsListener {
         binding.profileEmail.text = currentUser.email
         if (currentUser.profilePhoto != null) {
             profileViewModel.profilePhoto = currentUser.profilePhoto
-            Picasso.get().load(currentUser.profilePhoto).into(binding.profilePhoto)
+            Glide.with(requireContext()).load(currentUser.profilePhoto).centerCrop().into(binding.profilePhoto)
         }
     }
 
@@ -134,7 +134,7 @@ class ProfileFragment : Fragment(), BasicFragment, ProfileOptionsListener {
                 photoUri, object : OneParamCallback<String> {
                     override fun onComplete(value: String?) {
                         profileViewModel.profilePhoto = value!!
-                        Picasso.get().load(value).into(binding.profilePhoto)
+                        Glide.with(requireContext()).load(value).centerCrop().into(binding.profilePhoto)
                         (requireActivity() as MainActivity).changeCurrentUserProfilePhoto(value)
                     }
 

@@ -30,9 +30,9 @@ import com.diana.bachelorthesis.viewmodel.MainViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
-import com.squareup.picasso.Picasso
 import android.content.Intent
 import android.net.Uri
+import com.bumptech.glide.Glide
 
 class MainActivity : AppCompatActivity() {
     private val TAG: String = MainActivity::class.java.name
@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity() {
                 text = currentUser.email
             }
             photoImageView.visibility = View.VISIBLE
-            Picasso.get().load(currentUser.profilePhoto).into(photoImageView)
+            Glide.with(this).load(currentUser.profilePhoto).centerCrop().into(photoImageView)
         } else {
             btnAuth.visibility = View.VISIBLE
             nameTextView.visibility = View.INVISIBLE

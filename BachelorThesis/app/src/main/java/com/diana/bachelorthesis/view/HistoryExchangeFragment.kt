@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.bumptech.glide.Glide
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHistoryExchangeBinding
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.viewmodel.ExchangeEventViewModel
-import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -57,7 +57,7 @@ class HistoryExchangeFragment : Fragment(), BasicFragment {
                 updateUIElements()
 
                 binding.ownerName.text = historyEventViewModel.otherOwner.value!!.name
-                Picasso.get().load(historyEventViewModel.otherOwner.value!!.profilePhoto).into(binding.ownerPicture)
+                Glide.with(context).load(historyEventViewModel.otherOwner.value!!.profilePhoto).centerCrop().into(binding.ownerPicture)
 
                 initListeners()
             } else {

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.CardHistoryBinding
 import com.diana.bachelorthesis.model.History
@@ -14,7 +15,6 @@ import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.repository.UserRepository
 import com.diana.bachelorthesis.utils.HistoryCardClickListener
 import com.diana.bachelorthesis.utils.OneParamCallback
-import com.squareup.picasso.Picasso
 import java.lang.Exception
 
 class CardsHistoryAdapter(
@@ -58,8 +58,8 @@ class CardsHistoryAdapter(
             holder.cardHistoryBinding.layoutCard.setBackgroundResource(R.color.purple_pale)
             holder.cardHistoryBinding.symbolImage.setImageResource(R.drawable.ic_arrows_exchange)
 
-            Picasso.get().load(item1.photos[0]).into(holder.cardHistoryBinding.item1Photo)
-            Picasso.get().load(item2.photos[0]).into(holder.cardHistoryBinding.item2Photo)
+            Glide.with(context).load(item1.photos[0]).centerCrop().into(holder.cardHistoryBinding.item1Photo)
+            Glide.with(context).load(item2.photos[0]).centerCrop().into(holder.cardHistoryBinding.item2Photo)
         } else {
             // donation card
             holder.cardHistoryBinding.item2Layout.visibility = View.GONE
@@ -67,7 +67,7 @@ class CardsHistoryAdapter(
             holder.cardHistoryBinding.layoutCard.setBackgroundResource(R.color.yellow_pale)
             holder.cardHistoryBinding.symbolImage.setImageResource(R.drawable.ic_arrow_donation)
 
-            Picasso.get().load(item1.photos[0]).into(holder.cardHistoryBinding.item1Photo)
+            Glide.with(context).load(item1.photos[0]).centerCrop().into(holder.cardHistoryBinding.item1Photo)
         }
 
         holder.cardHistoryBinding.item1 = item1
@@ -82,7 +82,7 @@ class CardsHistoryAdapter(
                 object : OneParamCallback<User> {
                     override fun onComplete(value: User?) {
                         if (value != null) {
-                            Picasso.get().load(value.profilePhoto)
+                            Glide.with(context).load(value.profilePhoto).centerCrop()
                                 .into(holder.cardHistoryBinding.donationReceiverPicture)
                             if (value.email == currentUser!!.email) {
                                 holder.cardHistoryBinding.donationReceiverName.text =

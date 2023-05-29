@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.diana.bachelorthesis.utils.CustomClickListener
@@ -16,7 +17,6 @@ import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.repository.PhotoRepository
 import com.diana.bachelorthesis.repository.UserRepository
 import com.diana.bachelorthesis.utils.OneParamCallback
-import com.squareup.picasso.Picasso
 import java.lang.Exception
 
 class ItemsRecyclerViewAdapter(private var itemsList: List<Item>, var context: Context,
@@ -53,7 +53,7 @@ private val onItemClicked: (Item) -> Unit) :
             override fun onComplete(value: User?) {
                 if (value != null) {
                     holder.cardItemBinding.ownerName.text = value.name
-                    Picasso.get().load(value.profilePhoto).into(holder.cardItemBinding.ownerPicture)
+                    Glide.with(context).load(value.profilePhoto).centerCrop().into(holder.cardItemBinding.ownerPicture)
                 } else {
                     holder.cardItemBinding.ownerName.text = "-"
                 }

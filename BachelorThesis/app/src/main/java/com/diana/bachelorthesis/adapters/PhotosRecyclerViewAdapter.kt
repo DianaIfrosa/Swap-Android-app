@@ -5,8 +5,9 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.diana.bachelorthesis.databinding.CardPhotoBinding
-import com.squareup.picasso.Picasso
+
 
 class PhotosRecyclerViewAdapter(private var photosList: List<Uri>, var context: Context):
     RecyclerView.Adapter<PhotosRecyclerViewAdapter.PhotoViewHolder>() {
@@ -23,7 +24,7 @@ class PhotosRecyclerViewAdapter(private var photosList: List<Uri>, var context: 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val currentPhoto: Uri = photosList[position]
         currentPhoto.let{
-            Picasso.get().load(it).into(holder.cardPhotoBinding.photo)
+           Glide.with(context).load(it).into(holder.cardPhotoBinding.photo)
         }
     }
 

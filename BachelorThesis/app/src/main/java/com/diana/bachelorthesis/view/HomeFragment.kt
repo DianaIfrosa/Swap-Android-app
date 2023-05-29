@@ -45,7 +45,6 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
         savedInstanceState: Bundle?
     ): View {
         Log.d(TAG, "HomeFragment is onCreateView")
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 //        binding.searchSwitchLayout.switchDonationExchange.isChecked = false
         val root: View = binding.root

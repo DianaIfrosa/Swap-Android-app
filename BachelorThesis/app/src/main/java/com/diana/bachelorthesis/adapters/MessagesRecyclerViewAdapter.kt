@@ -6,10 +6,10 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.CardMessageBinding
 import com.diana.bachelorthesis.model.*
@@ -18,7 +18,6 @@ import com.diana.bachelorthesis.repository.ProposalRepository
 import com.diana.bachelorthesis.repository.UserRepository
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.utils.ProposalCardClickListener
-import com.squareup.picasso.Picasso
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -115,7 +114,7 @@ class MessagesRecyclerViewAdapter(
             holder.cardMessageBinding.proposalCardLayout.visibility = View.GONE
             holder.cardMessageBinding.messagePicture.visibility = View.VISIBLE
 
-            Picasso.get().load(currentMessage.photoUri)
+            Glide.with(context).load(currentMessage.photoUri)
                 .into(holder.cardMessageBinding.messagePicture)
         } else if (currentMessage.proposalId != null) {
             holder.cardMessageBinding.proposalCardLayout.layoutParams = params
@@ -220,8 +219,8 @@ class MessagesRecyclerViewAdapter(
         holder.cardMessageBinding.proposalCard.item2 = itemProposal2
         holder.cardMessageBinding.proposalCard.proposalClickListener = this
 
-        Picasso.get().load(itemProposal1.photos[0]).into(holder.cardMessageBinding.proposalCard.item1Photo)
-        Picasso.get().load(itemProposal2.photos[0]).into(holder.cardMessageBinding.proposalCard.item2Photo)
+        Glide.with(context).load(itemProposal1.photos[0]).into(holder.cardMessageBinding.proposalCard.item1Photo)
+        Glide.with(context).load(itemProposal2.photos[0]).into(holder.cardMessageBinding.proposalCard.item2Photo)
 
         holder.cardMessageBinding.proposalCard.symbolImage.setImageResource(R.drawable.ic_arrows_exchange)
     }
@@ -236,8 +235,8 @@ class MessagesRecyclerViewAdapter(
         holder.cardMessageBinding.proposalCard.proposalClickListener = this
         holder.cardMessageBinding.proposalCard.donationReceiverName.text = donationReceiver.name
 
-        Picasso.get().load(itemProposal1.photos[0]).into(holder.cardMessageBinding.proposalCard.item1Photo)
-        Picasso.get().load(donationReceiver.profilePhoto).into(holder.cardMessageBinding.proposalCard.donationReceiverPicture)
+        Glide.with(context).load(itemProposal1.photos[0]).into(holder.cardMessageBinding.proposalCard.item1Photo)
+        Glide.with(context).load(donationReceiver.profilePhoto).into(holder.cardMessageBinding.proposalCard.donationReceiverPicture)
 
         holder.cardMessageBinding.proposalCard.symbolImage.setImageResource(R.drawable.ic_arrow_donation)
     }

@@ -417,6 +417,4 @@ class ItemRepository {
         favExchangesListenerRegistration?.remove()
     }
 
-// TODO write the rest of the CRUD operations and use picasso for images;
-// also store images in cloud firebase
 }

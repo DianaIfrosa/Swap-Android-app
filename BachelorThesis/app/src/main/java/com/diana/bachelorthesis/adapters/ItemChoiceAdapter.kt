@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.CardItemProposalExchangeBinding
 import com.diana.bachelorthesis.model.Item
-import com.squareup.picasso.Picasso
 
 class ItemChoiceAdapter(private var itemsList: List<Item>, var context: Context) :
     RecyclerView.Adapter<ItemChoiceAdapter.ItemViewHolder>() {
@@ -33,7 +33,7 @@ class ItemChoiceAdapter(private var itemsList: List<Item>, var context: Context)
         val currentItem: Item = itemsList[position]
 
         holder.cardItemBinding.item = currentItem
-        Picasso.get().load(currentItem.photos[0]).into(holder.cardItemBinding.itemPicture)
+        Glide.with(context).load(currentItem.photos[0]).centerCrop().into(holder.cardItemBinding.itemPicture)
 
         holder.cardItemBinding.cardView.isChecked = selectedPosition == position
 

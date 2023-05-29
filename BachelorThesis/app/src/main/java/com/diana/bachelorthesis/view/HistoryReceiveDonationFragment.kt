@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.bumptech.glide.Glide
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentHistoryReceiveDonationBinding
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.viewmodel.ReceiveDonationEventViewModel
-import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,7 +56,8 @@ class HistoryReceiveDonationFragment : Fragment(), BasicFragment {
                 updateUIElements()
 
                 binding.donationMakerName.text = historyEventViewModel.donationMaker.value!!.name
-                Picasso.get().load(historyEventViewModel.donationMaker.value!!.profilePhoto)
+                Glide.with(context).load(historyEventViewModel.donationMaker.value!!.profilePhoto)
+                    .centerCrop()
                     .into(binding.donationMakerPicture)
 
                 initListeners()

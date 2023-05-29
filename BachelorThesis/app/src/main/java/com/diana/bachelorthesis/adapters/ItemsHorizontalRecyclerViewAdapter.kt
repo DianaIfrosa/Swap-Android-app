@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.diana.bachelorthesis.utils.CustomClickListener
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.CardItemMinimalBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemExchange
-import com.squareup.picasso.Picasso
 
 class ItemsHorizontalRecyclerViewAdapter(
     private var itemsList: List<Item>,
@@ -56,7 +56,7 @@ class ItemsHorizontalRecyclerViewAdapter(
 
         holder.cardItemBinding.model = currentItem
         holder.cardItemBinding.itemClickListener = this
-        Picasso.get().load(currentItem.photos[0]).into(holder.cardItemBinding.itemPhoto)
+        Glide.with(context).load(currentItem.photos[0]).centerCrop().into(holder.cardItemBinding.itemPhoto)
     }
 
     override fun getItemCount(): Int {

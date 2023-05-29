@@ -19,13 +19,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentEditProfileDialogBinding
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.ProfileOptionsListener
 import com.diana.bachelorthesis.viewmodel.ProfileViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
-import com.squareup.picasso.Picasso
 import java.lang.Exception
 import java.util.regex.Pattern
 
@@ -103,7 +103,7 @@ class EditProfileDialogFragment : DialogFragment() {
 
     private fun restoreValues() {
         if (profileViewModel.profilePhoto != null)
-            Picasso.get().load(profileViewModel.profilePhoto).into(binding.profilePhoto)
+            Glide.with(requireContext()).load(profileViewModel.profilePhoto).centerCrop().into(binding.profilePhoto)
     }
 
     private fun initListeners() {
@@ -190,7 +190,7 @@ class EditProfileDialogFragment : DialogFragment() {
                 if (resultCode == Activity.RESULT_OK) {
                     val imageUri: Uri? = intent?.data
                     imageUri?.let {
-                        Picasso.get().load(imageUri).into(binding.profilePhoto)
+                        Glide.with(requireContext()).load(imageUri).into(binding.profilePhoto)
                         profileViewModel.newprofilePhoto = imageUri
                     }
                 }

@@ -13,6 +13,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.apachat.loadingbutton.core.customViews.CircularProgressButton
+import com.bumptech.glide.Glide
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.interfaces.ItemClickListener
 import com.diana.bachelorthesis.R
@@ -24,7 +25,6 @@ import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.viewmodel.ProposalPageViewModel
-import com.squareup.picasso.Picasso
 import java.lang.Exception
 
 class ProposalPageFragment : Fragment(), BasicFragment {
@@ -96,7 +96,8 @@ class ProposalPageFragment : Fragment(), BasicFragment {
         }
 
         // user making proposal
-        Picasso.get().load(proposalPageViewModel.userMakingProposal.profilePhoto)
+        Glide.with(requireContext()).load(proposalPageViewModel.userMakingProposal.profilePhoto)
+            .centerCrop()
             .into(binding.user2Photo)
         binding.user2Name.text = proposalPageViewModel.userMakingProposal.name
 

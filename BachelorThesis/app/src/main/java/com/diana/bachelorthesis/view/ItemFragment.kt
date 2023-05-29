@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.bumptech.glide.Glide
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.interfaces.ItemClickListener
 import com.diana.bachelorthesis.R
@@ -22,7 +23,6 @@ import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.viewmodel.ChatViewModel
 import com.diana.bachelorthesis.viewmodel.ItemPageViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
-import com.squareup.picasso.Picasso
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -287,7 +287,7 @@ class ItemFragment : Fragment(), BasicFragment {
     private fun showItemOwnerDetails(owner: User) {
         if (binding != null) {
             binding.itemOwnerName.text = owner.name
-            Picasso.get().load(owner.profilePhoto).into(binding.ownerPicture)
+            Glide.with(context).load(owner.profilePhoto).centerCrop().into(binding.ownerPicture)
         }
     }
 

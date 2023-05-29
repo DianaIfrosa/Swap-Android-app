@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsHorizontalRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentOwnerProfileBinding
@@ -17,7 +18,6 @@ import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.viewmodel.OwnerProfileViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
-import com.squareup.picasso.Picasso
 
 class OwnerProfileFragment : Fragment(), BasicFragment {
     private val TAG: String = OwnerProfileFragment::class.java.name
@@ -66,7 +66,7 @@ class OwnerProfileFragment : Fragment(), BasicFragment {
 
     private fun updateUIElements() {
         binding.profileName.text = ownerProfileViewModel.owner.name
-        Picasso.get().load(ownerProfileViewModel.owner.profilePhoto).into(binding.ownerPhoto)
+        Glide.with(requireContext()).load(ownerProfileViewModel.owner.profilePhoto).centerCrop().into(binding.ownerPhoto)
     }
 
     fun updateRecyclerView(items: List<Item>, progressBarAppears: Boolean = false) {

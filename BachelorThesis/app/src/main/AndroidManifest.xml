@@ -25,20 +25,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BachelorThesis"
         android:screenOrientation="sensor"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
-
-        <!--        android:theme="@style/Theme.AppSplash"-->
+        tools:targetApi="31"
+        android:theme="@style/Theme.AppSplash">
+        <!--     android:theme="@style/Theme.BachelorThesis"-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBty6htocQZVbjnN-Aga0WpR-UHwcmM_1Q" /> <!-- <uses-library android:name="org.apache.http.legacy" android:required="false" /> -->
 
         <activity
             android:name=".view.MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.BachelorThesis.NoActionBar">
+            android:exported="true">
+<!--            android:theme="@style/Theme.BachelorThesis.NoActionBar">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

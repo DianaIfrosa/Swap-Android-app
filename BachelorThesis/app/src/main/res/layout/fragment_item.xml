@@ -139,7 +139,7 @@
                         android:layout_gravity="start"
                         android:layout_marginEnd="10dp"
                         android:gravity="start"
-                        android:text="Posted by"
+                        android:text="@string/posted_by"
                         android:textSize="13sp" />
 
                     <LinearLayout
@@ -270,6 +270,33 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/item_condition_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:paddingEnd="20dp"
+                        android:textSize="14sp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="center"
+                            android:text="@string/condition"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/item_condition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:text="-"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/item_manufacture_section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -296,6 +323,7 @@
                             android:textColor="@color/black"
                             android:textSize="14sp" />
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <RelativeLayout

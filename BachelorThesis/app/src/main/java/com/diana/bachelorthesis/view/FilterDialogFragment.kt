@@ -56,6 +56,7 @@ class FilterDialogFragment : DialogFragment() {
         binding.filterCityAutoComplete.setAdapter(adapter)
 
         checkboxes = mapOf(
+            ItemCategory.ACCESSORIES to binding.categories.categAccessories,
             ItemCategory.APPLIANCES to binding.categories.categAppliances,
             ItemCategory.CLOTHESSHOES to binding.categories.categClothesshoes,
             ItemCategory.DEVICES to binding.categories.categDevices,
@@ -64,6 +65,8 @@ class FilterDialogFragment : DialogFragment() {
             ItemCategory.FURNITURE to  binding.categories.categFurniture,
             ItemCategory.GAMES to binding.categories.categGames,
             ItemCategory.GARDEN to binding.categories.categGarden,
+            ItemCategory.HOMEDECOR to binding.categories.categHomeDecor,
+            ItemCategory.JEWELRY to binding.categories.categJewelry,
             ItemCategory.MEDICAL to binding.categories.categMedical
         )
         applySelections()

@@ -21,9 +21,75 @@
     <string name="report_description">Spune-ne de ce crezi că aceasta postare reprezintă o problemă.</string>
     <string name="submit_report">Trimite raportul</string>
     <string name="explanation_required">Explicația este obligatorie!</string>
-    <string name="email_welcome_body"><![CDATA[         <html lang="ro" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">             <head>               <meta charset="UTF-8">               <meta name="viewport" content="width=device-width,initial-scale=1">               <meta name="x-apple-disable-message-reformatting">               <title></title>              </head>             <body style="margin:0;padding:0;">               <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">                 <tr>                   <td align="center" style="padding:0;">                     <table role="presentation" style="width:602px;border-collapse:collapse;border:1px solid #cccccc;border-spacing:0;text-align:left;">                       <tr>                         <td align="center" style="padding:0px 0 30px 0; background-image: linear-gradient(to bottom right, #BA94D1, #FFF4D2);">                           <img src="https://firebasestorage.googleapis.com/v0/b/bachelorthesis-3092d.appspot.com/o/Swap%20transparent.png?alt=media&token=9c6b3e8c-b3b8-490c-a796-c00137b94897" alt="" width="300" style="height:auto;display:block;" />                         </td>                       </tr>                       <tr>                         <td style="padding:36px 30px 42px 30px;">                           <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;">                             <tr>                               <td style="padding:0 0 36px 0;color:#153643;">                                 <h1 style="font-size:24px;margin:0 0 20px 0;font-family:Times New Roman, Times,sans-serif;">Bine ai venit pe Swap!</h1>                                 <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Times New Roman, Times, serif;">Îți mulțumim că ne-ai ales ca aliați în misiunea de a găsi obiectelor tale o nouă casă! Sperăm că Swap te va inspira să fii mai orientat spre reciclare și va da obiectelor tale nefolosite o nouă șansă la viață.</p>                                 <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Times New Roman, Times, serif;">Între timp:</p>                                  <a href="http://swap-app.com/mainpage">                                   <button style= "display: inline-block;                                   background-color: #BA94D1;                                   padding: 5px;                                   color: #ffffff;                                   text-align: center;                                   border: 4px double #cccccc;                                   border-radius: 10px;                                   font-size: 15px;">                                     Vezi ce mai e nou                                   </button>                                 </a>                               </td>                             </tr>                           </table>                         </td>                       </tr>                       <tr>                         <td style="padding:30px;background:#E5D1FA;">                           <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;font-size:9px;font-family:Arial,sans-serif;">                             <tr>                               <td style="padding:0;width:50%;" align="left">                                 <p style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#000000;">                                   &reg; Swap, 2023<br/>                                 </p>                               </td>                             </tr>                           </table>                         </td>                       </tr>                     </table>                   </td>                 </tr>               </table>             </body>             </html>         ]]></string>
+    <string name="email_welcome_body">
+         <![CDATA[
+         <html lang="ro" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <title></title>
+
+</head>
+<body style="margin:0;padding:0;">
+  <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">
+    <tr>
+      <td align="center" style="padding:0;">
+        <table role="presentation" style="width:602px;border-collapse:collapse;border:1px solid #cccccc;border-spacing:0;text-align:left;">
+          <tr>
+            <td align="center" style="padding:0px 0 30px 0; background-image: linear-gradient(to bottom right, #BA94D1, #FFF4D2);">
+              <img src="https://firebasestorage.googleapis.com/v0/b/bachelorthesis-3092d.appspot.com/o/Swap%20transparent.png?alt=media&token=9c6b3e8c-b3b8-490c-a796-c00137b94897" alt="" width="300" style="height:auto;display:block;" />
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:36px 30px 42px 30px;">
+              <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;">
+                <tr>
+                  <td style="padding:0 0 36px 0;color:#153643;">
+                    <h1 style="font-size:24px;margin:0 0 20px 0;font-family:Times New Roman, Times,sans-serif;">Bine ai venit pe Swap!</h1>
+                    <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Times New Roman, Times, serif;">Mulțumim că ne-ai ales ca aliați în misiunea de a găsi o casă nouă obiectelor tale! Sperăm că Swap te va inspira să fii mai atent la mediul înconjurator și va da obiectelor tale o nouă șansă la viață.</p>
+                    <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Times New Roman, Times, serif;">Între timp:</p>
+
+                    <a href="http://swap-app.com/mainpage">
+                      <button style= "display: inline-block;
+                      background-color: #BA94D1;
+                      padding: 5px;
+                      color: #ffffff;
+                      text-align: center;
+                      border: 4px double #cccccc;
+                      border-radius: 10px;
+                      font-size: 15px;">
+                        Vezi ce mai e nou
+                      </button>
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:30px;background:#E5D1FA;">
+              <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;font-size:9px;font-family:Arial,sans-serif;">
+                <tr>
+                  <td style="padding:0;width:50%;" align="left">
+                    <p style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#000000;">
+                      &reg; Swap, 2023<br/>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+         ]]>
+
+        </string>
     <string name="forgot_password">Am uitat parola</string>
-    <string name="navigation_drawer_close">Închide meniul</string>
     <string name="action_settings">Setări</string>
     <string name="menu_home">Acasă</string>
     <string name="menu_add_item">Adaugă obiect</string>
@@ -53,6 +119,7 @@
     <string name="categories_no_underline">Categorii</string>
     <string name="categ_appliances">Electrocasnice</string>
     <string name="categ_clothesshoes">Haine &amp; încălțăminte</string>
+    <string name="categ_accessories">Accesorii</string>
     <string name="categ_devices">Dispozitive</string>
     <string name="categ_education">Educație</string>
     <string name="categ_fooddrink">Mâncare &amp; băuturi</string>
@@ -60,10 +127,17 @@
     <string name="categ_games">Jocuri</string>
     <string name="categ_garden">Grădină</string>
     <string name="categ_medical">Medical</string>
+    <string name="categ_home_decor">Decorațiuni</string>
+    <string name="categ_jewelry">Bijuterii</string>
     <string name="not_found">Nu a fost găsit</string>
     <string name="ok">OK</string>
+
     <string name="exchange">Schimbă</string>
     <string name="donate">Donează</string>
+
+    <string name="exchange_purpose">Schimb</string>
+    <string name="donate_purpose">Donație</string>
+
     <string name="for_exchange">Pentru schimb</string>
     <string name="for_donate">Pentru donare</string>
     <string name="make_exchange">Fă schimb</string>
@@ -193,7 +267,7 @@
     <string name="was_exchanged_with">a fost schimbat cu obiectul lui</string>
     <string name="s_item">:</string>
     <string name="skip">Sari</string>
-    <string name="with">cu</string>
+    <string name="for_string">cu</string>
     <string name="unknown">Necunoscut</string>
     <string name="send">Trimite</string>
     <string name="send_email_for_resetting_password">Trimite email pentru resetarea parolei</string>
@@ -202,4 +276,8 @@
     <string name="feedback_description">Spune-ne dacă ai o problemă sau dacă e ceva ce putem îmbunătăți.</string>
     <string name="feedback_sent">Mulțumim! \n Vom analiza părerea ta și te vom contacta prin email daca avem nevoie de mai multe informații.</string>
     <string name="report_sent">Mulțumim! \n Vom analiza problema ta și te vom ține la curent cu statusul pe email.</string>
+    <string name="subject_email">Creare cont Swap</string>
+    <string name="no_chat_elements_text">Nimic... Contactează alți utilizatori când un produs te interesează.</string>
+    <string name="posted_by">Postat de</string>
+
 </resources>

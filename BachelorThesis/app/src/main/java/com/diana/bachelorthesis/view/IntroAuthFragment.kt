@@ -39,10 +39,6 @@ class IntroAuthFragment : Fragment(), BasicFragment {
         layouts =
             arrayListOf(R.layout.intro_slide_1, R.layout.intro_slide_2, R.layout.intro_slide_3)
 
-//        val introScreensAdapter = IntroScreensAdapter()
-//        binding.viewPager.adapter = introScreensAdapter
-//        binding.springDotsIndicator.attachTo(binding.viewPager)
-
         return root
     }
 

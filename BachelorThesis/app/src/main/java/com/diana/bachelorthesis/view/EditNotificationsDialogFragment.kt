@@ -60,6 +60,7 @@ class EditNotificationsDialogFragment : DialogFragment() {
     private fun customizeToolbar() {
         toolbar.title = getString(R.string.edit_notifications)
         toolbar.setTitleTextColor(ContextCompat.getColor(requireActivity(), R.color.purple_dark))
+        toolbar.setTitleTextAppearance(requireActivity(), R.style.FullScreenDialogTitle)
         toolbar.setNavigationOnClickListener {
             dialog!!.dismiss()
         }

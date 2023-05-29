@@ -6,7 +6,6 @@
     <color name="pastel_blue">#C1D5F0</color>
     <color name="purple_light">#E5D1FA</color>
     <color name="purple_blue_light">#E3DFFD</color>
-    <color name="purple_blue_medium">#9999FF</color>
     <color name="blue_light">#ECF2FF</color>
     <color name="blue_medium">#6699FF</color>
     <color name="yellow_pale">#F8F8E8</color>
@@ -16,7 +15,6 @@
     <color name="purple_pale">#F6F2FF</color>
     <color name="red_light">#FF9999</color>
     <color name="yellow_medium">#ECEA7B</color>
-    <color name="green_light">#80FFBF</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="grey_light_transparent">#E6EDEDED </color>
@@ -24,7 +22,7 @@
     <color name="grey_light">#EDEDED </color>
     <color name="grey_medium">#D0D0D0</color>
     <color name="grey">#ADADAD </color>
-    <color name="red">#FF0000</color>
+<!--    <color name="red">#FF0000</color>-->
 
     <color name="blue_pale">#CBE4F9</color>
     <color name="turquoise_pale">#CDF5F6</color>
@@ -34,6 +32,5 @@
     <color name="pink_light">#F1DEF4</color>
 
     <!-- 3rd party colors -->
-    <color name="facebook_blue">#4267B2</color>
     <color name="google_red">#DB4437</color>
 </resources>

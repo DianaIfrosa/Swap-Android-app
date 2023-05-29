@@ -185,7 +185,7 @@
                         android:fontFamily="@font/istok_web"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="@string/exchange"
+                        android:text="@string/exchange_purpose"
                         android:textSize="13sp" />
 
                     <RadioButton style = "@style/ButtonStyle"
@@ -197,7 +197,7 @@
                         android:gravity="center"
                         android:checked="false"
                         android:padding="10dp"
-                        android:text="@string/donate"
+                        android:text="@string/donate_purpose"
                         android:textSize="13sp"
                         android:fontFamily="@font/istok_web"/>
                 </RadioGroup>

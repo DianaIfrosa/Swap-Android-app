@@ -3,6 +3,7 @@ package com.diana.bachelorthesis.viewmodel
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.model.*
+import com.diana.bachelorthesis.repository.CategoriesRepository
 import com.diana.bachelorthesis.repository.ItemRepository
 import com.diana.bachelorthesis.repository.PhotoRepository
 import com.diana.bachelorthesis.utils.ListParamCallback
@@ -17,6 +18,7 @@ class AddItemViewModel : ViewModel() {
     private val TAG: String = AddItemViewModel::class.java.name
     private val itemRepository = ItemRepository.getInstance()
     private val photoRepository = PhotoRepository.getInstance()
+    private val categoriesRepository = CategoriesRepository.getInstance()
 
     var categoryChosen: ItemCategory = ItemCategory.UNKNOWN
     var conditionChosen: ItemCondition? = null
@@ -62,6 +64,7 @@ class AddItemViewModel : ViewModel() {
                     item.photos = values
                     itemRepository.addItem(item, object: NoParamCallback {
                         override fun onComplete() {
+                            categoriesRepository.addAvailableItemToCategory(item.category.name)
                             callback.onComplete(item)
                         }
 

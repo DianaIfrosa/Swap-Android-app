@@ -268,7 +268,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
                 addItemViewModel.addItem(object : OneParamCallback<Item> {
                     override fun onComplete(value: Item?) {
                         it.doneLoadingAnimation(
-                            R.color.green_light,
+                            R.color.purple_medium,
                             ContextCompat.getDrawable(
                                 requireActivity(),
                                 R.drawable.ic_done
@@ -513,6 +513,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 
     private fun getExchangePreferences(): ArrayList<ItemCategory> {
         val checkboxes: Map<ItemCategory, CheckBox> = mapOf(
+            ItemCategory.ACCESSORIES to binding.hiddenCategories.categAccessories,
             ItemCategory.APPLIANCES to binding.hiddenCategories.categAppliances,
             ItemCategory.CLOTHESSHOES to binding.hiddenCategories.categClothesshoes,
             ItemCategory.DEVICES to binding.hiddenCategories.categDevices,
@@ -521,6 +522,8 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
             ItemCategory.FURNITURE to binding.hiddenCategories.categFurniture,
             ItemCategory.GARDEN to binding.hiddenCategories.categGarden,
             ItemCategory.GAMES to binding.hiddenCategories.categGames,
+            ItemCategory.HOMEDECOR to binding.hiddenCategories.categHomeDecor,
+            ItemCategory.JEWELRY to binding.hiddenCategories.categJewelry,
             ItemCategory.MEDICAL to binding.hiddenCategories.categMedical
         )
 

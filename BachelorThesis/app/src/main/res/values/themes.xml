@@ -57,14 +57,13 @@
         <item name="actionMenuTextColor">@color/white</item>
     </style>
 
-    <style name="AppBarPage">
-        <item name="android:fontFamily">@font/amita</item>
-        <item name="android:textSize">15sp</item>
+    <style name="FullScreenDialogTitle">
+        <item name="android:fontFamily">@font/league_spartan_regular</item>
     </style>
 
-    <style name="AppBarSubpage">
-        <item name="android:fontFamily">@font/istok_web</item>
-        <item name="android:textSize">19sp</item>
+    <style name="AppBar">
+        <item name="android:fontFamily">@font/league_spartan_medium</item>
+        <item name="android:textSize">22sp</item>
     </style>
 
     <style name="circleImageView">

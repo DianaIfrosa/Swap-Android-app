@@ -21,6 +21,7 @@ class ItemPageViewModel : ViewModel() {
     private val proposalRepository = ProposalRepository.getInstance()
     private val chatRepository = ChatRepository.getInstance()
     private val userRepository = UserRepository.getInstance()
+    private val categoriesRepository = CategoriesRepository.getInstance()
 
     var proposal: Proposal? = null
     lateinit var currentUser: User
@@ -36,6 +37,7 @@ class ItemPageViewModel : ViewModel() {
             object : NoParamCallback {
                 override fun onComplete() {
                     photoRepository.deleteItemPhotos(currentItem.owner, currentItem.itemId)
+                    categoriesRepository.removeItemFromCategory(currentItem.category.name)
                     callback.onComplete()
                 }
 

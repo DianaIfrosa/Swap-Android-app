@@ -236,7 +236,7 @@ class ProposalPageFragment : Fragment(), BasicFragment {
                                     proposalPageViewModel.confirmProposal(object : NoParamCallback {
                                         override fun onComplete() {
                                             it.doneLoadingAnimation(
-                                                R.color.green_light,
+                                                R.color.purple_medium,
                                                 ContextCompat.getDrawable(
                                                     requireActivity(),
                                                     R.drawable.ic_done

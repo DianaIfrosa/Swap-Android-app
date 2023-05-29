@@ -185,18 +185,22 @@ class EditPreferencesDialogFragment : DialogFragment() {
 
     private fun initCheckboxes() {
         checkboxesCategories = mapOf(
+            ItemCategory.ACCESSORIES to binding.categories.categAccessories,
             ItemCategory.APPLIANCES to binding.categories.categAppliances,
             ItemCategory.CLOTHESSHOES to binding.categories.categClothesshoes,
             ItemCategory.DEVICES to binding.categories.categDevices,
             ItemCategory.EDUCATION to binding.categories.categEducation,
             ItemCategory.FOODDRINK to binding.categories.categFooddrink,
             ItemCategory.FURNITURE to binding.categories.categFurniture,
-            ItemCategory.GAMES to binding.categories.categGames,
             ItemCategory.GARDEN to binding.categories.categGarden,
+            ItemCategory.GAMES to binding.categories.categGames,
+            ItemCategory.HOMEDECOR to binding.categories.categHomeDecor,
+            ItemCategory.JEWELRY to binding.categories.categJewelry,
             ItemCategory.MEDICAL to binding.categories.categMedical
         )
 
         checkboxesExchangePreferences = mapOf(
+            ItemCategory.ACCESSORIES to binding.exchangePreferences.categAccessories,
             ItemCategory.APPLIANCES to binding.exchangePreferences.categAppliances,
             ItemCategory.CLOTHESSHOES to binding.exchangePreferences.categClothesshoes,
             ItemCategory.DEVICES to binding.exchangePreferences.categDevices,
@@ -205,6 +209,8 @@ class EditPreferencesDialogFragment : DialogFragment() {
             ItemCategory.FURNITURE to binding.exchangePreferences.categFurniture,
             ItemCategory.GAMES to binding.exchangePreferences.categGames,
             ItemCategory.GARDEN to binding.exchangePreferences.categGarden,
+            ItemCategory.HOMEDECOR to binding.exchangePreferences.categHomeDecor,
+            ItemCategory.JEWELRY to binding.exchangePreferences.categJewelry,
             ItemCategory.MEDICAL to binding.exchangePreferences.categMedical
         )
     }
@@ -271,6 +277,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
     private fun customizeToolbar() {
         toolbar.title = getString(R.string.edit_preferences)
         toolbar.setTitleTextColor(ContextCompat.getColor(requireActivity(), R.color.purple_dark))
+        toolbar.setTitleTextAppearance(requireActivity(), R.style.FullScreenDialogTitle)
         toolbar.setNavigationOnClickListener {
             dialog!!.dismiss()
         }

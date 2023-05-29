@@ -67,6 +67,7 @@ class LocationDialogFragment : DialogFragment(), OnMapReadyCallback,
         Log.d(TAG, "ItemLocationFragment is onViewCreated")
         toolbar.title = getString(R.string.choose_location)
         toolbar.setTitleTextColor(resources.getColor(R.color.purple_dark))
+        toolbar.setTitleTextAppearance(requireActivity(), R.style.FullScreenDialogTitle)
         toolbar.setNavigationOnClickListener {
             dialog!!.dismiss()
         }

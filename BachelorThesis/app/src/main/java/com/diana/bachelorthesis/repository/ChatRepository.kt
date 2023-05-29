@@ -56,13 +56,18 @@ class ChatRepository {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val chat = task.result.toObject(Chat::class.java)
-                    chat!!.seen = currentChat.second.toBoolean()
+                    if (chat != null) {
+                        chat!!.seen = currentChat.second.toBoolean()
 
-                    result.add(chat)
-                    if (currentPosition == chatsIds.size - 1) {
-                        callback.onComplete(result)
+                        result.add(chat)
+                        if (currentPosition == chatsIds.size - 1) {
+                            callback.onComplete(result)
+                        } else {
+                            getChats(currentPosition + 1, chatsIds, result, callback)
+                        }
                     } else {
-                        getChats(currentPosition + 1, chatsIds, result, callback)
+                        Log.w(TAG, "Error retrieving chats. Not existing chats or null chat.")
+                        callback.onError(task.exception)
                     }
                 } else {
                     Log.w(TAG, "Error retrieving chats")

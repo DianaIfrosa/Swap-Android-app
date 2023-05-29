@@ -69,7 +69,7 @@ class LoginFragment : Fragment(), BasicFragment {
                                         (requireActivity() as MainActivity).addCurrentUserToSharedPreferences(value)
 
                                         button.doneLoadingAnimation(
-                                            R.color.green_light,
+                                            R.color.purple_medium,
                                             ContextCompat.getDrawable(
                                                 requireActivity(),
                                                 R.drawable.ic_done

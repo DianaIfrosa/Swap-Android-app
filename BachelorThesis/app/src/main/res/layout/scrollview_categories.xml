@@ -17,6 +17,12 @@
             android:orientation="vertical">
 
             <CheckBox
+                android:id="@+id/categ_accessories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_accessories" />
+
+            <CheckBox
                 android:id="@+id/categ_appliances"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,6 +69,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/categ_garden" />
+            <CheckBox
+                android:id="@+id/categ_home_decor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_home_decor" />
+            <CheckBox
+                android:id="@+id/categ_jewelry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_jewelry" />
 
             <CheckBox
                 android:id="@+id/categ_medical"

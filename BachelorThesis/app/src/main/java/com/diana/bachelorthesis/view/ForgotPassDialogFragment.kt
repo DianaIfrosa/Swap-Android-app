@@ -65,7 +65,7 @@ class ForgotPassDialogFragment : DialogFragment() {
                                forgotPassViewModel.sendResetPassEmail(email, object: NoParamCallback {
                                    override fun onComplete() {
                                        it.doneLoadingAnimation(
-                                           R.color.green_light,
+                                           R.color.purple_medium,
                                            ContextCompat.getDrawable(
                                                requireActivity(),
                                                R.drawable.ic_done

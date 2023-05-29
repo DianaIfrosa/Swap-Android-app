@@ -74,6 +74,8 @@ class AddItemFragmentTest
         onView(withId(R.id.item_title)).perform(scrollTo())
         onView(withId(R.id.item_title_status)).check(matches(isDisplayed()))
         onView(withId(R.id.item_title_status)).check(matches(withText(R.string.item_title_short)))
+        // item_title_short = “Obligatoriu cel puțin 3 caractere”
+        // the actual tests are written here
     }
 
     @Test
@@ -235,7 +237,5 @@ class AddItemFragmentTest
 
         onView(withId(R.id.layout_preferences)).check(matches(not(isDisplayed())))
     }
-
-    //TODO pus strings in documentatie
 
 }

@@ -103,6 +103,7 @@ class ProposalItemChoiceDialogFragment : DialogFragment() {
     private fun customizeToolbar() {
         toolbar.title = getString(R.string.choose_item)
         toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), R.color.purple_dark))
+        toolbar.setTitleTextAppearance(requireActivity(), R.style.FullScreenDialogTitle)
         toolbar.setNavigationOnClickListener {
             dialog!!.dismiss()
         }

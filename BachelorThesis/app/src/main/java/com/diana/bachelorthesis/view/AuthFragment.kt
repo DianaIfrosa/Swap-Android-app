@@ -17,6 +17,7 @@ import com.diana.bachelorthesis.databinding.FragmentAuthBinding
 import com.diana.bachelorthesis.model.Mail
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.BasicFragment
+import com.diana.bachelorthesis.utils.MailBodyConst
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.viewmodel.UserViewModel
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
 import java.lang.Exception
+import java.util.*
 
 class AuthFragment : Fragment(), BasicFragment {
 
@@ -150,11 +152,12 @@ class AuthFragment : Fragment(), BasicFragment {
             override fun onComplete() {
                 Log.d(TAG, "Added user after Google login completed.")
                 updateCurrentUser(email)
+                val language = Locale.getDefault().language
                 val mail = Mail(
                     to = email,
                     message = mapOf(
-                        "subject" to "Swap sign up",
-                        "html" to getString(R.string.email_welcome_body)
+                        "subject" to getString(R.string.subject_email),
+                        "html" to if (language == "en") MailBodyConst.bodyEng else MailBodyConst.bodyRo
                     )
                 )
                 userViewModel.sendWelcomeEmail(mail)

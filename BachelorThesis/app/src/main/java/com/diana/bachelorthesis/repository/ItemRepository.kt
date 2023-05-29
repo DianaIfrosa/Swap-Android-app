@@ -36,7 +36,6 @@ class ItemRepository {
 
     // TODO  de analizat folosirea cache-lui : https://firebase.google.com/docs/firestore/query-data/get-data
 
-
     fun getExchangeItem(itemId: String, callback: OneParamCallback<Item>) {
         db.collection(EXCHANGE_COLLECTION).document(itemId).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -97,6 +96,8 @@ class ItemRepository {
                         val item = it.toObject(ItemDonation::class.java)
                         if (item != null) {
                             Log.d(TAG, "Retrieved donation item ${it.data}")
+                            Log.d(TAG, item.category.name)
+                            Log.d(TAG, item.condition?.name ?: "No condition")
                             allItems.add(item)
                         }
                     }

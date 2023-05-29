@@ -2,10 +2,7 @@ package com.diana.bachelorthesis.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.diana.bachelorthesis.model.*
-import com.diana.bachelorthesis.repository.HistoryRepository
-import com.diana.bachelorthesis.repository.ItemRepository
-import com.diana.bachelorthesis.repository.ProposalRepository
-import com.diana.bachelorthesis.repository.UserRepository
+import com.diana.bachelorthesis.repository.*
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.google.firebase.Timestamp
@@ -19,6 +16,7 @@ class ProposalPageViewModel : ViewModel() {
     private val itemRepository = ItemRepository.getInstance()
     private val proposalRepository = ProposalRepository.getInstance()
     private val historyRepository = HistoryRepository.getInstance()
+    private val categoriesRepository = CategoriesRepository.getInstance()
 
     lateinit var userMakingProposal: User
     lateinit var currentUser: User
@@ -141,8 +139,10 @@ class ProposalPageViewModel : ViewModel() {
             // exchange
             itemRepository.markExchangeItemAsGiven(historyId, item1.itemId, object : NoParamCallback {
                 override fun onComplete() {
+                    categoriesRepository.markItemAsGiven(item1.category.name)
                     itemRepository.markExchangeItemAsGiven(historyId, item2!!.itemId, object : NoParamCallback {
                         override fun onComplete() {
+                            categoriesRepository.markItemAsGiven(item2!!.category.name)
                            callback.onComplete()
                         }
 
@@ -161,6 +161,7 @@ class ProposalPageViewModel : ViewModel() {
         } else {
             itemRepository.markDonationItemAsGiven(historyId, item1.itemId, object: NoParamCallback {
                 override fun onComplete() {
+                    categoriesRepository.markItemAsGiven(item1.category.name)
                    callback.onComplete()
                 }
 

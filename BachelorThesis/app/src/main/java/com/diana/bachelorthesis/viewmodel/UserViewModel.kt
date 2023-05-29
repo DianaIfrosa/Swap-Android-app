@@ -86,20 +86,19 @@ class UserViewModel : ViewModel() {
     }
 
     fun userLoggedInWithGoogle(): Boolean {
-        return (userRepository.auth.currentUser!!
-            .providerData[userRepository.auth.currentUser!!.providerData.size - 1]
-            .providerId
-            .equals("google.com", true))
+        return userRepository.googleClient != null
     }
 
     fun signOut() {
+        userRepository.auth.signOut()
+
         if (userLoggedInWithGoogle()) {
             Log.d(TAG, "User was logged in with Google")
             userRepository.googleClient?.signOut()
+            userRepository.googleClient = null
         } else {
             Log.d(TAG, "User wasn't logged in with Google")
         }
-        userRepository.auth.signOut()
     }
 
     fun signUpWithGoogle(credential: AuthCredential, callback: NoParamCallback) {

@@ -317,6 +317,14 @@ class ItemFragment : Fragment(), BasicFragment {
             binding.itemManufactureSection.visibility = View.GONE
         }
 
+        // condition
+        if (itemPageViewModel.currentItem.condition != null) {
+            binding.itemConditionSection.visibility = View.VISIBLE
+            binding.itemCondition.text = ItemCondition.getTranslatedName(requireActivity(), itemPageViewModel.currentItem.condition!!)
+        } else {
+            binding.itemConditionSection.visibility = View.GONE
+        }
+
         // exchange preferences & purpose (item + background color)
         if (binding.item is ItemExchange) {
             binding.itemExchangePreferencesSection.visibility = View.VISIBLE

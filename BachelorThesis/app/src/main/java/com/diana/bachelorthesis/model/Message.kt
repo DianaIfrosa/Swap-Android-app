@@ -12,3 +12,5 @@ data class Message(
     val senderEmail: String = "",
     val text: String? = null
     ): Parcelable
+
+

@@ -71,7 +71,7 @@ class ContactUsFragment : Fragment(), BasicFragment {
                 contactUsViewModel.addFeedback(feedback, object : NoParamCallback {
                     override fun onComplete() {
                         it.doneLoadingAnimation(
-                            R.color.green_light,
+                            R.color.purple_medium,
                             ContextCompat.getDrawable(
                                 requireActivity(),
                                 R.drawable.ic_done

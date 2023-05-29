@@ -14,7 +14,7 @@
     <string name="menu_language">Change language</string>
     <string name="menu_contact_us">Contact us</string>
 
-    <string name="exchanges">Exchanges</string>
+    <string name="exchanges">Swaps</string>
     <string name="donations">Donations</string>
     <string name="donation_made">Donation made</string>
     <string name="donation_received">Donation received</string>
@@ -34,9 +34,12 @@
     <string name="categories"><u>Categories</u></string>
     <string name="categories_no_underline">Categories</string>
 
+    <string name="categ_accessories">Accessories</string>
     <string name="categ_appliances">Appliances</string>
     <string name="categ_clothesshoes">Clothes &amp; Shoes</string>
     <string name="categ_devices">Devices</string>
+    <string name="categ_home_decor">Home decor</string>
+    <string name="categ_jewelry">Jewelry</string>
     <string name="categ_education">Education</string>
     <string name="categ_fooddrink">Food &amp; Drink</string>
     <string name="categ_furniture">Furniture</string>
@@ -46,11 +49,15 @@
 
     <string name="not_found">Not found</string>
     <string name="ok">OK</string>
-    <string name="exchange">Exchange</string>
+    <string name="exchange">Swap</string>
     <string name="donate">Donate</string>
-    <string name="for_exchange">For exchange</string>
+
+    <string name="exchange_purpose">Swap</string>
+    <string name="donate_purpose">Donate</string>
+
+    <string name="for_exchange">For swapping</string>
     <string name="for_donate">For donation</string>
-    <string name="make_exchange">Exchange</string>
+    <string name="make_exchange">Swap</string>
     <string name="get_donation">Get donation</string>
 
     <string name="invalid_fields">Invalid fields!</string>
@@ -59,7 +66,7 @@
     <string name="required">Required</string>
     <string name="description">Description</string>
     <string name="purpose">Purpose</string>
-    <string name="question_add_item_preferences">What category of objects would you like to make exchange with?</string>
+    <string name="question_add_item_preferences">What category of objects would you like to make swap for?</string>
     <string name="category">Category</string>
     <string name="photos_min_2">Photos (min. 2)</string>
     <string name="location">Location</string>
@@ -74,7 +81,7 @@
     <string name="select_photo">Select photo from:</string>
     <string name="infoPhotos">We recommend that you upload at least 2 different photos so others can see the particularities of your item. Also, make sure that those pictures are made in good lighting and capture the relevant details of the product (including defects).</string>
     <string name="infoLocation">The location you choose will be displayed in the item\'s page
-        and in the map page. This helps other users acknowledge the item\'s location for pick-up/exchange
+        and in the map page. This helps other users acknowledge the item\'s location for pick-up
         meetings. Note that you should not give the exact location, but an approximate one, for security reasons.</string>
 
     <string name="new_like_new">New/Like new</string>
@@ -120,11 +127,11 @@
 
     <!-- Intro screens -->
     <string name="intro1_title">Add items</string>
-    <string name="intro1_content">You can add as many items as you want, so that other users can see and reach you if they want to exchange or receive donation.</string>
+    <string name="intro1_content">You can add as many items as you want, so that other users can see and reach you if they want to swap something or receive donation.</string>
     <string name="intro2_title">Personal recommendations</string>
     <string name="intro2_content">Based on your preferences we will look for the best matches so you can enjoy them in the Recommendations section.</string>
     <string name="intro3_title">Items around you</string>
-    <string name="intro3_content">Use the live map to see what others have for exchange or donation.</string>
+    <string name="intro3_content">Use the live map to see what others have for swapping or donation.</string>
     <string name="pass_or_email_invalid">Email or password is wrong!</string>
     <string name="help">Help</string>
     <string name="authentication">Authentication</string>
@@ -147,11 +154,11 @@
     <string name="edit_preferences">Edit preferences</string>
     <string name="words_preferences_description">Items that contain at least one of these words in their name or description.</string>
     <string name="words">Words</string>
-    <string name="exchange_preferences">Exchange preferences</string>
+    <string name="exchange_preferences">Swapping preferences</string>
     <string name="owners_preferences_description">Items that are posted by one of these owners.</string>
     <string name="categories_preferences_description">Items that fall under one of these categories.</string>
     <string name="cities_preferences_description">Items that are located in one of these cities.</string>
-    <string name="exchange_preferences_description">Items for which the owner wants to exchange with an object from one of these categories</string>
+    <string name="exchange_preferences_description">Items for which the owner wants to swap for an object from one of these categories</string>
     <string name="no_items_favorites">Nothing... \n Tap ♡ in an item\'s page and you will have it saved here.</string>
     <string name="no_items_recommendations">Nothing... \n Customize your preferences in the dedicated page from profile section.</string>
     <string name="old_password">Old password</string>
@@ -175,17 +182,17 @@
 
     <string name="available">Available</string>
     <string name="not_available">Not available</string>
-    <string name="no_items_given">Nothing... Come back after you exchange or donate something.</string>
+    <string name="no_items_given">Nothing... Come back after you swap or donate something.</string>
     <string name="no_items_available">Nothing... Seems like you did a good job in finding your items a new home.</string>
     <string name="events">events</string>
-    <string name="no_unavailable_items">None... Message other users to exchange your items or receive a donation. Or maybe make a donation?</string>
+    <string name="no_unavailable_items">None... Message other users to swap your items or receive a donation. Or maybe make a donation?</string>
     <string name="all_items_available">All items available</string>
     <string name="none">None</string>
     <string name="sent_proposal">sent you a proposal</string>
     <string name="sent_photo">sent you a photo</string>
     <string name="choose_item">Choose an item</string>
     <string name="must_choose_item">You must choose an item to continue!</string>
-    <string name="no_items_for_proposal">No items to exchange with.</string>
+    <string name="no_items_for_proposal">No items to swap for.</string>
     <string name="you_sent_a_proposal">you sent a proposal</string>
     <string name="you_sent_photo">you sent a photo</string>
     <string name="proposal">"Proposal"</string>
@@ -193,10 +200,10 @@
 
     <string name="accept_proposal">Accept proposal</string>
     <string name="proposal_accepted">Proposal accepted</string>
-    <string name="wants_to_exchange">wants to exchange</string>
+    <string name="wants_to_exchange">wants to swap</string>
     <string name="wants_to_receive_donation">wants to receive</string>
     <string name="go_to_item_page">Go to item page</string>
-    <string name="alert_accept_proposal">You should accept a proposal in the app <u>only</u> after you have done the exchange/donation in real life. Please note that if you press OK, the exchange/donation will be considered done in the app and the item(s) will no longer be visible to other users.</string>
+    <string name="alert_accept_proposal">You should accept a proposal in the app <u>only</u> after you have done the swap/donation in real life. Please note that if you press OK, the action will be considered done in the app and the item(s) will no longer be visible to other users.</string>
     <string name="items_not_available">One of the items is no longer available!</string>
     <string name="from">from</string>
     <string name="you_received">You received:</string>
@@ -283,10 +290,10 @@
     <string name="city">City:</string>
     <string name="your_item">Your item:</string>
     <string name="was_donated_to">was donated to</string>
-    <string name="was_exchanged_with">was exchanged with</string>
+    <string name="was_exchanged_with">was swapped for</string>
     <string name="s_item">\'s item:</string>
     <string name="skip">Skip</string>
-    <string name="with">with</string>
+    <string name="for_string">for</string>
     <string name="forgot_password">Forgot password</string>
     <string name="send">Send</string>
     <string name="send_email_for_resetting_password">Send email for resetting password</string>
@@ -296,6 +303,9 @@
     <string name="feedback_description">Tell us if you have a problem or there is something we could have done better.</string>
     <string name="feedback_sent">Thank you! \n We will analyze your feedback and contact you via email if we need additional information.</string>
     <string name="report_sent">Thank you! \n We will analyze your report and keep you updated via email.</string>
+    <string name="subject_email">Swap sign up</string>
+    <string name="no_chat_elements_text">Nothing... Contact other users when you are interested in an item.</string>
+    <string name="posted_by">Posted by</string>
 
 
 </resources>

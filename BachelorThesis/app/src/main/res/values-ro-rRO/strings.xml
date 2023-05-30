@@ -280,5 +280,7 @@
     <string name="no_chat_elements_text">Nimic... Contactează alți utilizatori când un produs te interesează.</string>
     <string name="posted_by">Postat de</string>
     <string name="categ_beauty">Înfrumusețare</string>
+    <string name="post_report_email_subject">"Raportare postare id. "</string>
+    <string name="feedback_email_subject">"Sesizare id. "</string>
 
 </resources>

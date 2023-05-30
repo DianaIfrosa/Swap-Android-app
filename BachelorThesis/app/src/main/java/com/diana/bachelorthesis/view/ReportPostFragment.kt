@@ -17,8 +17,10 @@ import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentReportPostBinding
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.ItemExchange
+import com.diana.bachelorthesis.model.Mail
 import com.diana.bachelorthesis.model.PostReport
 import com.diana.bachelorthesis.utils.BasicFragment
+import com.diana.bachelorthesis.utils.MailBodyConst
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.viewmodel.ReportPostViewModel
 import com.google.firebase.Timestamp
@@ -60,18 +62,49 @@ class ReportPostFragment : Fragment(), BasicFragment {
 
             val text = binding.editTextReport.text.toString()
             if (text.isEmpty()) {
-                Toast.makeText(requireActivity(), getString(R.string.explanation_required), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.explanation_required),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 it.startAnimation()
+                val id = UUID.randomUUID().toString()
                 val report = PostReport(
-                    UUID.randomUUID().toString(),
+                    id,
                     (requireActivity() as MainActivity).getCurrentUser()!!.email,
                     Timestamp.now(),
                     item.itemId,
                     item is ItemExchange,
                     text
                 )
-                reportPostViewModel.addReport(report, object : NoParamCallback {
+
+                val language = Locale.getDefault().language
+                val postType =
+                    if (item is ItemExchange) getString(R.string.yes) else getString(R.string.no)
+                val mail = Mail(
+                    to = MailBodyConst.supportEmail,
+                    message = mapOf(
+                        "subject" to getString(R.string.post_report_email_subject) + id,
+                        "html" to
+                                if (language == "en")
+                                    MailBodyConst.getReportBodyEng(
+                                        text,
+                                        (requireActivity() as MainActivity).getCurrentUser()!!.email,
+                                        item.itemId,
+                                        postType
+                                    )
+                                else
+                                    MailBodyConst.getReportBodyRo(
+                                        text,
+                                        (requireActivity() as MainActivity).getCurrentUser()!!.email,
+                                        item.itemId,
+                                        postType
+                                    )
+                    )
+                )
+
+                reportPostViewModel.addReport(report, mail, object : NoParamCallback {
                     override fun onComplete() {
                         it.doneLoadingAnimation(
                             R.color.purple_medium,

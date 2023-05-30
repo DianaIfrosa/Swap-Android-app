@@ -157,7 +157,7 @@ class AuthFragment : Fragment(), BasicFragment {
                     to = email,
                     message = mapOf(
                         "subject" to getString(R.string.subject_email),
-                        "html" to if (language == "en") MailBodyConst.bodyEng else MailBodyConst.bodyRo
+                        "html" to if (language == "en") MailBodyConst.bodyWelcomeEng else MailBodyConst.bodyWelcomeRo
                     )
                 )
                 userViewModel.sendWelcomeEmail(mail)

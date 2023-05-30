@@ -308,5 +308,8 @@
     <string name="no_chat_elements_text">Nothing... Contact other users when you are interested in an item.</string>
     <string name="posted_by">Posted by</string>
 
+    <string name="post_report_email_subject">Post report id. </string>
+    <string name="feedback_email_subject">Feedback id. </string>
+
 
 </resources>

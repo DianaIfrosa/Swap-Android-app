@@ -15,11 +15,9 @@ import com.apachat.loadingbutton.core.customViews.CircularProgressButton
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentContactUsBinding
 import com.diana.bachelorthesis.databinding.FragmentReportPostBinding
-import com.diana.bachelorthesis.model.Feedback
-import com.diana.bachelorthesis.model.Item
-import com.diana.bachelorthesis.model.ItemExchange
-import com.diana.bachelorthesis.model.PostReport
+import com.diana.bachelorthesis.model.*
 import com.diana.bachelorthesis.utils.BasicFragment
+import com.diana.bachelorthesis.utils.MailBodyConst
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.viewmodel.ContactUsViewModel
 import com.diana.bachelorthesis.viewmodel.ReportPostViewModel
@@ -61,14 +59,35 @@ class ContactUsFragment : Fragment(), BasicFragment {
             if (text.isEmpty()) {
                 Toast.makeText(requireActivity(), getString(R.string.explanation_required), Toast.LENGTH_SHORT).show()
             } else {
+                val id =  UUID.randomUUID().toString()
                 it.startAnimation()
                 val feedback = Feedback(
-                    UUID.randomUUID().toString(),
+                   id,
                     (requireActivity() as MainActivity).getCurrentUser()!!.email,
                     Timestamp.now(),
                     text
                 )
-                contactUsViewModel.addFeedback(feedback, object : NoParamCallback {
+
+                val language = Locale.getDefault().language
+                val mail = Mail(
+                    to = MailBodyConst.supportEmail,
+                    message = mapOf(
+                        "subject" to getString(R.string.feedback_email_subject) + id,
+                        "html" to
+                                if (language == "en")
+                                    MailBodyConst.getFeedbackBodyEng(
+                                        text,
+                                        (requireActivity() as MainActivity).getCurrentUser()!!.email
+                                    )
+                                else
+                                    MailBodyConst.getFeedbackBodyRo(
+                                        text,
+                                        (requireActivity() as MainActivity).getCurrentUser()!!.email
+                                    )
+                    )
+                )
+
+                contactUsViewModel.addFeedback(feedback, mail, object : NoParamCallback {
                     override fun onComplete() {
                         it.doneLoadingAnimation(
                             R.color.purple_medium,

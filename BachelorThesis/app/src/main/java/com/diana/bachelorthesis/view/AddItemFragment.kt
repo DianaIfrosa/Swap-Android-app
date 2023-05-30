@@ -87,7 +87,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         setMainPageAppbar(
             requireActivity(),
             requireView().findNavController().currentDestination!!.label.toString()
-        )
+        ) // comment this when testing
     }
 
     override fun onStart() {
@@ -515,6 +515,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         val checkboxes: Map<ItemCategory, CheckBox> = mapOf(
             ItemCategory.ACCESSORIES to binding.hiddenCategories.categAccessories,
             ItemCategory.APPLIANCES to binding.hiddenCategories.categAppliances,
+            ItemCategory.BEAUTY to binding.hiddenCategories.categBeauty,
             ItemCategory.CLOTHESSHOES to binding.hiddenCategories.categClothesshoes,
             ItemCategory.DEVICES to binding.hiddenCategories.categDevices,
             ItemCategory.EDUCATION to binding.hiddenCategories.categEducation,

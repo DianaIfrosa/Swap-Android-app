@@ -95,9 +95,6 @@ class ItemRepository {
                     documents.forEach {
                         val item = it.toObject(ItemDonation::class.java)
                         if (item != null) {
-                            Log.d(TAG, "Retrieved donation item ${it.data}")
-                            Log.d(TAG, item.category.name)
-                            Log.d(TAG, item.condition?.name ?: "No condition")
                             allItems.add(item)
                         }
                     }

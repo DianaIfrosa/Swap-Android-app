@@ -11,7 +11,7 @@ class MailRepository {
 
     private val TAG: String = MailRepository::class.java.name
     val db = Firebase.firestore
-    val COLLECTION_NAME = "mail"
+    val COLLECTION_NAME = "Mail"
 
     companion object {
         @Volatile

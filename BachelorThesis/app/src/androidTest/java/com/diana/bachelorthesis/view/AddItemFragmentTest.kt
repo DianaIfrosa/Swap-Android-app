@@ -1,8 +1,10 @@
 package com.diana.bachelorthesis.view
 
+import android.content.Context
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -10,13 +12,14 @@ import androidx.test.espresso.assertion.PositionAssertions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Assert.*
-import org.junit.Before
-import org.junit.runner.RunWith
 import com.diana.bachelorthesis.R
 import junit.framework.TestCase
 import org.hamcrest.Matchers.*
+import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+
 
 @RunWith(AndroidJUnit4::class)
 class AddItemFragmentTest
@@ -150,14 +153,17 @@ class AddItemFragmentTest
 
     @Test
     fun categorySelection() {
-        val category = "Education"
+        val targetContext = ApplicationProvider.getApplicationContext<Context>()
+        val category =  targetContext.resources.getString(R.string.categ_education)
 
         onView(withId(R.id.item_category)).perform(scrollTo())
         onView(withId(R.id.spinner_categories)).perform(click())
         onData(allOf(`is`(instanceOf(String::class.java)), `is`(category))).perform(click())
 
         // verify the category chosen is displayed
-        onView(withId(R.id.spinner_categories)).check(matches(withSpinnerText(containsString(category))))
+        onView(withId(R.id.spinner_categories)).check(matches(withSpinnerText(containsString(
+           category
+        ))))
         // verify the category status field does not have any message
         onView(withId(R.id.item_category_status)).check(matches(not(isDisplayed())))
     }
@@ -219,9 +225,9 @@ class AddItemFragmentTest
     }
 
     fun checkExchangePurpose() {
-        onView(allOf(withId(R.id.radioButtonExchange), withText(R.string.exchange))).perform(click())
+        onView(allOf(withId(R.id.radioButtonExchange), withText(R.string.exchange_purpose))).perform(click())
 
-        onView(allOf(withId(R.id.radioButtonExchange), withText(R.string.exchange))).check(matches(
+        onView(allOf(withId(R.id.radioButtonExchange), withText(R.string.exchange_purpose))).check(matches(
             isChecked()
         ))
         onView(withId(R.id.layout_preferences)).check(matches(isDisplayed()))
@@ -229,9 +235,9 @@ class AddItemFragmentTest
     }
 
     fun checkDonationPurpose() {
-        onView(allOf(withId(R.id.radioButtonDonate), withText(R.string.donate))).perform(click())
+        onView(allOf(withId(R.id.radioButtonDonate), withText(R.string.donate_purpose))).perform(click())
 
-        onView(allOf(withId(R.id.radioButtonDonate), withText(R.string.donate))).check(matches(
+        onView(allOf(withId(R.id.radioButtonDonate), withText(R.string.donate_purpose))).check(matches(
             isChecked()
         ))
 

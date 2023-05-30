@@ -57,7 +57,7 @@ class ChatRepository {
                 if (task.isSuccessful) {
                     val chat = task.result.toObject(Chat::class.java)
                     if (chat != null) {
-                        chat!!.seen = currentChat.second.toBoolean()
+                        chat.seen = currentChat.second.toBoolean()
 
                         result.add(chat)
                         if (currentPosition == chatsIds.size - 1) {

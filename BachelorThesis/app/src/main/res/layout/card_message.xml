@@ -37,7 +37,7 @@
                 android:id="@+id/message_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="150dp"
+                android:maxWidth="200dp"
                 android:textSize="15sp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_message_card"

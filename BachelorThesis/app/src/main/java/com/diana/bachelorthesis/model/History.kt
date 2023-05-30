@@ -10,8 +10,8 @@ data class History(
     @DocumentId
     var eventId: String = "",
     val date: Timestamp = Timestamp(0,0),
-    var feedback1: String? = null,
-    var feedback2: String? = null,
+//    var feedback1: String? = null,
+//    var feedback2: String? = null,
     var item1: String = "",
     var item2: String? = null,
     val donationReceiverEmail: String? = null // used only when the history object refers to a donation
@@ -19,8 +19,8 @@ data class History(
     constructor(parcel: Parcel) : this(
         eventId = parcel.readString() ?: "",
         date =  parcel.readParcelable(Timestamp::class.java.classLoader) ?: Timestamp(0,0),
-        feedback1 = parcel.readString(),
-        feedback2 = parcel.readString(),
+//        feedback1 = parcel.readString(),
+//        feedback2 = parcel.readString(),
         item1 = parcel.readString() ?: "",
         item2 = parcel.readString(),
         donationReceiverEmail = parcel.readString()

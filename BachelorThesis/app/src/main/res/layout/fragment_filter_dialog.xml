@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="350dp"
     android:layout_height="wrap_content"
     android:background="@drawable/custom_layout_dialog"
     android:padding="15dp"
@@ -22,15 +22,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+
     <LinearLayout
         android:id="@+id/filterCity"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toTopOf="@id/filter_categories_title"
         app:layout_constraintTop_toBottomOf="@id/filter_title"
-        tools:layout_editor_absoluteX="10dp">
+        tools:layout_editor_absoluteX="10dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,7 +44,7 @@
 
         <AutoCompleteTextView
             android:id="@+id/filterCityAutoComplete"
-            android:layout_width="250dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:hint="@string/city_autocomplete"
@@ -50,14 +52,6 @@
             android:textColor="@color/black"
             android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/filterCityStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:visibility="invisible"
-            android:textColor="#ff0000"
-            android:textSize="11sp" />
     </LinearLayout>
 
     <TextView

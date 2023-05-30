@@ -29,6 +29,12 @@
                 android:text="@string/categ_appliances" />
 
             <CheckBox
+                android:id="@+id/categ_beauty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categ_beauty" />
+
+            <CheckBox
                 android:id="@+id/categ_clothesshoes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

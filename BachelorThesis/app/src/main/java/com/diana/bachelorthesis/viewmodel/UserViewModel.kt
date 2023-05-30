@@ -8,6 +8,7 @@ import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.model.Mail
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.diana.bachelorthesis.model.User
+import com.diana.bachelorthesis.repository.ChatRepository
 import com.diana.bachelorthesis.repository.MailRepository
 import com.diana.bachelorthesis.repository.PhotoRepository
 import com.diana.bachelorthesis.repository.UserRepository
@@ -24,6 +25,7 @@ class UserViewModel : ViewModel() {
     private val userRepository = UserRepository.getInstance()
     private val photosRepository = PhotoRepository.getInstance()
     private val mailRepository = MailRepository.getInstance()
+    private val chatRepository = ChatRepository.getInstance()
 
     fun verifyUserLoggedIn(): Boolean {
         return (userRepository.auth.currentUser != null)
@@ -90,8 +92,10 @@ class UserViewModel : ViewModel() {
     }
 
     fun signOut() {
-        userRepository.auth.signOut()
+        chatRepository.detachChatListeners()
+        userRepository.detachCurrentUserListener()
 
+        userRepository.auth.signOut()
         if (userLoggedInWithGoogle()) {
             Log.d(TAG, "User was logged in with Google")
             userRepository.googleClient?.signOut()
@@ -99,6 +103,7 @@ class UserViewModel : ViewModel() {
         } else {
             Log.d(TAG, "User wasn't logged in with Google")
         }
+
     }
 
     fun signUpWithGoogle(credential: AuthCredential, callback: NoParamCallback) {

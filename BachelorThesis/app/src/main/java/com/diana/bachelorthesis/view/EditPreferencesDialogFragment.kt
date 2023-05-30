@@ -187,6 +187,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
         checkboxesCategories = mapOf(
             ItemCategory.ACCESSORIES to binding.categories.categAccessories,
             ItemCategory.APPLIANCES to binding.categories.categAppliances,
+            ItemCategory.BEAUTY to binding.categories.categBeauty,
             ItemCategory.CLOTHESSHOES to binding.categories.categClothesshoes,
             ItemCategory.DEVICES to binding.categories.categDevices,
             ItemCategory.EDUCATION to binding.categories.categEducation,
@@ -202,6 +203,7 @@ class EditPreferencesDialogFragment : DialogFragment() {
         checkboxesExchangePreferences = mapOf(
             ItemCategory.ACCESSORIES to binding.exchangePreferences.categAccessories,
             ItemCategory.APPLIANCES to binding.exchangePreferences.categAppliances,
+            ItemCategory.BEAUTY to binding.exchangePreferences.categBeauty,
             ItemCategory.CLOTHESSHOES to binding.exchangePreferences.categClothesshoes,
             ItemCategory.DEVICES to binding.exchangePreferences.categDevices,
             ItemCategory.EDUCATION to binding.exchangePreferences.categEducation,

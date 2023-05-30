@@ -5,7 +5,7 @@
     <string name="must_choose_item">Trebuie să alegi un obiect pentru a continua!</string>
     <string name="no_items_for_proposal">Nu ai obiecte de schimbat.</string>
     <string name="you_sent_a_proposal">ai trimis o propunere</string>
-    <string name="you_sent_photo">ai trimis o poză</string>
+    <string name="you_sent_photo">ai trimis o fotografie</string>
     <string name="proposal">Propunere</string>
     <string name="on">pe</string>
     <string name="accept_proposal">Acceptă propunerea</string>
@@ -190,11 +190,11 @@
     <string name="pass_confirmed_required">Confirmarea parolei e obligatorie</string>
     <string name="pass_confirmed_invalid">Parolele nu sunt la fel</string>
     <string name="intro1_title">Adaugă obiecte</string>
-    <string name="intro1_content">Poți adauga câte obiecte dorești, iar ceilalți utilizatori te vor contacta dacă vor să schimbe un obiect sau să primească donația ta.</string>
+    <string name="intro1_content">Poți adauga câte obiecte dorești, iar ceilalți utilizatori te vor contacta dacă vor să facă un schimb sau să primească una din donațiile tale.</string>
     <string name="intro2_title">Recomandări personale</string>
     <string name="intro2_content">Bazându-ne pe preferințele tale vom căuta cele mai bune potriviri ca să te bucuri de ele in secțiunea Recomandări.</string>
     <string name="intro3_title">Obiecte din jurul tău</string>
-    <string name="intro3_content">Folosește harta live să vezi ce obiecte au ceilalți de schimbat sau donat.</string>
+    <string name="intro3_content">Folosește harta live ca să vezi ce obiecte de schimbat sau donat au cei din jurul tău.</string>
     <string name="pass_or_email_invalid">Email sau parolă greșite!</string>
     <string name="help">Ajutor</string>
     <string name="authentication">Autentificare</string>
@@ -279,5 +279,6 @@
     <string name="subject_email">Creare cont Swap</string>
     <string name="no_chat_elements_text">Nimic... Contactează alți utilizatori când un produs te interesează.</string>
     <string name="posted_by">Postat de</string>
+    <string name="categ_beauty">Înfrumusețare</string>
 
 </resources>

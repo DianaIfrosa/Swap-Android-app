@@ -96,7 +96,7 @@ class MessagesRecyclerViewAdapter(
 
         holder.cardMessageBinding.date.layoutParams = params
 
-        val dateFormatter = SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault())
+        val dateFormatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
         holder.cardMessageBinding.date.text = dateFormatter.format(
             currentMessage.date.toDate()
         ).toString()

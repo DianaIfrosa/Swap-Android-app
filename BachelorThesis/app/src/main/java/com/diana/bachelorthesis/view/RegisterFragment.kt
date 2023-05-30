@@ -21,12 +21,14 @@ import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentRegisterBinding
 import com.diana.bachelorthesis.model.Mail
 import com.diana.bachelorthesis.utils.BasicFragment
+import com.diana.bachelorthesis.utils.MailBodyConst
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import java.lang.Exception
+import java.util.*
 import java.util.regex.Pattern
 
 
@@ -132,11 +134,12 @@ class RegisterFragment : Fragment(), BasicFragment {
                                         )!!.toBitmap()
                                     )
 
+                                    val language = Locale.getDefault().language
                                     val mail = Mail(
                                         to = email,
                                         message = mapOf(
-                                            "subject" to "Swap sign up",
-                                            "html" to getString(R.string.email_welcome_body)
+                                            "subject" to getString(R.string.subject_email),
+                                            "html" to if (language == "en") MailBodyConst.bodyEng else MailBodyConst.bodyRo
                                         )
                                     )
                                     userViewModel.sendWelcomeEmail(mail)

@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
         getViewModels()
-//        userViewModel.signOut() // TODO delete
+//        userViewModel.signOut() // TODO uncomment when problems from shared preferences occur
 
         drawerLayout = binding.drawerLayout
         navView = binding.navView
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.nav_home, R.id.nav_add_item, R.id.nav_recommendations,
                 R.id.nav_chat, R.id.nav_favorites, R.id.nav_map,
-                R.id.nav_history, R.id.nav_contact_us // TODO add here the rest of the ids
+                R.id.nav_history, R.id.nav_contact_us
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -124,11 +124,10 @@ class MainActivity : AppCompatActivity() {
         updateAuthUIElements()
         setDefaultSharedPreferencesHomeOptions()
 
-        // ATTENTION: This was auto-generated to handle app links.
+        //  auto-generated to handle app links.
         val appLinkIntent: Intent = intent
         val appLinkAction: String? = appLinkIntent.action
         val appLinkData: Uri? = appLinkIntent.data
-        // todo modify?
     }
 
     override fun onStart() {

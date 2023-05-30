@@ -211,7 +211,7 @@ class ItemsViewModel : ViewModel() {
         currentItems.forEach {
             cities.add(it.city)
         }
-        return cities
+        return ArrayList(cities.distinctBy { it.uppercase() })
     }
 
     fun getFilterBundle(): Bundle {

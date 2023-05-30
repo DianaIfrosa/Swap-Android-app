@@ -12,6 +12,7 @@ enum class ItemCategory(
 ) : Parcelable {
     ACCESSORIES,
     APPLIANCES,
+    BEAUTY,
     CLOTHESSHOES,
     DEVICES,
     EDUCATION,
@@ -41,6 +42,7 @@ enum class ItemCategory(
         fun stringToItemCategory(context: Context, name: String): ItemCategory {
             return when (name) {
                 context.getString(R.string.categ_accessories) -> ACCESSORIES
+                context.getString(R.string.categ_beauty) -> BEAUTY
                 context.getString(R.string.categ_appliances) -> APPLIANCES
                 context.getString(R.string.categ_clothesshoes) -> CLOTHESSHOES
                 context.getString(R.string.categ_devices) -> DEVICES
@@ -60,6 +62,7 @@ enum class ItemCategory(
             return when (item) {
                 ACCESSORIES -> context.getString(R.string.categ_accessories)
                 APPLIANCES -> context.getString(R.string.categ_appliances)
+                BEAUTY ->  context.getString(R.string.categ_beauty)
                 CLOTHESSHOES -> context.getString(R.string.categ_clothesshoes)
                 DEVICES -> context.getString(R.string.categ_devices)
                 EDUCATION -> context.getString(R.string.categ_education)

@@ -45,6 +45,7 @@
                     app:iss_error_image="@drawable/unavailable"
                     app:iss_placeholder="@drawable/ic_hourglass"/>
 
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

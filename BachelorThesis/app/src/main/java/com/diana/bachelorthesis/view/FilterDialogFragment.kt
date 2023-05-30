@@ -7,10 +7,7 @@ import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
-import androidx.core.view.isVisible
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
-import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentFilterDialogBinding
 import com.diana.bachelorthesis.model.ItemCategory
 import com.diana.bachelorthesis.utils.SortFilterDialogListener
@@ -50,7 +47,6 @@ class FilterDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "FilterDialogFragment is onViewCreated")
 
-        customizeDialog()
         val adapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, cities)
         binding.filterCityAutoComplete.setAdapter(adapter)
@@ -58,6 +54,7 @@ class FilterDialogFragment : DialogFragment() {
         checkboxes = mapOf(
             ItemCategory.ACCESSORIES to binding.categories.categAccessories,
             ItemCategory.APPLIANCES to binding.categories.categAppliances,
+            ItemCategory.BEAUTY to binding.categories.categBeauty,
             ItemCategory.CLOTHESSHOES to binding.categories.categClothesshoes,
             ItemCategory.DEVICES to binding.categories.categDevices,
             ItemCategory.EDUCATION to binding.categories.categEducation,
@@ -72,23 +69,7 @@ class FilterDialogFragment : DialogFragment() {
         applySelections()
 
         binding.filterCityAutoComplete.setOnItemClickListener { _, _, position, _ ->
-            binding.filterCityStatus.apply {
-                text = getString(R.string.ok)
-                setTextColor(Color.GREEN)
-                isVisible = true
-            }
             chosenCity = adapter.getItem(position) ?: ""
-        }
-
-        binding.filterCityAutoComplete.doOnTextChanged { text, _, _, _ ->
-            // TODO handle special characters (diacritics)
-            binding.filterCityStatus.text = getString(R.string.not_found)
-
-            binding.filterCityStatus.setTextColor(Color.RED)
-
-            if (text != null) {
-                binding.filterCityStatus.isVisible = text.isNotEmpty()
-            }
         }
 
         binding.filterApply.setOnClickListener {
@@ -102,18 +83,6 @@ class FilterDialogFragment : DialogFragment() {
 
         binding.filterCancel.setOnClickListener {
             dialog!!.dismiss()
-        }
-    }
-
-    private fun customizeDialog() {
-        val window: Window? = dialog!!.window
-        if (window != null) {
-            val lp = WindowManager.LayoutParams()
-            lp.copyFrom(window.attributes)
-            lp.width = WindowManager.LayoutParams.WRAP_CONTENT
-            lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            window.attributes = lp
         }
     }
 
@@ -131,19 +100,6 @@ class FilterDialogFragment : DialogFragment() {
     private fun applySelections() {
         if (chosenCity.isNotEmpty()) {
             binding.filterCityAutoComplete.setText(chosenCity)
-            if (chosenCity in cities) {
-                binding.filterCityStatus.apply {
-                    text = getString(R.string.ok)
-                    setTextColor(Color.GREEN)
-                    isVisible = true
-                }
-            } else {
-                binding.filterCityStatus.apply {
-                    text = getString(R.string.not_found)
-                    setTextColor(Color.RED)
-                    isVisible = true
-                }
-            }
         }
 
         if (chosenCategories.isNotEmpty()) {

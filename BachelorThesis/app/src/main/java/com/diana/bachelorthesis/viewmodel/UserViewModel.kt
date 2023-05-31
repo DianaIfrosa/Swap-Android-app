@@ -94,12 +94,11 @@ class UserViewModel : ViewModel() {
     fun signOut() {
         chatRepository.detachChatListeners()
         userRepository.detachCurrentUserListener()
-
         userRepository.auth.signOut()
+        userRepository.googleClient?.signOut()
+        userRepository.googleClient = null
         if (userLoggedInWithGoogle()) {
             Log.d(TAG, "User was logged in with Google")
-            userRepository.googleClient?.signOut()
-            userRepository.googleClient = null
         } else {
             Log.d(TAG, "User wasn't logged in with Google")
         }

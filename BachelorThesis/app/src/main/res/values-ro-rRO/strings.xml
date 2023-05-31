@@ -186,7 +186,7 @@
     <string name="name_required">Numele complet este obligatoriu</string>
     <string name="name_invalid">Numele complet este obligatoriu</string>
     <string name="pass_required">Parola e obligatorie</string>
-    <string name="pass_invalid">Ar trebui să aibă măcar 8 caractere, o literă mare, o literă mică și o cifră.</string>
+    <string name="pass_invalid">Ar trebui să aibă măcar 8 caractere, o literă mare, o literă mică și o cifră</string>
     <string name="pass_confirmed_required">Confirmarea parolei e obligatorie</string>
     <string name="pass_confirmed_invalid">Parolele nu sunt la fel</string>
     <string name="intro1_title">Adaugă obiecte</string>
@@ -234,7 +234,7 @@
     <string name="city_autocomplete">ex. București</string>
     <string name="words_autocomplete">ex. masă</string>
     <string name="edit_preferences_description">Pe baza preferințelor setate de către tine vei vedea obiectele corespunzătoare în pagina Recomandări și vei fi primi notificări pentru ele (dacă sunt pornite).</string>
-    <string name="report_post">Raporteză postarea</string>
+    <string name="report_post">Raportează postarea</string>
     <string name="item_deleted_successfully">Obiect șters cu succes!</string>
     <string name="item_deleted_failed">Obiectul nu a putut fi șters. Încercă din nou în câteva minute!</string>
     <string name="delete_item_message_dialog">Ești sigur că vrei să ștergi această postare?</string>

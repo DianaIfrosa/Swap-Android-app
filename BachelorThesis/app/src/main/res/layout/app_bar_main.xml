@@ -44,6 +44,7 @@
                     android:layout_weight="1"
                     android:contentDescription="Current subpage"
                     android:ellipsize="end"
+                    android:paddingEnd="15dp"
                     android:fontFamily="@font/league_spartan_regular"
                     android:textSize="22sp"
                     android:gravity="center"

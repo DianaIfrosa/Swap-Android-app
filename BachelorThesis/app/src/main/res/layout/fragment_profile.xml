@@ -20,6 +20,7 @@
             android:layout_height="150dp"
             app:strokeColor="@color/grey"
             app:strokeWidth="1dp"
+            android:padding="5dp"
             app:shapeAppearanceOverlay="@style/circleImageView"
             android:scaleType="centerCrop"
             android:layout_gravity="center"

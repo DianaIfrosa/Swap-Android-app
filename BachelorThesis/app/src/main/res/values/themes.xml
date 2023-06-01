@@ -18,6 +18,7 @@
         <item name="android:radioButtonStyle">@style/RadioButtonStyle</item>
 <!--        <item name="android:spinnerItemStyle">@style/SpinnerItemStyle</item>-->
         <item name="android:checkBoxPreferenceStyle">@style/CheckboxStyle</item>
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <!-- For  toolbar menu items -->
         <item name="android:actionMenuTextColor">@color/purple_dark</item>
         <item name="actionMenuTextColor">@color/purple_dark</item>
@@ -55,6 +56,19 @@
         <item name="android:fontFamily">@font/lora</item>
         <item name="android:actionMenuTextColor">@color/purple_dark</item>
         <item name="actionMenuTextColor">@color/purple_dark</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="FullScreenDialogTitle">

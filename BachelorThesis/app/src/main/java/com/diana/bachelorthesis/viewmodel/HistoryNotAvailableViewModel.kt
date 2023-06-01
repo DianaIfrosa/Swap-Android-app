@@ -30,10 +30,12 @@ class HistoryNotAvailableViewModel: ViewModel() {
             override fun onComplete() {
                 // retrieved all items
                 getCurrentUserItems()
-                getNotAvailableItemPairs(object: ListParamCallback<History> {
+                getNotAvailableItemHistoryEvents(object: ListParamCallback<History> {
                     override fun onComplete(values: ArrayList<History>) {
                         Log.d(TAG, "Retrieved history events")
-                        val histories = ArrayList(values.map { it.copy() })
+                        var histories = ArrayList(values.map { it.copy() })
+                        histories = ArrayList(histories.sortedByDescending { it.date })
+
                         if ((values.size != (notAvailableItemsHistory.value?.size
                                 ?: 0)) || (values.size == 0 && ((notAvailableItemsHistory.value?.size ?: 0) == 0))
                         ) {
@@ -44,7 +46,7 @@ class HistoryNotAvailableViewModel: ViewModel() {
                                             Pair(it.first, it.second)
                                         })
                                         _notAvailableItemsHistory.value = histories
-                                        Log.d(TAG, "oncomplete, should update recycler view")
+                                        Log.d(TAG, "onComplete, should update recycler view")
                                     }
 
                                     override fun onError(e: Exception?) {
@@ -77,7 +79,7 @@ class HistoryNotAvailableViewModel: ViewModel() {
     }
 
 
-    fun getNotAvailableItemPairs(callback: ListParamCallback<History>) {
+    fun getNotAvailableItemHistoryEvents(callback: ListParamCallback<History>) {
         val notAvailableItemsUser = arrayListOf<Item>()
         val historyIdsUser = arrayListOf<String>()
 

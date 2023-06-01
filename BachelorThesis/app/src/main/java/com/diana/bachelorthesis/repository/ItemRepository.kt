@@ -349,11 +349,10 @@ class ItemRepository {
         val currentHistory = historyObjects[currentPosition]
         val forExchange = currentHistory.item2 != null
 
-        var docRef: CollectionReference
-        if (forExchange)
-            docRef = db.collection(EXCHANGE_COLLECTION)
+        val docRef: CollectionReference = if (forExchange)
+            db.collection(EXCHANGE_COLLECTION)
         else
-            docRef = db.collection(DONATION_COLLECTION)
+            db.collection(DONATION_COLLECTION)
 
         docRef.document(currentHistory.item1).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -371,7 +370,7 @@ class ItemRepository {
                         docRef.document(currentHistory.item2!!).get().addOnCompleteListener { task2 ->
 
                             if (task2.isSuccessful) {
-                                val item2 = task.result.toObject(ItemExchange::class.java)
+                                val item2 = task2.result.toObject(ItemExchange::class.java)
                                 if (item2 != null) {
                                     result.add(Pair(item1, item2))
                                     if (currentPosition == historyObjects.size - 1) {
@@ -381,12 +380,12 @@ class ItemRepository {
                                     }
                                 } else {
                                     Log.w(TAG, "Error while retrieving item with id ${currentHistory.item2!!}")
-                                    callback.onError(task.exception)
+                                    callback.onError(task2.exception)
                                 }
 
                             } else {
                                 Log.w(TAG, "Error while retrieving item with id ${currentHistory.item2!!}")
-                                callback.onError(task.exception)
+                                callback.onError(task2.exception)
                             }
                         }
                     }

@@ -134,6 +134,7 @@
     <string name="intro3_title">Items around you</string>
     <string name="intro3_content">Use the live map to see what others have for swapping or donation.</string>
     <string name="pass_or_email_invalid">Email or password is wrong!</string>
+    <string name="user_deleted_or_disabled">This user does not exist or was disabled/deleted by the administrator!</string>
     <string name="help">Help</string>
     <string name="authentication">Authentication</string>
     <string name="profile">Profile</string>
@@ -310,6 +311,8 @@
 
     <string name="post_report_email_subject">Post report id. </string>
     <string name="feedback_email_subject">Feedback id. </string>
+    <string name="swap_made">"Swap"</string>
+    <string name="no_items_home_text">Nothing... \n Maybe your search is too restrictive?</string>
 
 
 </resources>

@@ -272,9 +272,11 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
             binding.progressBarHome.visibility = View.VISIBLE
             binding.textNumberItems.text = resources.getString(R.string.loading)
             binding.homeRecyclerView.visibility = View.INVISIBLE
-        } else {
+            binding.noItemsText.visibility = View.INVISIBLE
+        } else if (items.isNotEmpty()) {
             binding.homeRecyclerView.visibility = View.VISIBLE
             binding.progressBarHome.visibility = View.INVISIBLE
+            binding.noItemsText.visibility = View.INVISIBLE
             binding.itemsAdapter =
                 ItemsRecyclerViewAdapter(items, requireContext()) { item ->
                     if (item is ItemExchange) {
@@ -290,6 +292,11 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
                     }
                 }
             binding.textNumberItems.text = items.size.toString() + " " + resources.getString(R.string.items)
+        } else {
+            binding.homeRecyclerView.visibility = View.INVISIBLE
+            binding.progressBarHome.visibility = View.INVISIBLE
+            binding.noItemsText.visibility = View.VISIBLE
+            binding.textNumberItems.text = "0 " + resources.getString(R.string.items)
         }
     }
 

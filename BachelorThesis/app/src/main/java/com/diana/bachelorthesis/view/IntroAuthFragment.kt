@@ -44,6 +44,7 @@ class IntroAuthFragment : Fragment(), BasicFragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "IntroAuthFragment is onViewCreated")
         setAuthOrProfileAppbar(
             requireActivity(),
             requireView().findNavController().currentDestination!!.label.toString()

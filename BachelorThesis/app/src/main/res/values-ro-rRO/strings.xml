@@ -102,7 +102,8 @@
     <string name="menu_contact_us">Contactează-ne</string>
     <string name="exchanges">Schimburi</string>
     <string name="donations">Donații</string>
-    <string name="donation_made">Donație facută</string>
+    <string name="donation_made">Donație făcută</string>
+    <string name="swap_made">Schimb făcut</string>
     <string name="donation_received">Donație primită</string>
     <string name="add_item_button_home">Adaugă obiecte din pagina principală</string>
     <string name="filter">Filtre</string>
@@ -195,7 +196,7 @@
     <string name="intro2_content">Bazându-ne pe preferințele tale vom căuta cele mai bune potriviri ca să te bucuri de ele in secțiunea Recomandări.</string>
     <string name="intro3_title">Obiecte din jurul tău</string>
     <string name="intro3_content">Folosește harta live ca să vezi ce obiecte de schimbat sau donat au cei din jurul tău.</string>
-    <string name="pass_or_email_invalid">Email sau parolă greșite!</string>
+    <string name="pass_or_email_invalid">Email sau parolă greșită!</string>
     <string name="help">Ajutor</string>
     <string name="authentication">Autentificare</string>
     <string name="profile">Profil</string>
@@ -238,7 +239,7 @@
     <string name="item_deleted_successfully">Obiect șters cu succes!</string>
     <string name="item_deleted_failed">Obiectul nu a putut fi șters. Încercă din nou în câteva minute!</string>
     <string name="delete_item_message_dialog">Ești sigur că vrei să ștergi această postare?</string>
-    <string name="delete_item_title_dialog">Șterge obiect</string>
+    <string name="delete_item_title_dialog">Șterge obiectul</string>
     <string name="no">Nu</string>
     <string name="yes">Da</string>
     <string name="available">Disponibile</string>
@@ -282,5 +283,7 @@
     <string name="categ_beauty">Înfrumusețare</string>
     <string name="post_report_email_subject">"Raportare postare id. "</string>
     <string name="feedback_email_subject">"Sesizare id. "</string>
+    <string name="user_deleted_or_disabled">Acest utilizator nu există sau a fost șters/blocat de către administrator!</string>
+    <string name="no_items_home_text">Nimic... \n Poate căutarea ta este prea restrictivă.</string>
 
 </resources>

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.adapters.ItemsHorizontalRecyclerViewAdapter
 import com.diana.bachelorthesis.databinding.FragmentOwnerProfileBinding
@@ -66,7 +67,12 @@ class OwnerProfileFragment : Fragment(), BasicFragment {
 
     private fun updateUIElements() {
         binding.profileName.text = ownerProfileViewModel.owner.name
-        Glide.with(requireContext()).load(ownerProfileViewModel.owner.profilePhoto).centerCrop().into(binding.ownerPhoto)
+        Glide.with(requireContext())
+            .load(ownerProfileViewModel.owner.profilePhoto)
+            .centerCrop()
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .into(binding.ownerPhoto)
     }
 
     fun updateRecyclerView(items: List<Item>, progressBarAppears: Boolean = false) {

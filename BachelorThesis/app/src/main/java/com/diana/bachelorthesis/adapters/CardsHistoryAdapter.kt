@@ -1,6 +1,7 @@
 package com.diana.bachelorthesis.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +51,9 @@ class CardsHistoryAdapter(
 
         val item1 = itemsList[position].first
         val item2 = itemsList[position].second
+
+//        Log.d(TAG, item1.name)
+//        Log.d(TAG, item2?.name ?: "None")
 
         if (item2 != null) {
             // exchange card

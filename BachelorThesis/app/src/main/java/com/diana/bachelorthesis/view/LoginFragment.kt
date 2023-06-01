@@ -109,10 +109,16 @@ class LoginFragment : Fragment(), BasicFragment {
                         override fun onError(e: Exception?) {
                             button.revertAnimation()
 
-                            if (e is FirebaseAuthInvalidCredentialsException || e is FirebaseAuthInvalidUserException) {
+                            if (e is FirebaseAuthInvalidCredentialsException) {
                                 Toast.makeText(
                                     requireActivity(),
                                     R.string.pass_or_email_invalid,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            } else if (e is FirebaseAuthInvalidUserException) {
+                                Toast.makeText(
+                                    requireActivity(),
+                                    R.string.user_deleted_or_disabled,
                                     Toast.LENGTH_LONG
                                 ).show()
                             } else {

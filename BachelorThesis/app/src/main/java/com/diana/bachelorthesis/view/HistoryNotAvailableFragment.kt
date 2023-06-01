@@ -101,6 +101,9 @@ class HistoryNotAvailableFragment : Fragment() {
 
                     if (item2 != null) {
                         // exchange event
+//                        Log.d(TAG, item1.name)
+//                        Log.d(TAG, item2.name)
+
                         val action =
                             HistoryFragmentDirections.actionNavHistoryToNavHistoryExchangeFragment(
                                 item1,

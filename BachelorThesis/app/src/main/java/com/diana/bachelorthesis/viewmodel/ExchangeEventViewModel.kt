@@ -24,12 +24,6 @@ class ExchangeEventViewModel: ViewModel() {
     lateinit var history: History
     lateinit var currentUser: User
 
-    fun swapItems() {
-        val itemAux: Item = item1
-        item1 = item2!!
-        item2 = itemAux
-    }
-
     fun getOtherOwnerData() {
         userRepository.getUserData(item2!!.owner, object: OneParamCallback<User> {
             override fun onComplete(value: User?) {

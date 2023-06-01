@@ -43,7 +43,7 @@ class HistoryExchangeFragment : Fragment(), BasicFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "HistoryExchangeFragment is onViewCreated")
-        setSubPageAppbar(requireActivity(), getString(R.string.exchange))
+        setSubPageAppbar(requireActivity(), getString(R.string.swap_made))
         historyEventViewModel = ViewModelProvider(this)[ExchangeEventViewModel::class.java]
         getNavigationArguments()
         historyEventViewModel.currentUser = (requireActivity() as MainActivity).getCurrentUser()!!
@@ -68,13 +68,35 @@ class HistoryExchangeFragment : Fragment(), BasicFragment {
     }
 
     private fun updateUIElements() {
-        if (historyEventViewModel.item1.owner != historyEventViewModel.currentUser.email) {
-            historyEventViewModel.swapItems()
+        if (historyEventViewModel.item1.owner == historyEventViewModel.currentUser.email) {
+            Log.d(TAG, "First branch")
+            binding.item1Title.text = historyEventViewModel.item1.name
+            binding.photoCarousel1.setImageList(
+                ItemsRecyclerViewAdapter.getPhotos(
+                    historyEventViewModel.item1
+                ), ScaleTypes.CENTER_CROP
+            )
+            binding.item2Title.text = historyEventViewModel.item2!!.name
+            binding.photoCarousel2.setImageList(
+                ItemsRecyclerViewAdapter.getPhotos(
+                    historyEventViewModel.item2!!
+                ), ScaleTypes.CENTER_CROP
+            )
+        } else {
+            Log.d(TAG, "Second branch")
+            binding.item1Title.text = historyEventViewModel.item2!!.name
+            binding.photoCarousel1.setImageList(
+                ItemsRecyclerViewAdapter.getPhotos(
+                    historyEventViewModel.item2!!
+                ), ScaleTypes.CENTER_CROP
+            )
+            binding.item2Title.text = historyEventViewModel.item1.name
+            binding.photoCarousel2.setImageList(
+                ItemsRecyclerViewAdapter.getPhotos(
+                    historyEventViewModel.item1
+                ), ScaleTypes.CENTER_CROP
+            )
         }
-        binding.item1Title.text = historyEventViewModel.item1.name
-        binding.photoCarousel1.setImageList(ItemsRecyclerViewAdapter.getPhotos(historyEventViewModel.item1), ScaleTypes.CENTER_CROP)
-        binding.item2Title.text = historyEventViewModel.item2!!.name
-        binding.photoCarousel2.setImageList(ItemsRecyclerViewAdapter.getPhotos(historyEventViewModel.item2!!), ScaleTypes.CENTER_CROP)
 
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         binding.exchangeDate.text = dateFormatter.format(
@@ -85,6 +107,8 @@ class HistoryExchangeFragment : Fragment(), BasicFragment {
     private fun getNavigationArguments() {
         historyEventViewModel.item1 = HistoryExchangeFragmentArgs.fromBundle(requireArguments()).item1
         historyEventViewModel.item2 = HistoryExchangeFragmentArgs.fromBundle(requireArguments()).item2
+//        Log.d(TAG, historyEventViewModel.item1.name)
+//        Log.d(TAG, historyEventViewModel.item2!!.name)
         historyEventViewModel.history = HistoryExchangeFragmentArgs.fromBundle(requireArguments()).history
     }
 

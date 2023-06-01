@@ -1,6 +1,5 @@
 package com.diana.bachelorthesis.view
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -262,7 +262,7 @@ class ItemFragment : Fragment(), BasicFragment {
             if (itemPageViewModel.currentUser.email == itemPageViewModel.currentItem.owner) {
                 // its own item
                 binding.layoutButtons.visibility = View.GONE
-                binding.btnFavorite.visibility = View.GONE
+                binding.btnFavorite.visibility = View.INVISIBLE
                 binding.deleteItem.visibility = View.VISIBLE
                 binding.reportPost.visibility = View.INVISIBLE
             } else {

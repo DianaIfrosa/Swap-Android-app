@@ -43,7 +43,7 @@ class HistoryAvailableViewModel: ViewModel() {
                 result.add(item)
             }
         }
-        currentUserItems = result
+        currentUserItems = ArrayList(result.sortedByDescending { it.postDate })
     }
 
     private fun getAvailableItems(): ArrayList<Item> {

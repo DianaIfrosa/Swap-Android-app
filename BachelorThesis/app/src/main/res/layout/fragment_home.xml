@@ -47,6 +47,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/no_items_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/no_items_home_text"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
         <include
             android:id="@+id/searchSwitchLayout"
             layout="@layout/search_switch_header" />

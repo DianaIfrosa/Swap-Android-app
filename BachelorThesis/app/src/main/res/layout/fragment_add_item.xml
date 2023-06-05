@@ -348,7 +348,6 @@
                     android:text="@string/select_from_gallery"
                     android:textSize="11sp" />
 
-                <!-- todo add border to top and bottom to separate this extra section-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/photos_recycler_view"
                     android:layout_width="match_parent"
@@ -476,7 +475,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
-                        <!-- todo add border to top and bottom to separate this extra section-->
 
                         <TextView
                             android:id="@+id/item_year"
@@ -512,7 +510,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
-                        <!-- todo add border to top and bottom to separate this extra section-->
 
                         <TextView
                             android:id="@+id/item_condition"

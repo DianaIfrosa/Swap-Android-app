@@ -52,7 +52,10 @@ class RecommendationsFragment : Fragment(), BasicFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "RecommendationsFragment is onViewCreated")
-        setMainPageAppbar(requireActivity(), requireView().findNavController().currentDestination!!.label.toString())
+        setMainPageAppbar(
+            requireActivity(),
+            requireView().findNavController().currentDestination!!.label.toString()
+        )
         getViewModels()
 
         if (mainViewModel.clickedOnRecommendations) {
@@ -71,6 +74,23 @@ class RecommendationsFragment : Fragment(), BasicFragment {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "RecommendationsFragment is onStart")
+        val itemId: String? = (requireActivity() as MainActivity).itemIdFromNotification
+        val itemForExchange: Boolean =
+            (requireActivity() as MainActivity).itemFromNotificationForExchange
+
+        if (itemId != null) {
+            Log.d(TAG, "Values for recommendation item from notification:")
+            Log.d(TAG, "itemId $itemId")
+            Log.d(TAG, "itemForExchange $itemForExchange")
+//            updateRecyclerView(listOf(), true)
+            recommendationsViewModel.getItemFromNotification(itemId, itemForExchange)
+            (requireActivity() as MainActivity).itemIdFromNotification = null
+        }
+    }
+
     private fun scrollRecyclerView() {
         Log.d(
             TAG,
@@ -85,7 +105,8 @@ class RecommendationsFragment : Fragment(), BasicFragment {
     }
 
     private fun getViewModels() {
-        recommendationsViewModel = ViewModelProvider(requireActivity())[RecommendationsViewModel::class.java]
+        recommendationsViewModel =
+            ViewModelProvider(requireActivity())[RecommendationsViewModel::class.java]
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         recommendationsViewModel.currentUser = mainViewModel.currentUser!!
     }
@@ -98,6 +119,14 @@ class RecommendationsFragment : Fragment(), BasicFragment {
     override fun initListeners() {
         recommendationsViewModel.items.observe(viewLifecycleOwner) {
             updateRecyclerView(it)
+        }
+
+        recommendationsViewModel.itemFromNotificationRetrieved.observe(viewLifecycleOwner) {retrieved ->
+            if (retrieved) {
+                recommendationsViewModel.markItemNotificationNotRetrieved()
+                val action = RecommendationsFragmentDirections.actionNavRecommendationsToNavItem(recommendationsViewModel.itemFromNotification!!)
+                requireView().findNavController().navigate(action)
+            }
         }
     }
 
@@ -113,7 +142,8 @@ class RecommendationsFragment : Fragment(), BasicFragment {
             binding.textNoItems.visibility = View.INVISIBLE
             binding.itemsAdapter =
                 ItemsRecyclerViewAdapter(items, requireActivity()) { item ->
-                    val action = RecommendationsFragmentDirections.actionNavRecommendationsToNavItem(item)
+                    val action =
+                        RecommendationsFragmentDirections.actionNavRecommendationsToNavItem(item)
                     requireView().findNavController().navigate(action)
                 }
             binding.textNumberItems.text = items.size.toString()
@@ -122,7 +152,7 @@ class RecommendationsFragment : Fragment(), BasicFragment {
             binding.recyclerView.visibility = View.INVISIBLE
             binding.textNoItems.visibility = View.VISIBLE
             binding.textNumberItems.text = items.size.toString()
-          }
+        }
     }
 
     override fun onStop() {

@@ -77,7 +77,6 @@ class FilterDialogFragment : DialogFragment() {
             chosenCity = binding.filterCityAutoComplete.text.toString()
             chosenCategories = getSelectedCheckboxes()
             listener.saveFilterOptions(requireActivity(), chosenCity, chosenCategories)
-            // todo call for filter categ
             dialog!!.dismiss()
         }
 

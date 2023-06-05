@@ -14,6 +14,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -108,8 +110,8 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
 
     override fun onStart() {
         super.onStart()
-        setSearchBarUI()
         Log.d(TAG, "HomeFragment is onStart")
+        setSearchBarUI()
     }
 
     override fun onResume() {

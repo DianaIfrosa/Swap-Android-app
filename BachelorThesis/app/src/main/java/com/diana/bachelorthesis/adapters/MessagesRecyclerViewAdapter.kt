@@ -246,7 +246,6 @@ class MessagesRecyclerViewAdapter(
     }
 
     override fun cardClicked(item1: Item, item2: Item?, proposal: Proposal) {
-      // todo call view func to navigate to proposal page
         Log.d(TAG, "Clicked on proposal item with id ${proposal.proposalId}")
         onMessageClicked(item1, item2, proposal)
     }

@@ -1,14 +1,12 @@
 package com.diana.bachelorthesis.view
 
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.viewpager.widget.PagerAdapter
@@ -107,12 +105,12 @@ class IntroAuthFragment : Fragment(), BasicFragment {
             // changing the next button text 'NEXT' / 'GOT IT'
             if (position == layouts.size - 1) {
                 // last page. make button text to GOT IT
-                binding.btnNext!!.text = getString(R.string.ok)
-                binding.btnSkip!!.visibility = View.INVISIBLE
+                binding.btnNext.text = getString(R.string.ok)
+                binding.btnSkip.visibility = View.INVISIBLE
             } else {
                 // still pages are left
-                binding.btnNext!!.text = getString(R.string.next)
-                binding.btnSkip!!.visibility = View.VISIBLE
+                binding.btnNext.text = getString(R.string.next)
+                binding.btnSkip.visibility = View.VISIBLE
             }
         }
 

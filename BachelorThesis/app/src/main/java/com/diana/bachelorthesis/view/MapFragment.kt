@@ -229,7 +229,7 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
 
     private fun updateMapMarkers() {
         if (mapLoaded) {
-            googleMap.clear() // TODO make sure the current location marker is added again
+            googleMap.clear()
             lastLocation?.let { markerCurrentLocation(it) }
             mapViewModel.allItems.forEach { item ->
                 val lanLng = LatLng(item.location.latitude, item.location.longitude)

@@ -133,9 +133,20 @@ class ItemsViewModel : ViewModel() {
         // restore default sort option and remove filter options selected
         Log.d(TAG, "Restored default current items.")
         restoreDefaultOptions()
-
-        currentItems = if (displayExchangeItems) _exchangeItems.value as ArrayList
-        else _donationItems.value as ArrayList
+        currentItems =
+        if (displayExchangeItems) {
+            if (_exchangeItems.value != null) {
+                _exchangeItems.value as ArrayList
+            } else {
+                arrayListOf()
+            }
+        } else {
+            if (_donationItems.value != null) {
+                _donationItems.value as ArrayList
+            } else {
+                arrayListOf()
+            }
+        }
     }
 
     fun restoreDefaultCurrentItems(context: Context) {

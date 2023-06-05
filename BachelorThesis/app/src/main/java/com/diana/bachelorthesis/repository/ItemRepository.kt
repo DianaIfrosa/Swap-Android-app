@@ -34,7 +34,7 @@ class ItemRepository {
         fun getInstance() = instance ?: ItemRepository().also { instance = it }
     }
 
-    // TODO  de analizat folosirea cache-lui : https://firebase.google.com/docs/firestore/query-data/get-data
+    // TODO  analyse cache? : https://firebase.google.com/docs/firestore/query-data/get-data
 
     fun getExchangeItem(itemId: String, callback: OneParamCallback<Item>) {
         db.collection(EXCHANGE_COLLECTION).document(itemId).get().addOnCompleteListener { task ->

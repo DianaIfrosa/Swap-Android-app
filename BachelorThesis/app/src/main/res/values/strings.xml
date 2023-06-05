@@ -186,12 +186,13 @@
     <string name="not_available">Not available</string>
     <string name="no_items_given">Nothing... Come back after you swap or donate something.</string>
     <string name="no_items_available">Nothing... Seems like you did a good job in finding your items a new home.</string>
-    <string name="events">events</string>
+    <string name="events">event(s)</string>
     <string name="no_unavailable_items">None... Message other users to swap your items or receive a donation. Or maybe make a donation?</string>
     <string name="all_items_available">All items available</string>
     <string name="none">None</string>
     <string name="sent_proposal">sent you a proposal</string>
     <string name="sent_photo">sent you a photo</string>
+    <string name="sent_message">sent you a message</string>
     <string name="choose_item">Choose an item</string>
     <string name="must_choose_item">You must choose an item to continue!</string>
     <string name="no_items_for_proposal">No items to swap for.</string>
@@ -313,6 +314,12 @@
     <string name="feedback_email_subject">Feedback id. </string>
     <string name="swap_made">"Swap"</string>
     <string name="no_items_home_text">Nothing... \n Maybe your search is too restrictive?</string>
+    <string name="default_notification_channel_id" translatable="false">PUSH_NOTIFICATION</string>
+    <string name="default_notification_channel_name" translatable="false">Push Notification</string>
+    <string name="chat_notification_channel_id" translatable="false">chat_channel_id</string>
+    <string name="chat_notification_channel_name">Chat</string>
+    <string name="posts_notification_channel_name">Posts</string>
+    <string name="posts_notification_channel_id" translatable="false">posts_channel_id</string>
 
 
 </resources>

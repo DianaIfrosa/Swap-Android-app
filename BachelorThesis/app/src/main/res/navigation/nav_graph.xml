@@ -13,6 +13,10 @@
         <action
             android:id="@+id/action_nav_home_to_nav_item"
             app:destination="@id/nav_item" />
+<!--        <argument-->
+<!--            android:name="cameFromNotification"-->
+<!--            app:argType="boolean"-->
+<!--            android:defaultValue="false" />-->
     </fragment>
 
     <fragment

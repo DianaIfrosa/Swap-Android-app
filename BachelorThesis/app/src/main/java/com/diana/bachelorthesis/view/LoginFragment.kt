@@ -67,6 +67,11 @@ class LoginFragment : Fragment(), BasicFragment {
                                 override fun onComplete(value: User?) {
                                     if (value != null) {
                                         (requireActivity() as MainActivity).addCurrentUserToSharedPreferences(value)
+                                        val token = (requireActivity() as MainActivity).getTokenFromSharedPreferences()
+
+                                        if (token != null) {
+                                            userViewModel.addUserToken(email, token)
+                                        }
 
                                         button.doneLoadingAnimation(
                                             R.color.purple_medium,
@@ -83,7 +88,7 @@ class LoginFragment : Fragment(), BasicFragment {
                                                 NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
                                             )
                                     } else {
-                                        userViewModel.signOut()
+                                        userViewModel.signOut(email)
                                         button.revertAnimation()
                                         Toast.makeText(
                                             requireActivity(),
@@ -109,24 +114,28 @@ class LoginFragment : Fragment(), BasicFragment {
                         override fun onError(e: Exception?) {
                             button.revertAnimation()
 
-                            if (e is FirebaseAuthInvalidCredentialsException) {
-                                Toast.makeText(
-                                    requireActivity(),
-                                    R.string.pass_or_email_invalid,
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            } else if (e is FirebaseAuthInvalidUserException) {
-                                Toast.makeText(
-                                    requireActivity(),
-                                    R.string.user_deleted_or_disabled,
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            } else {
-                                Toast.makeText(
-                                    requireActivity(),
-                                    R.string.something_failed,
-                                    Toast.LENGTH_LONG
-                                ).show()
+                            when (e) {
+                                is FirebaseAuthInvalidCredentialsException -> {
+                                    Toast.makeText(
+                                        requireActivity(),
+                                        R.string.pass_or_email_invalid,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                                is FirebaseAuthInvalidUserException -> {
+                                    Toast.makeText(
+                                        requireActivity(),
+                                        R.string.user_deleted_or_disabled,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                                else -> {
+                                    Toast.makeText(
+                                        requireActivity(),
+                                        R.string.something_failed,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
                             }
                         }
                     })

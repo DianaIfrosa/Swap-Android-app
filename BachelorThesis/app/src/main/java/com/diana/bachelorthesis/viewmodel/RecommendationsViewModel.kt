@@ -11,6 +11,7 @@ import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.repository.ItemRepository
 import com.diana.bachelorthesis.repository.UserRepository
 import com.diana.bachelorthesis.utils.ListParamCallback
+import com.diana.bachelorthesis.utils.OneParamCallback
 
 class RecommendationsViewModel : ViewModel() {
     private val TAG: String = RecommendationsViewModel::class.java.name
@@ -19,6 +20,10 @@ class RecommendationsViewModel : ViewModel() {
 
     private val _items = MutableLiveData<List<Item>>()
     var items: LiveData<List<Item>> = _items
+
+    var itemFromNotification: Item? = null
+    private var _itemFromNotificationRetrieved = MutableLiveData<Boolean>()
+    var itemFromNotificationRetrieved = _itemFromNotificationRetrieved
 
     private var itemsRecommended: ArrayList<Item> = arrayListOf()
 
@@ -58,6 +63,50 @@ class RecommendationsViewModel : ViewModel() {
                 callback.onComplete(arrayListOf())
             }
         })
+    }
+
+    fun getItemFromNotification(itemId: String, forExchange: Boolean) {
+        if (forExchange) {
+            itemRepository.getExchangeItem(itemId, object: OneParamCallback<Item> {
+                override fun onComplete(value: Item?) {
+                    if (value != null) {
+                        Log.d(TAG, "Successfully retrieved exchange item from notification with id $itemId")
+                        itemFromNotification = value
+                        _itemFromNotificationRetrieved.value = true
+                    } else {
+                        Log.d(TAG, "Error while retrieving exchange item from notification with id $itemId, value was null")
+                    }
+                }
+
+                override fun onError(e: java.lang.Exception?) {
+                    Log.d(TAG, "Error while retrieving exchange item from notification with id $itemId")
+                }
+
+            })
+
+        } else {
+            itemRepository.getDonationItem(itemId, object: OneParamCallback<Item> {
+                override fun onComplete(value: Item?) {
+                    if (value != null) {
+                        Log.d(TAG, "Successfully retrieved donation item from notification with id $itemId")
+                        itemFromNotification = value
+                        _itemFromNotificationRetrieved.value = true
+                    } else {
+                        Log.d(TAG, "Error while retrieving donation item from notification with id $itemId, value was null")
+                    }
+                }
+
+                override fun onError(e: java.lang.Exception?) {
+                    Log.d(TAG, "Error while retrieving donation item from notification with id $itemId")
+                }
+
+            })
+        }
+
+    }
+
+    fun markItemNotificationNotRetrieved() {
+        _itemFromNotificationRetrieved. value = false
     }
 
     fun populateLiveDataItems() {

@@ -246,7 +246,7 @@
     <string name="not_available">Indisponibile</string>
     <string name="no_items_given">Nimic... Întoarce-te după ce faci un schimb sau donezi un obiect.</string>
     <string name="no_items_available">Nimic... Se pare că ai făcut o treabă bună în a găsi o casă nouă obiectelor tale.</string>
-    <string name="events">evenimente</string>
+    <string name="events">eveniment(e)</string>
     <string name="no_unavailable_items">Nimic... Contactează alți utilizatori pentru a schimba obiecte sau a primi donații. Sau poate chiar tu să faci o donație?</string>
     <string name="all_items_available">Obiectele disponibile</string>
     <string name="none">Niciunul</string>
@@ -285,5 +285,8 @@
     <string name="feedback_email_subject">"Sesizare id. "</string>
     <string name="user_deleted_or_disabled">Acest utilizator nu există sau a fost șters/blocat de către administrator!</string>
     <string name="no_items_home_text">Nimic... \n Poate căutarea ta este prea restrictivă.</string>
+    <string name="sent_message">ți-a trimis un mesaj</string>
+    <string name="chat_notification_channel_name">Conversații</string>
+    <string name="posts_notification_channel_name">Postări</string>
 
 </resources>

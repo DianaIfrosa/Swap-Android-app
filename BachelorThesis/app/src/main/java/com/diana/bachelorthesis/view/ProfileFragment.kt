@@ -63,7 +63,8 @@ class ProfileFragment : Fragment(), BasicFragment, ProfileOptionsListener {
             userViewModel.updateCurrentUser((requireActivity() as MainActivity).getCurrentUser()!!)
 
             // sign out from firebase auth system
-            userViewModel.signOut()
+            val user = (requireActivity() as MainActivity).getCurrentUser()!!
+            userViewModel.signOut(user.email)
 
             (requireActivity() as MainActivity).deleteCurrentUserFromSharedPreferences()
 

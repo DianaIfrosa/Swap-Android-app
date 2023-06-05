@@ -135,7 +135,7 @@ class AuthFragment : Fragment(), BasicFragment {
                     }
 
                     override fun onError(e: Exception?) {
-                        userViewModel.signOut()
+                        userViewModel.signOut(email)
                         displayErrorToast()
                     }
                 })
@@ -164,7 +164,7 @@ class AuthFragment : Fragment(), BasicFragment {
             }
 
             override fun onError(e: Exception?) {
-                userViewModel.signOut()
+                userViewModel.signOut(email)
                 displayErrorToast()
             }
         })
@@ -176,6 +176,12 @@ class AuthFragment : Fragment(), BasicFragment {
                 if (value != null) {
                     (requireActivity() as MainActivity).addCurrentUserToSharedPreferences(value)
                     (requireActivity() as MainActivity).updateAuthUIElements()
+                    val token = (requireActivity() as MainActivity).getTokenFromSharedPreferences()
+
+                    if (token != null) {
+                        userViewModel.addUserToken(email, token)
+                    }
+
                     requireView().findNavController()
                         .navigate(
                             R.id.nav_home,
@@ -184,13 +190,13 @@ class AuthFragment : Fragment(), BasicFragment {
                         )
 
                 } else {
-                    userViewModel.signOut()
+                    userViewModel.signOut(email)
                     displayErrorToast()
                 }
             }
 
             override fun onError(e: Exception?) {
-                userViewModel.signOut()
+                userViewModel.signOut(email)
                 displayErrorToast()
             }
 

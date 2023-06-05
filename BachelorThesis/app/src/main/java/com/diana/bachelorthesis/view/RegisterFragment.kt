@@ -144,13 +144,13 @@ class RegisterFragment : Fragment(), BasicFragment {
                                     )
                                     userViewModel.sendWelcomeEmail(mail)
 
-                                    userViewModel.signOut() // Firebase register automatically signs in
+                                    userViewModel.signOut(email) // Firebase register automatically signs in
                                 }
 
                                 override fun onError(e: Exception?) {
                                     it.revertAnimation()
                                     userViewModel.deleteUser()
-                                    userViewModel.signOut()
+                                    userViewModel.signOut(email)
                                     Toast.makeText(
                                         requireActivity(),
                                         R.string.something_failed,

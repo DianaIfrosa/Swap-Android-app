@@ -1,7 +1,13 @@
 package com.diana.bachelorthesis.view
 
-import android.content.Context
-import android.content.SharedPreferences
+import android.Manifest
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.*
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -10,13 +16,17 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.get
 import androidx.navigation.ui.*
+import com.bumptech.glide.Glide
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.ActivityMainBinding
 import com.diana.bachelorthesis.model.Item
@@ -30,9 +40,8 @@ import com.diana.bachelorthesis.viewmodel.MainViewModel
 import com.diana.bachelorthesis.viewmodel.UserViewModel
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
-import android.content.Intent
-import android.net.Uri
-import com.bumptech.glide.Glide
+import kotlin.random.Random
+
 
 class MainActivity : AppCompatActivity() {
     private val TAG: String = MainActivity::class.java.name
@@ -41,6 +50,8 @@ class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
 
     private val binding get() = _binding!!
+
+    private var pushNotificationsReceiver: PushNotificationsReceiver? = null
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
@@ -54,13 +65,29 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedPref: SharedPreferences
     var returnedHomeFromItemPage: Boolean = false // TODO delete if no longer used
+    var itemIdFromNotification: String? = null
+    var itemFromNotificationForExchange: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "MainActivity is onCreate")
         installSplashScreen()
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+//         Create channel to show notifications
+//        val channelId = getString(R.string.default_notification_channel_id)
+//        val channelName = getString(R.string.default_notification_channel_name)
+//        val notificationManager = getSystemService(
+//            NotificationManager::class.java
+//        )
+//        notificationManager.createNotificationChannel(
+//            NotificationChannel(
+//                channelId,
+//                channelName, NotificationManager.IMPORTANCE_HIGH
+//            )
+//        )
 
         setSupportActionBar(binding.appBarMain.toolbar)
         getViewModels()
@@ -70,7 +97,12 @@ class MainActivity : AppCompatActivity() {
         navView = binding.navView
         headerLayout = navView.getHeaderView(0)
         val navHostFragment: NavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
+        val inflater = navHostFragment.navController.navInflater
+//        val graph = inflater.inflate(R.navigation.nav_graph)
+
         navController = navHostFragment.navController
+
+        navController.setGraph(R.navigation.nav_graph) // set the graph programmatically to send argument to start destination (not applicable anymore!!)
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -83,6 +115,37 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // for the notifications
+        if (intent.extras != null) {
+            for (key in intent.extras!!.keySet()) {
+                val value = intent.extras!![key]
+                Log.d(TAG, "Key: $key Value: $value")
+            }
+            if (intent.extras!!.keySet().contains("title")) { // activity is started from a notification
+
+                if (intent.extras!!.keySet().contains("itemId")) {
+                    Log.d(TAG, "Activity started for recommendations notifications")
+                    itemIdFromNotification = intent.extras!!.get("itemId") as String?
+                    itemFromNotificationForExchange = (intent.extras!!.get("forExchange") as String).toBoolean()
+                    mainViewModel.clickedOnRecommendations = true
+                    val handled = NavigationUI.onNavDestinationSelected(
+                        navView.menu.findItem(R.id.nav_recommendations),
+                        navController
+                    )
+                    if (handled) drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    Log.d(TAG, "Activity started for chat notifications")
+                    val handled = NavigationUI.onNavDestinationSelected(
+                        navView.menu.findItem(R.id.nav_chat),
+                        navController
+                    )
+                    if (handled) drawerLayout.closeDrawer(GravityCompat.START)
+                }
+            }
+        } else {
+            Log.d(TAG, "intent.extras is null")
+        }
 
         navView.setNavigationItemSelectedListener { item: MenuItem ->
             // Block access to certain fragments unless the user is authenticated
@@ -128,11 +191,174 @@ class MainActivity : AppCompatActivity() {
         val appLinkIntent: Intent = intent
         val appLinkAction: String? = appLinkIntent.action
         val appLinkData: Uri? = appLinkIntent.data
+
+    }
+
+    private inner class PushNotificationsReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            Log.d(TAG, "onReceive from PushNotificationsReceiver")
+            Log.d(TAG, intent.action ?: "No intent action")
+
+            if (intent.action == "push_notification") {
+                val title = intent.getStringExtra("title")!!
+                val body = intent.getStringExtra("body")!!
+                val itemId = intent.getStringExtra("itemId")
+                val itemForExchange = intent.getBooleanExtra("itemForExchange", false)
+
+
+                if (itemId == null) {
+                    Log.d(TAG, "Received notification for chat!")
+                    // chat notification
+//                    val pendingIntent = NavDeepLinkBuilder(context)
+//                        .setGraph(R.navigation.nav_graph)
+//                        .setDestination(R.id.nav_chat)
+//                        .createPendingIntent()
+
+                    val channel = NotificationChannel(
+                        getString(R.string.chat_notification_channel_id),
+                        getString(R.string.chat_notification_channel_name),
+                        NotificationManager.IMPORTANCE_HIGH
+                    )
+                    val myIntent = Intent(this@MainActivity, MainActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        putExtra("destination", R.id.nav_chat)
+                    }
+                    val pendingIntent = PendingIntent.getActivity(this@MainActivity, Random.nextInt(), myIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+                    getSystemService(NotificationManager::class.java).createNotificationChannel(
+                        channel
+                    )
+                    val notification: Notification.Builder = Notification.Builder(
+                        context,
+                        getString(R.string.chat_notification_channel_id)
+                    )
+                        .setContentTitle(title)
+                        .setContentText(getString(R.string.sent_message))
+                        .setSmallIcon(R.mipmap.ic_launcher_round)
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent)
+
+                    val notificationObj = notification.build()
+//                    notificationObj.flags = Notification.FLAG_ONGOING_EVENT
+
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        Log.d(TAG, "Notifications permission NOT granted!")
+                        return
+                    } else {
+                        Log.d(TAG, "Notifications permission granted!")
+                    }
+
+                    if (navController.currentDestination?.id != navController.graph[R.id.nav_chat].id &&
+                        navController.currentDestination?.id != navController.graph[R.id.nav_chat_page_fragment].id
+                    ) {
+                        Log.d(TAG, "Notification fired")
+                        NotificationManagerCompat.from(context).notify(0, notificationObj)
+                    }
+
+                } else {
+                    Log.d(TAG, "Received notification for recommendations!")
+
+                    val channel = NotificationChannel(
+                        getString(R.string.posts_notification_channel_id),
+                        getString(R.string.posts_notification_channel_name),
+                        NotificationManager.IMPORTANCE_HIGH
+                    )
+                    // recommendations notifications
+//                    val pendingIntent = NavDeepLinkBuilder(context)
+//                        .setGraph(R.navigation.nav_graph)
+//                        .setDestination(R.id.nav_recommendations)
+//                        .createPendingIntent()
+
+                    val myIntent = Intent(this@MainActivity, MainActivity::class.java).apply {
+                                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                putExtra("destination", R.id.nav_recommendations)
+                    }
+                    val pendingIntent = PendingIntent.getActivity(this@MainActivity, Random.nextInt(), myIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+                    getSystemService(NotificationManager::class.java).createNotificationChannel(
+                        channel
+                    )
+                    val notification: Notification.Builder = Notification.Builder(
+                        context,
+                        getString(R.string.posts_notification_channel_id)
+                    )
+                        .setContentTitle(title)
+                        .setContentText(body)
+                        .setSmallIcon(R.mipmap.ic_launcher_round)
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent)
+
+                    val notificationObj = notification.build()
+//                     notificationObj.flags = Notification.FLAG_ONGOING_EVENT
+
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        Log.d(TAG, "Notifications permission NOT granted!")
+                        return
+                    } else {
+                        Log.d(TAG, "Notifications permission granted!")
+                    }
+
+                    if (navController.currentDestination?.id != navController.graph[R.id.nav_recommendations].id) {
+                        Log.d(TAG, "Notification fired")
+                        mainViewModel.clickedOnRecommendations = true
+                        itemIdFromNotification = itemId
+                        itemFromNotificationForExchange = itemForExchange
+                        NotificationManagerCompat.from(context).notify(1, notificationObj)
+                    }
+                }
+            }
+        }
     }
 
     override fun onStart() {
         super.onStart()
+        Log.d(TAG, "MainActivity is onStart")
         initListeners()
+    }
+
+    private fun processIntent() {
+        intent.extras?.getInt("destination")?.let {
+//            intent.removeExtra("destination")
+            val handled = NavigationUI.onNavDestinationSelected(
+                navView.menu.findItem(it),
+                navController
+            )
+            if (handled) drawerLayout.closeDrawer(GravityCompat.START)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Log.d(TAG, "onNewIntent")
+        // called when application was open
+        setIntent(intent)
+        intent?.let { processIntent() }
+    }
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "MainActivity is onResume")
+        if (pushNotificationsReceiver == null) {
+            pushNotificationsReceiver = PushNotificationsReceiver()
+            val intentFilter = IntentFilter("push_notification")
+            registerReceiver(pushNotificationsReceiver, intentFilter)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "MainActivity is onPause")
+        if (pushNotificationsReceiver != null) {
+            unregisterReceiver(pushNotificationsReceiver)
+            pushNotificationsReceiver = null
+        }
     }
 
     private fun restoreCurrentUserData() {
@@ -265,6 +491,11 @@ class MainActivity : AppCompatActivity() {
             remove(SharedPreferencesUtils.sharedPrefCurrentUser)
             commit() // synchronously
         }
+    }
+
+    fun getTokenFromSharedPreferences(): String? {
+        val sharedPref = this.getSharedPreferences("token", Context.MODE_PRIVATE)
+        return sharedPref.getString("token", null)
     }
 
     fun addCurrentUserToSharedPreferences(user: User) {

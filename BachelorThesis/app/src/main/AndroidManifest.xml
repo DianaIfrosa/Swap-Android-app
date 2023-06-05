@@ -5,19 +5,12 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-<!--    <service-->
-<!--        android:name=".java.MyFirebaseMessagingService"-->
-<!--        android:exported="false">-->
-<!--        <intent-filter>-->
-<!--            <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-<!--        </intent-filter>-->
-<!--    </service>-->
-
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:hardwareAccelerated="true"
@@ -29,6 +22,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31"
         android:theme="@style/Theme.AppSplash">
+        <!-- allowBackup = false to clear sharedPreferences at uninstall-->
         <!-- change screenOrientation to sensor when supporting both orientations-->
 
         <!--     android:theme="@style/Theme.BachelorThesis"-->
@@ -38,7 +32,9 @@
 
         <activity
             android:name=".view.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask"
+            >
 <!--            android:theme="@style/Theme.BachelorThesis.NoActionBar">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,7 +60,22 @@
                     android:scheme="http"
                     android:host="swap-app.com/mainpage" />
             </intent-filter>
+
+<!--            <intent-filter>-->
+<!--                &lt;!&ndash; for receiving notifications while in background if want to launch a different activity than main&ndash;&gt;-->
+<!--                <action android:name="OpenMainActivity" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+
         </activity>
+
+            <service
+                android:name=".services.PushNotificationService"
+                android:exported="true">
+                <intent-filter>
+                    <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                </intent-filter>
+            </service>
 
         <meta-data
             android:name="com.google.android.gms.version"

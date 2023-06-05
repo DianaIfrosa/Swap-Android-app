@@ -93,20 +93,23 @@ class UserViewModel : ViewModel() {
         return userRepository.googleClient != null
     }
 
-    fun signOut(email: String) {
-        chatRepository.detachChatListeners()
-        userRepository.detachCurrentUserListener()
-
-        userTokensRepository.deleteToken(email)
-
-        userRepository.auth.signOut()
-        userRepository.googleClient?.signOut()
-        userRepository.googleClient = null
+    fun signOut(email: String?) {
         if (userLoggedInWithGoogle()) {
             Log.d(TAG, "User was logged in with Google")
         } else {
             Log.d(TAG, "User wasn't logged in with Google")
         }
+
+        chatRepository.detachChatListeners()
+        userRepository.detachCurrentUserListener()
+
+        if (email != null) {
+            userTokensRepository.deleteToken(email)
+        }
+
+        userRepository.auth.signOut()
+        userRepository.googleClient?.signOut()
+        userRepository.googleClient = null
     }
 
     fun signUpWithGoogle(credential: AuthCredential, callback: NoParamCallback) {

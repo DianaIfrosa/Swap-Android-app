@@ -96,7 +96,7 @@ class AuthFragment : Fragment(), BasicFragment {
 
         when (requestCode) {
             200 -> {
-                Log.d(TAG, "onActivityResult from RegisterFragment")
+                Log.d(TAG, "onActivityResult from AuthFragment")
                 val task: Task<GoogleSignInAccount> =
                     GoogleSignIn.getSignedInAccountFromIntent(data)
                 try {
@@ -107,6 +107,7 @@ class AuthFragment : Fragment(), BasicFragment {
                 } catch (e: ApiException) {
                     e.printStackTrace()
                     displayErrorToast()
+                    userViewModel.signOut(null)
                 }
             }
         }
@@ -142,6 +143,7 @@ class AuthFragment : Fragment(), BasicFragment {
             }
 
             override fun onError(e: Exception?) {
+                userViewModel.signOut(null)
                 displayErrorToast()
             }
         })

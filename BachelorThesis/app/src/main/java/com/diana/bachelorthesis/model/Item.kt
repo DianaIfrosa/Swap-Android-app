@@ -5,7 +5,6 @@ import android.os.Parcelable
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.GeoPoint
-import com.google.gson.Gson
 import kotlin.collections.ArrayList
 
 open class Item(
@@ -37,8 +36,7 @@ open class Item(
         owner = parcel.readString() ?: "",
         postDate = parcel.readParcelable(Timestamp::class.java.classLoader),
         year = parcel.readValue(Int::class.java.classLoader) as? Int
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(itemId)

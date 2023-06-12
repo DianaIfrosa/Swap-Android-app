@@ -47,8 +47,8 @@ class MessagesRecyclerViewAdapter(
         return MessageViewHolder(binding)
     }
 
-    fun getPhotoLayoutParams(currentMessage: Message): LayoutParams {
-        var params: LayoutParams
+    private fun getPhotoLayoutParams(currentMessage: Message): LayoutParams {
+        val params: LayoutParams
         if (currentMessage.senderEmail == currentUser.email) {
                 params = LayoutParams(
                     context.resources.getDimension(R.dimen.photo_chat_size).toInt(),

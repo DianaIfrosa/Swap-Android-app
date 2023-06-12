@@ -6,10 +6,7 @@ import com.diana.bachelorthesis.R
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-enum class ItemCategory(
-    private var availableItems: ArrayList<Item> = ArrayList(),
-    private var totalItems: Int = 0
-) : Parcelable {
+enum class ItemCategory : Parcelable {
     ACCESSORIES,
     APPLIANCES,
     BEAUTY,
@@ -24,19 +21,6 @@ enum class ItemCategory(
     JEWELRY,
     MEDICAL,
     UNKNOWN;
-
-    fun addItemToCategory(item: Item) {
-        availableItems.add(item)
-        totalItems++
-    }
-
-    fun removeItemFromCategory(item:Item) {
-        val index = availableItems.indexOfFirst {
-            it.owner == item.owner
-        }
-        availableItems.removeAt(index)
-        totalItems--
-    }
 
     companion object {
         fun stringToItemCategory(context: Context, name: String): ItemCategory {

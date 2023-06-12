@@ -12,7 +12,7 @@ import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.utils.HelperListAdapter
 
 
-class ListAdapterPreferences(private val context: Context, val listItems: ArrayList<String>) :BaseAdapter() {
+class ListAdapterPreferences(private val context: Context, private val listItems: ArrayList<String>) :BaseAdapter() {
     override fun getCount(): Int {
         return listItems.size
     }

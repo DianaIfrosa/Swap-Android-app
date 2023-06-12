@@ -2,7 +2,6 @@
     <string name="app_name">Swap</string>
 
     <string name="api_key" translatable="false">AIzaSyBty6htocQZVbjnN-Aga0WpR-UHwcmM_1Q</string>
-    <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_add_item">Add item</string>
@@ -11,7 +10,6 @@
     <string name="menu_history">History</string>
     <string name="menu_chat">Chat</string>
     <string name="menu_favorites">Favorites</string>
-    <string name="menu_language">Change language</string>
     <string name="menu_contact_us">Contact us</string>
 
     <string name="exchanges">Swaps</string>
@@ -48,16 +46,11 @@
     <string name="categ_garden">Garden</string>
     <string name="categ_medical">Medical</string>
 
-    <string name="not_found">Not found</string>
     <string name="ok">OK</string>
-    <string name="exchange">Swap</string>
-    <string name="donate">Donate</string>
 
     <string name="exchange_purpose">Swap</string>
     <string name="donate_purpose">Donate</string>
 
-    <string name="for_exchange">For swapping</string>
-    <string name="for_donate">For donation</string>
     <string name="make_exchange">Swap</string>
     <string name="get_donation">Get donation</string>
 
@@ -75,7 +68,6 @@
     <string name="other_details">Other details</string>
     <string name="manufacture_year">Manufacture year</string>
     <string name="condition">Condition</string>
-    <string name="save">Save</string>
     <string name="select_on_map">Select on map</string>
     <string name="select_from_gallery">Select from gallery</string>
     <string name="item_title">Item title</string>
@@ -92,10 +84,8 @@
 
     <!-- Strings used for fragments for navigation -->
     <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
     <string name="add_item">Add item</string>
-    <string name="mapPageTitle">Map</string>
     <string name="titleLocationPermission">Location permission needed</string>
     <string name="messageLocationPermission">"The location permission is required so that you can see items around you in real time! "</string>
 
@@ -108,7 +98,6 @@
     <string name="confirm_password">Confirm password</string>
     <string name="name_register">Full name</string>
     <string name="or">or</string>
-    <string name="sign_up_with_google">Sign up with Google</string>
     <string name="sign_up">Sign up</string>
     <string name="account_exists_already">Email already used for another account!</string>
     <string name="something_failed">Something went wrong. Please try again!</string>
@@ -135,7 +124,6 @@
     <string name="intro3_content">Use the live map to see what others have for swapping or donation.</string>
     <string name="pass_or_email_invalid">Email or password is wrong!</string>
     <string name="user_deleted_or_disabled">This user does not exist or was disabled/deleted by the administrator!</string>
-    <string name="help">Help</string>
     <string name="authentication">Authentication</string>
     <string name="profile">Profile</string>
     <string name="log_in_register">Log in / Register</string>
@@ -184,7 +172,6 @@
 
     <string name="available">Available</string>
     <string name="not_available">Not available</string>
-    <string name="no_items_given">Nothing... Come back after you swap or donate something.</string>
     <string name="no_items_available">Nothing... Seems like you did a good job in finding your items a new home.</string>
     <string name="events">event(s)</string>
     <string name="no_unavailable_items">None... Message other users to swap your items or receive a donation. Or maybe make a donation?</string>
@@ -205,7 +192,6 @@
     <string name="proposal_accepted">Proposal accepted</string>
     <string name="wants_to_exchange">wants to swap</string>
     <string name="wants_to_receive_donation">wants to receive</string>
-    <string name="go_to_item_page">Go to item page</string>
     <string name="alert_accept_proposal">You should accept a proposal in the app <u>only</u> after you have done the swap/donation in real life. Please note that if you press OK, the action will be considered done in the app and the item(s) will no longer be visible to other users.</string>
     <string name="items_not_available">One of the items is no longer available!</string>
     <string name="from">from</string>
@@ -215,81 +201,12 @@
     <string name="submit_report">Submit report</string>
     <string name="explanation_required">Explanation must be completed</string>
 
-
-    <string name="email_welcome_body">
-        <![CDATA[
-        <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
-            <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width,initial-scale=1">
-              <meta name="x-apple-disable-message-reformatting">
-              <title></title>
-
-            </head>
-            <body style="margin:0;padding:0;">
-              <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">
-                <tr>
-                  <td align="center" style="padding:0;">
-                    <table role="presentation" style="width:602px;border-collapse:collapse;border:1px solid #cccccc;border-spacing:0;text-align:left;">
-                      <tr>
-                        <td align="center" style="padding:0px 0 30px 0; background-image: linear-gradient(to bottom right, #BA94D1, #FFF4D2);">
-                          <img src="https://firebasestorage.googleapis.com/v0/b/bachelorthesis-3092d.appspot.com/o/Swap%20transparent.png?alt=media&token=9c6b3e8c-b3b8-490c-a796-c00137b94897" alt="" width="300" style="height:auto;display:block;" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding:36px 30px 42px 30px;">
-                          <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;">
-                            <tr>
-                              <td style="padding:0 0 36px 0;color:#153643;">
-                                <h1 style="font-size:24px;margin:0 0 20px 0;font-family:Times New Roman, Times,sans-serif;">Welcome to Swap!</h1>
-                                <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Times New Roman, Times, serif;">Thank you for choosing us in the mission of finding your items a new home! We hope that Swap inspires you to be more eco-friendly and give your unused items a new chance to shine.</p>
-                                <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Times New Roman, Times, serif;">In the meantime:</p>
-
-                                <a href="http://swap-app.com/mainpage">
-                                  <button style= "display: inline-block;
-                                  background-color: #BA94D1;
-                                  padding: 5px;
-                                  color: #ffffff;
-                                  text-align: center;
-                                  border: 4px double #cccccc;
-                                  border-radius: 10px;
-                                  font-size: 15px;">
-                                    See some items
-                                  </button>
-                                </a>
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding:30px;background:#E5D1FA;">
-                          <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;font-size:9px;font-family:Arial,sans-serif;">
-                            <tr>
-                              <td style="padding:0;width:50%;" align="left">
-                                <p style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#000000;">
-                                  &reg; Swap, 2023<br/>
-                                </p>
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </body>
-            </html>
-        ]]>
-</string>
     <string name="receive_notifications_when">Receive notifications when:</string>
     <string name="any_user_posts_an_item">Any user posts an item.</string>
     <string name="description_notification_recc">An item corresponding to your preferences is posted.</string>
     <string name="never">Never.</string>
     <string name="cities">Cities</string>
     <string name="cannot_change_pass_google">Sorry! You cannot change your password because you logged in with Google.</string>
-    <string name="type_here">type here</string>
     <string name="city">City:</string>
     <string name="your_item">Your item:</string>
     <string name="was_donated_to">was donated to</string>
@@ -314,8 +231,6 @@
     <string name="feedback_email_subject">Feedback id. </string>
     <string name="swap_made">"Swap"</string>
     <string name="no_items_home_text">Nothing... \n Maybe your search is too restrictive?</string>
-    <string name="default_notification_channel_id" translatable="false">PUSH_NOTIFICATION</string>
-    <string name="default_notification_channel_name" translatable="false">Push Notification</string>
     <string name="chat_notification_channel_id" translatable="false">chat_channel_id</string>
     <string name="chat_notification_channel_name">Chat</string>
     <string name="posts_notification_channel_name">Posts</string>

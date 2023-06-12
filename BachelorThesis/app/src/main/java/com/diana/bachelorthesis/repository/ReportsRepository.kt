@@ -13,7 +13,7 @@ class ReportsRepository {
     private val TAG: String = ReportsRepository::class.java.name
     val db = Firebase.firestore
 
-    val COLLECTION_NAME = "Reports"
+    private val COLLECTION_NAME = "Reports"
     companion object {
         @Volatile
         private var instance: ReportsRepository? = null

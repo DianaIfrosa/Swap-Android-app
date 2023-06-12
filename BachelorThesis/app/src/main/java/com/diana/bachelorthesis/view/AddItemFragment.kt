@@ -47,7 +47,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
     private val PICK_IMAGE_CODE = 10
     private var shouldCleanUI = true
 
-    private lateinit var addItemViewModel: AddItemViewModel
+    lateinit var addItemViewModel: AddItemViewModel
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private var _binding: FragmentAddItemBinding? = null
 

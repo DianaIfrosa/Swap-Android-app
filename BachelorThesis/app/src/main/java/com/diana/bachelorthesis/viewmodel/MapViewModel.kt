@@ -7,10 +7,10 @@ import com.google.android.gms.maps.model.Marker
 class MapViewModel : ViewModel() {
     private val TAG: String = MapViewModel::class.java.name
 
-    var donationItems: List<Item> = arrayListOf()
-    var exchangeITems: List<Item> = arrayListOf()
+    private var donationItems: List<Item> = arrayListOf()
+    private var exchangeITems: List<Item> = arrayListOf()
     var allItems: MutableList<Item> = arrayListOf()
-    val itemMarkerMap: HashMap<Marker, Item> = hashMapOf()
+    private val itemMarkerMap: HashMap<Marker, Item> = hashMapOf()
 
     fun updateItems(forExchange: Boolean, items: List<Item>) {
         if (forExchange) {

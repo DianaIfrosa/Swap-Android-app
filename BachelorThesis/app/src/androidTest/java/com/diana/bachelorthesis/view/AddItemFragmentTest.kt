@@ -223,7 +223,7 @@ class AddItemFragmentTest
         onView(withId(R.id.text_other_details)).check(matches(withTagValue(equalTo(R.drawable.ic_arrow_dropdown))))
     }
 
-    fun checkExchangePurpose() {
+    private fun checkExchangePurpose() {
         onView(allOf(withId(R.id.radioButtonExchange), withText(R.string.exchange_purpose))).perform(click())
 
         onView(allOf(withId(R.id.radioButtonExchange), withText(R.string.exchange_purpose))).check(matches(
@@ -233,7 +233,7 @@ class AddItemFragmentTest
         onView(withId(R.id.layout_preferences)).check(isCompletelyBelow(withId(R.id.radioButtonExchange)))
     }
 
-    fun checkDonationPurpose() {
+    private fun checkDonationPurpose() {
         onView(allOf(withId(R.id.radioButtonDonate), withText(R.string.donate_purpose))).perform(click())
 
         onView(allOf(withId(R.id.radioButtonDonate), withText(R.string.donate_purpose))).check(matches(

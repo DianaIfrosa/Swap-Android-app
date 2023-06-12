@@ -12,7 +12,6 @@
     <string name="proposal_accepted">Propunere acceptată</string>
     <string name="wants_to_exchange">vrea să schimbe</string>
     <string name="wants_to_receive_donation">vrea să primească</string>
-    <string name="go_to_item_page">Pagina produsului</string>
     <string name="alert_accept_proposal">Ar trebui să marchezi o propunere ca fiind acceptată în aplicație <u>doar</u> după ce ai schimbat/donat obiectul în viața reală. Ține cont că, dacă apeși pe OK, schimbul/donația va fi considerat(ă) încheiată în aplicație iar obiectele nu vor mai fi vizibile celorlalți utilizatori.</string>
     <string name="items_not_available">Unul din obiecte nu mai este disponibil!</string>
     <string name="from">de la</string>
@@ -21,76 +20,7 @@
     <string name="report_description">Spune-ne de ce crezi că aceasta postare reprezintă o problemă.</string>
     <string name="submit_report">Trimite raportul</string>
     <string name="explanation_required">Explicația este obligatorie!</string>
-    <string name="email_welcome_body">
-         <![CDATA[
-         <html lang="ro" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="x-apple-disable-message-reformatting">
-  <title></title>
-
-</head>
-<body style="margin:0;padding:0;">
-  <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">
-    <tr>
-      <td align="center" style="padding:0;">
-        <table role="presentation" style="width:602px;border-collapse:collapse;border:1px solid #cccccc;border-spacing:0;text-align:left;">
-          <tr>
-            <td align="center" style="padding:0px 0 30px 0; background-image: linear-gradient(to bottom right, #BA94D1, #FFF4D2);">
-              <img src="https://firebasestorage.googleapis.com/v0/b/bachelorthesis-3092d.appspot.com/o/Swap%20transparent.png?alt=media&token=9c6b3e8c-b3b8-490c-a796-c00137b94897" alt="" width="300" style="height:auto;display:block;" />
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:36px 30px 42px 30px;">
-              <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;">
-                <tr>
-                  <td style="padding:0 0 36px 0;color:#153643;">
-                    <h1 style="font-size:24px;margin:0 0 20px 0;font-family:Times New Roman, Times,sans-serif;">Bine ai venit pe Swap!</h1>
-                    <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Times New Roman, Times, serif;">Mulțumim că ne-ai ales ca aliați în misiunea de a găsi o casă nouă obiectelor tale! Sperăm că Swap te va inspira să fii mai atent la mediul înconjurator și va da obiectelor tale o nouă șansă la viață.</p>
-                    <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Times New Roman, Times, serif;">Între timp:</p>
-
-                    <a href="http://swap-app.com/mainpage">
-                      <button style= "display: inline-block;
-                      background-color: #BA94D1;
-                      padding: 5px;
-                      color: #ffffff;
-                      text-align: center;
-                      border: 4px double #cccccc;
-                      border-radius: 10px;
-                      font-size: 15px;">
-                        Vezi ce mai e nou
-                      </button>
-                    </a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:30px;background:#E5D1FA;">
-              <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;font-size:9px;font-family:Arial,sans-serif;">
-                <tr>
-                  <td style="padding:0;width:50%;" align="left">
-                    <p style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#000000;">
-                      &reg; Swap, 2023<br/>
-                    </p>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
-         ]]>
-
-        </string>
     <string name="forgot_password">Am uitat parola</string>
-    <string name="action_settings">Setări</string>
     <string name="menu_home">Acasă</string>
     <string name="menu_add_item">Adaugă obiect</string>
     <string name="menu_map">Hartă</string>
@@ -98,7 +28,6 @@
     <string name="menu_history">Istoric</string>
     <string name="menu_chat">Conversații</string>
     <string name="menu_favorites">Favorite</string>
-    <string name="menu_language">Schimbă limba</string>
     <string name="menu_contact_us">Contactează-ne</string>
     <string name="exchanges">Schimburi</string>
     <string name="donations">Donații</string>
@@ -130,17 +59,11 @@
     <string name="categ_medical">Medical</string>
     <string name="categ_home_decor">Decorațiuni</string>
     <string name="categ_jewelry">Bijuterii</string>
-    <string name="not_found">Nu a fost găsit</string>
     <string name="ok">OK</string>
-
-    <string name="exchange">Schimbă</string>
-    <string name="donate">Donează</string>
 
     <string name="exchange_purpose">Schimb</string>
     <string name="donate_purpose">Donație</string>
 
-    <string name="for_exchange">Pentru schimb</string>
-    <string name="for_donate">Pentru donare</string>
     <string name="make_exchange">Fă schimb</string>
     <string name="get_donation">Primește donația</string>
     <string name="invalid_fields">Câmpuri invalide!</string>
@@ -157,7 +80,6 @@
     <string name="other_details">Alte detalii</string>
     <string name="manufacture_year">Data fabricării</string>
     <string name="condition">Stare</string>
-    <string name="save">Salvează</string>
     <string name="select_on_map">Selectează pe hartă</string>
     <string name="select_from_gallery">Alege din galerie</string>
     <string name="item_title">Titlul obiectului</string>
@@ -165,9 +87,7 @@
     <string name="infoPhotos">"Îți recomandăm să încarci cel puțin 2 fotografii diferite pentru ca alții să poată vedea particularitățile obiectului. De asemenea, asigură-te că fotografiile sunt făcute într-o lumină bună și surprind toate detaliile produsului (inclusiv defectele). "</string>
     <string name="infoLocation">Locația pe care o alegi va fi afișată în pagina produsului și pe hartă. Acest lucru îi ajută pe ceilalți să știe o eventuală locație pentru schimb/ridicare donație. Te rugăm să nu îți dezvălui locația exactă, ci una aproximativă, pentru a-ți proteja integritatea.</string>
     <string name="next">Următorul</string>
-    <string name="previous">Precedent</string>
     <string name="add_item">Adaugă obiect</string>
-    <string name="mapPageTitle">Hartă</string>
     <string name="titleLocationPermission">Permisiune de accesare locație necesară</string>
     <string name="messageLocationPermission">Este necesară permisiunea la accesarea locației ca să poți vedea obiectele din jurul tău în timp real.</string>
     <string name="login">Intră în cont</string>
@@ -178,7 +98,6 @@
     <string name="confirm_password">Confirmă parola</string>
     <string name="name_register">Numele complet</string>
     <string name="or">sau</string>
-    <string name="sign_up_with_google">Folosește Google</string>
     <string name="sign_up">Creează cont</string>
     <string name="account_exists_already">Adresă de email deja folosită!</string>
     <string name="something_failed">Ceva nu a mers bine. Încearcă din nou!</string>
@@ -197,7 +116,6 @@
     <string name="intro3_title">Obiecte din jurul tău</string>
     <string name="intro3_content">Folosește harta live ca să vezi ce obiecte de schimbat sau donat au cei din jurul tău.</string>
     <string name="pass_or_email_invalid">Email sau parolă greșită!</string>
-    <string name="help">Ajutor</string>
     <string name="authentication">Autentificare</string>
     <string name="profile">Profil</string>
     <string name="log_in_register">Conectează-te la cont</string>
@@ -244,7 +162,6 @@
     <string name="yes">Da</string>
     <string name="available">Disponibile</string>
     <string name="not_available">Indisponibile</string>
-    <string name="no_items_given">Nimic... Întoarce-te după ce faci un schimb sau donezi un obiect.</string>
     <string name="no_items_available">Nimic... Se pare că ai făcut o treabă bună în a găsi o casă nouă obiectelor tale.</string>
     <string name="events">eveniment(e)</string>
     <string name="no_unavailable_items">Nimic... Contactează alți utilizatori pentru a schimba obiecte sau a primi donații. Sau poate chiar tu să faci o donație?</string>
@@ -261,7 +178,6 @@
     <string name="never">Niciodată.</string>
     <string name="cities">Orașe</string>
     <string name="cannot_change_pass_google">Scuze! Nu îți poți schimba parola deoarece te-ai conectat cu Google.</string>
-    <string name="type_here">scrie aici</string>
     <string name="city">Oraș:</string>
     <string name="your_item">Obiectul tău:</string>
     <string name="was_donated_to">a fost donat către</string>

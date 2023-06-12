@@ -24,15 +24,15 @@ class AddItemViewModel : ViewModel() {
     var conditionChosen: ItemCondition? = null
     var photosUri: ArrayList<Uri> = arrayListOf()
 
-    var itemForExchange: Boolean = true
-    var itemTitle: String = ""
+    private var itemForExchange: Boolean = true
+    private var itemTitle: String = ""
     var itemAddress: String = ""
     var itemCity: String = ""
-    var itemDescription: String = ""
-    var itemYear: Int? = null
-    var itemExchangePreferences:  ArrayList<ItemCategory> = arrayListOf()
+    private var itemDescription: String = ""
+    private var itemYear: Int? = null
+    private var itemExchangePreferences:  ArrayList<ItemCategory> = arrayListOf()
     var itemLocation: GeoPoint? = null
-    var itemOwner: String = ""
+    private var itemOwner: String = ""
 
      fun addItem(callback: OneParamCallback<Item>){
         val item = if (itemForExchange) ItemExchange()

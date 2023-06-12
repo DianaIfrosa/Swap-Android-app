@@ -18,7 +18,7 @@ class HistoryAvailableViewModel: ViewModel() {
 
     lateinit var currentUser: User
     var allItems: ArrayList<Item> = arrayListOf()
-    var currentUserItems: ArrayList<Item> = arrayListOf()
+    private var currentUserItems: ArrayList<Item> = arrayListOf()
     private var _availableItems =  MutableLiveData<ArrayList<Item>?>()
     var availableItems: LiveData<ArrayList<Item>?> = _availableItems
 

@@ -11,7 +11,7 @@ class UserTokensRepository {
     private val TAG: String = UserTokensRepository::class.java.name
     val db = Firebase.firestore
 
-    val COLLECTION_NAME = "UserTokens"
+    private val COLLECTION_NAME = "UserTokens"
 
     companion object {
         @Volatile

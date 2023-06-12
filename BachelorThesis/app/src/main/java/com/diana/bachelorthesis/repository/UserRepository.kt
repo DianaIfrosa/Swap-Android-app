@@ -13,8 +13,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import java.lang.Exception
 import javax.inject.Singleton
 
 @Singleton
@@ -26,7 +24,7 @@ class UserRepository {
 
     var googleClient: GoogleSignInClient? = null
     private val COLLECTION_NAME = "Users"
-    var currentUserListener: ListenerRegistration? = null
+    private var currentUserListener: ListenerRegistration? = null
 
     companion object {
         @Volatile

@@ -2,9 +2,7 @@ package com.diana.bachelorthesis.repository
 
 import android.net.Uri
 import android.util.Log
-import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.utils.ListParamCallback
-import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -19,7 +17,7 @@ import kotlin.coroutines.suspendCoroutine
 class PhotoRepository {
     private val TAG: String = PhotoRepository::class.java.name
 
-    var defaultProfilePhotoUri: Uri =
+    private var defaultProfilePhotoUri: Uri =
         Uri.parse("android.resource://com.diana.bachelorthesis/drawable/default_profile_picture")
     val unavailablePhotoUrl =
         "https://firebasestorage.googleapis.com/v0/b/bachelorthesis-3092d.appspot.com/o/unavailable.jpg?alt=media&token=bbf854a6-162d-47e4-9006-7d8fe5ef083e"

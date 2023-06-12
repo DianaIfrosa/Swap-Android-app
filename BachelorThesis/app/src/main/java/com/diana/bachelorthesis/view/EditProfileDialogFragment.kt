@@ -38,10 +38,10 @@ class EditProfileDialogFragment : DialogFragment() {
     private lateinit var fragmentParent: ProfileFragment
     private lateinit var toolbar: Toolbar
     private lateinit var profileViewModel: ProfileViewModel
-    lateinit var userViewModel: UserViewModel
+    private lateinit var userViewModel: UserViewModel
 
     private val PICK_IMAGE_CODE = 10
-    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

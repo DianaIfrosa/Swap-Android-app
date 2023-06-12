@@ -34,8 +34,7 @@ class ItemDonation(
         photos = parcel.createStringArrayList() as ArrayList<String>,
         postDate = parcel.readParcelable(Timestamp::class.java.classLoader) ?: Timestamp(0,0),
         year = parcel.readValue(Int::class.java.classLoader) as? Int
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         super.writeToParcel(parcel, flags)

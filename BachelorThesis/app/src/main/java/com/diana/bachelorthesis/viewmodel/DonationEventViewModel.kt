@@ -7,7 +7,6 @@ import com.diana.bachelorthesis.model.History
 import com.diana.bachelorthesis.model.Item
 import com.diana.bachelorthesis.model.User
 import com.diana.bachelorthesis.repository.UserRepository
-import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
 import java.lang.Exception
 

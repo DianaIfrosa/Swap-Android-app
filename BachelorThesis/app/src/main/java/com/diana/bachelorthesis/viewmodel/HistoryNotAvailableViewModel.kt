@@ -19,7 +19,7 @@ class HistoryNotAvailableViewModel: ViewModel() {
     lateinit var currentUser: User
 
     var allItems: ArrayList<Item> = arrayListOf()
-    var currentUserItems: ArrayList<Item> = arrayListOf()
+    private var currentUserItems: ArrayList<Item> = arrayListOf()
     var itemsPairs: ArrayList<Pair<Item, Item?>>? = arrayListOf()
 
     private val _notAvailableItemsHistory = MutableLiveData<ArrayList<History>?>()

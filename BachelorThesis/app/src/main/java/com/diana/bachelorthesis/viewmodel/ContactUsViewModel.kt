@@ -6,7 +6,6 @@ import com.diana.bachelorthesis.model.Mail
 import com.diana.bachelorthesis.repository.FeedbackRepository
 import com.diana.bachelorthesis.repository.MailRepository
 import com.diana.bachelorthesis.utils.NoParamCallback
-import com.diana.bachelorthesis.view.ContactUsFragment
 import java.lang.Exception
 
 class ContactUsViewModel: ViewModel() {

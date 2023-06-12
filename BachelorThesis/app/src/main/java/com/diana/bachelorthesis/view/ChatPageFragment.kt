@@ -31,7 +31,7 @@ class ChatPageFragment : Fragment(), BasicFragment {
     private val TAG: String = ChatPageFragment::class.java.name
 
     private var _binding: FragmentChatPageBinding? = null
-    lateinit var chatPageViewModel: ChatPageViewModel
+    private lateinit var chatPageViewModel: ChatPageViewModel
     private lateinit var adapter: MessagesRecyclerViewAdapter
     private val binding get() = _binding!!
     private var isAtBottom = true

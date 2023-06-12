@@ -24,8 +24,7 @@ data class History(
         item1 = parcel.readString() ?: "",
         item2 = parcel.readString(),
         donationReceiverEmail = parcel.readString()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         writeToParcel(parcel, flags)

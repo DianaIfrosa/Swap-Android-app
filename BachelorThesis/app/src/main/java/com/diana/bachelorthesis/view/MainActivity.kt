@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         navView = binding.navView
         headerLayout = navView.getHeaderView(0)
         val navHostFragment: NavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
-        val inflater = navHostFragment.navController.navInflater
+//        val inflater = navHostFragment.navController.navInflater
 //        val graph = inflater.inflate(R.navigation.nav_graph)
 
         navController = navHostFragment.navController
@@ -189,8 +189,8 @@ class MainActivity : AppCompatActivity() {
 
         //  auto-generated to handle app links.
         val appLinkIntent: Intent = intent
-        val appLinkAction: String? = appLinkIntent.action
-        val appLinkData: Uri? = appLinkIntent.data
+//        val appLinkAction: String? = appLinkIntent.action
+//        val appLinkData: Uri? = appLinkIntent.data
 
     }
 
@@ -221,7 +221,7 @@ class MainActivity : AppCompatActivity() {
                     )
                     val myIntent = Intent(this@MainActivity, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        putExtra("destination", R.id.nav_chat)
+                        putExtra("destinationMenuItem", R.id.nav_chat)
                     }
                     val pendingIntent = PendingIntent.getActivity(this@MainActivity, Random.nextInt(), myIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
@@ -275,7 +275,7 @@ class MainActivity : AppCompatActivity() {
 
                     val myIntent = Intent(this@MainActivity, MainActivity::class.java).apply {
                                 flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                putExtra("destination", R.id.nav_recommendations)
+                                putExtra("destinationMenuItem", R.id.nav_recommendations)
                     }
                     val pendingIntent = PendingIntent.getActivity(this@MainActivity, Random.nextInt(), myIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
@@ -325,13 +325,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun processIntent() {
-        intent.extras?.getInt("destination")?.let {
-//            intent.removeExtra("destination")
-            val handled = NavigationUI.onNavDestinationSelected(
-                navView.menu.findItem(it),
-                navController
-            )
-            if (handled) drawerLayout.closeDrawer(GravityCompat.START)
+        try {
+            intent.extras?.getInt("destinationMenuItem")?.let {
+                val handled = NavigationUI.onNavDestinationSelected(
+                    navView.menu.findItem(it),
+                    navController
+                )
+                if (handled) drawerLayout.closeDrawer(GravityCompat.START)
+            }
+        } catch (e: NullPointerException) {
+            Log.w(TAG, "Cannot navigate to destinationMenuItem, skipping")
         }
     }
 

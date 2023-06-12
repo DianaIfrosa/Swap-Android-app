@@ -9,7 +9,7 @@ class CategoriesRepository {
     private val TAG: String = CategoriesRepository::class.java.name
     val db = Firebase.firestore
 
-    val COLLECTION_NAME = "CategoriesObjects"
+    private val COLLECTION_NAME = "CategoriesObjects"
 
     companion object {
         @Volatile

@@ -188,10 +188,10 @@ class ItemsViewModel : ViewModel() {
         categoriesFilter = categories
 
         val rawData: ArrayList<Item>
-        if (data != null) {
-            rawData = data
+        rawData = if (data != null) {
+            data
         } else {
-            rawData = if (displayExchangeItems) _exchangeItems.value as ArrayList
+            if (displayExchangeItems) _exchangeItems.value as ArrayList
             else _donationItems.value as ArrayList
         }
 

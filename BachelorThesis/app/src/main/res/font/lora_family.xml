@@ -1,5 +1,0 @@
-<font-family xmlns:app="http://schemas.android.com/apk/res-auto">
-    <font app:fontStyle="normal" app:fontWeight="400" app:font="@font/lora"/>
-    <font app:fontStyle="normal" app:fontWeight="500" app:font="@font/lora_bold" />
-    <font app:fontStyle="italic" app:fontWeight="400" app:font="@font/lora_italic" />
-</font-family>

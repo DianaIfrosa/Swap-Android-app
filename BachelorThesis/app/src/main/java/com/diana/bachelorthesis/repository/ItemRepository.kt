@@ -19,14 +19,14 @@ class ItemRepository {
     private val TAG: String = ItemRepository::class.java.name
     val db = Firebase.firestore
 
-    val EXCHANGE_COLLECTION = "ExchangeItems"
-    val DONATION_COLLECTION = "DonationItems"
+    private val EXCHANGE_COLLECTION = "ExchangeItems"
+    private val DONATION_COLLECTION = "DonationItems"
 
-    var itemsExchangeListenerRegistration: ListenerRegistration? = null
-    var itemsDonationsListenerRegistration: ListenerRegistration? = null
+    private var itemsExchangeListenerRegistration: ListenerRegistration? = null
+    private var itemsDonationsListenerRegistration: ListenerRegistration? = null
 
-    var favDonationsListenerRegistration: ListenerRegistration? = null
-    var favExchangesListenerRegistration: ListenerRegistration? = null
+    private var favDonationsListenerRegistration: ListenerRegistration? = null
+    private var favExchangesListenerRegistration: ListenerRegistration? = null
 
     companion object {
         @Volatile

@@ -38,8 +38,8 @@ class EditPreferencesDialogFragment : DialogFragment() {
     private lateinit var adapterCities: ListAdapterPreferences
     private lateinit var adapterWords: ListAdapterPreferences
 
-    var checkboxesCategories: Map<ItemCategory, CheckBox> = mapOf()
-    var checkboxesExchangePreferences: Map<ItemCategory, CheckBox> = mapOf()
+    private var checkboxesCategories: Map<ItemCategory, CheckBox> = mapOf()
+    private var checkboxesExchangePreferences: Map<ItemCategory, CheckBox> = mapOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

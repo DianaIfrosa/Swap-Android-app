@@ -25,7 +25,7 @@ class ProfileFragment : Fragment(), BasicFragment, ProfileOptionsListener {
     private val TAG: String = ProfileFragment::class.java.name
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    lateinit var userViewModel: UserViewModel
+    private lateinit var userViewModel: UserViewModel
     lateinit var profileViewModel: ProfileViewModel
 
     override fun onCreateView(

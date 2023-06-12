@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.viewpager.widget.PagerAdapter
@@ -72,9 +71,7 @@ class IntroAuthFragment : Fragment(), BasicFragment {
 
     private fun addBottomDots(currentPage: Int) {
         val dots = arrayListOf<ImageView>()
-        val colorActive = resources.getColor(R.color.purple_medium)
-        val colorInactive = resources.getColor(R.color.purple_dark)
-        (binding.layoutDots as LinearLayout).removeAllViews()
+        binding.layoutDots.removeAllViews()
 
         for (i in 0 until layouts.size) {
             val newDot = ImageView(requireActivity())
@@ -82,7 +79,7 @@ class IntroAuthFragment : Fragment(), BasicFragment {
                 setImageDrawable(resources.getDrawable(R.drawable.ic_circle_unfilled))
             }
 
-            (binding.layoutDots as LinearLayout).addView(newDot)
+            binding.layoutDots.addView(newDot)
             dots.add(newDot)
         }
         if (dots.size > 0) dots[currentPage].setImageDrawable(resources.getDrawable(R.drawable.ic_circle_filled))

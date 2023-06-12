@@ -3,7 +3,6 @@ package com.diana.bachelorthesis.repository
 import android.util.Log
 import com.diana.bachelorthesis.model.Feedback
 import com.diana.bachelorthesis.utils.NoParamCallback
-import com.diana.bachelorthesis.view.ReportPostFragment
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import javax.inject.Singleton

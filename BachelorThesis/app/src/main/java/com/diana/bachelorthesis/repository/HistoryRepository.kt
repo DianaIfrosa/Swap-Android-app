@@ -13,7 +13,7 @@ class HistoryRepository {
     private val TAG: String = HistoryRepository::class.java.name
     val db = Firebase.firestore
 
-    val COLLECTION_NAME = "History"
+    private val COLLECTION_NAME = "History"
 
     companion object {
         @Volatile

@@ -5,7 +5,6 @@ import com.diana.bachelorthesis.model.Proposal
 import com.diana.bachelorthesis.utils.ListParamCallback
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.utils.OneParamCallback
-import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import javax.inject.Singleton
@@ -15,7 +14,7 @@ class ProposalRepository {
     private val TAG: String = ProposalRepository::class.java.name
     val db = Firebase.firestore
 
-    val COLLECTION_NAME = "Proposals"
+    private val COLLECTION_NAME = "Proposals"
 
     companion object {
         @Volatile

@@ -1,6 +1,5 @@
 package com.diana.bachelorthesis.view
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,13 +13,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.apachat.loadingbutton.core.customViews.CircularProgressButton
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentContactUsBinding
-import com.diana.bachelorthesis.databinding.FragmentReportPostBinding
 import com.diana.bachelorthesis.model.*
 import com.diana.bachelorthesis.utils.BasicFragment
 import com.diana.bachelorthesis.utils.MailBodyConst
 import com.diana.bachelorthesis.utils.NoParamCallback
 import com.diana.bachelorthesis.viewmodel.ContactUsViewModel
-import com.diana.bachelorthesis.viewmodel.ReportPostViewModel
 import com.google.firebase.Timestamp
 import java.lang.Exception
 import java.util.*

@@ -14,8 +14,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -34,9 +32,9 @@ class HomeFragment : Fragment(), SortFilterDialogListener, BasicFragment {
     private val TAG: String = HomeFragment::class.java.name
 
     private var _binding: FragmentHomeBinding? = null
-    lateinit var itemsViewModel: ItemsViewModel
-    lateinit var userViewModel: UserViewModel
-    lateinit var sharedPref: SharedPreferences
+    private lateinit var itemsViewModel: ItemsViewModel
+    private lateinit var userViewModel: UserViewModel
+    private lateinit var sharedPref: SharedPreferences
 
     private val binding get() = _binding!!
     private lateinit var smoothScroller: RecyclerView.SmoothScroller

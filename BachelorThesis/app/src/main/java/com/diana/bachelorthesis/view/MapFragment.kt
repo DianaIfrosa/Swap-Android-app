@@ -120,7 +120,7 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
 
          // specify the types of place data to return
          autocompleteFragment.setPlaceFields(listOf(Place.Field.LAT_LNG, Place.Field.NAME))
-
+         autocompleteFragment.setText("")
          autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
              override fun onPlaceSelected(place: Place) {
                  place.latLng?.let { latLng ->
@@ -194,7 +194,13 @@ class MapFragment : Fragment(), BasicFragment, OnMapReadyCallback, GoogleMap.OnM
 
         } else {
         googleMap.isMyLocationEnabled = true
-        googleMap.setOnMyLocationButtonClickListener { false }
+        googleMap.setOnMyLocationButtonClickListener {
+            val autocompleteFragment =
+                childFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
+
+            autocompleteFragment.setText("")
+            false
+        }
 
         fusedLocationClient.lastLocation.addOnSuccessListener(requireActivity()) { location ->
             if (location != null) {

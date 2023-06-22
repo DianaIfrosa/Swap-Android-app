@@ -16,8 +16,7 @@ class ContactUsViewModel: ViewModel() {
     fun addFeedback(feedback: Feedback, mail: Mail, callback: NoParamCallback) {
         feedbackRepository.addFeedback(feedback, object: NoParamCallback {
             override fun onComplete() {
-                mailRepository.addMailEntry(mail)
-                callback.onComplete()
+                mailRepository.addMailEntry(mail, callback)
             }
 
             override fun onError(e: Exception?) {

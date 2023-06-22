@@ -162,7 +162,18 @@ class AuthFragment : Fragment(), BasicFragment {
                         "html" to if (language == "en") MailBodyConst.bodyWelcomeEng else MailBodyConst.bodyWelcomeRo
                     )
                 )
-                userViewModel.sendWelcomeEmail(mail)
+
+                userViewModel.sendWelcomeEmail(mail, object:NoParamCallback {
+                    override fun onComplete() {
+                        Log.d(TAG, "Returned from sending email successfully.")
+                    }
+
+                    override fun onError(e: Exception?) {
+                        Log.w(TAG, "Returned from sending email with error.")
+                        Log.w(TAG, e?.message.toString())
+                    }
+
+                })
             }
 
             override fun onError(e: Exception?) {

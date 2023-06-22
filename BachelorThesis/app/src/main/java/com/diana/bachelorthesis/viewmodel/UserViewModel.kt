@@ -38,9 +38,9 @@ class UserViewModel : ViewModel() {
         userRepository.registerUser(email, pass, callback)
     }
 
-    fun sendWelcomeEmail(mail: Mail) {
+    fun sendWelcomeEmail(mail: Mail, callback: NoParamCallback) {
         Log.d(TAG, "Sending welcome email")
-        mailRepository.addMailEntry(mail)
+        mailRepository.addMailEntry(mail, callback)
     }
 
     fun addUser(email: String, name: String, photoUri: Uri?, callback: NoParamCallback? = null) {

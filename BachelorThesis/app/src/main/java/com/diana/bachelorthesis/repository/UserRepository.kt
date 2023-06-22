@@ -44,16 +44,17 @@ class UserRepository {
         db.collection(COLLECTION_NAME)
             .document(userToAdd.email)
             .set(userToAdd)
-            .addOnSuccessListener {
-                Log.d(
-                    TAG,
-                    "Successful addition or update of DocumentSnapshot with id ${userToAdd.email}"
-                )
-                callback?.onComplete()
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding or updating document ${e.message}")
-                callback?.onError(e)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(
+                        TAG,
+                        "Successful addition or update of DocumentSnapshot with id ${userToAdd.email}"
+                    )
+                    callback?.onComplete()
+                } else {
+                    Log.w(TAG, "Error adding or updating document ${task.exception?.message}")
+                    callback?.onError(task.exception)
+                }
             }
     }
 
@@ -62,8 +63,7 @@ class UserRepository {
             if (task.isSuccessful) {
                 Log.d(TAG, "Successfully sent reset pass email to $email")
                 callback.onComplete()
-            }
-            else {
+            } else {
                 Log.w(TAG, "Error while sending reset pass email to $email")
                 Log.w(TAG, task.exception)
                 callback.onError(task.exception)
@@ -75,7 +75,7 @@ class UserRepository {
         auth.createUserWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.w(TAG, "Register successful for user: $email")
+                    Log.d(TAG, "Register successful for user: $email")
                     callback.onComplete(auth.currentUser)
                 } else {
                     Log.w(TAG, "Register failed for user: $email")
@@ -168,6 +168,7 @@ class UserRepository {
         }
 
     }
+
     fun getAllUsersName(callback: ListParamCallback<String>) {
         db.collection(COLLECTION_NAME).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -261,10 +262,10 @@ class UserRepository {
                 Log.d(TAG, "Retrieved all users to verify if some user exists already")
                 task.result.forEach verifyUserEmails@{
                     val user = it.toObject(User::class.java)
-                   if (user.email == email) {
-                       answer = true
-                       return@verifyUserEmails
-                   }
+                    if (user.email == email) {
+                        answer = true
+                        return@verifyUserEmails
+                    }
                 }
                 callback.onComplete(answer)
 
@@ -281,37 +282,44 @@ class UserRepository {
         }
     }
 
-    fun getUsersByEmail(emails: List<String>, currentPosition: Int, result: ArrayList<User?>, callback:ListParamCallback<User?>){
-        db.collection(COLLECTION_NAME).document(emails[currentPosition]).get().addOnCompleteListener {task->
-            if (task.isSuccessful) {
-                val user = task.result.toObject(User::class.java)
-                result.add(user)
-                if (currentPosition == emails.size - 1) {
-                    callback.onComplete(result)
+    fun getUsersByEmail(
+        emails: List<String>,
+        currentPosition: Int,
+        result: ArrayList<User?>,
+        callback: ListParamCallback<User?>
+    ) {
+        db.collection(COLLECTION_NAME).document(emails[currentPosition]).get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = task.result.toObject(User::class.java)
+                    result.add(user)
+                    if (currentPosition == emails.size - 1) {
+                        callback.onComplete(result)
+                    } else {
+                        getUsersByEmail(emails, currentPosition + 1, result, callback)
+                    }
                 } else {
-                    getUsersByEmail(emails, currentPosition + 1,  result, callback)
+                    Log.w(TAG, "Error retrieving users recursively")
+                    callback.onError(task.exception)
                 }
-            } else {
-                Log.w(TAG, "Error retrieving users recursively")
-                callback.onError(task.exception)
             }
-        }
     }
 
-    fun listenToCurrentUserChanges(email:String, callback: OneParamCallback<User>) {
-        currentUserListener = db.collection(COLLECTION_NAME).document(email).addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                Log.w(TAG, "Listen failed for current user", error)
-                callback.onError(error)
-                return@addSnapshotListener
+    fun listenToCurrentUserChanges(email: String, callback: OneParamCallback<User>) {
+        currentUserListener =
+            db.collection(COLLECTION_NAME).document(email).addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    Log.w(TAG, "Listen failed for current user", error)
+                    callback.onError(error)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null) {
+                    val user = snapshot.toObject(User::class.java)
+                    callback.onComplete(user)
+                } else {
+                    Log.w(TAG, "No such snapshot")
+                }
             }
-            if (snapshot != null) {
-                val user = snapshot.toObject(User::class.java)
-                callback.onComplete(user)
-            } else {
-                Log.w(TAG, "No such snapshot")
-            }
-        }
     }
 
     fun addChatIdToUserList(chatId: String, userEmail: String) {
@@ -320,7 +328,7 @@ class UserRepository {
             "seen" to "false"
         )
         db.collection(COLLECTION_NAME).document(userEmail).update(
-          "chatIds", FieldValue.arrayUnion(chatNew)
+            "chatIds", FieldValue.arrayUnion(chatNew)
         ).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "Successfully added new chat id $chatId to user $userEmail")

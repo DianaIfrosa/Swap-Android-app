@@ -16,8 +16,7 @@ class ReportPostViewModel: ViewModel() {
     fun addReport(report: PostReport, mail: Mail, callback: NoParamCallback) {
         postReportsRepository.addReport(report, object: NoParamCallback{
             override fun onComplete() {
-               mailRepository.addMailEntry(mail)
-                callback.onComplete()
+               mailRepository.addMailEntry(mail, callback)
             }
 
             override fun onError(e: Exception?) {

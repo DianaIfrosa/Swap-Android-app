@@ -55,7 +55,6 @@ class LoginFragment : Fragment(), BasicFragment {
             val email = binding.editextEmail.text.toString()
             val pass = binding.editextPass.text.toString()
 
-
             getFieldStatus()
             if (email.isNotEmpty() && pass.isNotEmpty()) {
                 button.startAnimation()

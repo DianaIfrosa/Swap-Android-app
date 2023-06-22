@@ -126,14 +126,6 @@ class RegisterFragment : Fragment(), BasicFragment {
                         override fun onComplete(value: FirebaseUser?) {
                             userViewModel.addUser(email, name, null, object: NoParamCallback {
                                 override fun onComplete() {
-                                    it.doneLoadingAnimation(
-                                        R.color.purple_medium,
-                                        ContextCompat.getDrawable(
-                                            requireActivity(),
-                                            R.drawable.ic_done
-                                        )!!.toBitmap()
-                                    )
-
                                     val language = Locale.getDefault().language
                                     val mail = Mail(
                                         to = email,
@@ -142,9 +134,25 @@ class RegisterFragment : Fragment(), BasicFragment {
                                             "html" to if (language == "en") MailBodyConst.bodyWelcomeEng else MailBodyConst.bodyWelcomeRo
                                         )
                                     )
-                                    userViewModel.sendWelcomeEmail(mail)
+                                    userViewModel.sendWelcomeEmail(mail, object:NoParamCallback {
+                                        override fun onComplete() {
+                                            Log.d(TAG, "Returned from sending email successfully.")
+                                            userViewModel.signOut(email) // Firebase register automatically signs in
+                                            it.doneLoadingAnimation(
+                                                R.color.purple_medium,
+                                                ContextCompat.getDrawable(
+                                                    requireActivity(),
+                                                    R.drawable.ic_done
+                                                )!!.toBitmap()
+                                            )
+                                        }
 
-                                    userViewModel.signOut(email) // Firebase register automatically signs in
+                                        override fun onError(e: Exception?) {
+                                            Log.w(TAG, "Returned from sending email with error.")
+                                            Log.w(TAG, e?.message.toString())
+                                            userViewModel.signOut(email) // Firebase register automatically signs in
+                                        }
+                                    })
                                 }
 
                                 override fun onError(e: Exception?) {

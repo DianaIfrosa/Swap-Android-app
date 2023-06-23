@@ -11,7 +11,6 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.apachat.loadingbutton.core.customViews.CircularProgressButton
-import com.apachat.loadingbutton.core.customViews.ProgressButton
 import com.diana.bachelorthesis.R
 import com.diana.bachelorthesis.databinding.FragmentReportPostBinding
 import com.diana.bachelorthesis.model.Item

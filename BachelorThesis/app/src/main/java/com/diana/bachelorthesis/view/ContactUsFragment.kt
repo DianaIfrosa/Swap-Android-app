@@ -46,6 +46,14 @@ class ContactUsFragment : Fragment(), BasicFragment {
         setSubPageAppbar(requireActivity(), getString(R.string.menu_contact_us))
         contactUsViewModel = ViewModelProvider(this)[ContactUsViewModel::class.java]
         initListeners()
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "ContactUsFragment is onStart")
+        binding.editTextFeedback.text = null
+        binding.editTextFeedback.text.clear()
     }
 
     override fun initListeners() {

@@ -31,6 +31,7 @@
             android:inputType="textMultiLine"
             android:hint="@string/feedback_description"
             android:textColor="@color/black"
+            android:text=""
             android:gravity="top"
             android:background="@drawable/background_chat_editext"/>
 

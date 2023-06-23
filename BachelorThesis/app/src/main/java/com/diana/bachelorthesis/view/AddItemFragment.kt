@@ -136,6 +136,8 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
                 // make first option grey, as a hint
                 if (position == 0)
                     view.setTextColor(ContextCompat.getColor(requireActivity(), R.color.grey))
+                else
+                    view.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
                 return view
             }
         }
@@ -177,6 +179,8 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
                 // make first option grey, as a hint
                 if (position == 0)
                     view.setTextColor(ContextCompat.getColor(requireActivity(), R.color.grey))
+                else
+                    view.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
                 return view
             }
         }
@@ -352,11 +356,11 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         if (parent != null) {
             val value = parent.getItemAtPosition(position).toString()
 
-            // make first option grey, as a hint
-            if (value == getString(R.string.select)) {
-                if (view != null)
-                    (view as TextView).setTextColor(ContextCompat.getColor(requireContext(),R.color.grey))
-            }
+//            // make first option grey, as a hint
+//            if (value == getString(R.string.select)) {
+//                if (view != null)
+//                    (view as TextView).setTextColor(ContextCompat.getColor(requireContext(),R.color.grey))
+//            }
 
             when (parent.id) {
                 R.id.spinner_categories -> addItemViewModel.categoryChosen =
@@ -547,12 +551,20 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
 //        binding.radioButtonDonate.setBackgroundResource(R.drawable.btn_radio_unchecked)
 
         binding.radioButtonExchange.isChecked = false
+        uncheckCategories()
         binding.radioButtonExchange.isPressed = false
 //        binding.radioButtonExchange.setBackgroundResource(R.drawable.btn_radio_unchecked)
 
         binding.spinnerCategories.setSelection(0)
         binding.itemYearEdittext.setText("")
         binding.spinnerCondition.setSelection(0)
+    }
+
+    private fun uncheckCategories() {
+        val linearLayout = binding.hiddenCategories.categories
+        for (pos in 0 until linearLayout.childCount) {
+            (linearLayout.getChildAt(pos) as CheckBox).isChecked = false
+        }
     }
 
     override fun saveLocation(location: Place?) {
@@ -573,7 +585,7 @@ class AddItemFragment : Fragment(), AdapterView.OnItemSelectedListener, BasicFra
         super.onDestroyView()
         Log.d(TAG, "AddItemFragment is onDestroyView")
         addItemViewModel.restoreDefaultValues()
-//        cleanUIElements()
+        cleanUIElements()
         _binding = null
     }
 

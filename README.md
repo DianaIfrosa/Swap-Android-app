@@ -8,5 +8,5 @@ This repository contains my bachelor's thesis for the Computer Science Bachelor'
 &nbsp; Since the idea is materialized in a mobile application for Android, a wide group of users is targeted, given the fact that it is a widespread operating system, and by this fact the initiative to recycle and reuse already existing objects is easily transmitted to the majority of smartphone users.
 
 ## Documentation
-The full documentation can be found here.  
+The full documentation can be found [here](https://github.com/DianaIfrosa/Swap-Android-app/blob/main/Documentation.pdf) - available only in Romanian for the moment.  
 Check out a detailed demo [here](https://www.youtube.com/watch?v=YCgRRx13HLw).

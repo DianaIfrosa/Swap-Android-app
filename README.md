@@ -1,5 +1,6 @@
 # Swap (Android app for Bachelor's Thesis)
-This repository contains my bachelor's thesis for the Computer Science Bachelor's degree that I followed at University of Bucharest.
+This repository contains my Bachelor's thesis for the Computer Science Bachelor's degree that I followed at University of Bucharest.
+Besides the actual Android app that I developed from scratch, I have also created some UI tests using the framework Espresso, in order to tackle a wide variety of aspects involved in a real software engineering process.
 
 ## Abstract
 &nbsp; The “Swap” mobile application comes to the aid of people who want to refresh their home, either by donating the objects they no longer use, or by exchanging them for others. In this way, they contribute to a less polluted environment and at the same time they take part of a community oriented towards helping others.  
@@ -10,3 +11,4 @@ This repository contains my bachelor's thesis for the Computer Science Bachelor'
 ## Documentation
 The full documentation can be found [here](https://github.com/DianaIfrosa/Swap-Android-app/blob/main/Documentation.pdf) - available only in Romanian for the moment.  
 Check out a detailed demo [here](https://www.youtube.com/watch?v=YCgRRx13HLw).
+
